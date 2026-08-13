@@ -164,7 +164,7 @@
 <body class="viz-root">
 <script>
 /* 旧形式の共有リンク(全レポート内包時代の #ハッシュ)を個別ページへ流す */
-var FILES = {"7011": "7011_mhi.html", "7203": "7203_toyota.html", "6758": "6758_sony.html", "6367": "6367_daikin.html", "7974": "7974_nintendo.html", "9684": "9684_squareenix.html", "3402": "3402_toray.html", "4063": "4063_shinetsu.html", "4182": "4182_mgc.html", "5802": "5802_sumitomo_electric.html", "5803": "5803_fujikura.html", "5801": "5801_furukawa.html", "5706": "5706_mitsui_kinzoku.html", "5016": "5016_jx_metals.html", "6920": "6920_lasertec.html", "6857": "6857_advantest.html", "285A": "285A_kioxia.html", "9984": "9984_softbankg.html", "8058": "8058_mitsubishi_corp.html", "8031": "8031_mitsui.html", "8267": "8267_aeon.html", "9301": "9301_mitsubishi_logistics.html", "8306": "8306_mufg.html", "8316": "8316_smfg.html", "8411": "8411_mizuho.html", "9432": "9432_ntt.html", "4755": "4755_rakuten.html", "9503": "9503_kansai_electric.html", "9508": "9508_kyushu_electric.html", "9502": "9502_chubu_electric.html", "9506": "9506_tohoku_electric.html", "9509": "9509_hokkaido_electric.html", "6508": "6508_meidensha.html", "6617": "6617_tktk.html", "5838": "5838_rakuten_bank.html", "7182": "7182_yucho_bank.html", "4689": "4689_lineyahoo.html", "9434": "9434_softbank_kk.html", "6866": "6866_hioki.html", "6516": "6516_sanyo_denki.html", "6905": "6905_cosel.html", "5344": "5344_maruwa.html", "5310": "5310_toyotanso.html", "6622": "6622_daihen.html", "6890": "6890_ferrotec.html", "4043": "4043_tokuyama.html", "4004": "4004_resonac.html", "4061": "4061_denka.html", "4186": "4186_tok.html", "6861": "6861_keyence.html", "9020": "9020_jr_east.html", "9022": "9022_jr_central.html", "theme-dc": "theme_datacenter.html", "theme-power": "theme_power.html", "theme-fintech": "theme_fintech.html", "theme-semi": "theme_semi_materials.html", "theme-chem": "theme_chemicals.html", "theme-eff": "theme_efficiency.html"};
+var FILES = {"7011": "7011_mhi.html", "7203": "7203_toyota.html", "6758": "6758_sony.html", "6367": "6367_daikin.html", "7974": "7974_nintendo.html", "9684": "9684_squareenix.html", "3402": "3402_toray.html", "4063": "4063_shinetsu.html", "4182": "4182_mgc.html", "5802": "5802_sumitomo_electric.html", "5803": "5803_fujikura.html", "5801": "5801_furukawa.html", "5706": "5706_mitsui_kinzoku.html", "5016": "5016_jx_metals.html", "6920": "6920_lasertec.html", "6857": "6857_advantest.html", "285A": "285A_kioxia.html", "9984": "9984_softbankg.html", "8058": "8058_mitsubishi_corp.html", "8031": "8031_mitsui.html", "8267": "8267_aeon.html", "9301": "9301_mitsubishi_logistics.html", "8306": "8306_mufg.html", "8316": "8316_smfg.html", "8411": "8411_mizuho.html", "9432": "9432_ntt.html", "4755": "4755_rakuten.html", "9503": "9503_kansai_electric.html", "9508": "9508_kyushu_electric.html", "9502": "9502_chubu_electric.html", "9506": "9506_tohoku_electric.html", "9509": "9509_hokkaido_electric.html", "6508": "6508_meidensha.html", "6617": "6617_tktk.html", "5838": "5838_rakuten_bank.html", "7182": "7182_yucho_bank.html", "4689": "4689_lineyahoo.html", "9434": "9434_softbank_kk.html", "6866": "6866_hioki.html", "6516": "6516_sanyo_denki.html", "6905": "6905_cosel.html", "5344": "5344_maruwa.html", "5310": "5310_toyotanso.html", "6622": "6622_daihen.html", "6890": "6890_ferrotec.html", "4043": "4043_tokuyama.html", "4004": "4004_resonac.html", "4061": "4061_denka.html", "4186": "4186_tok.html", "6861": "6861_keyence.html", "9020": "9020_jr_east.html", "9022": "9022_jr_central.html", "7832": "7832_bandainamco.html", "8136": "8136_sanrio.html", "9697": "9697_capcom.html", "9602": "9602_toho.html", "9468": "9468_kadokawa.html", "4816": "4816_toei_animation.html", "theme-dc": "theme_datacenter.html", "theme-power": "theme_power.html", "theme-fintech": "theme_fintech.html", "theme-semi": "theme_semi_materials.html", "theme-chem": "theme_chemicals.html", "theme-eff": "theme_efficiency.html", "theme-ip": "theme_ip.html"};
 function goLegacy() {
   var id = location.hash.slice(1);
   if (id && FILES[id]) location.replace(FILES[id]);
@@ -177,7 +177,7 @@ window.addEventListener('hashchange', goLegacy);
   <div class="brand">📚 銘柄レポート ライブラリ</div>
 </div>
 
-<div class="subtitle">決算説明資料・中期経営計画・バリュエーションを1銘柄1ページに整理 ・ 全52銘柄 ・ 2026/8/13時点</div>
+<div class="subtitle">決算説明資料・中期経営計画・バリュエーションを1銘柄1ページに整理 ・ 全58銘柄 ・ 2026/8/13時点</div>
 
   <label class="theme-lead" for="q" style="margin-top:2px">さがす</label>
   <input class="search" id="q" type="search" placeholder="銘柄名・コード・セクター・キーワード" oninput="filter(this.value)" autocomplete="off">
@@ -185,14 +185,14 @@ window.addEventListener('hashchange', goLegacy);
   <div class="seg" role="tablist" aria-label="表示の切り替え">
     <button id="tab-sector" class="on" role="tab" aria-selected="true" onclick="setGroup('sector')">セクター別</button>
     <button id="tab-val" role="tab" aria-selected="false" onclick="setGroup('val')">割安・割高別</button>
-    <button id="tab-themes" role="tab" aria-selected="false" onclick="setGroup('themes')">特集 <small>6</small></button>
+    <button id="tab-themes" role="tab" aria-selected="false" onclick="setGroup('themes')">特集 <small>7</small></button>
   </div>
 
   <div id="grp-sector">
     <div class="chips" id="chips-sector">
 <button data-pick="電力・重電" onclick="pick('sector', this.dataset.pick)">電力・重電 <small>8</small></button>
 <button data-pick="重工・機械・自動車" onclick="pick('sector', this.dataset.pick)">重工・機械・自動車 <small>3</small></button>
-<button data-pick="電機・エンタメ" onclick="pick('sector', this.dataset.pick)">電機・エンタメ <small>7</small></button>
+<button data-pick="電機・エンタメ" onclick="pick('sector', this.dataset.pick)">電機・エンタメ <small>13</small></button>
 <button data-pick="素材・化学" onclick="pick('sector', this.dataset.pick)">素材・化学 <small>8</small></button>
 <button data-pick="電線・非鉄" onclick="pick('sector', this.dataset.pick)">電線・非鉄 <small>5</small></button>
 <button data-pick="半導体" onclick="pick('sector', this.dataset.pick)">半導体 <small>5</small></button>
@@ -338,6 +338,48 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-px">86,630<small>円 ・ 8/13</small></div>
         <div style="margin-top:6px"><span class="vb hi">やや割高</span></div>
         <div class="tile-sum">Q1営業+44.7%・利益率54%、コンセンサス+20%上振れで翌日+9.4%。増益の1/3は円安。上場来高値圏・PER40倍前後に自社株買い期待込み。金融資産3兆円の使い道が論点</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="7832_bandainamco.html" data-q="7832 バンダイナムコHD 7832 電機・エンタメ 中立 Q1過去最高・営業+33%(関税還付35億込みだが除いても最高)。トイホビー+89%、カード事業が成長軸。上期+400億修正も通期据え置きでコンセンサスは+13.5%上" aria-label="バンダイナムコHDのレポートを開く">
+        <div class="tile-top"><span class="tile-name">バンダイナムコHD</span><span class="tile-code">7832</span></div>
+        <div class="tile-px">5,252<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">Q1過去最高・営業+33%(関税還付35億込みだが除いても最高)。トイホビー+89%、カード事業が成長軸。上期+400億修正も通期据え置きでコンセンサスは+13.5%上</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="8136_sanrio.html" data-q="8136 サンリオ 8136 電機・エンタメ やや割高 6期連続増収増益・Q1最高でもコンセンサス−4%で翌日−18%(12年ぶり下落率)。費用20億の期ずれがQ2以降に乗る。ライセンス過半・ROE35%にPBR9.1倍の期待値ゲーム" aria-label="サンリオのレポートを開く">
+        <div class="tile-top"><span class="tile-name">サンリオ</span><span class="tile-code">8136</span></div>
+        <div class="tile-px">1,227<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb hi">やや割高</span></div>
+        <div class="tile-sum">6期連続増収増益・Q1最高でもコンセンサス−4%で翌日−18%(12年ぶり下落率)。費用20億の期ずれがQ2以降に乗る。ライセンス過半・ROE35%にPBR9.1倍の期待値ゲーム</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="9697_capcom.html" data-q="9697 カプコン 9697 電機・エンタメ やや割高 Q1営業+67%・コンセンサス+40%上振れで翌日+19.8%。販売の89%がカタログのストック型で進捗49.5%。為替前提140円は保守的だが期待も先行" aria-label="カプコンのレポートを開く">
+        <div class="tile-top"><span class="tile-name">カプコン</span><span class="tile-code">9697</span></div>
+        <div class="tile-px">4,028<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb hi">やや割高</span></div>
+        <div class="tile-sum">Q1営業+67%・コンセンサス+40%上振れで翌日+19.8%。販売の89%がカタログのストック型で進捗49.5%。為替前提140円は保守的だが期待も先行</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="9602_toho.html" data-q="9602 東宝 9602 電機・エンタメ 中立 Q1−28%はTOHO Global分割の会計期ずれでほぼ見かけ、実質は増益。コナンがシリーズ史上No.1。料金改定・政策保有株売却500億円超が予想未織り込みの上振れ要因" aria-label="東宝のレポートを開く">
+        <div class="tile-top"><span class="tile-name">東宝</span><span class="tile-code">9602</span></div>
+        <div class="tile-px">1,475<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">Q1−28%はTOHO Global分割の会計期ずれでほぼ見かけ、実質は増益。コナンがシリーズ史上No.1。料金改定・政策保有株売却500億円超が予想未織り込みの上振れ要因</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="9468_kadokawa.html" data-q="9468 KADOKAWA 9468 電機・エンタメ PER非適用 Q1は早期退職特損54億で純損失、通期純利益も−83%修正(営業は据え置き)。出版改革は黒字転換の成果。ソニー10%出資でアニメ内製率50%へ転換中。8/13引け後発表" aria-label="KADOKAWAのレポートを開く">
+        <div class="tile-top"><span class="tile-name">KADOKAWA</span><span class="tile-code">9468</span></div>
+        <div class="tile-px">3,579<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb mid">PER非適用</span></div>
+        <div class="tile-sum">Q1は早期退職特損54億で純損失、通期純利益も−83%修正(営業は据え置き)。出版改革は黒字転換の成果。ソニー10%出資でアニメ内製率50%へ転換中。8/13引け後発表</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="4816_toei_animation.html" data-q="4816 東映アニメーション 4816 電機・エンタメ 中立 Q1営業はQ1として過去最高だが増益はほぼDB海外配信と円安。中国は契約金額減少。通期−19%の保守計画に対しコンセンサスは+33%上。VISION2030でIP投資2,000億円" aria-label="東映アニメーションのレポートを開く">
+        <div class="tile-top"><span class="tile-name">東映アニメーション</span><span class="tile-code">4816</span></div>
+        <div class="tile-px">2,822<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">Q1営業はQ1として過去最高だが増益はほぼDB海外配信と円安。中国は契約金額減少。通期−19%の保守計画に対しコンセンサスは+33%上。VISION2030でIP投資2,000億円</div>
         <div class="go">レポートを見る →</div>
       </a>
     </div>
@@ -620,9 +662,9 @@ window.addEventListener('hashchange', goLegacy);
   <div id="grp-val" style="display:none">
     <div class="chips" id="chips-val">
 <button data-pick="割安" onclick="pick('val', this.dataset.pick)">割安 <small>5</small></button>
-<button data-pick="中立" onclick="pick('val', this.dataset.pick)">中立 <small>24</small></button>
-<button data-pick="割高" onclick="pick('val', this.dataset.pick)">割高 <small>19</small></button>
-<button data-pick="評価難" onclick="pick('val', this.dataset.pick)">評価難 <small>4</small></button>
+<button data-pick="中立" onclick="pick('val', this.dataset.pick)">中立 <small>27</small></button>
+<button data-pick="割高" onclick="pick('val', this.dataset.pick)">割高 <small>21</small></button>
+<button data-pick="評価難" onclick="pick('val', this.dataset.pick)">評価難 <small>5</small></button>
     </div>
     <div class="sec-block" data-name="割安">
     <div class="sector-h val lo" data-group>割安 <span class="cnt">5銘柄</span></div>
@@ -666,7 +708,7 @@ window.addEventListener('hashchange', goLegacy);
     </div>
     </div>
     <div class="sec-block" data-name="中立">
-    <div class="sector-h val mid" data-group>中立 <span class="cnt">24銘柄</span></div>
+    <div class="sector-h val mid" data-group>中立 <span class="cnt">27銘柄</span></div>
     <div class="bdesc">指標面に大きな歪みはなく、業績見通しとおおむね整合的な水準</div>
     <div class="grid">
       <a class="tile" href="6758_sony.html" data-q="6758 ソニーグループ 6758 電機・エンタメ 中立 Q1営業利益+40%で過去最高、通期1.72兆円へ上方修正。熊本地震の影響は通期予想に未反映。タムロン買収提案" aria-label="ソニーグループのレポートを開く">
@@ -837,10 +879,31 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-sum">Q1営業+9.4%は運賃改定+約200億が柱。純利益−14%は前年売却益の剥落。通期計画がコンセンサス比−7%で決算翌日−6.9%。人件費・修繕費・利払いの構造増と綱引き</div>
         <div class="go">レポートを見る →</div>
       </a>
+      <a class="tile" href="7832_bandainamco.html" data-q="7832 バンダイナムコHD 7832 電機・エンタメ 中立 Q1過去最高・営業+33%(関税還付35億込みだが除いても最高)。トイホビー+89%、カード事業が成長軸。上期+400億修正も通期据え置きでコンセンサスは+13.5%上" aria-label="バンダイナムコHDのレポートを開く">
+        <div class="tile-top"><span class="tile-name">バンダイナムコHD</span><span class="tile-code">7832</span></div>
+        <div class="tile-px">5,252<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">電機・エンタメ</span></div>
+        <div class="tile-sum">Q1過去最高・営業+33%(関税還付35億込みだが除いても最高)。トイホビー+89%、カード事業が成長軸。上期+400億修正も通期据え置きでコンセンサスは+13.5%上</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="9602_toho.html" data-q="9602 東宝 9602 電機・エンタメ 中立 Q1−28%はTOHO Global分割の会計期ずれでほぼ見かけ、実質は増益。コナンがシリーズ史上No.1。料金改定・政策保有株売却500億円超が予想未織り込みの上振れ要因" aria-label="東宝のレポートを開く">
+        <div class="tile-top"><span class="tile-name">東宝</span><span class="tile-code">9602</span></div>
+        <div class="tile-px">1,475<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">電機・エンタメ</span></div>
+        <div class="tile-sum">Q1−28%はTOHO Global分割の会計期ずれでほぼ見かけ、実質は増益。コナンがシリーズ史上No.1。料金改定・政策保有株売却500億円超が予想未織り込みの上振れ要因</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="4816_toei_animation.html" data-q="4816 東映アニメーション 4816 電機・エンタメ 中立 Q1営業はQ1として過去最高だが増益はほぼDB海外配信と円安。中国は契約金額減少。通期−19%の保守計画に対しコンセンサスは+33%上。VISION2030でIP投資2,000億円" aria-label="東映アニメーションのレポートを開く">
+        <div class="tile-top"><span class="tile-name">東映アニメーション</span><span class="tile-code">4816</span></div>
+        <div class="tile-px">2,822<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">電機・エンタメ</span></div>
+        <div class="tile-sum">Q1営業はQ1として過去最高だが増益はほぼDB海外配信と円安。中国は契約金額減少。通期−19%の保守計画に対しコンセンサスは+33%上。VISION2030でIP投資2,000億円</div>
+        <div class="go">レポートを見る →</div>
+      </a>
     </div>
     </div>
     <div class="sec-block" data-name="割高">
-    <div class="sector-h val hi" data-group>割高 <span class="cnt">19銘柄</span></div>
+    <div class="sector-h val hi" data-group>割高 <span class="cnt">21銘柄</span></div>
     <div class="bdesc">指標が過去比・同業比で高位。将来の成長期待の織り込みが進んでいる</div>
     <div class="grid">
       <a class="tile" href="7011_mhi.html" data-q="7011 三菱重工業 7011 重工・機械・自動車 割高圏 Q1事業利益+65%・純利益+97%。受注7兆円・FCF6,000億円へ上方修正。GTCC・防衛が牽引も一過性約250億円を含む" aria-label="三菱重工業のレポートを開く">
@@ -976,10 +1039,24 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-sum">Q1営業+44.7%・利益率54%、コンセンサス+20%上振れで翌日+9.4%。増益の1/3は円安。上場来高値圏・PER40倍前後に自社株買い期待込み。金融資産3兆円の使い道が論点</div>
         <div class="go">レポートを見る →</div>
       </a>
+      <a class="tile" href="8136_sanrio.html" data-q="8136 サンリオ 8136 電機・エンタメ やや割高 6期連続増収増益・Q1最高でもコンセンサス−4%で翌日−18%(12年ぶり下落率)。費用20億の期ずれがQ2以降に乗る。ライセンス過半・ROE35%にPBR9.1倍の期待値ゲーム" aria-label="サンリオのレポートを開く">
+        <div class="tile-top"><span class="tile-name">サンリオ</span><span class="tile-code">8136</span></div>
+        <div class="tile-px">1,227<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">電機・エンタメ</span></div>
+        <div class="tile-sum">6期連続増収増益・Q1最高でもコンセンサス−4%で翌日−18%(12年ぶり下落率)。費用20億の期ずれがQ2以降に乗る。ライセンス過半・ROE35%にPBR9.1倍の期待値ゲーム</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="9697_capcom.html" data-q="9697 カプコン 9697 電機・エンタメ やや割高 Q1営業+67%・コンセンサス+40%上振れで翌日+19.8%。販売の89%がカタログのストック型で進捗49.5%。為替前提140円は保守的だが期待も先行" aria-label="カプコンのレポートを開く">
+        <div class="tile-top"><span class="tile-name">カプコン</span><span class="tile-code">9697</span></div>
+        <div class="tile-px">4,028<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">電機・エンタメ</span></div>
+        <div class="tile-sum">Q1営業+67%・コンセンサス+40%上振れで翌日+19.8%。販売の89%がカタログのストック型で進捗49.5%。為替前提140円は保守的だが期待も先行</div>
+        <div class="go">レポートを見る →</div>
+      </a>
     </div>
     </div>
     <div class="sec-block" data-name="評価難">
-    <div class="sector-h val mid" data-group>評価難 <span class="cnt">4銘柄</span></div>
+    <div class="sector-h val mid" data-group>評価難 <span class="cnt">5銘柄</span></div>
     <div class="bdesc">利益が市況変動や黒字化途上にあり、PERによる評価が機能しにくい</div>
     <div class="grid">
       <a class="tile" href="285A_kioxia.html" data-q="285A キオクシアHD 285A 半導体 市況次第 NAND急騰でQ1営業益1.27兆円・純利益46倍。8千億円自社株買い・1対3分割発表も高値から57%調整" aria-label="キオクシアHDのレポートを開く">
@@ -1008,6 +1085,13 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-px">1,375<small>円 ・ 8/13</small></div>
         <div style="margin-top:6px"><span class="secchip">電機・エンタメ</span></div>
         <div class="tile-sum">営業赤字は数量、純損失34億はPRBX売却の一過性。受注+59.8%(GPU向け装置電源)が先行し、来期黒字転換計画。評価軸は受注の売上化と値上げ浸透。DOE4.5%累進配当で利回り4.36%</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="9468_kadokawa.html" data-q="9468 KADOKAWA 9468 電機・エンタメ PER非適用 Q1は早期退職特損54億で純損失、通期純利益も−83%修正(営業は据え置き)。出版改革は黒字転換の成果。ソニー10%出資でアニメ内製率50%へ転換中。8/13引け後発表" aria-label="KADOKAWAのレポートを開く">
+        <div class="tile-top"><span class="tile-name">KADOKAWA</span><span class="tile-code">9468</span></div>
+        <div class="tile-px">3,579<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">電機・エンタメ</span></div>
+        <div class="tile-sum">Q1は早期退職特損54億で純損失、通期純利益も−83%修正(営業は据え置き)。出版改革は黒字転換の成果。ソニー10%出資でアニメ内製率50%へ転換中。8/13引け後発表</div>
         <div class="go">レポートを見る →</div>
       </a>
     </div>
@@ -1043,6 +1127,11 @@ window.addEventListener('hashchange', goLegacy);
   <a class="theme-btn" href="theme_efficiency.html">
     <div class="tt">🔌 電力効率 全体マップ — 変換ロス・電源熱・計測</div>
     <div class="td">電気は「作る・運ぶ」の先で数%ずつ失われる。変換ロスを削る材料、電源・熱の機器、効率を測る計測器の3層に、それぞれニッチトップが収まる構図を関連7銘柄で整理。本当の本丸ほど非上場、という論点も</div>
+    <div class="tg">マップを開く →</div>
+  </a>
+  <a class="theme-btn" href="theme_ip.html">
+    <div class="tt">🎬 IPビジネス 全体マップ — 生む・回す・届ける</div>
+    <div class="td">アニメ産業3.8兆円・海外2.2兆円が初の2兆円超え。IPを生む(出版・制作)→回す(ゲーム・玩具・ライセンス)→届ける(興行・体験)の3層に関連9銘柄を配置。決算の絶対値でなくコンセンサス比で±20%動く「期待値ゲーム」の構造も</div>
     <div class="tg">マップを開く →</div>
   </a>
   </div>

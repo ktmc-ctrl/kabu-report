@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KADOKAWA(9468) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>KADOKAWA <span class="note">[9468] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">出版・アニメ・ゲーム</span> <span class="badge">3月期決算</span> <span class="badge">ソニーが筆頭株主10%</span></div>
+  </div>
+  <div class="px">
+    <div class="v">3,579円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 4,552円(2024/12)から <b>-21.4%</b><br>(8/13終値 3,579円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は売上683億円(+5.3%)ながら営業利益12.6億円(<b>−45.5%</b>)、そして<b>純損失45.4億円</b>——ただし赤字転落はほぼ全額が<b>早期退職の特別退職金53.7億円という一過性</b>で、同日に通期純利益も58→10億円へ下方修正した(営業・経常は据え置き)。セグメントの絵は明暗くっきり: 本丸の<b>出版は構造改革が効いて黒字転換(+21.5億円改善)</b>、一方でゲームは前年のELDEN RING発売の反動で−59%、アニメは製作費高騰で赤字転落。ソニーが約10%を持つ筆頭株主として、アニメ内製率を19%→50%(2032/3期)へ引き上げる転換の途中にある。今期は特損でPERが壊れており(見かけ526倍)、評価はコンセンサスと来期の構造改革効果(年約17億円の人件費削減)を待つ局面。※この決算は本日(8/13)引け後の発表で、市場の反応はまだ出ていない。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/13発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">682.5億円</td><td class="num up">+5.3%</td></tr>
+      <tr><td>営業利益</td><td class="num">12.6億円</td><td class="num down">−45.5%</td></tr>
+      <tr><td>経常利益</td><td class="num">24.1億円</td><td class="num up">+2.5%</td></tr>
+      <tr><td>純損益</td><td class="num">−45.4億円</td><td class="num down">赤字転落 ※</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:6px">※特別退職金53.7億円(早期退職154名)の一過性。経常増益は前年の為替差損→今期差益への転換が主因。</div>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解(セグメント別営業損益)</b><br>
+    ・<b>出版・IP創出 +11.9億円(前年−9.7億円から黒字転換、+21.5億円改善)</b>——価格改定効果約+10億円、返品率29.7%(−4.0pt改善)、海外紙書籍+33.6%<br>
+    ・<b>ゲーム 13.9億円(−58.8%)</b>——前年のELDEN RING NIGHTREIGN発売の反動。新作構成比2%<br>
+    ・<b>アニメ・実写 −6.6億円(赤字転落)</b>——2次展開売上は+27.4%と伸びたが<b>アニメ製作費の高騰</b>が上回った<br>
+    ・Webサービス(ニコニコ)はプレミアム会員89.3万人と減少継続。8月に月額990円へ値上げ<br>
+    ・営業CFは−20.7億円(賞与支払・棚卸増の季節性)。海外売上比率約20%(+11.0%)
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    8/13に<b>純利益のみ下方修正</b>: 58→<b>10億円(−83%)</b>。理由は特別退職金54億円で、営業101億円(+24.7%)・経常120億円は据え置き。早期退職の効果として2Q以降に約11億円(年間約17億円)の人件費削減を見込む。Q1営業進捗は12.5%と低いが、会社は「各セグメント概ね想定通り」。<br><br>
+    <b>コンセンサスとの差:</b> IFISコンセンサス(営業114億円)は<b>会社計画を約11%上回る</b>。Q1経常はコンセンサス超えとの評価。ただし前期も下方修正歴(のれん償却の特損)があり、計画の信頼はこれから積み直す段階。<b>市場の反応は8/14以降に出る</b>(引け後発表のため)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">526倍(見かけ)</td><td>特損で分母が壊れた異常値。コンセンサス純利益(28億円)でも約190倍、来期正常化が前提の評価</td></tr>
+      <tr><td>PBR</td><td class="num">2.23倍</td><td>ソニー出資(500億円)込みの資本</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">0.84%</td><td>年30円(下限コミット)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">2,701.5〜3,839円</td><td>過去5年高値4,552円(2024/12、ソニー買収検討報道時)から−21.4%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    今期はPERで測れない年(特損+構造改革費用)。株価の物差しは①出版改革の利益改善が続くか ②アニメ内製化・ソニー協業がいつ数字になるか ③ゲームの次のヒット、の3つで、どれも答えは来期以降にある。<b>評価: PER非適用</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ(ソニー協業)</h2>
+  <div class="body">
+    <b><a class="xref" href="6758_sony.html">ソニーグループ</a>が約10%を保有する筆頭株主</b>(2024/12資本業務提携、2025/1に約500億円の第三者割当。調達資金はIP創出200億円+海外展開300億円)。協業の柱はアニメ製作能力の増強と共同IP創出。<br><br>
+    ・<b>アニメ内製率: 今期見込み約19% → 2032/3期に50%目標</b>。グループスタジオ5社を集約する「Studio One Base」を2026年秋に実行予定。アニメ2次展開売上は6年で1.9倍目標<br>
+    ・出版は新刊点数を絞りつつ返品率25%へ(構造改革の本丸)<br>
+    ・ゲームはFromSoftwareの『ELDEN RING Tarnished Edition』(8/28)、<a class="xref" href="7974_nintendo.html">任天堂</a>と共同販売の『The Duskbloods』(Switch2専用、2026年内)が控える
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    <b>配当性向30%以上を目標、年間30円を下限</b>。今期予想30円(期末一括)は下方修正後も維持——下限コミットが効いた形。自社株買いの直近の発表は確認できない。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>アニメ産業:</b> 2024年市場は3兆8,407億円(+14.8%)で過去最高、海外が2.17兆円と初の2兆円超え——内製化戦略の追い風<br>
+    ・<b>出版市況:</b> 国内紙市場は縮小継続。価格改定と返品率改善で粗利を守る消耗戦<br>
+    ・<b>アニメ製作費:</b> 業界的な高騰が続き、製作委員会型の収益性を圧迫(Q1赤字の主因)<br>
+    ・<b>為替:</b> 売上への影響+11億円(除くと+3.6%成長)
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>ゲームのヒット依存:</b> ELDEN RING級の谷と山で全社利益が大きく振れる構造は当面続く<br>
+    ・<b>アニメ製作費の高騰:</b> 内製化(50%目標)が完成するまでコスト先行が続く<br>
+    ・<b>計画の信頼:</b> 2期連続で期中に下方修正(前期はのれん、今期は特損)。「営業は据え置き」の達成が信頼回復の条件<br>
+    ・<b>ニコニコの縮小:</b> 会員減少が続く中での値上げは剥落リスクと隣り合わせ<br>
+    ・<b>強気材料の裏返し:</b> ソニー協業・内製化の果実は2030年前後の話。それまでは構造改革費用と製作費高騰が先に数字に出る
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成(当日引け後発表の決算を反映。市場反応は未発生)。<br>
+    出典: KADOKAWA 2027年3月期Q1決算短信・決算説明資料 2026/8/13(<span class="note">ssl4.eir-parts.net/doc/9468/</span>) / ソニーとの資本業務提携リリース 2024/12/19 / 配当方針ページ / 株探(株価・指標、2026/8/13終値) / IFIS株予報(コンセンサス)。<br>
+    ※2022/1/1付で1:2の株式分割——過去の株価は分割調整後。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>東映アニメーション(4816) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>東映アニメーション <span class="note">[4816] 東証スタンダード</span></h1>
+    <div class="subtitle"><span class="badge">アニメIP</span> <span class="badge">3月期決算</span> <span class="badge">ドラゴンボール・ワンピース</span></div>
+  </div>
+  <div class="px">
+    <div class="v">2,822円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 5,022円(2021/9)から <b>-43.8%</b><br>(8/13終値 2,822円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は売上220億円(+13.1%)・営業利益74.7億円(<b>+13.5%、Q1として過去最高</b>)、営業利益率33.9%。増益のほぼすべては<b>ドラゴンボールの海外配信権販売と円安</b>(映像製作・販売が+109.8%)で、海外売上比率は66%まで上昇した。一方、版権は国内の反動減で増収減益と、中身は「DB・OPの2大IP×海外」への集中が進む。通期は営業−19.4%の減益計画だが、<b>コンセンサスは会社計画を約33%上回り</b>、市場は「いつもの保守計画」とみている(利益進捗は既に30%超)。株価は2021年9月の高値(中国配信ブーム期)から4割下で、PER31.8倍。下期はドラゴンボール超の新シリーズ・THE ONE PIECE(2027/2配信)・ゼノバース3と、2大IPの弾が並ぶ。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/31発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">220.3億円</td><td class="num up">+13.1%</td></tr>
+      <tr><td>営業利益</td><td class="num">74.7億円</td><td class="num up">+13.5%(Q1最高)</td></tr>
+      <tr><td>経常利益</td><td class="num">82.4億円</td><td class="num up">+15.4%</td></tr>
+      <tr><td>純利益</td><td class="num">60.3億円</td><td class="num up">+15.3%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解(営業+8.9億円の内訳)</b><br>
+    ・<b>映像製作・販売 +12.4億円(利益+109.8%)</b>——ドラゴンボールの配信権販売が国内外で好調。海外映像売上+37%。<b>円安の押し上げも会社明記</b>(定量は開示なし)<br>
+    ・版権 −2.8億円(増収減益)——海外は+14.5%(ワンピース北米カードゲーム等)だが、国内は高採算だった「ガールズバンドクライ」案件とワンピース大型案件の反動で−12.0%<br>
+    ・販管費+17.8%は中計の戦略投資。前年の特別利益3.5億円は今期ゼロ<br>
+    ・<b>海外売上比率66%</b>(前年59%)。ただし<b>中国は既存配信先との契約金額減少で減収</b>——北米・欧州の伸びが中国の縮小を上回った構図<br>
+    ・仕掛品+13億円は下期以降の作品製作進行。自己資本比率84.5%
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期予想は据え置き: 売上1,000億円(+6.8%)・営業利益<b>250億円(−19.4%)</b>・純利益181億円(−27.8%)。前期が過去最高(営業310億円)だった反動と「為替ほか外部要因の不透明感」を織り込んだ保守計画で、Q1進捗は営業29.9%・純利益33.3%と高い。<br><br>
+    <b>コンセンサスとの差:</b> IFISコンセンサス(経常340億円)は<b>会社計画(256億円)を約33%上回る</b>——市場は減益計画を信じていない。決算翌営業日はザラ場で+6.4%の年初来高値まで買われた後に失速し−0.4%と、期待と確信の間で揺れた反応だった。下期の弾: ドラゴンボール超 新シリーズ(26秋)、THE ONE PIECE(27/2配信)、ゼノバース3(2027年)、MUGIWARA STORE ロサンゼルス(海外初出店)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">31.8倍</td><td>保守計画の分母ベース。コンセンサス比では約24倍</td></tr>
+      <tr><td>PBR</td><td class="num">3.42倍</td><td>ROE目標15%以上(VISION2030)</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">1.56%</td><td>年44円(性向40%以上・総還元50%目途)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">2,239〜3,620円</td><td>過去5年高値5,022円(2021/9、中国配信ブーム期)から−43.8%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    2021年の高値は中国配信バブルの値段であり、そこからの−44%は「中国剥落を織り込んだ正常化」でもある。現在のPER31.8倍(コンセンサス比24倍)は、DB・OPという世界級IPの安定ライセンス収益と、VISION2030の投資先行を合わせた値段。<b>評価: 中立</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    <b>VISION2030(2025/10発表)</b>: 2031/3期に<b>売上2,000億円(約2倍)・営業利益500億円(+54%)</b>、ROE15%以上。<br><br>
+    ・<b>IP投資2,000億円</b>で新規IP創出40作品(過去5年の3倍)——2大IP依存からの脱却が最大のテーマ<br>
+    ・大阪スタジオ新設で製作キャパを拡充(映像化ラインの拡大)、若手育成「ETERNA Animation」<br>
+    ・海外は東南アジア・南アジア・中東に営業人員を配置(200億円)、MUGIWARA STORE LAが海外店舗の一号<br>
+    ・インオーガニック投資500億円(Gaudiy・韓国SMGへ出資済み)
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    VISION2030で<b>配当性向40%以上・総還元性向50%目途</b>を明記(過去実績額を下限とした安定配当)。今期予想は年44円(予想性向49.7%)。株主優待(QUOカード)あり。自社株買いの新規発表は確認できない。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>アニメ産業:</b> 2024年市場3兆8,407億円(+14.8%)、海外2.17兆円が初の2兆円超え——海外配信・ライセンスの構造的追い風<br>
+    ・<b>中国:</b> 既存配信先との契約金額減少がQ1で顕在化。かつての成長エンジンが縮小側に回った<br>
+    ・<b>為替:</b> 海外比率66%で円安の恩恵大。円高転換は直撃<br>
+    ・<b>製作費:</b> 業界的な高騰は内製スタジオを持つ同社には相対的に有利
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>2大IP集中:</b> Q1増益はほぼドラゴンボール。DB・OPの配信契約更改の条件が業績を直接決める<br>
+    ・<b>中国の縮小継続:</b> 契約金額減少が他地域の伸びを上回れば海外全体が鈍る<br>
+    ・<b>ヒットの反動:</b> ガールズバンドクライの反動が示す通り、オリジナルヒットは翌年の逆風になる<br>
+    ・<b>投資先行:</b> 販管費+17.8%はVISION2030の費用。40作品の打率が見えるのは数年先<br>
+    ・<b>強気材料の裏返し:</b> コンセンサスが会社計画+33%——「どうせ上方修正」が外れたときの下げ幅は大きい
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: 東映アニメーション 2027年3月期Q1決算短信・決算補足資料・計数資料 2026/7/31(<span class="note">corp.toei-anim.co.jp</span>) / VISION2030(2025/10/29) / 株探(株価・指標、2026/8/13終値) / IFIS株予報(コンセンサス) / 日本動画協会(アニメ産業レポート2025速報値)。<br>
+    ※2024/4/1付で1:5の株式分割(2018年にも1:3)——過去の株価は分割調整後。Q1営業CF・質疑応答要旨(説明会なし)は取得不可。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

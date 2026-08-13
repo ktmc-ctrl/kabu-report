@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPビジネス 全体マップ — 生む・回す・届ける</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<style>
+/* 名前空間 .ipm — 独自CSSは body 内に置きラッパーで切る(規約) */
+.ipm .layer { border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin: 10px 0; background: var(--surface-2); }
+.ipm .layer h3 { margin: 0 0 4px; font-size: 1.02rem; color: var(--text-primary); }
+.ipm .layer .role { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px; }
+.ipm .items { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 8px; }
+.ipm .item { border: 1px solid var(--border); border-radius: 9px; padding: 9px 11px; font-size: 0.82rem; background: var(--page); }
+.ipm .item b { display: block; margin-bottom: 2px; }
+.ipm .item .note { display: block; font-size: 0.74rem; }
+.ipm .item.ghost { border-style: dashed; opacity: 0.75; }
+.ipm .arrow { text-align: center; color: var(--text-muted); font-size: 0.9rem; margin: -2px 0; }
+</style>
+
+<div class="ipm">
+
+<div class="head">
+  <div>
+    <h1>IPビジネス 全体マップ <span class="note">— 生む・回す・届けるの3層</span></h1>
+    <div class="subtitle"><span class="badge">特集</span> <span class="badge">関連9銘柄</span> <span class="badge">2026/8/13 時点</span></div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>この特集の視点</h2>
+  <div class="body">
+    日本のIP(キャラクター・アニメ・ゲーム)は世界で売れる数少ない輸出産業になった。<b>アニメ産業の市場規模は2024年に3兆8,407億円(+14.8%)で過去最高、うち海外が2兆1,702億円と初めて2兆円を超え</b>、成長のエンジンは完全に海外配信・ライセンスへ移っている(日本動画協会)。本特集はIPのバリューチェーンを<b>①IPを生む(原作・制作)→ ②IPを持ち回す(ゲーム・玩具・ライセンス)→ ③IPを届ける(興行・体験)</b>の3層で整理する。<br><br>
+    先に核心を言うと、この業界の銘柄は<b>「決算の絶対値」ではなく「コンセンサス比」で動く</b>。この8月だけでも、<a class="xref" href="8136_sanrio.html">サンリオ</a>は過去最高益なのに予想比−4%で<b>−18%</b>、<a class="xref" href="9697_capcom.html">カプコン</a>は予想比+40%で<b>+19.8%</b>、<a class="xref" href="7832_bandainamco.html">バンダイナムコ</a>は2日で+22%——期待値ゲームの振れ幅が極端に大きいことを前提に読む必要がある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>3層の全体像</h2>
+
+  <div class="layer">
+    <h3>① IPを生む — 原作・出版・アニメ制作(川上)</h3>
+    <div class="role">ヒットの源泉。原作と制作能力を持つ者がバリューチェーンの入口を握る。</div>
+    <div class="items">
+      <div class="item"><b><a class="xref" href="9468_kadokawa.html">KADOKAWA [9468]</a></b><span class="note">出版最大手級+アニメ+ゲーム(FromSoftware)。ソニーが10%持つ筆頭株主。アニメ内製率19%→50%への転換中。今期は早期退職特損で純損失</span></div>
+      <div class="item"><b><a class="xref" href="4816_toei_animation.html">東映アニメーション [4816]</a></b><span class="note">ドラゴンボール・ワンピース・プリキュアの制作元。海外比率66%。Q1営業は過去最高、ただし増益はほぼDB配信と円安</span></div>
+      <div class="item ghost"><b>集英社・講談社・小学館(非上場)</b><span class="note">ジャンプ・マガジンの版元=最強の原作供給源だが株式市場から買えない。ここでも「本丸ほど非上場」</span></div>
+    </div>
+  </div>
+  <div class="arrow">▼ 原作がゲーム・玩具・ライセンスに化ける ▼</div>
+
+  <div class="layer">
+    <h3>② IPを持ち回す — ゲーム・玩具・ライセンス(多面展開)</h3>
+    <div class="role">1つのIPをゲーム・カード・グッズ・配信へ多面展開して利益率を上げる層。ここが時価総額の中心。</div>
+    <div class="items">
+      <div class="item"><b><a class="xref" href="7974_nintendo.html">任天堂 [7974]</a></b><span class="note">マリオ・ゼルダ・ポケモン。ハード中心からソフト・IP中心へ収益転換が進む。Q1営業2.5倍</span></div>
+      <div class="item"><b><a class="xref" href="6758_sony.html">ソニーグループ [6758]</a></b><span class="note">ゲーム・音楽・映画・アニメ(Crunchyroll)の総合IPプラットフォーム。<a class="xref" href="9468_kadokawa.html">KADOKAWA</a>筆頭株主として川上も押さえる</span></div>
+      <div class="item"><b><a class="xref" href="7832_bandainamco.html">バンダイナムコHD [7832]</a></b><span class="note">ガンダム・ワンピースのIP軸戦略。Q1はトイホビー+89%で過去最高。カード事業が2年で2倍</span></div>
+      <div class="item"><b><a class="xref" href="9697_capcom.html">カプコン [9697]</a></b><span class="note">モンハン・バイオ。販売の89%がカタログ(旧作)というストック型。営業利益率58%</span></div>
+      <div class="item"><b><a class="xref" href="9684_squareenix.html">スクウェア・エニックスHD [9684]</a></b><span class="note">FF・ドラクエ。構造改革で利益率改善中、Q1営業+89%</span></div>
+      <div class="item"><b><a class="xref" href="8136_sanrio.html">サンリオ [8136]</a></b><span class="note">キティ・クロミ等のライセンス専業型。営業利益率43%・ROE35%。8/12にコンセンサス未達で−18%の急落</span></div>
+    </div>
+  </div>
+  <div class="arrow">▼ 体験として届ける ▼</div>
+
+  <div class="layer">
+    <h3>③ IPを届ける — 興行・体験(川下)</h3>
+    <div class="role">映画館・劇場・パークでIPを現金化する層。ヒット依存と安定資産の組み合わせ。</div>
+    <div class="items">
+      <div class="item"><b><a class="xref" href="9602_toho.html">東宝 [9602]</a></b><span class="note">配給・TOHOシネマズ・ゴジラ。鬼滅(世界1,179億円)の翌年でも映画+6%増益。不動産が下値を支える二層構造</span></div>
+      <div class="item ghost"><b>オリエンタルランド(4661)ほか</b><span class="note">ディズニーIPの体験化で国内最大だが本特集は未収録。サンリオピューロランド(<a class="xref" href="8136_sanrio.html">サンリオ</a>内)、USJ(非上場)もこの層</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>層ごとの読み方</h2>
+  <div class="body">
+    <b>① 川上は「制作費高騰」と「内製化」の綱引き。</b> アニメ製作費の高騰で<a class="xref" href="9468_kadokawa.html">KADOKAWA</a>のアニメ事業は赤字転落。一方、制作を内側に持つ<a class="xref" href="4816_toei_animation.html">東映アニメ</a>は利益率33%を維持——<b>製作能力そのものが希少資源</b>になっており、<a class="xref" href="9468_kadokawa.html">KADOKAWA</a>の内製化50%目標も、東映のVISION2030(IP投資2,000億円)も、ソニーの<a class="xref" href="9468_kadokawa.html">KADOKAWA</a>出資も、すべて同じ資源の取り合いである。<br><br>
+    <b>② 展開層の勝ち筋は「ストック化」。</b> <a class="xref" href="9697_capcom.html">カプコン</a>はカタログ89%、<a class="xref" href="8136_sanrio.html">サンリオ</a>はライセンス過半、バンナムはカード事業倍増——新作のヒットに賭けるのではなく、<b>既存IPが毎年勝手に稼ぐ構造</b>を作った会社ほど利益率が高く、評価も高い(PBR: サンリオ9.1倍・カプコン5.9倍)。その分、期待値も高くなり決算のたびに±20%動く。<br><br>
+    <b>③ 川下はヒットの振れを資産で吸収する設計。</b> <a class="xref" href="9602_toho.html">東宝</a>は映画のヒット依存を不動産(空室率0.3%)で下支えする。鬼滅の反動という「わかっている減益」の年に、料金改定・政策保有株売却という別の弾を用意しているのが今期の絵。<br><br>
+    <b>共通の追い風は海外、共通のリスクは中国と為替。</b> 海外市場2.17兆円が全層を押し上げる一方、<a class="xref" href="4816_toei_animation.html">東映アニメ</a>の中国契約金額減少、<a class="xref" href="8136_sanrio.html">サンリオ</a>の中国渡航者減など、<b>中国はすでに「成長源」と「リスク」の両面</b>になっている。円高転換は海外比率の高い順(東映66%・<a class="xref" href="8136_sanrio.html">サンリオ</a>・カプコン90%超)に効く。
+  </div>
+</div>
+
+<div class="card">
+  <h2>関連銘柄一覧(2026/8/13終値)</h2>
+  <table>
+    <thead><tr><th>銘柄</th><th>層</th><th class="num">終値</th><th class="num">予想PER</th><th>評価</th><th>一言</th></tr></thead>
+    <tbody>
+      <tr><td><b><a class="xref" href="9468_kadokawa.html">KADOKAWA</a></b> <a class="xref" href="9468_kadokawa.html">[9468]</a></td><td>①生む</td><td class="num">3,579円</td><td class="num">— ※1</td><td><span class="tag">PER非適用</span></td><td>出版改革は黒字転換。特損で今期は測れない年</td></tr>
+      <tr><td><b><a class="xref" href="4816_toei_animation.html">東映アニメーション</a></b> <a class="xref" href="4816_toei_animation.html">[4816]</a></td><td>①生む</td><td class="num">2,822円</td><td class="num">31.8倍</td><td><span class="tag">中立</span></td><td>Q1最高もほぼDB配信と円安。コンセンサスは会社比+33%上</td></tr>
+      <tr><td><b><a class="xref" href="7974_nintendo.html">任天堂</a></b> <a class="xref" href="7974_nintendo.html">[7974]</a></td><td>②回す</td><td class="num">8,265円</td><td class="num">—</td><td><span class="tag">中立</span></td><td>ソフト・IP中心へ転換。為替前提150円が保守的</td></tr>
+      <tr><td><b><a class="xref" href="6758_sony.html">ソニーグループ</a></b> <a class="xref" href="6758_sony.html">[6758]</a></td><td>②回す</td><td class="num">3,764円</td><td class="num">—</td><td><span class="tag">中立</span></td><td>Q1過去最高・通期1.72兆円へ上方修正</td></tr>
+      <tr><td><b><a class="xref" href="7832_bandainamco.html">バンダイナムコHD</a></b> <a class="xref" href="7832_bandainamco.html">[7832]</a></td><td>②回す</td><td class="num">5,252円</td><td class="num">25.9倍</td><td><span class="tag">中立</span></td><td>トイホビー+89%。通期据え置きでコンセンサスは+13.5%上</td></tr>
+      <tr><td><b><a class="xref" href="9697_capcom.html">カプコン</a></b> <a class="xref" href="9697_capcom.html">[9697]</a></td><td>②回す</td><td class="num">4,028円</td><td class="num">29.0倍</td><td><span class="tag">やや割高</span></td><td>カタログ89%のストック型。Q1で進捗49.5%</td></tr>
+      <tr><td><b><a class="xref" href="9684_squareenix.html">スクウェア・エニックスHD</a></b> <a class="xref" href="9684_squareenix.html">[9684]</a></td><td>②回す</td><td class="num">2,991円</td><td class="num">—</td><td><span class="tag">割高圏</span></td><td>Q1営業+89%も通期減益計画のまま。年初来高値で寄り天</td></tr>
+      <tr><td><b><a class="xref" href="8136_sanrio.html">サンリオ</a></b> <a class="xref" href="8136_sanrio.html">[8136]</a></td><td>②回す</td><td class="num">1,227円</td><td class="num">23.3倍</td><td><span class="tag">やや割高</span></td><td>6期連続最高でも予想比−4%で−18%。PBR9.1倍の期待値ゲーム</td></tr>
+      <tr><td><b><a class="xref" href="9602_toho.html">東宝</a></b> <a class="xref" href="9602_toho.html">[9602]</a></td><td>③届ける</td><td class="num">1,475円</td><td class="num">29.9倍</td><td><span class="tag">中立</span></td><td>見かけ−28%は会計の期ずれ。料金改定・株売却が未織り込み</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:6px">※1 <a class="xref" href="9468_kadokawa.html">KADOKAWA</a>は特損で今期PERが機能しない(見かけ526倍)。<a class="xref" href="7974_nintendo.html">任天堂</a>・<a class="xref" href="6758_sony.html">ソニーG</a>・<a class="xref" href="9684_squareenix.html">スクエニ</a>のPERは各個別レポート参照。評価は個別レポートのバリュエーション節と同一。</div>
+</div>
+
+<div class="card">
+  <h2>共通リスク</h2>
+  <div class="body">
+    ・<b>期待値ゲームの振れ幅:</b> コンセンサス比±数%で±20%動く。決算またぎのポジションは値幅の想定を大きめに<br>
+    ・<b>中国:</b> 配信契約の縮小(<a class="xref" href="4816_toei_animation.html">東映アニメ</a>)・渡航者減(<a class="xref" href="8136_sanrio.html">サンリオ</a>)・地政学での急落実績(2025/12)——成長源とリスクの両面<br>
+    ・<b>為替:</b> 海外比率が軒並み6〜9割。円高転換は業界一斉に効く<br>
+    ・<b>製作費インフレ:</b> アニメ製作費の高騰は川上の利益を圧迫し、内製能力を持つ者と持たない者の差を広げる<br>
+    ・<b>ヒットの反動:</b> 鬼滅(<a class="xref" href="9602_toho.html">東宝</a>)・ELDEN RING(<a class="xref" href="9468_kadokawa.html">KADOKAWA</a>)・ガールズバンドクライ(<a class="xref" href="4816_toei_animation.html">東映アニメ</a>)——大ヒットの翌年は必ず反動が数字に出る
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴・出典</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: 各社の決算短信・決算説明資料(2026年7-8月発表の直近決算。詳細URLは各個別レポートの更新履歴に記載) / 日本動画協会「アニメ産業レポート2025」速報値 / 株探(株価・指標、2026/8/13終値) / IFIS株予報・QUICK(コンセンサス)。<a class="xref" href="9468_kadokawa.html">KADOKAWA</a>の決算は2026/8/13引け後発表分を反映。
+  </div>
+</div>
+
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
