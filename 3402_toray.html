@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>東レ [3402] 銘柄レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --good-text: #006300; --warn: #c77f00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --good-text: #0ca30c; --warn: #e0a030;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 760px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+</style>
+</head>
+<body class="viz-root">
+
+<div class="head">
+  <div>
+    <h1>東レ <span style="font-weight:400;color:var(--text-muted)">[3402] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">繊維・素材</span> <span class="badge">炭素繊維世界首位</span> <span class="badge">3月期決算・IFRS</span></div>
+  </div>
+  <div class="px">
+    <div class="v">1,349円</div>
+    <div class="note-s">2026/8/10時点</div>
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>サマリー</h2>
+  <div class="body">
+    2027年3月期第1四半期(2026/8/6発表)は<b>売上収益+14.0%、営業利益+72.1%、純利益+82.3%</b>の大幅増収増益となり、税引前利益はアナリスト予想(IFISコンセンサス)を約51%上回った。航空機向け炭素繊維の回復、水処理事業の急伸、自動車向け需要の回復が牽引し、<b>上期純利益見通しを400億円から450億円へ上方修正</b>(通期は据え置き)。2026年3月に発表した長期経営方針「TORAY Challenges 2035」・中期経営課題「IGNITION 2028」による構造改革期待も重なり、株価は決算を好感して<b>年初来高値圏(8/10に1,395円)</b>まで上昇した。PBRは長年の0.7倍前後から1.08倍へ切り上がっており、割安株としての評価は一巡しつつある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算 — FY2027 Q1(2026/8/6発表)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY27/Q1</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上収益</td><td class="num">6,790億円</td><td class="num up">+14.0%</td></tr>
+      <tr><td><b>営業利益</b></td><td class="num"><b>473億円</b></td><td class="num up"><b>+72.1%</b></td></tr>
+      <tr><td>売上営業利益率</td><td class="num">7.0%</td><td class="num up">+2.4pt</td></tr>
+      <tr><td>税引前利益</td><td class="num">491億円</td><td class="num up">コンセンサス比+51%</td></tr>
+      <tr><td>四半期純利益</td><td class="num">313億円</td><td class="num up">+82.3%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の質の確認(一過性要因の分解):</b><br>
+    ・<b>前年同期のベースが低い</b>: 前年Q1は売上5,958億円・事業利益291億円・純利益172億円(−36.1%)と落ち込んでおり、増益率の高さにはベース効果が含まれる<br>
+    ・<b>円安の追い風</b>: 前年Q1の期中平均144.6円/ドルに対し、当四半期は159円前後で推移。会社の通期前提は150円/ドルであり、為替による押し上げ分は円高転換で剥落しうる<br>
+    ・一方、<b>航空機向け炭素繊維の増販(大手顧客の生産機数増)と水処理事業の利益急伸は需要起点の改善</b>であり、継続性が相対的に高い。報道ベースでは水処理を含む環境・エンジニアリング事業の利益伸長が上期上方修正の主因の一つとされる(前年Q1の同セグメント事業利益は31億円・−38%と低水準だった)<br>
+    ・自動車向け(樹脂・繊維)需要の回復も寄与(時事通信報道)。セグメント別の詳細数値は次回更新時にQ1決算説明資料の全文で補完予定
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    上期予想を<b>上方修正</b>: 売上収益1兆3,700億円→<b>1兆3,900億円</b>、純利益400億円→<b>450億円</b>(+12.5%修正、前年同期比+22%)。<b>通期予想は据え置き</b>: 売上収益2兆8,300億円(+9.5%)/事業利益1,600億円(+12.7%)/純利益900億円(+13.2%)/年間配当26円(前期比+6円、創立100周年記念配当3円含む)。<br><br>
+    <b>上振れ側の要因:</b><br>
+    ・営業利益の通期進捗率はQ1時点で約30%(事業利益1,600億円に対し473億円)と高め。上期のみ修正で通期据え置きは保守的な建付け<br>
+    ・為替前提150円/ドルに対し実勢は157〜159円前後。円安が続けば上振れ余地<br>
+    ・航空機向け炭素繊維は会社計画でもセグメント事業利益176億円→240億円と大幅増益を見込む<br><br>
+    <b>下振れ側の要因:</b><br>
+    ・会社は中東情勢等による影響▲130億円をリスクとして想定(2026/5時点)。原燃料価格の再上昇は樹脂・フィルムの採算を圧迫<br>
+    ・米国関税政策の変動が自動車・産業用途の需要に波及する可能性<br>
+    ・炭素繊維のうち風力発電翼・一般産業用途は市況依存度が高く、ZOLTEK社は構造改革の対象
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値(2026/8/10時点)</th></tr></thead>
+    <tbody>
+      <tr><td>株価</td><td class="num">1,349円</td></tr>
+      <tr><td>予想PER</td><td class="num">21.8倍</td></tr>
+      <tr><td>PBR(実績)</td><td class="num">1.08倍</td></tr>
+      <tr><td>配当利回り(予想)</td><td class="num">1.93%(年26円)</td></tr>
+      <tr><td>時価総額</td><td class="num">約2.0兆円</td></tr>
+      <tr><td>年初来高値/安値</td><td class="num">1,395円(8/10)/1,026円(1/5)</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    株価は年初来レンジの<b>上限近辺(レンジ内の約9割の位置)</b>にあり、8/6の決算発表を好感して8/10に年初来高値1,395円を付けた直後の水準。2026/3/25の新中計「IGNITION 2028」発表以降、構造改革期待で株価の再評価が進んだ。<b>長年0.7倍前後で推移してきたPBRは1倍台を回復</b>しており、解散価値割れを根拠とする割安論は後退した。予想PER21.8倍は素材セクターとしては高めだが、中計目標(FY28事業利益2,300億円)達成を織り込みにいく過程と解釈できる。<b>短期的には急騰後の高値圏であり、業績モメンタムの持続が試される局面</b>である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    2026/3/25に長期経営方針<b>「TORAY Challenges 2035」</b>と中期経営課題<b>「IGNITION 2028」</b>を発表。前中計「AP-G 2025」は売上目標未達ながら、戦略的プライシング(効果約300億円)と収益性改革「Darwinプロジェクト」(同約270億円)でROIC約5%を確保して終了した。<br><br>
+    <b>IGNITION 2028の数値目標(2028年度):</b> 売上収益<b>3兆円</b>/事業利益<b>2,300億円</b>(2025年度1,419億円から+62%)/ROIC約7%/ROE約8%。<br><br>
+    <b>注力テーマ:</b><br>
+    ① <b>次世代市場</b> — 半導体・AIデータセンター、宇宙・防衛、モビリティ向けの先端材料<br>
+    ② <b>炭素繊維複合材料</b> — 航空宇宙用途の回復・拡大を収益ドライバーに位置づけ<br>
+    ③ <b>水処理</b> — 水処理膜事業でFY28売上1,650億円・事業利益240億円・ROIC18%目標。海水淡水化(中東で高シェア)の交換需要、半導体向け超純水に加え、<b>データセンター液冷向け冷却水処理を年率20〜30%成長市場</b>と見込む(2026/6 IR Day)<br>
+    ④ <b>構造改革の継続</b> — ZOLTEK社・PPスパンボンド等の低ROIC5事業で生産体制見直し・固定費削減<br>
+    ⑤ <b>株主還元</b> — 利益成長による累進配当と機動的な自己株式取得
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因(為替・金利・関税)</h2>
+  <div class="body">
+    <b>為替:</b> 海外売上高比率が高い輸出型で、円安は増益要因。通期前提150円/ドルに対し実勢157〜159円前後(2026/8時点)。日銀の追加利上げ観測による円高転換は下振れリスクだが、150円までは会社想定の範囲内。<br>
+    <b>関税:</b> 米国関税政策は自動車・産業用途の顧客需要を通じた間接影響が中心。会社は中東情勢・通商環境の影響▲130億円を通期リスクとして織り込む。<br>
+    <b>原燃料:</b> ナフサ等の原燃料価格は樹脂・フィルム・繊維の採算に直結。中東情勢による原油急騰は逆風。<br>
+    <b>金利:</b> 有利子負債を抱える素材大手として金利上昇はコスト要因だが、業績影響は為替・原燃料に比べ限定的。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ① <b>航空機顧客の生産動向</b> — 炭素繊維の増益シナリオは大手航空機メーカーの増産進捗に依存。生産計画の下振れは直撃する<br>
+    ② <b>為替の円高転換</b> — 150円/ドルを明確に割り込む水準が定着すれば、Q1の増益モメンタムは減速<br>
+    ③ <b>構造改革の実行</b> — ZOLTEK等5事業の改革が遅れれば中計目標(FY28事業利益2,300億円)の蓋然性が低下<br>
+    ④ <b>株価の期待値上昇</b> — 年初来高値圏・PBR1倍超への再評価後であり、四半期決算が期待を下回った場合の反動は大きくなりやすい<br>
+    ⑤ <b>中国市況</b> — 繊維・機能化成品は中国の供給過剰・価格競争の影響を受けやすい
+  </div>
+</div>
+
+<div class="card">
+  <h2>決算説明会・質疑応答(読んだ資料の要点)</h2>
+  <div class="body">
+    <b>2026/5/13 本決算説明資料(全文参照済):</b> FY26実績は売上2兆5,851億円・事業利益1,419億円・純利益795億円。FY27は事業利益1,600億円へ増益を計画し、炭素繊維複合材料のセグメント利益を176億円→240億円へ引き上げる前提。RO膜は海水淡水化用途を中心に堅調と説明。為替前提150円/ドル、中東情勢影響▲130億円をリスク想定。<br>
+    <b>2026/6/8 IR Day 水処理・環境事業説明(全文参照済):</b> 水処理膜のFY28目標は売上1,650億円・事業利益240億円・ROIC18%。データセンター液冷向け冷却水を新規成長用途と位置づけ。<br>
+    <b>2026/8/6 Q1決算:</b> 短信の全社数値・上期上方修正・アナリスト予想比+51%(税引前)は確認済み。<span class="warn">Q1決算説明資料(「2027年3月期第1四半期決算の概要」)のセグメント別詳細は取得未了のため、次回更新時に反映予定。注目論点は「水処理の増益幅の持続性」「炭素繊維の用途別採算」。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/12</td><td class="note-s">初版。FY27/Q1決算(短信ベース)、上期上方修正、IGNITION 2028・IR Day水処理資料、バリュエーションを収録。Q1説明資料のセグメント詳細は未反映</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: 東レ「2026年3月期決算の概要と2027年3月期見通しについて」(2026/5/13) / 東レ「長期経営方針 TORAY Challenges 2035・中期経営課題 IGNITION 2028」(2026/3/25) / 東レ IR Day 水処理・環境事業説明資料(2026/6/8) / 東レ「2026年3月期第1四半期決算の概要」(2025/8/8・前年比較用) / 株探ニュース「東レ、上期最終を13%上方修正」(2026/8/6) / アイフィス株予報・Yahoo!ファイナンス(2026/8/10株価・指標) / 日本経済新聞・時事通信報道。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+</body>
+</html>

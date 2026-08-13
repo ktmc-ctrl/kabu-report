@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アドバンテスト [6857] 銘柄レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --good-text: #006300; --warn: #c77f00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --good-text: #0ca30c; --warn: #e0a030;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 760px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+</style>
+</head>
+<body class="viz-root">
+
+<div class="head">
+  <div>
+    <h1>アドバンテスト <span style="font-weight:400;color:var(--text-muted)">[6857] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">半導体テスタ</span> <span class="badge">3月期決算</span></div>
+  </div>
+  <div class="px">
+    <div class="v">34,260円</div>
+    <div class="note-s">2026/8/10 終値(+6.43%)</div>
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>サマリー</h2>
+  <div class="body">
+    2027年3月期第1四半期(2026/7/29発表)は、売上高3,675億円(+39.3%)・<b>営業利益1,900億円(+53.3%)・営業利益率51.7%</b>と市場予想(売上3,400億円・営業利益1,626億円程度)を大幅に上回った。あわせて通期予想を<b>営業利益6,275億円→8,460億円へ約35%上方修正</b>。牽引役は<b>推論用AI半導体(ASIC・CPU・DRAM/HBM)向けテスタ需要</b>で、会社は「2026年4月時点の想定を大きく上回る」と明言した。7月のAI半導体株全般の調整で下押しされていた株価は決算を受けて大幅反発し、年初来高値圏(高値35,940円まで5%以内)に復帰。<b>予想PER37.6倍・PBR23.8倍という高い評価をAI特需の持続性が正当化できるか</b>が最大の焦点である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算 — FY2027/3期 Q1(2026/7/29発表)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY27/Q1</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">3,675億円</td><td class="num up">+39.3%</td></tr>
+      <tr><td><b>営業利益</b></td><td class="num"><b>1,900億円</b></td><td class="num up"><b>+53.3%</b></td></tr>
+      <tr><td>営業利益率</td><td class="num"><b>51.7%</b></td><td class="num up">+4.7pt(前年47.0%)</td></tr>
+      <tr><td>税引前利益</td><td class="num">2,341億円</td><td class="num up">+92.9%</td></tr>
+      <tr><td>四半期純利益</td><td class="num">1,748億円</td><td class="num up">+93.8%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の質の確認(一過性要因の分解):</b><br>
+    ・純利益の伸び(+93.8%)が営業利益の伸び(+53.3%)を大きく上回るのは、<b>金融収益等447億円(為替差益を含む)が税引前段階に上乗せされたため</b>。Q1の実勢為替(1ドル159円・1ユーロ185円)が会社前提より円安だったことによる部分が大きく、<b>この差分は継続性が低い</b>。事業実力は営業利益+53.3%で評価するのが妥当<br>
+    ・営業利益率51.7%は、高単価の先端SoCテスタ比率上昇と稼働レバレッジによるもので<b>構造要因が主体</b>。ただしテスタ業界の歴史的水準からは極めて高く、ミックス次第で振れる<br>
+    <b>セグメント別:</b> テストシステム事業は売上3,336億円(+38.7%)・セグメント利益1,907億円(+50.3%)。<b>SoCテスタは高性能SoC(AIアクセラレータ等)向けが大幅増</b>、メモリテスタは<b>HBMを中心とする高性能DRAM向け</b>が伸長。サービス他も売上339億円(+46.0%)と拡大。会社は「AI関連先端半導体の生産数量増と複雑化により顧客の積極的な設備投資が継続」と説明。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因 — FY2027/3期 会社予想(7/29上方修正)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">修正前(4月)</th><th class="num">修正後</th><th class="num">前期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">1兆4,200億円</td><td class="num"><b>1兆7,140億円</b></td><td class="num up">+51.9%</td></tr>
+      <tr><td>営業利益</td><td class="num">6,275億円</td><td class="num"><b>8,460億円</b></td><td class="num up">+69.5%</td></tr>
+      <tr><td>当期利益</td><td class="num">4,655億円</td><td class="num"><b>6,600億円</b></td><td class="num up">+75.8%</td></tr>
+      <tr><td>EPS</td><td class="num">—</td><td class="num">911.64円</td><td class="num up">+77.0%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    修正の根拠として、会社は世界のテスタ市場想定を<b>109〜122億ドルから130〜145億ドルへ約2割引き上げ</b>た。推論用AI半導体(ASIC・CPU・DRAM)のテスト需要拡大が主因である。<br><br>
+    <b>上振れ側の要因:</b> 為替前提がQ2以降<b>1ドル150円・1ユーロ170円</b>と実勢(Q1平均159円)より保守的/推論AIチップの量産立ち上がりが想定をさらに上回る場合/HBM世代交代(高積層化)に伴うテスト時間増<br>
+    <b>下振れ側の要因:</b> 修正後計画は営業利益率49.4%と過去最高水準の維持が前提であり、ミックス悪化や価格圧力で未達リスク/AI設備投資の急減速/部材調達などサプライチェーン制約。すでに1度大幅上方修正した後だけに、<b>次の焦点は「再上方修正の有無」に移っており、期待のハードルは高い</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <div class="body">
+    <b>株価推移:</b> AI・HBM向けテスタ需要を背景に2025年から2026年前半にかけて大きく上昇した銘柄で、年初来安値19,720円(3/31)から6/25高値35,940円まで約8割上昇。7月はAI投資の持続性懸念(KOSPI急落・SOX指数調整)で下押しされたが、7/29の決算・上方修正を受けて<b>7/30に大幅反発</b>、8/10終値は34,260円(+6.43%)と<b>年初来高値まで5%以内の高値圏</b>に復帰した。年初来レンジでは上位1割に位置する。<br><br>
+    <b>バリュエーション(2026/8/10時点):</b> 予想PER<b>37.60倍</b>・PBR(実績)<b>23.79倍</b>・時価総額約25.1兆円。予想配当利回りはYahoo!ファイナンス上「---」(未発表扱い)。<br>
+    EPS911円(+77%)という利益成長を織り込んでもPERは37倍台であり、<b>今期の爆発的な成長が「水準」として定着することを前提にした株価</b>である。PBR23.8倍は利益の大部分が特需的に積み上がる局面特有の水準で、テスタ需要が一巡した場合の下方弾力性は大きい。割高/割安の評価としては、<b>成長持続シナリオでは正当化可能だが、サイクル鈍化シナリオに対する安全余裕は乏しい「割高圏」</b>との整理が妥当である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    <b>① 第3期中期経営計画(MLTP3、2024〜2026年度):</b> 2025/10に経営指標を大幅上方修正済み。修正後の3カ年平均目標は<b>売上高8,350〜9,300億円・営業利益率33〜36%・当期利益2,070〜2,480億円・ROIC34〜39%・EPS284〜341円</b>(修正前: 売上5,600〜7,000億円・営業利益率22〜28%等)。最終年度の今期予想(売上1兆7,140億円・営業利益率49.4%・EPS911円)は<b>修正後目標すら大幅に超過</b>しており、計画は事実上「追認」の状態。2027年度以降の次期中計(第4期)でAI需要の巡航速度をどう置くかが次の注目点となる。<br>
+    <b>② HBM・AI向けテスタの構造的追い風:</b> AIアクセラレータのテスト需要は、生産数量の増加に加え、チップの複雑化・高積層化(HBM)によるテスト時間・テスト工程の増加という「量×質」の二重の追い風を受ける。会社が特に強調するのは<b>推論用半導体(ASIC・CPU・DRAM)の裾野拡大</b>で、学習用GPU一極集中からの需要多様化が進む。<br>
+    <b>③ 論点:</b> テスタは製造装置の中でも後工程寄りで、前工程投資から遅れて需要が立つ。現在の受注はAI投資の「結果」であり、AI設備投資自体が減速すれば半年〜1年遅れで需要が調整する点は、過去のメモリテスタサイクルでも繰り返されてきた構図である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因(為替・関税・AI投資サイクル)</h2>
+  <div class="body">
+    <b>AI投資サイクル:</b> 業績の最大の変数。2026年7〜8月にはAI投資の持続性への懸念からKOSPIが急落(7/7に一時8%安で売買停止、7/30にも6%安)、SOX指数はピークから約2割下落する場面があり、同社株も業績と無関係にセクター連動で振れやすい。一方、ファンダメンタルズ面では顧客の設備投資は「継続」(会社説明)しており、株価変動と実需に乖離がある局面といえる。<br>
+    <b>為替:</b> 海外売上比率が高く円安が増益要因。会社前提はQ2以降150円/170円と保守的で、実勢が円安のまま推移すれば上振れ余地。逆に日銀利上げ等による急速な円高は下振れ要因。<br>
+    <b>関税・地政学:</b> 米国の対中規制・関税は顧客の投資地域配分やテスタ据付先に影響しうる。会社はサプライチェーン強靭化への取り組みを強調している。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ① <b>期待ハードルの高さ</b> — PER37倍台は再上方修正の継続を織り込みつつある水準。修正が止まっただけでも失望売りの余地<br>
+    ② <b>AI設備投資の変調</b> — 学習向け投資の一服を推論向けが補えるかが会社シナリオの核心。推論チップ量産計画の下方修正は直撃する<br>
+    ③ <b>営業利益率の持続性</b> — 51.7%(Q1)・49.4%(通期前提)は歴史的高水準。ミックス正常化だけでも数ポイントの低下余地<br>
+    ④ <b>為替の反転</b> — Q1純利益には金融収益等447億円が含まれ、円高反転時は逆風が税引前段階に表れる<br>
+    ⑤ <b>セクター連動</b> — KOSPI・SOXなどAI半導体株全般の調整局面では業績と無関係に売られやすい
+  </div>
+</div>
+
+<div class="card">
+  <h2>決算説明会・質疑応答</h2>
+  <div class="body">
+    2027年3月期第1四半期決算短信(2026/7/29・IFRS)および業績予想関連の開示は本レポートに反映済み。要点は、①Q1営業利益1,900億円で市場予想を約17%超過、②通期営業利益を8,460億円へ35%上方修正、③テスタ市場想定を130〜145億ドルへ引き上げ、④「推論用AI半導体向けテスト需要は4月時点の想定を大きく上回る」との会社コメント——の4点。<b>決算説明会の質疑応答要旨は未取得</b>。<span class="warn">次回更新時に取得予定。注目論点は「推論向け需要の顧客構成(ASICカスタマーの広がり)」「HBM4世代のテスト強度」「受注残の水準感」。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/12</td><td class="note-s">初版。FY2027/3期Q1決算(短信)、通期上方修正、MLTP3修正指標、バリュエーション評価を収録。質疑応答は未取得</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: アドバンテスト 2027年3月期第1四半期決算短信〔IFRS〕(2026/7/29、advantest.com) / アドバンテスト 業績予想ページ(advantest.com) / アドバンテスト「第3期中期経営計画 経営指標修正のお知らせ」(2025/10/28、advantest.com) / Yahoo!ファイナンス 株価情報(2026/8/10時点) / Bloomberg(2026/7/29) / 株探ニュース(2026/7/30) / note決算分析(コセ・ためお、2026/7) / Investing.com・野村證券(KOSPI・SOX関連、2026/7-8)。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+</body>
+</html>

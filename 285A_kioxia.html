@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>キオクシアホールディングス [285A] 銘柄レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --good-text: #006300; --warn: #c77f00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --good-text: #0ca30c; --warn: #e0a030;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 760px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+</style>
+</head>
+<body class="viz-root">
+
+<div class="head">
+  <div>
+    <h1>キオクシアHD <span style="font-weight:400;color:var(--text-muted)">[285A] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">NANDメモリ</span> <span class="badge">3月期決算</span> <span class="badge">2024/12上場</span></div>
+  </div>
+  <div class="px">
+    <div class="v">48,010円</div>
+    <div class="note-s">2026/8/10 終値(+0.59%)</div>
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>サマリー</h2>
+  <div class="body">
+    2027年3月期第1四半期(2026/7/31発表)は、NAND市況の歴史的な急騰を受けて売上収益<b>1兆7,671億円(前年同期比約5.2倍)</b>・営業利益<b>1兆2,700億円</b>・純利益8,422億円(同約46倍)という異例の決算となった。Non-GAAP営業利益1兆3,262億円は<b>3カ月で前年度12カ月分を上回る</b>過去最高。生成AI向けデータセンターのeSSD需要が全アプリケーションの価格を押し上げた。あわせて<b>上限8,000億円の自社株買いと1対3の株式分割(10/1効力)</b>を発表。一方、株価は6月高値112,700円から半値以下の48,010円まで調整しており、<b>「業績のスーパーサイクル」と「AIバブル警戒による株価調整」が正面から衝突している</b>のが現在地である。筆頭株主だったベインキャピタルは2026年7月までに全株売却を完了し、上場以来のオーバーハングは解消した。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算 — FY2027/3期 Q1(2026/7/31発表)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY27/Q1</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上収益</td><td class="num">1兆7,671億円</td><td class="num up">+415.5%(約5.2倍)</td></tr>
+      <tr><td><b>営業利益</b></td><td class="num"><b>1兆2,700億円</b></td><td class="num up">大幅増(利益率約72%)</td></tr>
+      <tr><td>Non-GAAP営業利益</td><td class="num">1兆3,262億円</td><td class="num up">過去最高</td></tr>
+      <tr><td>税引前利益</td><td class="num">1兆2,347億円</td><td class="num up">—</td></tr>
+      <tr><td>四半期純利益</td><td class="num">8,422億円</td><td class="num up">+4,506%(約46倍)</td></tr>
+      <tr><td>自己資本比率</td><td class="num">50.8%</td><td class="num up">財務体質が急改善</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の質の確認(何が利益を作ったか):</b><br>
+    ・利益急増の主因は<b>NAND平均販売単価(ASP)の大幅上昇</b>であり、数量成長よりも「価格」による利益である。メモリ価格は市況で決まるため、<b>この利益率(約72%)を恒常的な実力とみなすことはできない</b>。過去のメモリサイクルでは価格反転時に利益が急収縮した経緯がある<br>
+    ・セグメント別では<b>SSD&ストレージが売上1兆1,747億円(前年同期比+440%)と全体の66%</b>を占め、データセンター・エンタープライズ向けSSD(eSSD)は出荷物量・売上とも過去最高。スマートデバイス向けは5,257億円<br>
+    ・技術面では第8世代BiCS FLASHの生産比率が50%超に到達し、<b>北上工場で第10世代(BiCS10)の生産を開始</b>。第9世代1Tb TLCのサンプル出荷も開始(7/30)しており、コスト競争力の裏付けが進む<br>
+    ・財務面では長期借入金4,332億円を返済し、上場時の課題だった有利子負債の重さが急速に解消。<b>自社株買い(上限3,000万株・8,000億円)</b>を決議する余力まで回復した
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    同社は通期予想を開示せず、四半期ガイダンス方式を採る。<b>第2四半期(7-9月)は売上収益2兆3,900億円(前四半期比+35%)・営業利益1兆8,900億円程度</b>と、Q1からさらに拡大する見通しである。<br><br>
+    <b>上振れ側の要因:</b> AI推論の本格化によるeSSD需要の一段の拡大(KVキャッシュ・コンテキストメモリー用途)/HDDからの置き換え加速/供給側の規律維持によるタイト継続(会社はCY27年後半まで供給タイトと想定)<br>
+    <b>下振れ側の要因:</b> NAND価格の反転(現在の利益はほぼ全て価格要因)/顧客側のAI設備投資の削減・在庫調整/業界全体の増産による需給緩和の前倒し。<br>
+    価格前提が数十%動くだけで利益が兆円単位で変動する損益構造であり、<b>ガイダンスの達成確度は市況次第</b>という点は他の2社(装置・テスタ)と大きく異なる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <div class="body">
+    <b>株価推移:</b> 2024年12月上場。年初来では1/6安値10,945円から<b>6/22高値112,700円まで約10倍</b>という異常なスピードで上昇した後、7月のAI半導体株全般の急調整(KOSPIが7/7に一時8%安で売買停止、7/30にも6%安、SOX指数はピークから約2割下落)に巻き込まれ、8/10終値は48,010円と<b>高値から約57%下落</b>した水準にある(それでも年初来安値比では約4.4倍)。年初来レンジの下位4割弱に位置する。7/31の好決算・自社株買い・分割発表後も株価反応は限定的(8/10は+0.59%)で、<b>「利益急増でも株価が上がらない」市況ピークアウト警戒が織り込まれつつある</b>。<br><br>
+    <b>バリュエーション(2026/8/10時点):</b> 時価総額約26.3兆円・PBR(実績)<b>10.94倍</b>。予想PERは株式分割銘柄のためYahoo!ファイナンス上非表示だが、Q1純利益8,422億円とQ2ガイダンスを基にした単純な年換算では<b>一桁台(概ね6〜8倍程度)</b>と計算上は極めて低い。ただしこれは<b>ピーク利益に対するPERであり、メモリ株のPERはサイクル天井で最も低く見える</b>という古典的な罠に留意が必要である。PBR10.9倍という資産面の評価は、市況正常化後の巡航利益をなお高めに見積もった水準であり、<b>指標の見かけ(低PER)と実質(高PBR・ピーク利益)が乖離した「サイクル株特有の評価困難」な局面</b>。割高/割安の一義的判定は難しく、NAND価格の持続性に関する見方がそのまま株価観となる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    <b>① NANDスーパーサイクル観(Investor Day 2026/6/2):</b> 会社はCY25-28年のNAND市場ビット成長を<b>年平均22%</b>、うち生成AI関連需要は<b>年平均86%成長</b>と予測し、「スーパーサイクルに対応している」(CFO)との認識を示す。需給はCY27年後半まで供給タイトを想定し、急激な価格下落は見込んでいない。<br>
+    <b>② 設備投資の大幅拡大:</b> 2026年度の設備投資を2,800億円から<b>4,500億円へ引き上げ、2027年度も同水準を継続</b>。2026〜2028年度の3年間で<b>約1兆4,100億円(年平均4,700億円、2025年度比66%増)</b>を投じ、北上工場K2棟・第3棟の拡張と第10世代BiCS FLASH(約1年後に量産予定)を軸とする。向こう5年程度は北上工場が投資の中心で、海外新拠点は当面未定。<br>
+    <b>③ LTA(長期供給契約)による需要の固定化:</b> データセンター・エンタープライズ顧客とLTAの締結を進め、<b>CY28出荷物量の約50%をカバーする計画</b>。市況変動への耐性を高める狙いだが、価格条項の中身が実効性を左右する。<br>
+    <b>④ 株主還元:</b> 余剰フリーキャッシュフローの50%還元を目安としつつ「成長投資状況によって変動する」と説明。今回の8,000億円自社株買いと1対3分割(基準日9/30・効力10/1)は個人投資家層の拡大も企図する。<br>
+    <b>⑤ 独自技術:</b> 低レイテンシのXL-FLASH、OCTRAM・HCF等の新技術開発でAIメモリ階層(HBMとSSDの間)の取り込みを狙う。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因(為替・関税・AI投資サイクル)</h2>
+  <div class="body">
+    <b>AI投資サイクル:</b> 業績・株価とも最大の変数。生成AI推論のスケールがeSSD需要を押し上げる構造は継続する一方、2026年7〜8月はAI投資の持続性懸念からKOSPI急落・SOX調整とメモリ関連株全般が大きく売られ、同社株はセクターで最も高いベータを示した。「半導体バブルの出口」と評する論者と「実需に裏付けられたスーパーサイクル」とみる会社側の見解が対立する局面である。<br>
+    <b>為替:</b> ドル建て比率が高く円安は増益要因。円高反転は採算・外貨建て資産評価の両面で逆風。<br>
+    <b>関税・地政学:</b> 米国の関税政策・対中規制はスマートデバイス向け最終需要とサプライチェーンに影響しうる。競合(Samsung・SK hynix・Micron)の増産姿勢と中国YMTCの動向が中期の需給を左右する。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ① <b>NAND価格の反転</b> — 利益のほぼ全てが価格要因。ASP下落局面入りすれば利益は急収縮する。会社想定(CY27後半までタイト)の検証が毎四半期の論点<br>
+    ② <b>設備投資拡大の需給インパクト</b> — 自社を含む業界全体の増産(3年1.4兆円投資)が、需要鈍化と重なれば過去のサイクル同様の供給過剰を招く<br>
+    ③ <b>株価のボラティリティ</b> — 年初来10倍→高値から57%下落という値動き自体がリスク。信用取引・指数イベントによる需給変動も大きい<br>
+    ④ <b>旧親会社系株主の動向</b> — ベインは全売却済みだが、東芝系SPC等の残存保有分の売却が新たな需給要因となる可能性<br>
+    ⑤ <b>AIサーバー投資の変調</b> — ハイパースケーラーの投資計画下方修正はeSSD需要の前提を直撃する
+  </div>
+</div>
+
+<div class="card">
+  <h2>決算説明会・質疑応答</h2>
+  <div class="body">
+    2027年3月期第1四半期決算短信(2026/7/31・IFRS)および<b>Investor Day 2026(6/2)質疑応答集(公式PDF)</b>の内容は本レポートに反映済み。Investor Day質疑の要点は、①NANDビット成長CAGR22%・供給タイトはCY27後半までとの需給観、②AI推論(KVキャッシュ/コンテキストメモリー)がeSSD需要を牽引、③設備投資4,500億円への引き上げと北上集中、④LTAでCY28出荷の約50%カバー計画、⑤FCF50%還元は「便宜的な目安」で成長投資優先——の5点。<span class="warn">7/31決算説明会の質疑応答要旨は未取得。次回更新時に取得予定。注目論点は「LTAの価格条項」「Q3以降の価格前提」「自社株買いの執行ペース」。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/12</td><td class="note-s">初版。FY2027/3期Q1決算(短信)、Q2ガイダンス、自社株買い・株式分割、Investor Day質疑応答集、ベイン全売却によるオーバーハング解消、バリュエーション評価を収録</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: キオクシアHD 2027年3月期第1四半期決算短信〔IFRS〕(2026/7/31・TDnet開示) / キオクシアHD Investor Day 2026 質疑応答集(2026/6/2、kioxia-holdings.com) / 株式分割・自社株買い適時開示(2026/7/31) / マイナビニュースTECH+(2026/8/3) / EE Times Japan(2026/6-7) / Yahoo!ファイナンス 株価情報(2026/8/10時点) / note分析(タック・PE_Masa、ベイン売出しタイムライン) / Bloomberg・Investing.com(KOSPI・SOX関連、2026/7)。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+</body>
+</html>

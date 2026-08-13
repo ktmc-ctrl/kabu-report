@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ダイキン工業 [6367] 銘柄レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2:#f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --good-text: #006300; --warn: #c77f00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2:#232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --good-text: #0ca30c; --warn: #e0a030;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 780px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.74rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .box { background:var(--surface-2); border-radius:9px; padding:11px 12px; margin:9px 0; }
+</style>
+</head>
+<body class="viz-root">
+
+<div class="head">
+  <div>
+    <h1>ダイキン工業 <span style="font-weight:400;color:var(--text-muted)">[6367] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">機械(空調)</span> <span class="badge">3月期決算</span> <span class="badge">世界首位級</span></div>
+  </div>
+  <div class="px">
+    <div class="v">21,390円</div>
+    <div class="note-s">2026/8/13 場中(−0.83%)</div>
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--warn)">
+  <h2>サマリー</h2>
+  <div class="body">
+    2027年3月期第1四半期(2026/8/4発表)は<b>売上高1兆4,268億円(+18%)・営業利益1,306億円(+8%)</b>と、いずれも4〜6月期として過去最高を更新した。米州でのデータセンター向けアプライド(大型空調)が牽引し、苦戦していた化学事業も営業利益+76%と復調した。<br><br>
+    <b>ただし増収+18%に対して営業増益は+8%にとどまり、営業利益率は10.0%→9.2%へ0.8pt低下している。</b>さらに中身を分解すると、営業増益<b>約97億円</b>に対して<b>為替の押し上げが+55億円、米国関税の還付金が+105億円(直接影響−46億円を差し引くとネット+59億円)</b>で、この2つだけで<b>+114億円</b>と増益幅を上回る。<b>為替と関税還付を除いたベースでは実質的に増益していない可能性が高い。</b><br><br>
+    <b>通期予想は据え置き。</b>ただし会社は<b>通期の為替影響を売上−1,200億円・営業利益−200億円とマイナスに転換する前提</b>を置いている。Q1の追い風は年間では逆風に変わる想定であり、<b>為替を除いた実力での増益(会社計画では営業+10%)を下期に出せるかが焦点</b>となる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算 — FY2027 Q1(2026/8/4発表)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY27/Q1</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">14,268億円</td><td class="num up"><b>+18%</b> 過去最高</td></tr>
+      <tr><td><b>営業利益</b></td><td class="num"><b>1,306億円</b></td><td class="num up"><b>+8%</b> 過去最高</td></tr>
+      <tr><td>営業利益率</td><td class="num">9.2%</td><td class="num down">−0.8pt(前年10.0%)</td></tr>
+      <tr><td>経常利益</td><td class="num">1,208億円</td><td class="num">+2%</td></tr>
+      <tr><td>親会社株主帰属四半期純利益</td><td class="num">801億円</td><td class="num down">−2%</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:6px">純利益が減益となったのは、<b>急激な円安に伴う海外子会社からの配当にかかる税負担の増加</b>が主因と会社は説明している。</div>
+  <hr class="sep">
+  <table>
+    <thead><tr><th>セグメント</th><th class="num">売上高</th><th class="num">営業利益</th><th class="num">利益率</th></tr></thead>
+    <tbody>
+      <tr><td><b>空調・冷凍機</b><br><span class="note-s">売上の93%</span></td><td class="num">13,251億円<br><span class="up">+17%</span></td><td class="num">1,182億円<br><span class="up">+3%</span></td><td class="num">8.9%<br><span class="down">−1.2pt</span></td></tr>
+      <tr><td><b>化学</b><br><span class="note-s">フッ素化学</span></td><td class="num">772億円<br><span class="up">+29%</span></td><td class="num">115億円<br><span class="up"><b>+76%</b></span></td><td class="num"><b>14.8%</b><br><span class="up">+3.9pt</span></td></tr>
+      <tr><td>その他</td><td class="num">246億円<br><span class="up">+16%</span></td><td class="num">9億円<br><span class="up">+736%</span></td><td class="num">3.7%</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:6px"><b>空調は増収+17%に対し増益+3%で、利益率が1.2pt低下している。</b>一方で化学は利益率が14.8%へ3.9pt改善しており、<b>セグメント間で方向が逆になっている</b>のが今回の特徴である。</div>
+</div>
+
+<div class="card" style="border:2px solid var(--neg)">
+  <h2>⚠️ 増益の質の分解 — ここが最重要</h2>
+  <div class="body">
+    営業利益は1,306億円で前年同期比+8%、<b>金額にして約97億円の増益</b>である。この増益幅に対し、会社資料が開示している押し上げ要因は次のとおり。
+  </div>
+  <table style="margin-top:8px">
+    <thead><tr><th>要因</th><th class="num">営業利益への影響</th><th>性格</th></tr></thead>
+    <tbody>
+      <tr><td><b>為替</b>(USD159円/前年145円、EUR185円/前年164円、CNY23.4円/前年20.0円)</td><td class="num up">+55億円</td><td>market変動<br><span class="note-s">通期ではマイナスに転換する前提</span></td></tr>
+      <tr><td><b>米国関税の還付金</b></td><td class="num up">+105億円</td><td><b>一過性</b></td></tr>
+      <tr><td>米国関税の直接影響</td><td class="num down">−46億円</td><td>継続的なコスト</td></tr>
+      <tr style="background:rgba(227,73,72,0.07)"><td><b>上記の合計</b></td><td class="num"><b>+114億円</b></td><td>—</td></tr>
+      <tr style="background:rgba(227,73,72,0.07)"><td><b>実際の営業増益</b></td><td class="num"><b>+約97億円</b></td><td>—</td></tr>
+      <tr style="background:rgba(227,73,72,0.07)"><td><b>差引(その他要因)</b></td><td class="num down"><b>−約17億円</b></td><td>—</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    <b>為替と関税還付という2つの外部要因だけで、実際の増益幅を上回っている。</b>差し引きすると、事業そのものの要因は約−17億円のマイナスになる計算である。営業利益率が10.0%→9.2%へ低下したこととも整合する。<br><br>
+    <b>「4〜6月期として過去最高の売上・営業利益」というヘッドラインは事実だが、その中身の大半は円安と関税還付である</b>と整理できる。<br><br>
+    <span class="note-s">⚠️ 検証上の留保: 前年同期(2025年4〜6月期)にも関税還付が計上されていたかどうかは、今回確認した資料からは判別できなかった。前年にも同種の還付があった場合、上記の差引き計算は変わる。<span class="warn">次回更新時に前年同期の内訳を確認する。</span></span><br><br>
+    <b>会社自身も減益圧力を認めている。</b>通期予想を据え置いた理由として、<b>「中東問題、新興国通貨安、米国による追加関税、原材料市況の高騰など、期初想定を上回るコストアップ影響」</b>があったと説明し、第2四半期以降の<b>価格施策・高付加価値化・トータルコストダウン</b>で対応する方針を示している。
+  </div>
+</div>
+
+<div class="card">
+  <h2>地域別 — 中国だけが逆を向いている</h2>
+  <table>
+    <thead><tr><th>地域</th><th class="num">売上(前年比)</th><th>中身</th></tr></thead>
+    <tbody>
+      <tr><td><b>米州</b><br><span class="note-s">最大市場</span></td><td class="num up">+18%</td><td><b>アプライド+29%(データセンター向けが牽引)</b>、住宅用+12%</td></tr>
+      <tr><td><b>欧州</b></td><td class="num up">+23%</td><td>中近東+9%。住宅用は99%と前年並み(RA/SKY 107%、VRV 109%)</td></tr>
+      <tr><td><b>日本</b></td><td class="num up">+23%</td><td>住宅用123%(業界123%)、業務用108%(業界107%)。『うるさらX』『FIVE STAR ZEAS』『VRV 7』の拡販</td></tr>
+      <tr><td><b>アジア・オセアニア</b></td><td class="num up">+17〜28%</td><td>インド128%、タイ128%、ベトナム113%、オーストラリア106%</td></tr>
+      <tr style="background:rgba(227,73,72,0.07)"><td><b>中国</b></td><td class="num">+4%<span class="note-s">(現地通貨)</span></td><td><b>住宅用86% / 業務用88% / アプライド87% — すべて前年割れ</b></td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px"><b>中国は売上こそ現地通貨で+4%だが、住宅用・業務用・アプライドのいずれも前年を下回っている。</b>他の全地域が2桁成長するなか、中国だけが明確に逆を向いている点は継続的な注視が必要となる。</div>
+</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>データセンター事業 — 空調と化学の二本立て</h2>
+  <div class="body">
+    <b>■ 1. 空調(アプライド事業)</b><br>
+    アプライドとは、大規模施設向けにカスタム設計される大型空調システムを指す。データセンターは発熱量が桁違いに大きく、この領域の主戦場になっている。<br>
+    <div class="box">
+      <b>米州アプライド事業のQ1実績</b><br>
+      ・売上高 <b>前年比+29%</b><br>
+      ・営業利益率 <b>12%</b>(前年10%) — <b>全社9.2%より高い</b><br>
+      ・会社説明:「供給力と提案力の強化により、好調なデータセンター向けの需要を捉え、販売が拡大」<br>
+      ・米国・メキシコ工場の生産能力増強を活用、カスタムエアハンドリングユニットの供給拡大<br>
+      ・計装・エンジニアリング会社を活用したソリューション事業の強化<br>
+      ・<b>ソリューション売上比率は57%へ上昇</b>(前年同期45%)
+    </div>
+    <b>ソリューション比率の上昇は、機器を売り切る商売から、設計・施工・保守までを含む継続的な収益へ移行していることを示す。</b>アプライドの利益率が10%→12%へ改善したのは、この構造転換と整合する。
+    <hr class="sep">
+    <b>■ 2. 化学(フッ素化学)</b><br>
+    Q1は売上+29%・営業利益+76%・利益率14.8%(+3.9pt)と大きく改善した。牽引役は<b>半導体製造装置向け材料</b>と<b>データセンターの高速通信向けコーティング</b>である。<span class="note-s">前期は化学事業の苦戦が通期下方修正の一因となった経緯があり、そこからの反転にあたる。</span><br>
+    <span class="note-s">なお同社はフッ素化学の技術を背景に、サーバーを液体に浸して冷やす<b>液浸冷却</b>向けの材料も展開している。ただし液浸冷却の普及速度については市場でも見方が分かれており、現時点で業績インパクトを測れる開示は確認できていない。</span>
+    <hr class="sep">
+    <b>■ 3. 市場規模の見立て(FUSION30より)</b><br>
+    会社は<b>データセンター冷却市場を1.4兆円(2025年度)→2.7兆円(2030年度)、年平均成長率(CAGR)14%</b>と見込んでいる。<b>優先用途市場として「データセンター」を筆頭に掲げ</b>、北米にデータセンターハブを設立、中東(サウジアラビア)にもデータセンター中心のアプライド新工場を建設する計画である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通し — 為替が追い風から逆風へ</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY27予想</th><th class="num">前期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">51,500億円</td><td class="num up">+3%</td></tr>
+      <tr><td><b>営業利益</b></td><td class="num"><b>4,360億円</b></td><td class="num up">+5%</td></tr>
+      <tr><td>営業利益率</td><td class="num">8.5%</td><td class="num up">+0.2pt(前期8.3%)</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>通期予想は据え置き。</b>ただし前提の中身が重要である。<br><br>
+    <b>会社が織り込む通期の為替影響は、売上−1,200億円・営業利益−200億円とマイナス</b>である。Q1の為替影響が営業利益+55億円だったことを考えると、<b>下期にかけて円高方向に振れることを前提に置いている</b>ことになる。<br><br>
+    <b>為替を除いた前年度比では、売上+5%・営業利益+10%</b>という計画になる。つまり会社は「為替が逆風でも、実力で二桁の営業増益を出す」と言っている。<br><br>
+    <b>Q1の進捗率は営業利益で30.0%</b>(1,306億円/4,360億円)と、四半期平均25%を上回る。ただし前述のとおりQ1は為替と関税還付の追い風を受けた四半期であり、<b>進捗率の高さをそのまま通期の上振れ余地とは読みにくい</b>。<br><br>
+    <span class="note-s">日銀の追加利上げ観測(2026年8月時点)による円高進行は、会社の通期前提と方向としては一致する。前提が円高側に置かれている分、<b>円安が続いた場合には上振れ余地が生じる</b>関係になる。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>戦略経営計画「FUSION30」</h2>
+  <div class="body">
+    2025年度〜2030年度の計画。<b>売上規模の拡大より、利益率とROEの引き上げに軸足を置いている</b>のが特徴である。
+  </div>
+  <table style="margin-top:8px">
+    <thead><tr><th></th><th class="num">2025年度実績</th><th class="num">2028年度目標</th><th class="num">2030年度イメージ</th></tr></thead>
+    <tbody>
+      <tr><td><b>営業利益率</b></td><td class="num">8.3%</td><td class="num"><b>10%</b></td><td class="num"><b>12%</b></td></tr>
+      <tr><td>ROE</td><td class="num">10.1%</td><td class="num">12%</td><td class="num">15%</td></tr>
+      <tr><td>投下資本回転率</td><td class="num">—</td><td class="num">1.25回</td><td class="num">1.3回以上</td></tr>
+      <tr><td>ソリューション事業比率</td><td class="num">28%</td><td class="num">34%</td><td class="num">40%</td></tr>
+      <tr><td>売上高 期間平均成長率</td><td class="num">—</td><td class="num">—</td><td class="num">6%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    <b>キャッシュアロケーション(5年間・営業CF 3兆円の活用):</b><br>
+    ・設備投資 <b>1兆3,000億円</b> / M&A投資 <b>5,000億円</b> / 配当 <b>5,000億円〜</b> / 自己株式取得 <b>7,000億円〜</b><br>
+    ・R&D・デジタル投資は5年累計で1.2兆円(対売上比4%、FUSION25の3%から上昇)<br>
+    ・重点配分: アプライド・化学・インドの能力増強6,200億円 / サービス・エンジニアリング会社の買収4,000億円 / AI・データ基盤2,000億円 / ソリューション差別化技術2,200億円<br><br>
+    <b>主要施策:</b><br>
+    ① <b>ソリューションプロバイダへの変革</b> — 優先市場はデータセンター・オフィス・工場・住宅。M&A4,000億円で粗利4,200億円の増益効果を見込む<br>
+    ② <b>北米空調の高収益化</b> — インバータ搭載ユニタリ「Fit」の売上比率を3%→11%(2028年度)、アプライド・ソリューション比率を48%→55%へ<br>
+    ③ <b>化学事業の強化</b> — 営業利益率を2028年度20%+α、2030年度30%へ。半導体・データセンター向け「エッセンシャル市場」の拡大<br>
+    ④ <b>コスト構造改革</b> — グローバル工場稼働率68%→85%(2030年度)<br>
+    ⑤ <b>低採算事業の梃入れ</b> — 資本コスト以下の事業を構造改革し、前半3年で撤退・売却を意思決定。2026-30年度累計で2,000億円の収益改善<br>
+    ⑥ <b>インド</b> — 住宅空調CAGR10%・業務用CAGR9%の市場に800億円投資<br><br>
+    <b>株主還元:</b> 配当は2025年度360円で、DOE方針から<b>「安定的な継続増配」へシフト</b>。自己株式取得は<b>初回3,500億円を2026年5月に実施済み</b>で、2027年度以降はFCF水準を踏まえ機動的に実施する方針。<br><br>
+    <span class="note-s">FUSION30の為替前提はUSD145円・EUR170円・CNY21.0円で、Q1実績(USD159円)より<b>大幅に円高側</b>に置かれている。世界実質GDP成長率3.2%、空調機器市場CAGR4%、フッ素化学市場CAGR6%を前提とする。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th></tr></thead>
+    <tbody>
+      <tr><td>株価</td><td class="num">21,390円(2026/8/13 12:44)</td></tr>
+      <tr><td>前日終値</td><td class="num">21,570円(8/12、−2.95%)</td></tr>
+      <tr><td>予想PER</td><td class="num">21.4倍</td></tr>
+      <tr><td>PBR</td><td class="num">1.99倍</td></tr>
+      <tr><td>配当利回り</td><td class="num">1.68%(年360円)</td></tr>
+      <tr><td>時価総額</td><td class="num">6兆2,697億円</td></tr>
+      <tr><td>年初来高値</td><td class="num">26,440円(7/7) → <span class="down">−19.1%</span></td></tr>
+      <tr><td>年初来安値</td><td class="num">17,380円(2/6) → <span class="up">+23.1%</span></td></tr>
+      <tr><td>最低投資金額</td><td class="num"><b>213.9万円</b>(100株)</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>7/7の年初来高値26,440円から約19%調整した位置にある。</b>年初来安値17,380円(2/6)からは+23%で、レンジのほぼ中位。<br><br>
+    <b>PER21.4倍・PBR1.99倍</b>という水準は、空調世界首位級・ROE10%という会社の性格からすると極端に高くも安くもない。ただし<b>FUSION30が掲げる営業利益率10%(2028年度)・12%(2030年度)が達成される前提であれば説明がつくが、今期の実績が8.5%計画・Q1実績9.2%(前年から低下)であることを踏まえると、目標達成の道筋はまだ見えていない</b>という評価になる。<br><br>
+    <b>1単元(100株)で約214万円</b>と、日本株のなかでも単価が高い部類に入る。資金規模によっては1銘柄で口座の大きな比率を占めることになる。<br><br>
+    <span class="note-s">※PER・PBRは情報源によって差が出やすい(EPS・BPSの基準日や会社予想/コンセンサスの違いによる)。本レポートは株探の2026/8/13時点の表示値を採用している。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    <b>為替:</b> 海外売上比率が高く、Q1は為替が営業利益を+55億円押し上げた。ただし<b>会社の通期前提は営業利益−200億円と逆風</b>。円高が進めば会社前提どおり、円安が続けば上振れ要因となる。<br>
+    <b>米国関税:</b> Q1は直接影響−46億円に対し還付金+105億円。<b>還付は一過性であり、直接影響のコストは継続する</b>点に注意が必要。<br>
+    <b>北米住宅市場:</b> 米州売上の柱の一つ。金利動向に左右される。Q1のDNA住宅用は+12%。<br>
+    <b>中国不動産・内需:</b> 住宅用86%・業務用88%と前年割れが続く。<br>
+    <b>冷媒規制:</b> 低GWP冷媒への転換は規制対応コストであると同時に、更新需要と製品差別化の機会でもある。会社は「協創機会」と位置づける。<br>
+    <b>原材料市況:</b> 期初想定を上回るコストアップが通期据え置きの一因。<br>
+    <b>データセンター投資:</b> 米州アプライドの成長ドライバー。AI向けデータセンター建設のパイプラインに連動する。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ① <b>利益率の低下</b> — 増収+18%に対し営業+8%、利益率は10.0%→9.2%。空調に至っては−1.2pt。<b>成長はしているが、稼ぐ力は落ちている</b>状態をどこで反転させるか<br>
+    ② <b>増益の質</b> — 為替+55億円と関税還付+105億円で増益幅97億円を上回る。<b>外部要因を除くと実質増益が確認できない</b><br>
+    ③ <b>通期の為替前提</b> — 会社は営業利益−200億円の逆風を織り込む。為替を除いた実力で営業+10%を出す計画であり、下期の価格施策・コストダウンの成否が問われる<br>
+    ④ <b>中国事業</b> — 住宅用・業務用・アプライドのすべてが前年割れ。全社で唯一の減少地域<br>
+    ⑤ <b>FUSION30の目標水準</b> — 2028年度の営業利益率10%に対し、今期計画は8.5%。M&A5,000億円を含む大型投資の回収が前提になる<br>
+    ⑥ <b>M&A依存</b> — ソリューション事業の拡大はサービス・エンジニアリング会社の買収4,000億円が柱。のれんの積み上がりと統合リスクを伴う<br>
+    ⑦ <b>単価の高さ</b> — 1単元で約214万円。分割購入や比率調整がしにくい<br>
+    ⑧ <b>データセンター需要の持続性</b> — 米州アプライドの成長がAI投資サイクルに依存する構造
+  </div>
+</div>
+
+<div class="card">
+  <h2>決算説明会・質疑応答</h2>
+  <div class="body">
+    決算説明会資料(2026/8/4)の内容は本レポートに反映済み。<b>アナリスト質疑応答の要旨は未取得。</b><span class="warn">次回更新時の確認事項: 前年同期における関税還付の有無、下期の価格施策の具体的な内容と効果額、中国事業の回復シナリオ、データセンター向け受注残の状況。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/13</td><td class="note-s">初版。FY27/Q1決算短信・決算説明会資料・戦略経営計画FUSION30を読了し収録。<b>営業増益約97億円に対し、為替+55億円と米国関税還付ネット+59億円で合計+114億円と増益幅を上回る</b>ことを分解し、外部要因を除くと実質増益が確認できない点を明記。データセンター事業を空調アプライドと化学の二本立てで整理。質疑応答および前年同期の関税還付の有無は未確認</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: ダイキン工業 2027年3月期第1四半期決算短信・決算説明会資料(2026/8/4) / 戦略経営計画「FUSION30」説明資料 / 電波新聞デジタル / 株探(株価指標、2026/8/13)。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+</body>
+</html>

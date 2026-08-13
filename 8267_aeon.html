@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>イオン [8267] 銘柄レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --good-text: #006300; --warn: #c77f00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --good-text: #0ca30c; --warn: #e0a030;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 760px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+</style>
+</head>
+<body class="viz-root">
+
+<div class="head">
+  <div>
+    <h1>イオン <span style="font-weight:400;color:var(--text-muted)">[8267] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">小売・金融・ディベロッパー</span> <span class="badge">2月期決算</span></div>
+  </div>
+  <div class="px">
+    <div class="v">1,395.5円</div>
+    <div class="note-s">2026/8/10 9:45時点</div>
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>サマリー</h2>
+  <div class="body">
+    2027年2月期第1四半期(2026/7/10発表)は、営業収益2兆9,420億円(+14.6%)・<b>営業利益752億円(+33.6%)と第1四半期として過去最高</b>。2025年12月のツルハHD・ウエルシアHD統合によるヘルス&ウエルネス事業の拡大が増収増益の主因である。一方、利益の中身は<b>ヘルス&ウエルネス・ディベロッパー・総合金融の3本柱に依存</b>し、祖業のGMS・スーパーマーケットは価格投資・人件費・デジタル投資の先行で営業赤字。親会社帰属純利益は138億円にとどまり、営業利益と最終利益の乖離(上場子会社の少数株主帰属)という構造課題が残る。株価は1月高値2,542円から大幅に調整し年初来安値圏。<b>調整後もPER約53倍と依然高水準</b>であり、割安とは言い難い。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算 — FY2027/2月期 Q1(2026/7/10発表)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY27/2 Q1</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>営業収益</td><td class="num">2兆9,420億円</td><td class="num up">+14.6%</td></tr>
+      <tr><td><b>営業利益</b></td><td class="num"><b>752億円</b></td><td class="num up"><b>+33.6%</b></td></tr>
+      <tr><td>経常利益</td><td class="num">636億円</td><td class="num up">+32.3%</td></tr>
+      <tr><td>親会社株主帰属四半期純利益</td><td class="num">138億円</td><td class="num up">黒字転換(前年−66億円)</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <table>
+    <thead><tr><th>セグメント別営業利益</th><th class="num">FY27/2 Q1</th><th class="num">備考</th></tr></thead>
+    <tbody>
+      <tr><td>ヘルス&ウエルネス</td><td class="num up">267億円</td><td class="num">ツルハ・ウエルシア統合効果</td></tr>
+      <tr><td>ディベロッパー・エンターテイメント</td><td class="num up">278億円</td><td class="num">イオンモール(完全子会社)等</td></tr>
+      <tr><td>総合金融</td><td class="num up">182億円</td><td class="num">イオンFS</td></tr>
+      <tr><td>国際</td><td class="num">57億円</td><td class="num">ベトナム等が牽引</td></tr>
+      <tr><td>サービス・専門店</td><td class="num">44億円</td><td class="num">—</td></tr>
+      <tr><td>ディスカウントストア</td><td class="num">3億円</td><td class="num">—</td></tr>
+      <tr><td>スーパーマーケット</td><td class="num down">−8億円</td><td class="num">先行投資で赤字</td></tr>
+      <tr><td>GMS(総合スーパー)</td><td class="num down">−35億円</td><td class="num">先行投資で赤字</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の質の確認(一過性・構造要因の分解):</b><br>
+    ・増収増益の主因は<b>ツルハHD・ウエルシアHD統合(2025年12月)によるヘルス&ウエルネスの連結拡大</b>(同事業売上高は前年比2.3倍)。統合初年度の増分効果は今期でほぼ一巡するため、<b>来期以降は既存店ベースの成長力が問われる</b><br>
+    ・GMS・SMは価格競争強化・人件費増・デジタル投資により<b>意図的な先行投資減益(合計約43億円の営業赤字)</b>。会社は構造改革(トップバリュ売上105.2%、食品構成比15.9%へ)の途上と説明<br>
+    ・営業利益752億円に対し親会社帰属純利益は138億円。<b>H&W・金融など利益貢献の大きい事業に上場子会社の少数株主持分があり、最終利益への落ち方が薄い</b>のは同社の構造的特徴(前年同期は最終赤字であり黒字転換自体は改善)<br>
+    ・ベトナム事業はイオンモール・ダナンが7月開業、既存店売上128.8%と高成長を維持
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期会社予想は<b>据え置き</b>: 営業収益12兆円(+12.0%)/ 営業利益3,400億円(+25.7%)/ 経常利益2,900億円(+19.3%)/ 純利益730億円(+0.4%)/ EPS26.39円/ 年間配当15円(中間7.5円・期末7.5円)。営業利益の<b>Q1進捗率は22.1%</b>と概ね計画線上。<br><br>
+    <b>上振れ側の要因:</b><br>
+    ・ドラッグストア統合シナジー(共同調達・PB展開「からだとくらしに、＋1」)の前倒し発現<br>
+    ・ディベロッパー(国内モール・ベトナム)とイオンFSの安定成長<br>
+    ・食品価格インフレ下での客数維持(トップバリュへの需要シフト)<br><br>
+    <b>下振れ側の要因:</b><br>
+    ・GMS・SMの価格投資が想定以上に粗利を圧迫する場合<br>
+    ・人件費・物流費・デジタル投資のコスト増が続く場合<br>
+    ・<b>純利益予想は+0.4%とほぼ横ばい</b>であり、営業増益が最終利益に落ちにくい構造が今期も続く前提。少数株主帰属・金融費用・構造改革費用の動向次第では最終利益の下振れもありうる
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th class="num">備考</th></tr></thead>
+    <tbody>
+      <tr><td>株価</td><td class="num">1,395.5円</td><td class="num">2026/8/10 9:45時点</td></tr>
+      <tr><td>予想PER</td><td class="num">52.9倍</td><td class="num">連結・会社予想ベース</td></tr>
+      <tr><td>PBR(実績)</td><td class="num">3.20倍</td><td class="num">—</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">1.07%</td><td class="num">年15円予想</td></tr>
+      <tr><td>時価総額</td><td class="num">約3.88兆円</td><td class="num">—</td></tr>
+      <tr><td>年初来レンジ</td><td class="num">1,274〜2,542円</td><td class="num">安値6/23・高値1/5</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>株価の位置:</b> 1月高値2,542円から6月に1,274円まで<b>約半値の大幅調整</b>となり、現在値は52週レンジの下から約10%と<b>年初来安値圏</b>にある。下落要因としては、(1)PER50倍超の割高バリュエーションに対し純利益予想がほぼ横ばいだったことへの失望、(2)営業増益が最終利益に結び付かない構造への懸念、(3)半導体・AI関連への資金シフトで内需小売株が敬遠された地合い、が指摘されている。7/10のQ1決算(営業利益+33.6%)後も株価の戻りは限定的。<br><br>
+    <b>割高/割安の評価:</b> 同社のPERは<b>株主優待(オーナーズカード)人気による個人株主の厚い構成を背景に伝統的に高く</b>、収益指標だけでは説明しにくい水準が常態である。その前提でも、予想PER52.9倍・PBR3.20倍は大幅調整後もなお<b>小売セクター平均を大きく上回る割高水準</b>であり、指標面の割安感はない。株価の再評価には、営業利益の成長が親会社帰属利益の成長に転換すること(構造改革による純利益効果の顕在化)が必要とみられる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    <b>グループ中期経営計画2026〜2030年度(2026/5/11公表):</b> 2030年度に<b>営業収益15兆円・営業利益5,300億円・EBITDA1.1兆円・ROE8.5%以上</b>を目指す5か年計画。4つの重点戦略を掲げる。<br><br>
+    ・<b>高収益ポートフォリオの構築</b> — <b>ヘルス&ウエルネス、ディベロッパー・エンターテイメント、ベトナム</b>を成長ドライバーと明確化。マルチフォーマットの組み合わせで利益成長を図る<br>
+    ・<b>食品小売の収益構造改革</b> — 荒利構造の刷新で1,300〜1,400億円、経費構造の刷新で700〜900億円の効果を計画。首都圏シェア拡大を推進<br>
+    ・<b>事業構造改革の完遂</b> — 赤字企業の解消・機能統廃合で<b>約300億円の当期純利益効果</b>(最終利益の薄さへの直接的な処方箋)<br>
+    ・<b>財務構造の刷新</b> — 有利子負債の削減を重視し、Debt/EBITDAを3.0倍へ改善<br><br>
+    <b>資金配分:</b> 5か年累計で営業CF3.6兆円を創出し、設備投資2.4兆円・戦略的資金0.5兆円・株主還元0.7兆円を配分。<br><br>
+    <b>足元の注力テーマ:</b> ドラッグストア統合(ツルハ・ウエルシア)のシナジー実現とグループPB展開、トップバリュ強化による食品荒利改善、デジタル投資(オペレーション効率化・ネットスーパー)、アジア(特にベトナム、モール出店と小売の面展開)。ヘルス&ウエルネスとアジアの2軸を成長エンジンとする構図は中計でも維持された。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    <b>物価・消費:</b> 食品インフレは売上単価の追い風だが、実質賃金の伸び悩みで<b>節約志向・PBシフトが同時進行</b>。価格競争(OMR等ディスカウンターとの競合)は粗利の下押し要因。<br>
+    <b>金利:</b> 日銀の利上げは二面性を持つ。イオンFSは調達コスト上昇が逆風となる一方、預金・リボ利回りの改善余地もある。ディベロッパー事業と本体の有利子負債(中計でDebt/EBITDA3.0倍へ削減方針)には金利上昇が負担。<br>
+    <b>為替:</b> 円安は輸入食品・PB調達コストの上昇要因。アジア事業の円換算利益には追い風で、影響は相殺方向。<br>
+    <b>人件費:</b> 最低賃金の継続的な引き上げは、パート比率の高い小売事業の恒常的なコスト増要因。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ① <b>最終利益の薄さ</b> — 営業利益3,400億円計画に対し純利益730億円。少数株主帰属・金融費用・構造改革費用で目減りする構造が改善しなければ、PER50倍超の正当化は困難<br>
+    ② <b>統合効果の一巡</b> — ツルハ・ウエルシア統合の増分効果は今期で一巡。来期以降、既存店成長とシナジーで増益を継続できるかが試金石<br>
+    ③ <b>GMS・SM改革の遅延</b> — 先行投資(価格・人件費・デジタル)の回収が遅れれば、中計の荒利刷新効果(1,300〜1,400億円)の実現性に疑義<br>
+    ④ <b>金利上昇</b> — 金融事業の調達コストとグループ有利子負債への影響<br>
+    ⑤ <b>個人株主の需給</b> — 優待人気が支える高PERは、株価下落局面で個人の損失確定売りが出ると需給が崩れやすい側面もある
+  </div>
+</div>
+
+<div class="card">
+  <h2>決算説明会・質疑応答</h2>
+  <div class="body">
+    2027年2月期第1四半期決算短信(2026/7/10)の内容は本レポートに反映済み。会社側の説明の要点は、(1)ツルハ・ウエルシア統合(2025年12月)によりヘルス&ウエルネスの売上が前年比2.3倍となり増収増益を牽引、統合PB「からだとくらしに、＋1」を展開開始、(2)GMS・SMの赤字は価格競争力強化・人件費・デジタル投資の<b>先行投資による短期的減益</b>との位置づけ、(3)食品小売構造改革はトップバリュ売上105.2%・食品構成比15.9%と進捗、(4)ベトナムはイオンモール・ダナン開業・既存店128.8%と好調、の4点。<span class="warn">機関投資家向け説明会の質疑応答要旨は未取得。注目論点は「統合シナジーの定量進捗」「GMS赤字の解消時期」「純利益横ばい予想の保守性」。次回更新時に確認予定。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/12</td><td class="note-s">初版。FY27/2月期Q1決算(短信)、グループ中期経営計画2026-2030、セグメント構造と利益の質の分析、株価急落の文脈を収録</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: イオン 2027年2月期第1四半期決算短信(2026/7/10) / イオン グループ中期経営計画2026〜2030年度(2026/5/11、適時開示) / Yahoo!ファイナンス(株価・指標、2026/8/10時点) / 流通ニュース・食品新聞(中計報道) / EBC(株価下落要因の整理)。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+</body>
+</html>

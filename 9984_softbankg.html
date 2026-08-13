@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ソフトバンクグループ [9984] 銘柄レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --good-text: #006300; --warn: #c77f00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --good-text: #0ca30c; --warn: #e0a030;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 760px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+</style>
+</head>
+<body class="viz-root">
+
+<div class="head">
+  <div>
+    <h1>ソフトバンクグループ <span style="font-weight:400;color:var(--text-muted)">[9984] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">投資会社・AI</span> <span class="badge">3月期決算</span></div>
+  </div>
+  <div class="px">
+    <div class="v">5,484円</div>
+    <div class="note-s">2026/8/10終値</div>
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>サマリー</h2>
+  <div class="body">
+    2027年3月期第1四半期(2026/8/6発表)は、投資損益1兆8,594億円を計上したものの、財務費用の倍増と前年の一過性利益の反動で<b>純利益は3,473億円と前年同期比17.7%減</b>となった。一方でバランスシートは大きく動き、<b>NAV(保有株式価値−純負債)は6月末時点で72.3兆円と過去最高</b>(3月末40.1兆円から+32兆円)。OpenAI持分の公正価値896億ドル(累計投資利益450億ドル)の反映が主因である。LTVは13.0%と保守的水準を維持。株価は6月高値9,074円から約4割調整しており、<b>時価総額はNAVに対し5割前後のディスカウント</b>で推移する。評価益中心の利益と資金負担増という「利益の質」の論点が焦点となっている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算 — FY2027 Q1(2026/8/6発表)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY27/Q1</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">2兆196億円</td><td class="num up">+10.9%</td></tr>
+      <tr><td><b>投資損益</b></td><td class="num"><b>1兆8,594億円</b></td><td class="num up"><b>+1.37兆円</b></td></tr>
+      <tr><td>税引前利益</td><td class="num">5,891億円</td><td class="num down">−14.6%</td></tr>
+      <tr><td>親会社所有者帰属純利益</td><td class="num">3,473億円</td><td class="num down">−17.7%</td></tr>
+      <tr><td>NAV(6月末)</td><td class="num"><b>72.3兆円</b></td><td class="num up">3月末比+32.2兆円</td></tr>
+      <tr><td>LTV(6月末)</td><td class="num">13.0%</td><td class="num">3月末17.0%から低下</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の質の確認(一過性要因の分解):</b><br>
+    ・投資損益1.86兆円の中核は<b>Intel株式の評価益1兆3,329億円</b>とByteDanceの公正価値上昇3,584億円(SVF1、+22億ドル)——いずれも<b>未実現の評価益であり、四半期末の株価・評価に左右される一過性の性格が強い</b><br>
+    ・<b>OpenAIは公正価値評価(連結消去対象)のため、連結損益への直接の利益貢献はない</b>。NAVには反映される(累計投資額446億ドル・公正価値896億ドル)<br>
+    ・費用側では<b>財務費用3,287億円(前年同期比ほぼ倍増)</b>。Armマージンローン115億ドル・ブリッジローン200億ドルの借入が主因。加えて為替差損1,461億円、デリバティブ関連損失3,916億円を計上<br>
+    ・前年同期はLINE Bank Taiwan子会社化に伴う再測定益(一過性)があり、その反動も減益要因<br>
+    ・<b>営業キャッシュフローは4,399億円の赤字</b>。会計上の純利益黒字とキャッシュ創出の乖離が大きい点は継続的な注視点<br><br>
+    <b>NAVの内訳(6月末、計72.3兆円):</b> Arm 20.8兆円 / SVF1・SVF2・LatAm 19.6兆円 / ソフトバンク 15.9兆円 / Tモバイル 2.7兆円 / その他 13.3兆円。手元流動性は2.3兆円で、今後2年間の社債償還1.5兆円をカバーする。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    同社は投資会社としての業績変動の大きさを理由に<b>通期業績予想を開示しない慣行</b>であり、四半期ごとのNAV・LTV・投資損益が実質的な業績指標となる。<br><br>
+    <b>上振れ側の要因:</b><br>
+    ・Armの業績好調: Q1売上高12.89億ドル(+22%、四半期として過去最高)、調整後EPS0.45ドル(+29%)。<b>Q2ガイダンスは売上13.8億ドル±0.5億・EPS0.47ドル±0.04と増収基調継続</b>。データセンター向けArmコア累計出荷は15億個超<br>
+    ・OpenAIの評価上昇が続けばNAVを押し上げ(10月の追加投資後の累計投資額は646億ドル・持分約13%となる予定)<br>
+    ・Intel・ByteDance等の保有資産の価値上昇<br><br>
+    <b>下振れ側の要因:</b><br>
+    ・8/5時点の株価で試算した<b>プロフォーマNAVは58.3兆円と、6月末比で既に約14兆円減少</b>。7月以降のAI関連株の調整がNAVに直結する<br>
+    ・支払利息の増加が構造化しており、資産価値の伸びが資金コストを下回れば株主価値は毀損される<br>
+    ・評価益は反転しうる。Intel・ByteDanceの評価が下落すれば投資損失に転じる
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th class="num">備考</th></tr></thead>
+    <tbody>
+      <tr><td>株価</td><td class="num">5,484円</td><td class="num">2026/8/10終値</td></tr>
+      <tr><td>時価総額</td><td class="num">約31.3兆円</td><td class="num">—</td></tr>
+      <tr><td><b>NAVディスカウント</b></td><td class="num"><b>約46〜57%</b></td><td class="num">下記参照</td></tr>
+      <tr><td>PBR(実績)</td><td class="num">1.70倍</td><td class="num">—</td></tr>
+      <tr><td>予想PER</td><td class="num">—(非開示)</td><td class="num">業績予想非開示のため</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">0.20%</td><td class="num">—</td></tr>
+      <tr><td>年初来レンジ</td><td class="num">3,365〜9,074円</td><td class="num">安値3/23・高値6/2</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>NAVディスカウントの試算:</b> 時価総額約31.3兆円(8/10)に対し、6月末NAV72.3兆円比では<b>ディスカウント約57%</b>。ただし7月以降の保有株下落を織り込んだ会社開示のプロフォーマNAV58.3兆円(8/5株価適用)比でも<b>約46%</b>となお大きい。Arm・OpenAIへの資産集中、含み益に対する税負担、資産売却の実現可能性への市場の懸念がディスカウント縮小を妨げているとの指摘がある。<br><br>
+    <b>株価の位置:</b> 3月安値3,365円からAI相場で6月に9,074円まで約2.7倍化した後、AI関連株の調整とともに約4割下落し、現在は52週レンジの下から約37%の位置。8/6の決算発表(引け後)に対する翌日以降の反応は限定的で、8/6終値5,695円→8/10終値5,484円と軟調に推移した。<b>評価はNAV比では割安、ただしディスカウントは構造的に残存してきた経緯</b>があり、割安の解消にはOpenAI・Armの価値の持続性とレバレッジ管理への信認が必要となる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ(AI投資戦略)</h2>
+  <div class="body">
+    同社は中期経営計画に相当する数値計画を持たず、「ASI(人工超知能)のNo.1プラットフォーマー」を掲げるAI集中投資が実質的な経営方針である。<br><br>
+    <b>OpenAI:</b> 年度内に200億ドルの投資を実行済み(4月・7月)。第3トランシェ100億ドルを10/1に実行予定で、<b>実行後の累計投資額は646億ドル・持分約13%</b>となる。SVF2経由の100億ドル追加出資にはブリッジローンが充当されており(2028年8月返済期限)、OpenAI優先株式の公正価値が大幅に低下した場合は現金担保の差し入れや期限前返済が必要となる条項が付く。<br><br>
+    <b>Arm:</b> NAV最大の構成資産(20.8兆円)。ロイヤリティ単価の上昇とデータセンター向け浸透(累計コア出荷15億個超)が成長ドライバー。<br><br>
+    <b>Stargate(AIデータセンター):</b> 米テキサス州のOpenAI向けデータセンター建設が進行。オハイオ州で10GW規模のプロジェクトを協議中。6月にはフランスで5GWデータセンター計画(第1フェーズ450億ユーロ、2031年までに3.1GW)を発表し、地理的拡大が進む。<br><br>
+    <b>財務規律:</b> LTV通常時25%未満・手元流動性2年分の社債償還額以上という自主基準は維持(Q1末LTV13.0%・手元流動性2.3兆円)。ただし大型投資の資金手当てとして借入・資産担保調達が増えており、支払利息の増加が利益を圧迫し始めている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    <b>金利:</b> 最も感応度が高い変数。米金利は調達コスト(マージンローン・ブリッジローン)と未公開株の評価(割引率)の両面に効く。国内では日銀の追加利上げ観測が円建て社債の調達コストに影響。<br>
+    <b>為替:</b> 米ドル建負債が米ドル建資産を上回る構造のため、<b>円安局面で為替差損</b>が発生する(Q1は1,461億円の差損)。一般的な輸出企業と逆方向である点に留意。<br>
+    <b>AI相場:</b> NAVの大半がAI関連資産(Arm・OpenAI・SVF投資先)に集中しており、AI関連株のボラティリティがNAV・株価に直結する。7月以降の調整でプロフォーマNAVは既に約14兆円目減りした。<br>
+    <b>関税・規制:</b> 半導体を巡る米中規制はArmのライセンス事業・ByteDance評価の変動要因。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ① <b>OpenAIの評価維持</b> — 公正価値896億ドルはNAV拡大の主因。未上場・外部資金調達ラウンド依存の評価であり、低下時はNAV縮小に加えブリッジローン条項(現金担保・期限前返済)が発動しうる<br>
+    ② <b>資金コストの増加</b> — 支払利息2,658億円(SBG単体、前年同期比+1,355億円)。資産価値の成長がコストを下回る局面では株主価値に届かない<br>
+    ③ <b>評価益依存の利益構造</b> — Q1利益の中核はIntel・ByteDanceの未実現評価益。営業CFは赤字であり、キャッシュ創出との乖離が続く場合は市場の評価が下がる<br>
+    ④ <b>資産集中</b> — Arm+OpenAI関連でNAVの過半。分散投資会社からAI集中投資会社への転換はリターンとリスクの双方を増幅する<br>
+    ⑤ <b>AIデータセンター投資の実行リスク</b> — Stargate・フランス等で総額数兆円規模のコミットメント。電力・建設・需要の不確実性
+  </div>
+</div>
+
+<div class="card">
+  <h2>決算説明会・質疑応答</h2>
+  <div class="body">
+    決算説明会(2026/8/6)の説明資料・決算短信の内容は本レポートに反映済み。会社側は「短期的な変動を経ながらNAVは長期的に大きく成長」との立場を強調し、NAV過去最高・LTV13%の安全性、OpenAI追加投資の実行状況、Armの好調なガイダンス、フランス・オハイオ等のAIインフラ展開を説明した。<br><br>
+    報道ベースでは、決算前からBloombergが「OpenAI傾斜への懸念」を、日本経済新聞が「評価益中心の利益構造とAI相場波乱の影響」を論点として指摘しており、<b>質疑の焦点は追加投資の資金調達手段(資産売却・借入・アセットバック)とLTV運営</b>にある。<span class="warn">質疑応答の全文要旨は同社が後日IRサイトに公開する慣行であり、次回更新時に取得予定。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/12</td><td class="note-s">初版。FY27/Q1決算(説明資料・短信)、NAV/LTV・NAVディスカウント試算、OpenAI/Arm/Stargate投資戦略、利益の質の分解を収録</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: ソフトバンクグループ 2027年3月期第1四半期 決算説明会資料・決算短信(2026/8/6、group.softbank) / Yahoo!ファイナンス(株価・指標、2026/8/10時点) / 日本経済新聞 / Bloomberg / note(aimark)決算分析。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+</body>
+</html>

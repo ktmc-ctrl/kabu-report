@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三菱重工業 [7011] 銘柄レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --good-text: #006300; --warn: #c77f00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --good-text: #0ca30c; --warn: #e0a030;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 760px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+</style>
+</head>
+<body class="viz-root">
+
+<div class="head">
+  <div>
+    <h1>三菱重工業 <span style="font-weight:400;color:var(--text-muted)">[7011] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">防衛・エナジー・機械</span> <span class="badge">3月期決算(IFRS)</span></div>
+  </div>
+  <div class="px">
+    <div class="v">4,004円</div>
+    <div class="note-s">2026/8/10 夜間PTS時点</div>
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>サマリー</h2>
+  <div class="body">
+    2026年度第1四半期(2026/8/4発表)は、<b>受注高2兆224億円(+26%)・事業利益1,596億円(+65%)・純利益1,346億円(+97%)</b>と受注・利益ともに大幅な伸びとなった。GTCC(ガスタービン・コンバインドサイクル)と原子力を擁するエナジーが牽引役で、通期の売上・利益予想は据え置きつつ、<b>受注高を6.8兆円→7.0兆円、フリーキャッシュフローを3,000億円→6,000億円へ上方修正</b>した。一方、Q1利益には一過性要因や為替差益の押し上げが含まれ、株価指標は予想PER35倍・PBR4.2倍と<b>防衛・電力インフラへの期待をかなり織り込んだ水準</b>にある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算 — FY2026 Q1(2027年3月期第1四半期、2026/8/4発表)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY26/Q1</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>受注高</td><td class="num">20,224億円</td><td class="num up">+26%(+4,132億円)</td></tr>
+      <tr><td>売上収益</td><td class="num">11,942億円</td><td class="num up">+16%(+1,600億円)</td></tr>
+      <tr><td><b>事業利益</b></td><td class="num"><b>1,596億円</b></td><td class="num up"><b>+65%(+629億円)</b></td></tr>
+      <tr><td>事業利益率</td><td class="num">13.4%</td><td class="num up">+4.0pt</td></tr>
+      <tr><td>親会社帰属純利益</td><td class="num">1,346億円</td><td class="num up">+97%(+664億円)</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>セグメント別(前年同期比):</b> エナジーが受注+4,880億円(+80%)・利益+449億円と突出。北米・アジア中心のGTCCと原子力が伸びた。プラント・インフラは受注+1,292億円(+17%)・利益+31億円、物流・冷熱・ドライブシステム等は利益+59億円。航空・防衛・宇宙は前年の大型案件の反動で受注△2,298億円となったが利益は+36億円と増益を確保した。<br><br>
+    <b>利益の質の確認(一過性要因の分解):</b><br>
+    ・決算会見では、Q1増益のうち<b>約250億円が一過性</b>(工事代金の確定による収益 約150億円+火力発電所の売却益 約100億円)と説明されたと報じられている。事業利益増+629億円のうち一過性を除いても増益基調は維持されるが、<b>+65%という増益率は割り引いて見る必要がある</b><br>
+    ・純利益+97%が事業利益+65%を上回るのは、<b>円安進行(ドル円145.8円→157.2円)に伴う為替差益</b>の計上によるもの——為替水準に依存する非経常的要因<br>
+    ・一方、GTCCの受注残積み上がりと原子力の伸長は構造的であり、利益率改善(9.4%→13.4%)のすべてが一過性というわけではない
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期予想(FY2026)は<b>売上収益5兆4,000億円(+8.6%)・事業利益5,400億円(+24.9%、利益率10%)・当期利益は据え置き</b>。年間配当は29円計画。前提為替は<b>1ドル150円・1ユーロ180円</b>。<br><br>
+    <b>今回の修正点:</b><br>
+    ・受注高: 6兆8,000億円 → <b>7兆円</b>(エナジー+1,000億円、航空・防衛・宇宙+1,000億円)<br>
+    ・フリーキャッシュフロー: 3,000億円 → <b>6,000億円</b>と大幅上方修正<br><br>
+    <b>上振れ側の要因:</b> 事業利益の通期進捗率は29.6%と順調。為替前提150円は実勢(158円前後)より保守的で、円安が続けば上振れ余地がある。GTCC需要はデータセンター向け電力需要を背景に高水準が続く。<br>
+    <b>下振れ側の要因:</b> Q1の一過性約250億円の剥落。中東情勢の影響は業績見通しに含めていないと注記されており、顕在化すれば下振れ要因。大型プロジェクトの採算変動リスクも残る。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th></tr></thead>
+    <tbody>
+      <tr><td>株価</td><td class="num">4,004円(2026/8/10 PTS)</td></tr>
+      <tr><td>予想PER</td><td class="num">35.4倍</td></tr>
+      <tr><td>PBR(実績)</td><td class="num">4.24倍</td></tr>
+      <tr><td>配当利回り(会社予想)</td><td class="num">0.72%</td></tr>
+      <tr><td>時価総額</td><td class="num">約13.5兆円</td></tr>
+      <tr><td>年初来レンジ</td><td class="num">3,404円(6/11)〜5,208円(3/2)</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    現在値は年初来レンジの<b>下から約33%の位置</b>。2026年3月に高値5,208円をつけた後、6月に3,404円まで調整し、8月の決算を挟んで4,000円台まで戻した経緯にある。決算発表当日(8/4)は午前に売られた後、<b>午後に上昇へ転じた</b>と報じられており、内容は総じて好感された。<br><br>
+    <b>割高/割安の評価:</b> 予想PER35倍・PBR4.2倍は重工セクターの伝統的水準や市場平均を大きく上回り、<b>指標面では割高圏</b>にある。防衛費増額・電力インフラ投資という長期テーマの成長期待を織り込んだ株価であり、受注の伸びが鈍化した場合の調整リスクと表裏の関係にある点に留意したい。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    <b>「2024事業計画」(FY2024〜2026)の最終年度。</b>FY2026目標は売上収益5.7兆円以上・事業利益4,500億円以上(利益率8%以上)・ROE12%以上。今期ガイダンス(事業利益5,400億円・利益率10%)は<b>利益目標を大幅に超過する見込み</b>である一方、売上目標5.7兆円に対しては5.4兆円とやや未達の計画となっている。3年間で1.2兆円の投資(うち伸長事業・成長領域に6,500億円)、株主還元はDOE4%以上を目安とする累進配当へ移行済み。<br><br>
+    <b>伸長事業(中核テーマ):</b><br>
+    ・<b>GTCC</b> — 世界シェア首位。データセンター・電化による電力需要増で、経営陣は2026年も市場規模70〜100GW程度の高水準が続くとの見方を示している(2026/5会見)<br>
+    ・<b>原子力</b> — 既設プラント再稼働支援と次世代軽水炉・SMR開発<br>
+    ・<b>防衛</b> — スタンドオフ防衛能力、次期戦闘機(GCAP)国際共同開発。防衛予算の拡大が追い風<br><br>
+    <b>成長領域:</b> 水素・アンモニア、CCUS(CO2回収)、電化・データセンター向けソリューション。<b>次期中期計画(2027事業計画)</b>の策定・公表が2027年前半の注目イベントとなる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因(為替・金利・関税)</h2>
+  <div class="body">
+    <b>為替:</b> 会社前提150円/ドルに対し実勢は158円前後で、前提対比では追い風。ただし日銀の9月利上げ観測(2026/8時点)による円高転換は輸出採算・為替差益の反動リスク。<br>
+    <b>金利・財政:</b> 防衛費の対GDP比引き上げと電力インフラ投資は政策的な追い風。長期金利上昇は高PER株のバリュエーションには逆風となりうる。<br>
+    <b>関税:</b> 米関税の直接影響は自動車ほど大きくないとみられるが、北米向けエナジー機器・部材コストへの波及は注視点。中東情勢の影響は通期見通しに未反映。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ① <b>バリュエーション</b> — PER35倍は成長期待の持続が前提。受注モメンタム(特にGTCC・防衛)の鈍化は株価調整に直結しやすい<br>
+    ② <b>一過性要因の剥落</b> — Q1の約250億円と為替差益を除いたベースでの増益持続性を四半期ごとに確認する必要<br>
+    ③ <b>大型プロジェクトの採算</b> — 過去に客船・SpaceJetで大型損失を計上した事業特性。防衛・エナジーの大型案件でのコスト超過リスク<br>
+    ④ <b>地政学・政策</b> — 防衛予算の政治情勢による変動、中東情勢の物流・案件への影響<br>
+    ⑤ <b>円高</b> — 150円割れが定着する場合、為替前提の余裕は縮小する
+  </div>
+</div>
+
+<div class="card">
+  <h2>決算説明会・質疑応答(読んだ資料の要点)</h2>
+  <div class="body">
+    2026年度第1四半期決算説明資料(2026/8/4)を確認した。要点は以下のとおり。<br>
+    ・エナジーの増益要因として「北米・アジア中心のGTCC好調、原子力等」を明記。受注高ガイダンスをエナジー3兆4,500億→3兆5,500億円、航空・防衛・宇宙1兆6,500億→1兆7,500億円へ引き上げ<br>
+    ・FCFを3,000億円→6,000億円へ上方修正。中東情勢は「業績見通しに含めていない」と注記<br>
+    ・配当は年29円(中間14円・期末15円)計画<br>
+    ・決算会見では一過性約250億円(工事代金確定・火力発電所売却益)の説明があったと報じられている。<span class="warn">説明会の質疑応答全文は次回更新時に取得予定。注目論点は「GTCC受注のピーク時期」「次期中計の利益率目標」。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/12</td><td class="note-s">初版。FY2026/Q1決算(説明資料・短信ベース)、2024事業計画の進捗、バリュエーション評価を収録</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: 三菱重工業 2026年度第1四半期決算説明資料(2026/8/4) / 同 2027年3月期第1四半期決算短信 / 三菱重工業「2024事業計画」説明資料(2024/5/28) / 同「2024事業計画推進状況について」(2026/5/27) / 日本経済新聞(2026/8/4) / kikai-news.net / Bloomberg(2026/5/12) / Yahoo!ファイナンス(2026/8/10時点)。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+</body>
+</html>

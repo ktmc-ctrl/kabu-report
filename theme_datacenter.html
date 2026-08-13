@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データセンター 全体マップ — 電力・冷却・回線</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1:#fcfcfb; --surface-2:#f2f1ec; --page:#f9f9f7;
+    --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#898781;
+    --grid:#e1e0d9; --baseline:#c3c2b7; --border:rgba(11,11,11,0.10);
+    --pos:#2a78d6; --neg:#e34948; --good-text:#006300; --warn:#c77f00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1:#1a1a19; --surface-2:#232322; --page:#0d0d0d;
+      --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#898781;
+      --grid:#2c2c2a; --baseline:#383835; --border:rgba(255,255,255,0.10);
+      --pos:#3987e5; --neg:#e66767; --good-text:#0ca30c; --warn:#e0a030;
+    }
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background:var(--page); color:var(--text-primary);
+    padding:16px; max-width:840px; margin:0 auto; line-height:1.65;
+    font-variant-numeric:tabular-nums;
+  }
+  h1 { font-size:1.15rem; margin-bottom:2px; }
+  .subtitle { color:var(--text-secondary); font-size:0.76rem; margin-bottom:14px; }
+</style>
+</head>
+<body class="viz-root">
+
+<style>
+.dcm { --c1:#2a78d6; --c2:#eb6834; --c3:#1baf7a; --c4:#eda100; --c5:#4a3aa7; }
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) .dcm { --c1:#3987e5; --c2:#d95926; --c3:#199e70; --c4:#c98500; --c5:#9085e9; }
+}
+.dcm .card { background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:12px; }
+.dcm h2 { font-size:0.92rem; margin-bottom:6px; }
+.dcm .cap { font-size:0.7rem; color:var(--text-muted); margin-bottom:10px; }
+.dcm table { width:100%; border-collapse:collapse; font-size:0.72rem; }
+.dcm th { text-align:left; color:var(--text-muted); font-weight:600; padding:5px 3px; border-bottom:1px solid var(--baseline); }
+.dcm td { padding:6px 3px; border-bottom:1px solid var(--grid); vertical-align:top; }
+.dcm th.num, .dcm td.num { text-align:right; }
+.dcm .up { color:var(--good-text); } .dcm .down { color:var(--neg); } .dcm .warn { color:var(--warn); }
+.dcm .badge { display:inline-block; font-size:0.62rem; border-radius:6px; padding:1px 6px; border:1px solid var(--border); white-space:nowrap; color:var(--text-muted); }
+.dcm .body { font-size:0.8rem; color:var(--text-secondary); line-height:1.85; }
+.dcm .body b { color:var(--text-primary); }
+.dcm .note-s { font-size:0.7rem; color:var(--text-muted); }
+.dcm hr.sep { border:none; border-top:1px solid var(--grid); margin:11px 0; }
+.dcm svg { display:block; width:100%; height:auto; overflow:visible; }
+.dcm .legend { display:flex; gap:13px; flex-wrap:wrap; font-size:0.69rem; color:var(--text-secondary); margin-bottom:9px; }
+.dcm .legend i { display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:5px; vertical-align:-1px; }
+.dcm .stage { display:flex; align-items:baseline; gap:9px; margin:20px 0 8px; flex-wrap:wrap; }
+.dcm .stage .n { font-size:0.66rem; font-weight:700; color:#fff; border-radius:999px; padding:3px 12px; white-space:nowrap; background:var(--c1); }
+.dcm .stage.s2 .n { background:var(--c2); }
+.dcm .stage.s3 .n { background:var(--c3); }
+.dcm .stage.s4 .n { background:var(--c4); }
+.dcm .stage.s5 .n { background:var(--c5); }
+.dcm .stage .t { font-size:0.9rem; font-weight:700; }
+.dcm .stage .d { font-size:0.68rem; color:var(--text-muted); }
+.dcm .layer { border-radius:10px; padding:11px 12px; margin-bottom:9px; border:1px solid var(--border); background:var(--surface-2, rgba(127,127,127,0.06)); }
+.dcm .layer .lh { font-size:0.79rem; font-weight:700; margin-bottom:2px; }
+.dcm .layer .ld { font-size:0.7rem; color:var(--text-muted); margin-bottom:7px; }
+.dcm .co { font-size:0.74rem; line-height:1.9; color:var(--text-secondary); }
+.dcm .co b { color:var(--text-primary); }
+.dcm .box { background:var(--surface-2, rgba(127,127,127,0.06)); border-radius:9px; padding:11px 12px; margin:9px 0; font-size:0.76rem; line-height:1.85; color:var(--text-secondary); }
+.dcm .box b { color:var(--text-primary); }
+</style>
+
+<div class="dcm">
+
+<h1>🏢 データセンター 全体マップ</h1>
+<div class="subtitle">電力・冷却・回線・建設 ・ 誰がどこで稼ぐのか ・ 2026/8/13時点</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>この特集の要点</h2>
+  <div class="body">
+    データセンター(DC)関連というと半導体や冷却が真っ先に連想されるが、<b>金額の内訳を見ると景色が違う</b>。<br><br>
+    <b>① 建設費で最も大きいのは「電気設備」で40〜45%。冷却は15〜20%にとどまる。</b>DCは突き詰めると「電気を受け取り、計算に変え、熱として捨てる」箱であり、<b>受電・変電・配電・無停電化の設備が最大の投資項目</b>になる。<br><br>
+    <b>② 「液冷 ≠ 液浸」である。</b>AIサーバーの発熱で液冷への移行が起きているのは事実だが、実装の主流は<b>コールドプレートによる直接液冷(DLC)</b>であり、サーバーを丸ごと液体に沈める<b>液浸冷却は既存施設への導入率が20.4%</b>にとどまる。ここは市場で混同されやすい。<br><br>
+    <b>③ 回線は「GPU同士をつなぐ配線」が本番。</b>従来のDCと違い、AIクラスタは学習ジョブが数千〜数万GPUにまたがるため、<b>GPU間を結ぶバックエンドネットワークが別途必要</b>になる。ここで光ファイバとトランシーバの本数がGPU台数にほぼ比例して増える。<br><br>
+    <b>④ IT機器(GPUサーバー)は建設費に含まれない別枠。</b>「DC投資◯兆円」という数字が<b>建設費なのか総投資なのかで、恩恵を受ける企業がまったく変わる</b>点に注意が必要である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>DC建設費の内訳</h2>
+  <div class="cap">建屋・設備の総工費(IT機器は含まない)。電気設備が最大項目</div>
+  <div class="legend">
+    <span><i style="background:var(--c1)"></i>電気設備 40〜45%</span>
+    <span><i style="background:var(--c4)"></i>内装フィットアウト 20〜25%</span>
+    <span><i style="background:var(--c3)"></i>建屋・土地 15〜20%</span>
+    <span><i style="background:var(--c2)"></i>冷却・機械 15〜20%</span>
+  </div>
+  <div id="c1"></div>
+  <div class="note-s" style="margin-top:8px">
+    金額ベースでは標準的なDCで<b>700万〜1,200万ドル/MW</b>、<b>AI最適化型では2,000万ドル/MW超</b>。<br>
+    日本は建設コストが世界最高水準で、<b>東京15.15ドル/W(世界1位)・大阪14.12ドル/W</b>(52カ国調査)。IDC Japanは「2024年第1四半期からの1年で建設コストが約1.5倍になり、2026年竣工のDCは同規模の従来案件比で投資額が1.5倍になる見込み」としている。<b>同じMW数でも金額が膨らむ=設備工事・電気工事会社の受注単価が上がる</b>構図になる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>ラックあたり消費電力の変化</h2>
+  <div class="cap">空冷から液冷への移行が「省エネの選択」ではなく「必然」である理由</div>
+  <div id="c2"></div>
+  <div class="note-s" style="margin-top:8px">
+    液体は空気に比べて熱輸送密度がおよそ<b>1,000倍</b>ある。従来の空冷(CRAC/CRAHによる床下・列間送風)は<b>ラックあたり10〜15kWを超えると成立しにくい</b>のに対し、NVIDIA GB200 NVL72構成は<b>1ラック約132kW</b>、次世代機では<b>240kW級</b>が視野に入る。<b>空冷では物理的に冷やしきれないから液冷に移行している</b>、というのが正確な理解になる。
+  </div>
+</div>
+
+<!-- ===== ① 電力 ===== -->
+<div class="stage"><span class="n">① 電力</span><span class="t">最大の投資項目であり、最大の制約</span></div>
+<div class="card">
+  <div class="body" style="margin-bottom:10px">
+    受電から配電、そして停電時のバックアップまで。<b>建設費の40〜45%を占める</b>最大の領域。日本ではDC・半導体由来の電力需要増が系統計画に組み込まれる規模になっており、OCCTO(電力広域的運営推進機関)は最大電力需要の増分を<b>2029年度で+431万kW、2034年度で+715万kW</b>、2034年度のDC電力量を<b>440億kWh</b>と想定している。地域集中は極端で、<b>東京エリア62%・関西12%・中部9%で上位3エリアが約83%</b>を占める。
+  </div>
+
+  <div class="layer">
+    <div class="lh">受変電設備・変圧器</div>
+    <div class="ld">特別高圧で受電し、構内で降圧する。DCが「電力を確保できるか」の物理的な入口</div>
+    <div class="co">
+      <b>明電舎 [6508]</b> — DC・半導体工場・再エネ連系で需要が急増する変圧器が主力。<b>沼津事業所の変圧器工場に160億円を投じ生産能力を約1.5倍</b>へ増強中。Q1は売上+25.7%、経常利益+850.7%、純利益+986.6%と大幅増益<br>
+      <b>富士電機 [6504]</b> / <b>三菱電機 [6503]</b> — 受変電設備、配電盤
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh">UPS(無停電電源装置)・蓄電池</div>
+    <div class="ld">停電の瞬間もサーバーを落とさないための設備。DCの信頼性を決める</div>
+    <div class="co">
+      <b>富士電機 [6504]</b> — <b>UPSで国内シェア約4割</b>とされる。Q1は営業利益+38.3%で<b>通期を上方修正</b>し、「国内外でのデータセンタ需要が極めて旺盛」と明記。一方で半導体セグメントはxEV向け不振で営業利益−37.3%と、社内で明暗が分かれている<br>
+      <b>GSユアサ [6674]</b> — UPSに組み込む産業用鉛蓄電池が伝統的主力。リチウムイオンや系統用蓄電所へも展開。8/5に通期予想を上振れ修正
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh">発電・電力供給</div>
+    <div class="ld">DC向けの電源そのもの。ガスタービンと、電力会社の供給余力</div>
+    <div class="co">
+      <b>三菱重工 [7011]</b> — GTCC(ガスタービン・コンバインドサイクル)。DC向け電力需要がガスタービン受注を押し上げている<br>
+      <b>関西電力 [9503]</b> — 関西エリアは国内DC電力需要の約12%。原子力比率が高くCO2フリー電源を訴求できる。グループのオプテージが<b>都市型DCに2035年までに3,000億円</b>、さらに<b>福井県美浜町に生成AI向けコンテナ型DC</b>を開設し原子力由来の電力でGPUサーバーを占有提供<br>
+      <span class="note-s">※関西電力のQ1は営業利益−84.2%(燃料費の期ずれ差損)だが、きんでん株の自己株TOB応募による売却益1,050.8億円で純利益は+38.2%。DC事業は先行投資段階</span>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh">パワー半導体・電力ケーブル</div>
+    <div class="ld">電源装置の中身と、電気を運ぶ線</div>
+    <div class="co">
+      <b>富士電機 [6504]</b> / <b>三菱電機 [6503]</b> — IGBT・SiC<br>
+      <b>住友電気工業 [5802]</b> / <b>フジクラ [5803]</b> / <b>古河電気工業 [5801]</b> — 電力ケーブル
+    </div>
+  </div>
+</div>
+
+<!-- ===== ② 冷却 ===== -->
+<div class="stage s2"><span class="n">② 冷却</span><span class="t">空冷 → 液冷 → 液浸</span><span class="d">— 混同されやすい領域</span></div>
+<div class="card" style="border:2px solid var(--c2)">
+  <div class="box">
+    <b>まず整理: 冷却方式は3段階ある</b><br>
+    <b>①空冷</b> — 部屋ごと空気で冷やす従来方式。CRAC/CRAHで床下・列間から送風。<b>ラック10〜15kWが限界</b><br>
+    <b>②直接液冷(DLC / コールドプレート)</b> — チップの上に金属の板を載せ、その中に冷却液を流す。<b>2025年時点で液冷市場の43%超を占める主流方式</b>。1コンポーネントあたり最大1,600Wの発熱に対応<br>
+    <b>③液浸冷却</b> — サーバーを丸ごと絶縁性の液体に沈める。市場は2026年57.2億ドル→2031年133.3億ドル(CAGR18.4%)と伸びるが、<b>既存施設への導入率は20.4%にとどまる</b>
+  </div>
+  <div class="body">
+    <b>⚠️ 液浸冷却は過大評価されやすい。</b>液浸タンク・マニホールド配管・床荷重の構造補強を含めた1MWブロックのターンキー費用は<b>250万〜350万ドル=空冷の約2倍</b>で、投資回収に<b>4〜6年</b>を要する。利益率の薄いコロケーション事業者ほど手を出しにくい。方式別でも単相式が62.4%を占め、<b>二相式はフッ素系流体の規制とコストの問題を抱えている</b>。<br>
+    <b>2026年時点の現実は「AI DC = コールドプレート液冷が主流、液浸はニッチ」</b>である。「液浸冷却関連銘柄」として語られる企業を評価する際は、実際の売上寄与がどの方式から来ているかを確認する必要がある。
+  </div>
+  <hr class="sep">
+
+  <div class="layer" style="border-color:var(--c2)">
+    <div class="lh">空調・チラー(空冷の主役)</div>
+    <div class="ld">DC全体の熱を建物の外へ逃がす。大型空調=アプライド</div>
+    <div class="co">
+      <b>ダイキン工業 [6367]</b> — <b>米州アプライド事業がQ1に+29%</b>、DC向け需要が牽引。<b>営業利益率12%</b>(前年10%、全社9.2%より高い)。ソリューション売上比率が45%→<b>57%</b>へ上昇し、機器売り切りから設計・施工・保守込みの継続収益へ転換中。会社はDC冷却市場を<b>1.4兆円(2025年度)→2.7兆円(2030年度)、CAGR14%</b>と見込む<br>
+      <b>三菱電機 [6503]</b> — 伊子会社MEHITSでDC向けチラー・空調。<b>2026年8月にオランダのAPAC/COMPAC両グループを買収</b>し、欧州で機器販売+据付+保守の一括提供体制を構築
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:var(--c2)">
+    <div class="lh">液冷モジュール・CDU(液冷の主役)</div>
+    <div class="ld">冷却液をチップまで届け、分配し、循環させる装置</div>
+    <div class="co">
+      <b>ニデック [6594]</b> — AIサーバー用<b>水冷モジュール(CDU=冷却液分配ユニット、CDM=マニホールド、LCM=液冷モジュール)</b>を「Liquid to liquid」方式で供給。100〜250kW級をSupermicroと共同開発し採用。<b>タイ工場のCDU生産能力を月産200台→2,000台へ拡大</b>(さらに3,000台超を計画)。水冷事業で2031年3月期に売上1,000億円を目標。サーバー用冷却ファン・スピンドルモーターも保有<br>
+      <span class="warn">⚠️ ただし同社は会計不正・品質不正の精査により、<b>2027年3月期Q1決算短信の開示を延期</b>(8/5開示)。26年3月期の有価証券報告書も未提出で、<b>業績予想は未定・配当予想0円</b>。事業の魅力とは別に、開示そのものが正常化していない点は前提として押さえる必要がある</span>
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:var(--c2)">
+    <div class="lh">ポンプ・熱交換器・冷却水系統</div>
+    <div class="ld">液冷になるほど「水を回す設備」の比重が上がる</div>
+    <div class="co">
+      <b>荏原製作所 [6361]</b> — 「風水力」の汎用ポンプ・冷却水循環ポンプ・冷凍機がDCの冷却水系統(チラー〜熱交換器〜配管)を支える。ただし<b>同社の実質的な主戦場は「精密・電子」</b>で、AI半導体製造に必須の<b>CMP装置とドライ真空ポンプで世界シェア2位</b>。DC建屋そのものより「AI半導体を作る装置」で稼ぐ構図が強い<br>
+      <span class="note-s">※2026年12月期2Qの発表は8/14 15:30予定。直近開示の1Qは受注・売上・営業利益・純利益すべて1Qとして過去最高</span>
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:var(--c2)">
+    <div class="lh">冷却液・放熱材</div>
+    <div class="ld">液浸に使うフッ素系流体と、チップの熱を逃がす材料</div>
+    <div class="co">
+      <b>ダイキン工業 [6367]</b> / <b>AGC [5201]</b> — フッ素系材料。ダイキンは化学事業がQ1に営業利益+76%・利益率14.8%(+3.9pt)と改善し、半導体装置材料とDC高速通信向けコーティングが牽引<br>
+      <b>レゾナックHD [4004]</b> — 放熱材(TIM)。AI向け後工程3製品の一つとして2026年度に前年度比2倍弱を想定<br>
+      <b>信越化学 [4063]</b> — シリコーン系放熱材 ・ <b>デンカ [4061]</b> — 放熱シート、窒化ホウ素
+    </div>
+  </div>
+</div>
+
+<!-- ===== ③ 回線 ===== -->
+<div class="stage s3"><span class="n">③ 回線</span><span class="t">GPU同士をつなぐ配線が本番</span></div>
+<div class="card" style="border:2px solid var(--c3)">
+  <div class="box">
+    <b>なぜAIで光ファイバの使用量が急増するのか</b><br>
+    従来のCPUサーバー中心のDCでは、サーバーはフロントエンドネットワークに数本つながるだけだった。AI/GPUクラスタが違うのは、<b>学習ジョブが数千〜数万GPUにまたがるため、GPU同士を結ぶバックエンドネットワーク(GPUファブリック)が別途必要になる</b>点である。このファブリックはノンブロッキングに近い帯域を要求されるため、<b>GPU台数にほぼ比例して光リンクが増える</b>。<br><br>
+    <b>スパイン・リーフ構成の設計指針:</b><br>
+    ・256GPU未満 → 400Gスパイン / 100Gリーフ<br>
+    ・256〜1,024GPU → 800G / 400G<br>
+    ・1,024〜4,096GPU → <b>800Gスパイン / 800Gリーフ</b><br>
+    ・4,096GPU超 → 多段の800Gファブリック<br><br>
+    NVIDIA Quantum-X800 InfiniBandスイッチは<b>1台で800Gb/s×144ポート</b>。ポート数がこれだけ増えると<b>トランシーバ1個あたり14〜20Wの消費電力</b>が積み上がり、<b>光モジュールの発熱そのものがラック冷却の設計制約になる</b>という二次的な問題も生じる。すでに市場は800Gから<b>1.6T</b>への移行フェーズに入りつつある。
+  </div>
+
+  <div class="layer" style="border-color:var(--c3)">
+    <div class="lh">光ファイバ・光トランシーバ</div>
+    <div class="ld">DC内のGPU間配線とDC間接続。数量・単価の両面で伸びる</div>
+    <div class="co">
+      <b>住友電気工業 [5802]</b> — 光ファイバ・光トランシーバ。Q1は情報通信(DC向け光)が利益3.5倍で主役交代し、上期・通期を上方修正<br>
+      <b>フジクラ [5803]</b> — DC内光配線。Q1営業益2.6倍、通期営業益4,320億円へ大幅上方修正し中計目標を初年度で超過<br>
+      <b>古河電気工業 [5801]</b> — 光ソリューションが黒字転換しQ1営業益3.1倍・過去最高<br>
+      <b>信越化学 [4063]</b> — <b>光ファイバの母材(プリフォーム)</b>。電線3社の上流に位置する
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:var(--c3)">
+    <div class="lh">コネクタ・光部品</div>
+    <div class="ld">800G化で多芯化が進み、基板間・機器間の接続部品が増える</div>
+    <div class="co">
+      <b>ヒロセ電機 [6806]</b> — 多極コネクタ・同軸コネクタ。Q1で会社自身が<b>「AI関連投資の拡大を背景に産業用機器向けコネクタが好調」と明言</b>。売上収益+26.8%・営業利益+35.6%で<b>通期を上方修正</b>(いずれも前回予想比+8.7%)<br>
+      <b>日本航空電子工業 [6807]</b> — 高速伝送コネクタ・基板対基板コネクタ・光コネクタ。ただし<b>売上構成は自動車が最大</b>(Q1コネクタ事業で自動車308億円 vs 産機・インフラ66億円)で、DC比率は相対的に低い。<b>Q1は営業利益−77.9%と大幅減益</b>(金・銅など原材料高、エネルギー価格上昇)<br>
+      <b>フェローテックHD [6890]</b> — 光トランシーバの温度制御に使うサーモモジュールを2026年中に月900万枚体制へ増強予定<br>
+      <b>三菱電機 [6503]</b> — 光トランシーバ用の半導体レーザ等の光デバイス。Q1で光デバイスがFAシステムとともに牽引し通期を上方修正
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:var(--c3)">
+    <div class="lh">DC間接続・海底ケーブル</div>
+    <div class="ld">DC内だけでなく、DCとDCを結ぶ長距離側も投資テーマ</div>
+    <div class="co">
+      <b>NEC [6701]</b> — <b>光海底ケーブルで世界シェアトップ3</b>。2026年7月にインド〜マレーシア〜シンガポールを結ぶ「I-2SEA」の供給契約を締結、OCC・住友電工とマルチコアファイバ海底ケーブルも開発。DC間接続(DCI)向け光伝送装置<b>「SpectralWave WX-E ETM54C」(400G×54波=21.6Tb/s、ファンレス1U)</b>を2026年1月に投入。Q1は営業利益+66.1%で通期を上方修正<br>
+      <b>NTT [9432]</b> — DC事業とIOWN構想。Q1営業収益は過去最高(+10.9%)
+    </div>
+  </div>
+</div>
+
+<!-- ===== ④ 建設・不動産 ===== -->
+<div class="stage s4"><span class="n">④ 建設・不動産</span><span class="t">箱と、土地と、電力の枠</span></div>
+<div class="card">
+  <div class="layer">
+    <div class="lh">ゼネコン(DC建屋)</div>
+    <div class="co">
+      <b>鹿島建設 [1812]</b> — Q1は営業利益+7.8%、<b>建設事業受注高6,302億円(+21.1%)</b>、単体受注4,689億円(+34.7%)と国内が牽引<br>
+      <b>大林組 [1802]</b> — Q1は<b>営業利益+107.0%(2倍超)</b>、単体受注高+54.2%(建築+63.8%)と急伸。国内建築の採算改善が効いている<br>
+      <span class="note-s">※両社とも決算短信でのDCの直接言及は確認できず。受注の伸びにDC・半導体工場・物流が含まれると推定されるが、内訳は開示されていない</span>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh">電気工事(構内の電力設備を組む)</div>
+    <div class="ld">建設費の最大項目である電気設備を、実際に施工する会社</div>
+    <div class="co">
+      <b>きんでん [1944]</b> — DC構内の受変電設備工事・幹線工事・非常用発電機・UPS据付。Q1は完成工事高+14.8%、<b>営業利益+89.0%・純利益+127.6%</b>、受注工事高3,101.8億円(+16.3%)で一般得意先が419.4億円増。半導体工場とDCが受注を押し上げ<br>
+      <b>関電工 [1942]</b> — 首都圏中心にDC・半導体工場向け電気設備工事。業界メディアで「データセンター向け受注が拡大」と繰り返し取り上げられている。前期は完成工事高+10.4%・営業利益+42.5%で、上方修正・124円増配・300億円自社株買いを実施<br>
+      <span class="note-s">※関電工の2027年3月期Q1(7/31発表)の具体的数値は本レポート作成時点で未取得</span>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh">DC開発・不動産</div>
+    <div class="ld">土地と電力の枠を先に押さえる、バリューチェーンの最上流</div>
+    <div class="co">
+      <b>三菱地所 [8802]</b> — 2026年7月に<b>国内AIデータセンターへ約1.5兆円を投資</b>すると表明。2036年ごろまでに関東・関西で<b>受電容量2,500MW(原発約2.5基分)</b>を目標とし、<b>すでに約5棟・計1,000MW分の用地と電力供給設備を確保済み</b>。子会社の三菱地所設計が空調・電気設備の設計を担う。米国でもTA Realtyと組み総事業費2.3兆円規模のDC開発を計画。<b>「土地と電力を押さえるデベロッパー」という新しいポジション</b><br>
+      <span class="note-s">※Q1は経常利益+94%・純利益約3倍だが、海外物件の売却益によるもの。DC投資は先行投資フェーズで損益への寄与はこれから</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ⑤ IT機器・DC運営 ===== -->
+<div class="stage s5"><span class="n">⑤ IT機器・運営</span><span class="t">箱の中身</span></div>
+<div class="card">
+  <div class="layer">
+    <div class="lh">ICパッケージ基板</div>
+    <div class="ld">GPU/ASICを載せる基板。AIサーバー1台あたりの面積・層数が増えるほど伸びる</div>
+    <div class="co">
+      <b>イビデン [4062]</b> — AIアクセラレータ向け<b>ICパッケージ基板(FC-BGA)</b>の世界的最大手クラス。Q1は純利益+40.8%・<b>営業利益率21.8%</b>、同時に<b>通期営業利益を900億円→1,270億円へ大幅上方修正</b>。8/12に1株→2株の株式分割も発表<br>
+      <span class="note-s">※かつて同分野の中核だった<b>新光電気工業[6967]は2025年6月6日に上場廃止</b>(JIC系によるTOB、買付価格5,920円)。DC関連の有力銘柄が市場から消えた例として記録しておく</span>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh">DC運営・GPUクラウド</div>
+    <div class="ld">箱を建てて回す側。DC投資の恩恵と、投資負担の両方を受ける</div>
+    <div class="co">
+      <b>さくらインターネット [3778]</b> — 石狩DCを再エネ100%で運営し、生成AI向けGPUクラウド「<b>高火力</b>」を提供。NVIDIA H100→B200(国内最大級の約1,100基)→次世代Rubinへ投資を継続。2026年3月にガバメントクラウド提供事業者に正式採択。Q1は売上+48.6%、<b>GPUインフラ事業は+245.9%</b>、営業利益12.3億円と黒字転換かつQ1過去最高で<b>通期を上方修正</b>(営業利益15→25億円)<br>
+      <span class="warn">⚠️ ただし前期は<b>GPU立ち上げ遅延で大幅な下方修正</b>をした経緯があり、ボラティリティは高い。予想PER97.4倍・PBR4.75倍</span>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh">サーバー・ストレージ</div>
+    <div class="co">
+      <b>NEC [6701]</b> / <b>富士通 [6702]</b> — サーバー・ITサービス・DC構築運用<br>
+      <b>キオクシアHD [285A]</b> — NANDフラッシュ。AI向けストレージ需要
+    </div>
+  </div>
+</div>
+
+<!-- ===== 日本のDC計画 ===== -->
+<div class="card">
+  <h2>日本国内のDC建設計画</h2>
+  <div class="body">
+    IDC Japanは国内事業者のDC新設・増設投資が<b>2028年には1兆円を超える</b>と予測している。主要な計画は以下のとおり。<br><br>
+    <b>■ 千葉・印西/白井</b> — 国内最大の集積地。NTTデータグループが約250MW規模のキャンパス開発を始動。東京TKY12は総IT容量約200MW・6棟構成(第一期棟は2030年以降サービス開始)、隣接の東京TKY11(50MW)は2027年4月開始予定<br>
+    <b>■ 秋田市</b> — UAE系ファンドの出資により<b>建設費約2兆円・500MW級</b>の日本最大級AI DCを2030年代早期を目標に計画<br>
+    <b>■ 北海道</b> — ソフトバンク/IDCフロンティアの苫小牧AI DCが初期50MW→<b>300MW超</b>へ拡張予定。さくらインターネットの石狩DCが再エネ100%でGPUクラスタを運用<br>
+    <b>■ 大阪・関西</b> — オプテージが都市型DCに2035年までに3,000億円。KDDIの大阪堺DCも稼働済み<br>
+    <b>■ 外資</b> — <b>Microsoft 1.6兆円</b>(2026〜2029年)、<b>AWS 2兆2,600億円</b>(2023〜2027年)、<b>NTT GDC 1.5兆円超</b>(2023〜2027年)<br>
+    <b>■ デベロッパー</b> — 三菱地所が国内で2036年ごろまでに<b>1.5兆円・受電容量2,500MW</b><br><br>
+    <span class="note-s">通信・クラウド事業者に加えて<b>不動産デベロッパーが土地と電力を押さえる</b>という新しい構図が生まれている点が、2026年時点の特徴といえる。</span>
+  </div>
+</div>
+
+<!-- ===== 銘柄一覧 ===== -->
+<div class="card">
+  <h2>関連銘柄一覧(2026/8/13 場中)</h2>
+  <div class="cap">株価は8/13のザラ場値、前日比は8/12終値比</div>
+  <table>
+    <thead><tr><th>銘柄</th><th>役割</th><th class="num">株価<br>(前日比)</th><th class="num">予想PER<br>PBR</th><th class="num">利回り</th><th class="num">最低<br>投資額</th></tr></thead>
+    <tbody>
+      <tr><td><b>富士電機</b> 6504</td><td><span class="badge">電力</span> UPS国内4割</td><td class="num">14,890<br><span class="up">+2.76%</span></td><td class="num">19.5倍<br>2.75倍</td><td class="num">—</td><td class="num">148.9万</td></tr>
+      <tr><td><b>明電舎</b> 6508</td><td><span class="badge">電力</span> 変圧器</td><td class="num">11,820<br><span class="up">+3.68%</span></td><td class="num">21.4倍<br>3.02倍</td><td class="num">—</td><td class="num">118.2万</td></tr>
+      <tr><td><b>GSユアサ</b> 6674</td><td><span class="badge">電力</span> 蓄電池</td><td class="num">5,618<br><span class="up">+1.78%</span></td><td class="num">14.2倍<br>1.43倍</td><td class="num">1.74%</td><td class="num">56.2万</td></tr>
+      <tr><td><b>関西電力</b> 9503</td><td><span class="badge">電力</span> 供給+DC</td><td class="num">2,380.5<br><span class="up">+0.36%</span></td><td class="num"><b>8.5倍</b><br><b>0.74倍</b></td><td class="num">3.36%</td><td class="num">23.8万</td></tr>
+      <tr><td><b>三菱電機</b> 6503</td><td><span class="badge">電力</span><span class="badge">冷却</span><span class="badge">回線</span></td><td class="num">5,989<br><span class="up">+1.65%</span></td><td class="num">24.7倍<br>2.68倍</td><td class="num">1.00%</td><td class="num">59.9万</td></tr>
+      <tr><td><b>ダイキン工業</b> 6367</td><td><span class="badge">冷却</span> アプライド</td><td class="num">21,390<br><span class="down">−0.83%</span></td><td class="num">21.4倍<br>1.99倍</td><td class="num">1.68%</td><td class="num">213.9万</td></tr>
+      <tr><td><b>ニデック</b> 6594</td><td><span class="badge">冷却</span> 液冷CDU</td><td class="num">2,798<br><span class="up">+2.34%</span></td><td class="num"><span class="warn">算出不可</span><br>1.82倍</td><td class="num"><span class="warn">0円</span></td><td class="num">28.0万</td></tr>
+      <tr><td><b>荏原製作所</b> 6361</td><td><span class="badge">冷却</span> ポンプ+CMP</td><td class="num">5,896<br><span class="up">+3.02%</span></td><td class="num">26.9倍<br><b>5.18倍</b></td><td class="num">1.12%</td><td class="num">59.0万</td></tr>
+      <tr><td><b>住友電気工業</b> 5802</td><td><span class="badge">回線</span> 光ファイバ</td><td class="num">2,375<br><span class="up">8/13朝</span></td><td class="num">—</td><td class="num">—</td><td class="num">23.8万</td></tr>
+      <tr><td><b>フジクラ</b> 5803</td><td><span class="badge">回線</span> DC内光配線</td><td class="num">5,580<br><span class="note-s">(8/12)</span></td><td class="num">—<br>17倍台</td><td class="num">—</td><td class="num">55.8万</td></tr>
+      <tr><td><b>ヒロセ電機</b> 6806</td><td><span class="badge">回線</span> コネクタ</td><td class="num">27,615<br><span class="up">+2.20%</span></td><td class="num">25.8倍<br>2.38倍</td><td class="num">1.88%</td><td class="num">276.2万</td></tr>
+      <tr><td><b>日本航空電子</b> 6807</td><td><span class="badge">回線</span> コネクタ</td><td class="num">2,330<br><span class="up">+1.26%</span></td><td class="num">26.1倍<br><b>1.09倍</b></td><td class="num">2.15%</td><td class="num">23.3万</td></tr>
+      <tr><td><b>NEC</b> 6701</td><td><span class="badge">回線</span> 海底ケーブル</td><td class="num">4,917<br><span class="up">+0.08%</span></td><td class="num"><span class="warn">算出不可</span><br>2.92倍</td><td class="num">0.81%</td><td class="num">49.2万</td></tr>
+      <tr><td><b>フェローテックHD</b> 6890</td><td><span class="badge">回線</span> サーモモジュール</td><td class="num">8,950<br><span class="note-s">(8/12)</span></td><td class="num">14.8倍<br>1.14倍</td><td class="num">2.21%</td><td class="num">89.5万</td></tr>
+      <tr><td><b>鹿島建設</b> 1812</td><td><span class="badge">建設</span> ゼネコン</td><td class="num">4,891<br><span class="up">+0.47%</span></td><td class="num">13.2倍<br>1.64倍</td><td class="num">2.99%</td><td class="num">48.9万</td></tr>
+      <tr><td><b>大林組</b> 1802</td><td><span class="badge">建設</span> ゼネコン</td><td class="num">3,033<br><span class="up">+0.20%</span></td><td class="num">13.2倍<br>1.68倍</td><td class="num">3.10%</td><td class="num">30.3万</td></tr>
+      <tr><td><b>きんでん</b> 1944</td><td><span class="badge">建設</span> 電気工事</td><td class="num">6,928<br><span class="up">+1.55%</span></td><td class="num">16.2倍<br>2.63倍</td><td class="num"><b>3.46%</b></td><td class="num">69.3万</td></tr>
+      <tr><td><b>関電工</b> 1942</td><td><span class="badge">建設</span> 電気工事</td><td class="num">5,508<br><span class="up">+1.59%</span></td><td class="num">16.8倍<br>2.84倍</td><td class="num">2.36%</td><td class="num">55.1万</td></tr>
+      <tr><td><b>三菱地所</b> 8802</td><td><span class="badge">開発</span> 1.5兆円投資</td><td class="num">3,722<br><span class="up">+1.03%</span></td><td class="num">19.0倍<br>1.64倍</td><td class="num">1.32%</td><td class="num">37.2万</td></tr>
+      <tr><td><b>イビデン</b> 4062</td><td><span class="badge">IT機器</span> FC-BGA</td><td class="num">22,275<br><span class="up"><b>+8.76%</b></span></td><td class="num"><b>74.5倍</b><br><b>10.9倍</b></td><td class="num">0.16%</td><td class="num">222.8万</td></tr>
+      <tr><td><b>さくらインターネット</b> 3778</td><td><span class="badge">運営</span> GPUクラウド</td><td class="num">3,650<br><span class="up"><b>+6.10%</b></span></td><td class="num"><b>97.4倍</b><br>4.75倍</td><td class="num">0.15%</td><td class="num">36.5万</td></tr>
+      <tr><td><b>三菱重工</b> 7011</td><td><span class="badge">電力</span> GTCC</td><td class="num">4,190<br><span class="note-s">(8/13朝)</span></td><td class="num">35.4倍<br>4.24倍</td><td class="num">0.72%</td><td class="num">41.9万</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    富士電機・明電舎の予想配当利回りは会社予想が未開示のため取得不可。ニデックは業績予想未定、NECはEPS会社予想未開示のため予想PERが算出できない。住友電工・フジクラ・フェローテック・三菱重工の一部指標は本ライブラリの各銘柄レポート作成時点の値で、基準日が完全には揃っていない。
+  </div>
+</div>
+
+<div class="card">
+  <h2>この地図から読み取れること</h2>
+  <div class="body">
+    <b>① 8/13はDC関連に資金が入った日である。</b>イビデン+8.76%、さくらインターネット+6.10%、明電舎+3.68%、荏原+3.02%、富士電機+2.76%、ニデック+2.34%、ヒロセ+2.20%。<b>電力・冷却・回線・IT機器のすべてのレイヤーが同時に上げている</b>。一方でダイキンは−0.83%と逆行しており、テーマ内でも一律ではない。<br><br>
+    <b>② バリュエーションの差が極端に大きい。</b>同じ「DC関連」でも、イビデン(PER74.5倍・PBR10.9倍)やさくらインターネット(PER97.4倍)のように将来をフルに織り込んだものから、関西電力(PER8.5倍・PBR0.74倍)や日本航空電子(PBR1.09倍)のようにDCの恩恵がほとんど織り込まれていないものまで並ぶ。<b>「DC関連だから買われている」わけではなく、DC比率が高く見えやすい銘柄ほど織り込みが進んでいる</b>と整理できる。<br><br>
+    <b>③ 建設・電気工事は「金額が最大の領域」なのにPERが低い。</b>建設費の40〜45%を占める電気設備を施工するきんでん(PER16.2倍)・関電工(PER16.8倍)、建屋を建てる鹿島・大林組(いずれもPER13.2倍)は、いずれも10倍台にとどまる。受注の内訳にDCが明示されないため、テーマ株として認識されにくい面がある。<b>ただし建設業は受注から売上計上までのタイムラグが長く、また案件ごとの採算差が大きい</b>点は割り引く必要がある。<br><br>
+    <b>④ 「液浸冷却」の言葉に引きずられない。</b>主流はコールドプレート液冷であり、液浸の既存施設導入率は20.4%。フッ素系冷却液を持つ企業を「液浸関連」として評価する際は、実際の売上寄与を確認する必要がある。<br><br>
+    <b>⑤ 開示が正常でない銘柄がある。</b>ニデックは液冷CDUという最も直球のポジションを持ちながら、会計不正の精査でQ1決算の開示を延期し、業績予想も未定・配当0円という状態にある。<b>事業の魅力と、投資対象としての前提は分けて考える必要がある。</b>
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/13</td><td class="note-s">初版。DCを電力・冷却・回線・建設・IT機器の5層に整理し、関連22銘柄を収録。建設費内訳(電気40〜45%が最大)、ラックあたり電力の変化(10〜15kW→132kW→240kW級)、液冷と液浸の違い(液浸の既存施設導入率20.4%)、GPUファブリックによる光配線の増加メカニズム、国内DC建設計画を整理。関電工のQ1数値、荏原の2Q(8/14発表予定)は未取得</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: 各社決算短信・決算説明資料(2026年7〜8月発表) / ダイキン工業 FUSION30 / OCCTO 2025年度需要想定 / IDC Japan / Turner &amp; Townsend データセンター建設コスト調査 / dgtl infra / Encor Advisors / Cushman &amp; Wakefield APAC Data Centre Construction Cost Guide / NVIDIA GB200 NVL72 / Introl・Mordor Intelligence(液冷・液浸市場) / 日本経済新聞・EE Times Japan・Cloud Watch・OPTRONICS・電波新聞 / 株探(株価指標、2026/8/13)。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+<script>
+// --- 建設費の内訳(100%積み上げ横棒) ---
+(function(){
+  const SEG = [
+    { n:'電気設備',        lo:40, hi:45, mid:42.5, c:'var(--c1)' },
+    { n:'内装フィットアウト', lo:20, hi:25, mid:22.5, c:'var(--c4)' },
+    { n:'建屋・土地',      lo:15, hi:20, mid:17.5, c:'var(--c3)' },
+    { n:'冷却・機械',      lo:15, hi:20, mid:17.5, c:'var(--c2)' },
+  ];
+  const W=700, H=112, L=8, R=8, BY=26, BH=42;
+  const iw=W-L-R;
+  const tot=SEG.reduce((a,s)=>a+s.mid,0);
+  let x=L, g='';
+  SEG.forEach(s=>{
+    const w=iw*s.mid/tot;
+    g+=`<rect x="${x}" y="${BY}" width="${w-2}" height="${BH}" rx="3" fill="${s.c}"/>`;
+    g+=`<text x="${x+w/2-1}" y="${BY+BH/2+4}" font-size="12.5" font-weight="700" text-anchor="middle" fill="#fff">${s.lo}〜${s.hi}%</text>`;
+    g+=`<text x="${x+w/2-1}" y="${BY-8}" font-size="10.5" text-anchor="middle" fill="var(--text-secondary)">${s.n}</text>`;
+    x+=w;
+  });
+  g+=`<text x="${L}" y="${BY+BH+18}" font-size="9.5" fill="var(--text-muted)">※IT機器(GPUサーバー)はこの建設費に含まれない別枠。AI DCの総投資額ではGPUが最大項目になる</text>`;
+  document.getElementById('c1').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="データセンター建設費の内訳"><g>${g}</g></svg>`;
+})();
+
+// --- ラックあたり電力 ---
+(function(){
+  const D = [
+    { n:'従来の空冷DC',              v:15,  lbl:'10〜15kW', c:'var(--c3)', s:'これを超えると空冷は成立しにくい' },
+    { n:'AIクラスタ(一般的なレンジ)', v:120, lbl:'30〜120kW', c:'var(--c2)', s:'液冷が必要になる領域' },
+    { n:'GB200 NVL72',              v:132, lbl:'約132kW',  c:'var(--c1)', s:'1ラックあたり' },
+    { n:'次世代機(想定)',            v:240, lbl:'240kW級',  c:'var(--c5)', s:'視野に入っている水準' },
+  ];
+  const W=700, RH=40, T=8, B=10, NAMEW=170, VALW=96;
+  const H=T+B+D.length*RH;
+  const pw=W-NAMEW-VALW;
+  const max=250;
+  let g='';
+  D.forEach((d,i)=>{
+    const cy=T+i*RH+RH/2;
+    const w=Math.max(3, pw*d.v/max);
+    g+=`<rect x="${NAMEW}" y="${cy-11}" width="${w}" height="22" rx="3" fill="${d.c}"/>`;
+    g+=`<text x="${NAMEW-8}" y="${cy-1}" font-size="10.5" font-weight="600" text-anchor="end" fill="var(--text-primary)">${d.n}</text>`;
+    g+=`<text x="${NAMEW-8}" y="${cy+11}" font-size="8.8" text-anchor="end" fill="var(--text-muted)">${d.s}</text>`;
+    g+=`<text x="${NAMEW+w+7}" y="${cy+4}" font-size="11" font-weight="700" fill="var(--text-primary)">${d.lbl}</text>`;
+  });
+  document.getElementById('c2').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="ラックあたり消費電力の比較"><g>${g}</g></svg>`;
+})();
+</script>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三菱倉庫 [9301] 銘柄レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --good-text: #006300; --warn: #c77f00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --good-text: #0ca30c; --warn: #e0a030;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 760px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+</style>
+</head>
+<body class="viz-root">
+
+<div class="head">
+  <div>
+    <h1>三菱倉庫 <span style="font-weight:400;color:var(--text-muted)">[9301] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">倉庫・運輸</span> <span class="badge">3月期決算</span></div>
+  </div>
+  <div class="px">
+    <div class="v">1,504円</div>
+    <div class="note-s">2026/8/13 場中(+0.20%)</div>
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>サマリー</h2>
+  <div class="body">
+    2027年3月期第1四半期(2026/7/31発表)は<b>売上高705.8億円(+2.9%)・営業利益38.6億円(−2.6%)・経常利益54.0億円(−13.2%)・純利益60.8億円(−67.3%)</b>と、増収ながら各段階で減益となった。<br><br>
+    <b>純利益の大幅減は一過性要因の剥落によるものである。</b>前期(2026年3月期)の純利益547.7億円(+71.9%)には<b>政策保有株式の売却益</b>が大きく含まれていた。今期の会社予想は純利益230億円(−58.0%)だが、同じ通期予想で<b>営業利益は175億円(+9.9%)と増益計画</b>である。「減益」というヘッドラインの中身は、本業の悪化ではなく資産売却益の反動である。<br><br>
+    <b>ただしQ1の営業利益は−2.6%と減益スタート。</b>海上運賃単価の低下による国際運送取扱事業の減収、米Cavalier Logisticsグループと中国子会社の取扱減が要因で、会社はQ2以降の国際輸送の収益改善を見込むとしている。<b>通期の営業増益+9.9%は、下期の改善に依存する構図</b>にある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算 — FY2027 Q1(2026/7/31発表)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY27/Q1</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">705.8億円</td><td class="num up">+2.9%</td></tr>
+      <tr><td><b>営業利益</b></td><td class="num"><b>38.6億円</b></td><td class="num down"><b>−2.6%</b></td></tr>
+      <tr><td>経常利益</td><td class="num">54.0億円</td><td class="num down">−13.2%</td></tr>
+      <tr><td>親会社株主帰属四半期純利益</td><td class="num">60.8億円</td><td class="num down"><b>−67.3%</b></td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>物流事業(主力):</b> 売上高615.2億円(+2.7%)・営業利益30.7億円(<b>−4.2%</b>)<br>
+    事業別の内訳は以下のとおりで、<b>国内は堅調だが国際が足を引っ張る構図</b>になっている:<br>
+    ・倉庫事業 売上<span class="up">+4.7%</span>(機械・電機の増加が牽引)<br>
+    ・陸上運送事業 売上<span class="up">+7.2%</span>(一般雑貨が増加)<br>
+    ・港湾運送事業 売上<span class="up">+4.9%</span>(コンテナ貨物が増加)<br>
+    ・<b>国際運送取扱事業 売上<span class="down">−2.9%</span></b>(海上運賃単価の低下)<br><br>
+    営業費用は作業運送委託費・施設賃借費・人件費の増加により+3.1%。<b>増収率(+2.9%)を費用増加率(+3.1%)が上回ったことが営業減益の直接的な原因</b>である。<br><br>
+    <b>会社の説明(8/3 決算説明会):</b> 物流事業の減益要因として、海上運賃単価の下落に加え、<b>米国のCavalier Logisticsグループおよび中国現地法人(上海菱華倉儲服務)の取扱減少</b>を挙げている。第2四半期以降は<b>国際輸送事業の収益改善を見込む</b>としている。<br><br>
+    <span class="note-s">※不動産事業のセグメント別数値は本レポート作成時点で個別に取得できていない。全社営業利益38.6億円から物流事業30.7億円を差し引いた約7.9億円が不動産事業と全社調整の合計にあたる。<span class="warn">次回更新時に決算短信のセグメント情報で確認予定。</span></span>
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--warn)">
+  <h2>通期見通し — 「営業増益なのに純利益は6割減」の構造</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY27予想</th><th class="num">前期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">2,800億円</td><td class="num up">+2.4%</td></tr>
+      <tr><td><b>営業利益</b></td><td class="num"><b>175億円</b></td><td class="num up"><b>+9.9%</b></td></tr>
+      <tr><td>経常利益</td><td class="num">216億円</td><td class="num">+0.2%</td></tr>
+      <tr><td><b>親会社株主帰属当期純利益</b></td><td class="num"><b>230億円</b></td><td class="num down"><b>−58.0%</b></td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益段階ごとに方向が違うことが、この会社の見え方を難しくしている。</b><br>
+    ・営業利益 <span class="up">+9.9%</span> — 本業は増益計画<br>
+    ・経常利益 <span>+0.2%</span> — ほぼ横ばい<br>
+    ・純利益 <span class="down">−58.0%</span> — 大幅減益<br><br>
+    <b>差の正体は政策保有株式の売却益である。</b>前期(2026年3月期)の純利益547.7億円(+71.9%)には多額の売却益が含まれていた。同社は経営計画で<b>「政策保有株式を2025年度末までに純資産対比20%未満へ縮減し、以降も継続縮減」</b>を掲げており、その売却が前期に集中したかたちとなる。今期はその反動で純利益が大きく落ちる。<br><br>
+    <b>この構造は両面で捉える必要がある。</b>政策保有株の売却は資本効率の改善(ROE向上・還元原資の確保)につながる一方、<b>売却益という利益源はいずれ枯れる</b>。会社自身も経営計画で「2024年度は有価証券売却等が利益の60%を占める状態」を認識し、<b>事業利益中心の構成へシフトする</b>ことを掲げている。<br><br>
+    <b>進捗:</b> Q1の経常利益54.0億円は通期予想216億円に対し<b>進捗率25.0%</b>と、四半期平均どおり。上振れも下振れもしていない。<span class="note-s">なおアナリストのコンセンサス通期経常利益は232.5億円と、会社予想216億円をやや上回る水準にある。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>経営計画[2025-2030] — 6年で事業利益2.8倍という目標</h2>
+  <div class="body">
+    2025年2月28日公表。<b>2025年度〜2030年度の6か年計画</b>。<br><br>
+    <b>数値目標:</b>
+  </div>
+  <table style="margin-top:8px">
+    <thead><tr><th></th><th class="num">2024年度実績</th><th class="num">2027年度(中間)</th><th class="num">2030年度(最終)</th></tr></thead>
+    <tbody>
+      <tr><td><b>事業利益</b></td><td class="num">225億円</td><td class="num">390億円</td><td class="num"><b>630億円程度</b></td></tr>
+      <tr><td>純利益</td><td class="num">—</td><td class="num">350億円</td><td class="num">410億円程度</td></tr>
+      <tr><td>ROE</td><td class="num">—</td><td class="num">9%</td><td class="num"><b>10%以上</b></td></tr>
+      <tr><td>営業収益</td><td class="num">—</td><td class="num">—</td><td class="num">6,300億円以上</td></tr>
+      <tr><td>営業利益率</td><td class="num">—</td><td class="num">—</td><td class="num">8.3%水準</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    <b>2030年度の事業利益630億円は、2024年度225億円の約2.8倍にあたる。</b>かなり野心的な目標であり、達成には後述の投資が計画どおり収益化する必要がある。今期の会社予想(経常216億円)から2027年度中間目標390億円までの距離も大きい。<br><br>
+    <b>2030年度の事業利益構成の想定:</b> 物流65% / 不動産30% / 新規事業5%。<span class="note-s">現在は有価証券売却等が利益の相当部分を占める構成から、事業利益中心へ転換することが計画の柱に置かれている。</span>
+    <hr class="sep">
+    <b>投資計画(2025-2030年 総額5,900億円):</b><br>
+    ・成長投資 4,750億円 — <b>物流2,500億円 / 不動産1,750億円 / 新規事業500億円</b><br>
+    ・更新投資 800億円(環境投資枠200億円を含む)<br>
+    ・DX投資 350億円(ロボティクス・AI導入、プラットフォーム構築)<br><br>
+    <b>キャッシュアロケーション(総額7,100億円規模):</b> 営業CF等3,200億円以上 + 借入2,900億円 + <b>政策保有株式売却等1,000億円</b> を原資に、成長投資4,750億円・株主還元1,200億円以上を配分。純資産は4,000億円前後でコントロールし、2030年度末の自己資本比率は45%程度を想定。
+  </div>
+</div>
+
+<div class="card">
+  <h2>事業戦略 — 物流と不動産の両輪</h2>
+  <div class="body">
+    <b>■ 物流事業</b>(利益目標: 2024年度120億円 → 2030年度290億円)<br>
+    5つのカテゴリー戦略を掲げる。<br>
+    ・<b>医療・ヘルスケア</b> — GDP(医薬品の適正流通基準)に準拠した医薬品輸配送ネットワークの拡販、創薬モダリティに対応する冷凍・冷蔵施設の拡充、医薬品物流データプラットフォーム「ML Chain」の機能強化。<b>同社が伝統的に強みを持つ領域</b><br>
+    ・<b>食品・飲料</b> — 国内外コールドチェーンの強化、キユーソー流通システムとの提携深化<br>
+    ・<b>自動車・機械・電機</b> — 自動車部品物流のフルラインアップ、<b>富士物流を活用した半導体・電力インフラ物流の拡大</b><br>
+    ・<b>新素材</b> — ASEAN域内および欧米向け一貫輸送<br>
+    ・<b>コンシューマー</b> — EC・DtoC市場への対応、ECセンター増設<br><br>
+    <b>■ 不動産事業</b> — 「持つ」から「回す」へ<br>
+    従来の賃貸中心から<b>資産回転型ビジネスへの転換</b>を打ち出している。<b>2027年度を目途に300億円規模の不動産ファンドを組成</b>し、2030年度にはファンド規模800億円を目標とする。物流不動産を国内外で開発・取得したうえで売却する流れを作る構想である。海外はASEAN・米国・豪州での物流施設・住宅開発を進める。<br>
+    <span class="note-s">同社は東京・横浜などの港湾・都心部に長年保有する土地を持ち、伝統的に「含み資産株」として見られてきた。資産回転型への転換は、その資産を評価額のまま寝かせるのではなく、回転させて収益とROEに変えていく方向性を示すものといえる。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    ・<b>配当:</b> 経営計画期間中は増配を継続し、<b>2030年度までにDOE(株主資本配当率)4%以上</b>を目指す<br>
+    ・<b>自社株買い:</b> 機動的に実施し、<b>計画期間中400億円以上</b>を目安とする<br>
+    ・<b>政策保有株式:</b> 2025年度末までに純資産対比20%未満へ縮減、以降も継続縮減<br><br>
+    現在の配当利回りは<b>2.93%</b>。<b>還元原資の一部が政策保有株の売却代金である</b>点は、還元の持続性を考えるうえで押さえておく必要がある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th></tr></thead>
+    <tbody>
+      <tr><td>株価</td><td class="num">1,504円(2026/8/13 場中)</td></tr>
+      <tr><td>予想PER</td><td class="num">22.2倍</td></tr>
+      <tr><td>PBR</td><td class="num">1.35倍</td></tr>
+      <tr><td>配当利回り</td><td class="num">2.93%</td></tr>
+      <tr><td>時価総額</td><td class="num">5,446億円</td></tr>
+      <tr><td>最低投資金額</td><td class="num">15.0万円(100株)</td></tr>
+      <tr><td>当日の値動き</td><td class="num">始値1,515 / 高値1,522 / 安値1,504</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>予想PER22.2倍という数字の読み方に注意が必要である。</b>この22.2倍は<b>「政策保有株の売却益が剥落して−58%減益となる今期の純利益」に対する倍率</b>であり、一過性要因が抜けた後の水準を映している。前期の純利益547.7億円で計算すれば1桁台のPERになるが、それは一過性を含んだ利益であり実力ではない。<b>どちらか一方だけを見ると評価を誤りやすい。</b><br><br>
+    <b>PBR1.35倍</b>は、倉庫株が伝統的に持つ「含み資産で万年低PBR」というイメージからすると<b>すでに1倍を明確に上回る水準</b>にある。含み資産の再評価と資本効率改善への期待が、ある程度株価に織り込まれてきたとみることもできる。<br><br>
+    <span class="note-s">※年初来高値・安値は本レポート作成時点で取得できていない。<span class="warn">次回更新時に確認予定。</span></span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    <b>海上運賃:</b> 国際運送取扱事業の採算を直接左右する。Q1は運賃単価の低下が減益要因となった。<br>
+    <b>国内物流需要:</b> 倉庫・陸運・港湾はいずれも増収で、国内は底堅い。機械・電機の入出庫増加が倉庫事業を牽引している。<br>
+    <b>人件費・委託費:</b> 営業費用が+3.1%と増収率を上回っており、<b>コスト増を価格転嫁できるかが利益率の分かれ目</b>になる。<br>
+    <b>金利:</b> 借入2,900億円を含む投資計画を掲げており、金利上昇は調達コスト面でマイナスに働く。一方で不動産の資産回転型ビジネスは金利環境の影響を受けやすい。<br>
+    <b>米国・中国事業:</b> Cavalier Logisticsグループ(米)と上海菱華倉儲服務(中国)の取扱減が足元の減益要因。関税政策や米中間の物流量の動向が影響する。<br>
+    <span class="note-s">※AI・データセンター向けの直接的な事業展開については、今回確認した開示資料の範囲では言及を確認できなかった。「富士物流を活用した半導体・電力インフラ物流の拡大」が、関連性のある記述として挙げられる程度である。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ① <b>通期営業増益+9.9%の実現性</b> — Q1は営業−2.6%と減益スタート。会社はQ2以降の国際輸送改善を見込むが、海上運賃次第の面がある<br>
+    ② <b>一過性利益への依存度</b> — 政策保有株の売却益が利益に占める比率は高い。売却が進むほどこの利益源は細る。「事業利益中心へのシフト」が実際に進むかが本質的な論点<br>
+    ③ <b>経営計画の目標水準</b> — 2030年度の事業利益630億円は2024年度の約2.8倍。2027年度中間目標390億円も、今期の会社予想(経常216億円)から距離がある<br>
+    ④ <b>大型投資の回収</b> — 6年で5,900億円の投資計画。借入2,900億円を伴い、金利上昇局面では負担が増す<br>
+    ⑤ <b>不動産ファンド事業の立ち上げ</b> — 2027年度に300億円規模のファンド組成という新しい取り組みで、実績はこれから<br>
+    ⑥ <b>コスト増の転嫁</b> — 人件費・委託費の上昇が増収率を上回っている状態が続けば、利益率は圧迫される<br>
+    ⑦ <b>PBR1.35倍</b> — 含み資産株としての割安感は以前より薄い水準にある
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/13</td><td class="note-s">初版。FY27/Q1決算(2026/7/31発表)と経営計画[2025-2030]を収録。「営業利益+9.9%増益予想なのに純利益−58%減益予想」という利益段階のねじれが政策保有株売却益の剥落によるものであることを整理。不動産セグメントの個別数値と年初来高値・安値は未取得</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: 三菱倉庫 2027年3月期第1四半期決算(2026/7/31発表) / 経営計画[2025-2030](2025/2/28公表) / 2026年4〜6月期決算説明会(2026/8/3) / LNEWS / Daily Cargo / 日本経済新聞「三菱倉庫の純利益58%減 27年3月期、政策保有株の売却益減り」 / IFIS株予報 / 株探(株価指標、2026/8/13)。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+</body>
+</html>

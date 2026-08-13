@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>フジクラ [5803] 銘柄レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --good-text: #006300; --warn: #c77f00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --good-text: #0ca30c; --warn: #e0a030;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 760px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+</style>
+</head>
+<body class="viz-root">
+
+<div class="head">
+  <div>
+    <h1>フジクラ <span style="font-weight:400;color:var(--text-muted)">[5803] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">電線・光ファイバ</span> <span class="badge">AI・データセンター</span> <span class="badge">3月期決算</span></div>
+  </div>
+  <div class="px">
+    <div class="v">5,580円</div>
+    <div class="note-s">2026/8/10 終値(+7.62%)</div>
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>サマリー</h2>
+  <div class="body">
+    2027年3月期第1四半期(2026/8/7発表)は<b>売上高+50.1%・営業利益+155.1%</b>と大幅な増収増益。AIデータセンター(DC)向け光コンポーネント・光配線が牽引し、情報通信セグメントの営業利益率は37.0%に達した。同時に通期営業利益予想を<b>3,100億円→4,320億円へ+39%上方修正</b>(純利益は2.1倍の3,260億円へ)し、翌営業日の株価は+7.6%と好感された。一方、株価は5月高値から約3割調整した後もPER28倍・PBR17倍台と<b>高成長の持続を前提とした水準</b>にあり、DC投資サイクルの持続性が引き続き最大の論点である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算 — FY2027 Q1(2026/8/7発表)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY27/Q1</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">4,020億円</td><td class="num up">+50.1%</td></tr>
+      <tr><td><b>営業利益</b></td><td class="num"><b>1,048億円</b></td><td class="num up"><b>+155.1%</b></td></tr>
+      <tr><td>営業利益率</td><td class="num"><b>26.1%</b></td><td class="num up">+10.7pt</td></tr>
+      <tr><td>経常利益</td><td class="num">1,115億円</td><td class="num up">+166.8%</td></tr>
+      <tr><td>四半期純利益</td><td class="num">804億円</td><td class="num up">+156.8%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>セグメント別:</b> 情報通信は売上2,644億円(+83.9%)・営業利益980億円(+188.3%)で、全社営業利益の9割超を占める。営業利益率は前年同期23.6%→<b>37.0%</b>へ上昇し、DC向け光コンポーネント製品の伸長と「米国以外での新規大量受注」が寄与した。エネルギーは売上436億円(+23.1%)・利益53億円(+59.2%)と堅調。一方、エレクトロニクスは売上353億円(−10.3%)・利益4億円(−73.5%)とスマートフォン向けの品種構成変化と材料費高騰で低調、自動車は増収ながら利益12億円と前年並み。<br><br>
+    <b>利益の質の確認(一過性要因の分解):</b><br>
+    ・決算短信上、補助金・還付金等の一過性利益の計上は確認されず、増益は<b>DC需要の実質的な拡大に基づく</b>と説明される<br>
+    ・ただし情報通信の利益率37%は大型案件の価格・構成に依存する水準であり、案件ミックス次第で変動しうる点は留意が必要<br>
+    ・会計方針変更: 為替予約等の処理を振当処理から<b>期末時価評価</b>へ変更しており、四半期の経常利益は為替市況による振れが従来より大きくなる<br>
+    ・後発事象: 中国の光ファイバ母材合弁(藤倉烽火光電材料科技)の持分60%を烽火通信へ譲渡予定(2026年9月下旬、譲渡損益は軽微)<br><br>
+    <b>参考:</b> 2026年4月1日付で1:6の株式分割を実施済み。本レポートの株価・EPS等は分割後ベース。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <table>
+    <thead><tr><th>通期予想(FY2027)</th><th class="num">修正前</th><th class="num">修正後(8/7)</th><th class="num">前期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">14,620億円</td><td class="num"><b>17,550億円</b></td><td class="num up">+48.4%</td></tr>
+      <tr><td>営業利益</td><td class="num">3,100億円</td><td class="num"><b>4,320億円</b></td><td class="num up">+128.9%</td></tr>
+      <tr><td>経常利益</td><td class="num">3,160億円</td><td class="num"><b>4,530億円</b></td><td class="num up">+127.1%</td></tr>
+      <tr><td>純利益</td><td class="num">2,290億円</td><td class="num"><b>3,260億円</b></td><td class="num up">+107.4%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    修正の主因は「期初計画を上回る受注進捗」と「光コンポーネント大型案件の受注確度向上」。<b>下期の米国以外の新規DC向け大型案件まで予想に織り込んだ</b>点が特徴で、情報通信の通期営業利益は2,843億円→4,018億円(利益率33.6%)へ引き上げられた。<br><br>
+    <b>上振れ側の要因:</b><br>
+    ・受注確度ベースの織り込みであり、追加案件の受注が決まれば再修正の余地<br>
+    ・為替前提は第2四半期以降<b>1ドル160円</b>(期初150円から変更)。感応度は年間営業利益で約27億円/円と小さく、為替が業績を大きく左右する構造ではない<br><br>
+    <b>下振れ側の要因:</b><br>
+    ・Q1の営業利益進捗率は24.3%と、修正後計画は下期の案件実行を前提とした強気の水準。DC建設側の遅延や顧客の投資計画変更が直接影響する<br>
+    ・光ファイバ・コネクタの生産能力は増強途上であり、立ち上げ遅延は機会損失につながる<br><br>
+    <b>配当:</b> 年間38円(中間19円・期末19円)予想を据え置き。配当性向40%を目安としており、会社は<b>第2四半期決算後に増配を判断する</b>方針を示した。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <div class="body">
+    直近株価は5,580円(2026/8/10終値、+7.62%)。8/7の決算・上方修正を受けた急反発である。時価総額は約9.9兆円と電線3社で突出しており、住友電工・古河電工を大きく上回る。<br><br>
+    <b>バリュエーション(2026/8/10時点、松井証券):</b> 予想PER<b>28.3倍</b>(修正後EPS約197円ベース)・予想配当利回り0.68%。実績BPS315.67円に対する<b>PBRは17倍台</b>と、資産価値からの説明は困難な水準にある。年初来高値7,933円(5/14)に対し現値は<b>約30%低い水準</b>で、5〜7月のAI関連株の過熱とその後の調整(後述のKOSPI急落等)を経て、期待値は一段階リセットされた状態にある。<br><br>
+    <b>評価:</b> PER28倍は、純利益が今期2.1倍になる成長スピードを踏まえれば極端な水準ではなく、受注確度ベースで織り込む会社予想の性質上、上振れが続けば実質PERはさらに低下する。一方、PBR17倍台・時価総額9.9兆円は<b>DC投資サイクルが今後も数年続くことを前提に織り込んだ水準</b>であり、前提が揺らげば調整幅も大きくなりやすい。総合すると<b>「やや割高」</b>——業績モメンタムは極めて強いが、バリュエーションの安全余地は薄い局面と評価する。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    <b>新中期経営計画(2026〜2028年度)——「第4の創業」:</b> 2026年5月に発表。最終年度(2029年3月期)に<b>売上高1兆6,000億円・営業利益3,150億円</b>、長期の2035年度に売上高2兆8,000億円・営業利益5,800億円を掲げる。3年間で<b>総額5,300億円の成長投資</b>を計画し、「攻めの選択と集中」へ舵を切った。<br><br>
+    <b>① DC向け光配線への集中投資:</b> 光ファイバ・ケーブル増産に国内約400億円、<b>米国に最大2,600億円</b>の計約3,000億円を投資。SWR(Spider Web Ribbon)等の高密度光配線でDC市場の需要を取り込む。社長は「DC市場は今後10年は堅調に伸びる」との見方を示す。<br>
+    <b>② 核融合・次世代エネルギー:</b> 核融合炉向け超電導線材の供給拡大を成長軸の一つに位置付ける。<br>
+    <b>③ 論点:</b> 今期の修正後営業利益予想4,320億円は、<b>中計最終年度目標3,150億円を初年度で既に上回る</b>。計画数値は実勢に追い抜かれており、中計目標の再設定(引き上げ)の有無が今後の注目点。逆に言えば、現在の業績水準自体が「計画を超えた特需」を含む可能性があり、需要の持続性見極めが重要になる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因(為替・金利・関税・銅価)</h2>
+  <div class="body">
+    <b>為替:</b> 会社前提は下期1ドル160円で実勢(158〜160円前後)並み。感応度は年間営業利益約27億円/円と小さく、日銀の利上げ観測による円高が進んでも業績影響は限定的。ただしグロース株としての株価はグローバル金利動向に敏感である。<br>
+    <b>銅価:</b> 電線事業の銅は基本的に価格転嫁される構造だが、銅価高止まりは運転資本の増加要因。米国の銅関税を含む通商政策は調達・販価の両面で注視が必要。<br>
+    <b>関税:</b> 米国への最大2,600億円の現地生産投資は、関税・地政学リスクへの対応(現地化)としての側面も持つ。<br>
+    <b>AI関連株の調整:</b> 2026年7月中旬以降、AI・半導体関連の調整が断続的に発生(7/16 KOSPI一時−7.6%・日経平均−2,418円、7/28 KOSPI−8%超でサーキットブレーカー発動、SKハイニックス−11%)。フジクラ株の5月高値からの調整もこの流れの中にあり、8月上旬も関連株のボラティリティは高い。同社株は<b>AI設備投資センチメントとの連動性が極めて高い</b>点に留意。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ① <b>DC投資サイクルの変調</b> — ハイパースケーラーの設備投資計画の下方修正は受注・株価に直結する。AI投資の「循環金融モデル」への市場の不信感(7月末の急落の一因)が再燃する場合は注意<br>
+    ② <b>大型案件の実行リスク</b> — 修正後予想は下期の新規大型案件を織り込み済み。案件遅延・キャンセルは即下振れ要因<br>
+    ③ <b>バリュエーション</b> — PBR17倍台。成長期待の微修正でも株価変動が大きくなりやすい<br>
+    ④ <b>能力増強の遅延</b> — 米国新工場等の立ち上げが計画から遅れる場合、機会損失と競合(コーニング、古河電工系Lightera等)へのシェア流出リスク<br>
+    ⑤ <b>非情報通信事業の低迷</b> — エレクトロニクスの利益急減が続く場合、情報通信一本足の構造が強まる
+  </div>
+</div>
+
+<div class="card">
+  <h2>決算説明会・質疑応答</h2>
+  <div class="body">
+    決算短信(2026/8/7)および業績予想修正の開示内容は本レポートに反映済み。開示から読み取れる要点は以下のとおり。<br>
+    ・上方修正は受注確度の高い案件のみを織り込む方針で、<b>下期の米国以外新規DC大型案件を新たに反映</b><br>
+    ・配当性向40%目安のもと、<b>増配判断はQ2決算後</b>に持ち越し<br>
+    ・中国光ファイバ母材合弁の持分譲渡(2026/9予定)で中国事業のエクスポージャーを縮小<br>
+    <span class="warn">説明会の質疑応答要旨は未取得(同社IRサイトは取得エラーのため次回更新時に再取得予定)。注目論点は「37%まで上昇した情報通信利益率の持続性」「米国新工場の立ち上げスケジュール」「受注残の期間・カバー率」。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/12</td><td class="note-s">初版。FY27/Q1決算短信・通期上方修正(2026/8/7)、新中計(2026-2028年度)、バリュエーション(8/10終値ベース)を収録。説明会質疑応答は未取得</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: フジクラ 2027年3月期第1四半期決算短信(2026/8/7、TDnet開示PDF) / 同 業績予想修正に関するお知らせ / STOCK EXPRESS(2026/8/7 決算解説) / 電気新聞(新中計報道) / 日本経済新聞(米国投資・上方修正報道) / ITmedia ビジネスオンライン(社長インタビュー 2026/5) / 松井証券 株価情報(2026/8/10終値時点) / マネクリ・TradingKey(KOSPI急落関連 2026/7-8)。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+</body>
+</html>

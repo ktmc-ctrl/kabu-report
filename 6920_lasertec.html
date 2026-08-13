@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>レーザーテック [6920] 銘柄レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --good-text: #006300; --warn: #c77f00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --good-text: #0ca30c; --warn: #e0a030;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 760px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+</style>
+</head>
+<body class="viz-root">
+
+<div class="head">
+  <div>
+    <h1>レーザーテック <span style="font-weight:400;color:var(--text-muted)">[6920] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">半導体マスク検査装置</span> <span class="badge">6月期決算</span></div>
+  </div>
+  <div class="px">
+    <div class="v">38,590円</div>
+    <div class="note-s">2026/8/10 11:30時点(−2.53%)</div>
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>サマリー</h2>
+  <div class="body">
+    2026年6月期本決算(2026/8/6発表)は売上高2,305億円(−8.3%)・営業利益1,053億円(−14.3%)の減収減益で着地した一方、<b>受注高は2,375億円(前期比+125.7%)と急回復</b>し、2027年6月期は売上・営業利益・純利益とも<b>過去最高更新の会社予想</b>が示された。それにもかかわらず発表翌日(8/7)の株価は<b>一時13%超の急落</b>となった。売り材料は、①営業利益ガイダンス1,250億円が市場コンセンサス(1,380億円程度)を約130億円下回ったこと、②<b>営業利益率が48.8%→45.7%→43.1%(予想)と3年連続で低下</b>する計画であること、③受注高見通し3,000〜4,000億円のレンジ下限が市場想定(4,000億円程度)に届かなかったこと——であり、「最高益なのに売られた」典型的な<b>質と期待値のミスマッチ</b>が生じた決算である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算 — FY2026通期(2026/8/6発表)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY26通期</th><th class="num">前期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">2,304.8億円</td><td class="num down">−8.3%</td></tr>
+      <tr><td><b>営業利益</b></td><td class="num"><b>1,052.6億円</b></td><td class="num down"><b>−14.3%</b></td></tr>
+      <tr><td>営業利益率</td><td class="num">45.7%</td><td class="num down">−3.1pt(前期48.8%)</td></tr>
+      <tr><td>当期純利益</td><td class="num">774.9億円</td><td class="num down">−8.5%</td></tr>
+      <tr><td><b>受注高</b></td><td class="num"><b>2,375.0億円</b></td><td class="num up"><b>+125.7%</b></td></tr>
+      <tr><td>受注残高</td><td class="num">3,229.6億円</td><td class="num up">+2.2%</td></tr>
+      <tr><td>年間配当</td><td class="num">329円</td><td class="num note-s">配当性向35%目安</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の質の確認(減益と利益率低下の分解):</b><br>
+    ・売上構成の変化: 半導体関連装置売上は1,681億円(−17.2%)と落ち込む一方、<b>サービス売上が586億円(+36.5%)へ拡大</b>。装置の検収端境期をサービスが補った形だが、売上全体に占める装置比率の低下は粗利構成に影響する<br>
+    ・費用面: High-NA EUV対応など<b>研究開発費の拡大が利益率低下の主因</b>とされ、減収下でも先行投資を継続した結果、営業利益率は48.8%→45.7%へ低下<br>
+    ・一方で受注面は明確に回復: 受注高2,375億円のうち<b>ACTIS(EUVパターンマスク欠陥検査装置)が620億円、MATRICS(マスクブランクス検査装置)が772億円</b>。AIデータセンター関連需要を背景とした先端ロジック・メモリ投資の再開が確認された<br>
+    ・受注残高3,230億円は来期売上予想2,900億円の1.1倍に相当し、<b>ガイダンスの土台としての確度は高い</b>
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因 — FY2027会社予想</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY27予想</th><th class="num">前期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">2,900億円</td><td class="num up">+25.8%(過去最高)</td></tr>
+      <tr><td>営業利益</td><td class="num">1,250億円</td><td class="num up">+18.8%(過去最高)</td></tr>
+      <tr><td>営業利益率</td><td class="num warn">43.1%</td><td class="num down">−2.6pt(3年連続低下)</td></tr>
+      <tr><td>当期純利益</td><td class="num">900億円</td><td class="num up">+16.2%(過去最高)</td></tr>
+      <tr><td>年間配当(予)</td><td class="num">351円</td><td class="num up">+22円</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    半導体関連装置売上は2,250億円(+33.9%)へ回復する計画。受注高見通しは<b>3,000〜4,000億円のレンジ</b>で示された。<br><br>
+    <b>上振れ側の要因:</b> High-NA EUV採用ノードの量産移行に伴うACTIS A300の検収進展/受注残3,230億円の消化前倒し/AIデータセンター投資の継続によるマスク検査需要の増勢<br>
+    <b>下振れ側の要因:</b> 装置の検収時期ずれ(同社は検収基準のため四半期業績の振れが大きい)/研究開発費・人件費のさらなる増加による利益率の一段の低下/顧客の先端投資計画の後ずれ。<b>市場の争点は「増収の実現性」よりも「43.1%で利益率低下が止まるか」</b>に移っている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <div class="body">
+    <b>株価推移:</b> 年初来では2/5安値28,660円から6/19高値58,580円まで上昇した後、7月のAI半導体株全般の調整(KOSPI急落・SOX指数下落)で反落。8/6の本決算発表を受けた<b>8/7は一時13%超の急落(前引け・後場に37,520円前後まで下落)</b>となり、8/10も続落して38,590円(11:30時点、−2.53%)。現値は6月高値から約34%下、<b>年初来レンジの下位3分の1</b>の水準にある。<br><br>
+    <b>バリュエーション(2026/8/10時点):</b> 予想PER<b>38.43倍</b>・PBR<b>14.01倍</b>・予想配当利回り0.91%・時価総額約3.6兆円。<br>
+    最高益予想(純利益900億円)を分母にしてもPERは38倍台であり、<b>利益成長率(純利益+16%)に対して絶対水準は割高感が残る</b>。市場がこの決算で売った本質は、「売上が25%伸びても利益は19%しか伸びない」という<b>増収効率の低下(オペレーティング・レバレッジの逆回転)</b>がプレミアム評価(高PER・高PBR)の前提を揺るがした点にある。一方で受注回復と受注残の厚みは実需の裏付けであり、<b>利益率低下が「High-NA対応の先行投資による一時的なもの」と確認されれば見直し余地がある</b>。現状は割高評価と成長期待の綱引きで、やや割高圏との整理が妥当である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    同社は数値目標型の中期経営計画を公表しておらず、テーマは事業ポジションから整理する。<br><br>
+    <b>① EUVマスク検査の実質独占:</b> EUV光(アクティニック)を用いたマスクブランクス検査(MATRICS)・パターンマスク欠陥検査(ACTIS)で世界シェアをほぼ独占する。EUVリソグラフィの適用拡大(先端ロジック・DRAM)がそのまま同社の市場拡大につながる構造である。<br>
+    <b>② High-NA EUV対応:</b> 次世代機<b>ACTIS A300シリーズはHigh-NAリソグラフィ用EUVマスクの欠陥検査に対応</b>し、現行NA用マスクにも対応する。高効率光学設計と高輝度光源「URASHIMA」により生産性を高め、ペリクル付きマスク検査にも対応(製品情報より)。High-NA採用が本格化する2020年代後半の更新需要の中核となる。<br>
+    <b>③ 受注サイクルの回復局面:</b> FY2025に受注が大幅減となった調整期を抜け、FY2026受注高2,375億円(+125.7%)・FY2027見通し3,000〜4,000億円と回復基調。受注残3,230億円が当面の業績の可視性を担保する。<br>
+    <b>④ 論点:</b> 検査装置は1台あたり単価が極めて高く顧客数が限られるため、四半期の検収タイミングで業績が大きく振れる。また研究開発費の増加が続く間は、増収と利益率の両立が構造的な課題となる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因(為替・関税・AI投資サイクル)</h2>
+  <div class="body">
+    <b>AI投資サイクル:</b> AIデータセンター向け先端ロジック・HBM用DRAMの増産投資がEUVマスク需要を押し上げており、受注回復の主因。ただし2026年7〜8月はAI投資の持続性への懸念からKOSPIが急落(7/7に一時8%安で売買停止、7/30にも6%安)し、SOX指数もピークから約2割下落するなど、<b>AI半導体株全般がバリュエーション調整局面</b>にあり、同社株もその文脈の中で下値を探った。<br>
+    <b>為替:</b> 輸出比率が高く円安は追い風だが、検収基準のため為替影響は装置価格・採算に緩やかに反映される。<br>
+    <b>関税・地政学:</b> 米国の対中輸出規制・関税政策は顧客(マスク製造・先端ファブ)の投資地域配分に影響しうる。顧客の集中度が高いため、特定顧客の投資計画変更の影響が大きい点に留意が必要である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ① <b>営業利益率の低下が止まるか</b> — 48.8%→45.7%→43.1%(予)。FY2027で下げ止まりを示せなければ、高PER・高PBRの前提が一段と崩れる<br>
+    ② <b>受注の四半期モメンタム</b> — 見通し3,000〜4,000億円のレンジ内どこに着地するか。下限寄りなら失望が再燃しやすい<br>
+    ③ <b>検収時期のずれ</b> — 検収基準ゆえ四半期業績のブレが大きく、決算ごとのボラティリティが高い<br>
+    ④ <b>High-NA立ち上がりの時期</b> — 顧客側のHigh-NA採用スケジュールが後ずれすればACTIS A300の商機も後ずれする<br>
+    ⑤ <b>AI投資サイクルの変調</b> — セクター全体の調整が続く場合、業績と無関係に株価が連動して下押しされる
+  </div>
+</div>
+
+<div class="card">
+  <h2>決算説明会・質疑応答</h2>
+  <div class="body">
+    2026年6月期決算短信(2026/8/6・TDnet開示)の内容は本レポートに反映済み。要点は、①減収減益ながら受注高+125.7%の回復を確認、②FY2027は売上・利益とも過去最高を計画、③研究開発費拡大による利益率低下の継続、④配当329円→351円(予)への増配——の4点である。<b>決算説明会の質疑応答要旨は未取得</b>。<span class="warn">次回更新時に取得予定。注目論点は「営業利益率の底の時期」「受注見通しレンジ(3,000〜4,000億円)の前提」「High-NA機の検収スケジュール」。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/12</td><td class="note-s">初版。FY2026本決算(短信)、FY2027ガイダンスとコンセンサス比較、8/7株価急落の経緯、バリュエーション評価を収録。質疑応答は未取得</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: レーザーテック 2026年6月期決算短信(2026/8/6・TDnet開示) / レーザーテック 製品情報「ACTIS A300シリーズ」(lasertec.co.jp) / Yahoo!ファイナンス 株価情報(2026/8/10時点) / フィスコ「大幅続落、今期ガイダンスをネガティブ視」(2026/8/7) / 日本経済新聞(2026/8/7) / note決算分析(aimark、2026/8) / Bloomberg・Investing.com(KOSPI・SOX関連、2026/7)。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+</body>
+</html>

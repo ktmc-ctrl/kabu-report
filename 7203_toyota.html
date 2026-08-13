@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>トヨタ自動車 [7203] 銘柄レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --good-text: #006300; --warn: #c77f00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --good-text: #0ca30c; --warn: #e0a030;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 760px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+</style>
+</head>
+<body class="viz-root">
+
+<div class="head">
+  <div>
+    <h1>トヨタ自動車 <span style="font-weight:400;color:var(--text-muted)">[7203] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">自動車・モビリティ</span> <span class="badge">3月期決算(IFRS)</span></div>
+  </div>
+  <div class="px">
+    <div class="v">2,981円</div>
+    <div class="note-s">2026/8/10 終値</div>
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>サマリー</h2>
+  <div class="body">
+    2027年3月期第1四半期(2026/8/4発表)は<b>増収ながら営業減益(△8.8%)</b>。為替の追い風(+3,450億円)を関税影響を含むその他要因・諸経費増が打ち消した。一方、通期営業利益は<b>3.0兆円→3.4兆円へ4,000億円の上方修正</b>となり、想定為替レートを1ドル160円へ円安方向に見直したことと中東向け輸出の回復が主因。<b>1兆円の自社株買い</b>も発表した。純利益+75.6%は営業外の為替関連損益と前年の低ベースによる面が大きく、営業実態とは切り分けて見る必要がある。株価指標はPER11倍・PBR0.95倍と<b>指標面では割安圏</b>だが、円高・関税再強化への感応度の大きさが割引要因となっている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算 — FY2027/3期 Q1(2026/8/4発表)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY27/Q1</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>営業収益</td><td class="num">13兆5,254億円</td><td class="num up">+10.4%</td></tr>
+      <tr><td><b>営業利益</b></td><td class="num"><b>1兆634億円</b></td><td class="num down"><b>△8.8%(△1,026億円)</b></td></tr>
+      <tr><td>営業利益率</td><td class="num">7.9%</td><td class="num down">△1.6pt(前年9.5%)</td></tr>
+      <tr><td>親会社帰属純利益</td><td class="num">1兆4,770億円</td><td class="num up">+75.6%</td></tr>
+      <tr><td>連結販売台数</td><td class="num">239.5万台</td><td class="num down">△0.7%(日本+8.9%/海外△3.1%)</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>営業利益の増減要因(決算要旨より、前年同期1兆1,661億円→1兆634億円):</b><br>
+    ・営業面の努力 <b>+700億円</b> / 為替変動の影響 <b>+3,450億円</b><br>
+    ・原価改善の努力 △850億円(資材価格高騰が改善努力を上回る) / 諸経費の増減 △1,900億円<br>
+    ・その他(関税影響の増加等を含む) △2,426億円<br><br>
+    <b>利益の質の確認(一過性要因の分解):</b><br>
+    ・営業減益にもかかわらず純利益が+75.6%となったのは、①<b>営業外での為替差益・評価益</b>、②<b>前年同期(8,413億円)が米関税の初期影響で低ベース</b>だったこと——いずれも営業実態の改善を示すものではない<br>
+    ・営業段階でも最大の押し上げは為替+3,450億円であり、<b>為替を除く実態は大幅減益</b>。関税・資材高・諸経費増というコスト構造の重さが続いている<br>
+    ・地域別では北米が改善(+2,066億円、関税の低減等による)、日本・アジアは減益方向
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期予想(FY2027/3期)は<b>営業収益54兆円(前回51兆円)・営業利益3兆4,000億円(前回3兆円)・純利益3兆2,500億円(前期比△15.5%)</b>へ上方修正。想定為替レートは<b>1ドル160円・1ユーロ181円</b>へ円安方向に見直した。<br><br>
+    <b>上方修正の内訳:</b> 為替変動の影響+4,800億円、中東向け輸出の回復(輸送能力が当初想定の50%→75%程度へ)を含む営業面の努力+2,300億円がプラス。資材価格高騰が一部を相殺する。<br><br>
+    <b>関税影響:</b> 期初見通しの<b>約1兆3,800億円から約700億円の緩和</b>を見込む(IEEPA関税の還付分を織り込み済み)。なお四半期ごとの関税影響実績は非公表。<br><br>
+    <b>変動要因:</b> 前提160円は実勢(158円前後)とほぼ同水準であり、<b>為替前提に保守性の余裕は乏しい</b>。日銀利上げ等で円高に転じた場合は下振れ、関税交渉のさらなる進展や北米ハイブリッド需要の強さは上振れ要因となる。株主還元では<b>1兆円の自社株買い</b>を発表(政策保有株売却資金を活用、ネット資金量11兆円の維持が前提)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th></tr></thead>
+    <tbody>
+      <tr><td>株価</td><td class="num">2,981円(2026/8/10終値)</td></tr>
+      <tr><td>予想PER</td><td class="num">11.2倍</td></tr>
+      <tr><td>PBR(実績)</td><td class="num">0.95倍</td></tr>
+      <tr><td>配当利回り(会社予想)</td><td class="num">3.35%</td></tr>
+      <tr><td>時価総額</td><td class="num">約43.5兆円</td></tr>
+      <tr><td>年初来レンジ</td><td class="num">2,686円(6/24)〜4,000円(2/9)</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    現在値は年初来レンジの<b>下から約22%の位置</b>と低位にある。2026年2月の高値4,000円から関税・円高懸念で6月に2,686円まで下落し、その後の戻りは緩やか。8/4の決算(通期上方修正+1兆円自社株買い)を経ても株価反応は限定的だった。<br><br>
+    <b>割高/割安の評価:</b> PER11倍・PBR1倍割れ・配当利回り3.3%は、市場平均比でも同社の過去水準比でも<b>指標面では割安圏</b>。ただしこれは「営業利益の約4割が為替と関税次第で揺れる」という利益の不確実性を市場が割り引いた結果でもあり、円高転換時のEPS下振れを考慮すると見かけほどの割安ではない可能性に留意が必要である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    トヨタは数値目標型の中期経営計画を公表しない方針だが、注力テーマは以下に整理できる。<br><br>
+    <b>① マルチパスウェイの電動化:</b> HEV・PHEV・BEV・FCEVの全方位戦略。米国ではハイブリッド需要が加速しており、<b>2027〜28年にかけて国内60万台規模のHEV用電池生産ラインを次世代電池へ切り替える</b>計画(生産の1割超に相当)。電池材料の見直しで1台あたり数万円のコスト低減と性能向上を見込む。中国では「BEV競争力の強化が不可欠」、東南アジアでは品質(QDR)と販売網で中国メーカーと差別化する方針。<br><br>
+    <b>② ソフトウェア(SDV):</b> 車載ソフト基盤「Arene」を軸にソフトウェア・デファインド・ビークルへの移行を進める。OTA更新・車両OSの内製化が中期の競争軸。<br><br>
+    <b>③ Woven City:</b> 2025年9月25日に静岡県裾野市で正式ローンチした実証都市。Phase 1で最終的に約300人が居住し、20のインベンターズ(参画企業・個人)が実証を行う。2026年以降に一般来訪者の受け入れを開始予定。<b>現時点では実証・研究開発フェーズであり、収益貢献の段階にはない</b>。<br><br>
+    <b>④ 北米の現地化深化:</b> 関税を前提に現地生産・現地調達・現地販売を重視。タコマの生産体制見直しなど、物流コスト・関税を含む事業インパクトを考慮した再配置を進める。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因(為替・金利・関税)</h2>
+  <div class="body">
+    <b>為替:</b> 想定160円/ドルは実勢並みで、上振れ余地は小さく下振れ感応度が大きい。日銀の9月利上げ観測(2026/8時点)による円高転換が最大の外部リスク。対ドル1円の変動が営業利益に年間数百億円規模で影響するとされる。<br>
+    <b>関税:</b> 通期で約1.3兆円規模の影響を織り込み済み。日米交渉の進展による税率低下・還付は上振れ要因、再強化は下振れ要因と、双方向に効く。<br>
+    <b>金利:</b> 米金利は販売金融(ローン・リース)の採算と残価に影響。国内金利上昇は円高経由の逆風となりうる。<br>
+    <b>資材・物流:</b> 資材価格高騰は短期的に継続見込み。中東情勢による輸送制約は改善方向(輸送能力75%へ回復見込み)だが不確実性が残る。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ① <b>円高</b> — 前提160円に保守性の余裕がなく、円高転換は通期計画の直接的な下振れ要因<br>
+    ② <b>関税の再強化・交渉停滞</b> — 約1.3兆円の影響見積りは政策次第で振れる。四半期実績が非公表のため外部からの検証が難しい点も不確実性<br>
+    ③ <b>資材・電池コスト</b> — 原価改善努力を資材高が上回る状態が続いており、収益構造の重石<br>
+    ④ <b>中国事業</b> — 現地BEVメーカーとの価格・技術競争。東南アジアへの競争波及も注視<br>
+    ⑤ <b>中東情勢</b> — 輸出回復シナリオ(50%→75%)が再び悪化する場合は営業面の努力分が剥落
+  </div>
+</div>
+
+<div class="card">
+  <h2>決算説明会・質疑応答(読んだ資料の要点)</h2>
+  <div class="body">
+    決算要旨および投資家向け決算説明会 質疑応答(要旨)(いずれも2026/8/4、トヨタ自動車IRサイト)を確認した。質疑の要点は以下のとおり。<br>
+    ・<b>関税:</b> 期初見通し1兆3,800億円から700億円の緩和を見込む。IEEPA還付分も織り込み済み。Q1実績値は非公表<br>
+    ・<b>通期上方修正:</b> 中東向け輸出能力の回復(50%→75%程度)と為替がプラス、資材価格高騰は短期的にマイナス継続との説明<br>
+    ・<b>北米:</b> 現地生産・調達・販売を重視し、タコマの生産体制を見直し。物流コスト・関税を含む事業インパクトを考慮して進める<br>
+    ・<b>電池・HEV:</b> 米国でハイブリッド需要が加速。2027〜28年に電池能増を進め需要を取り切る方針<br>
+    ・<b>EV戦略:</b> 中国はBEV競争力強化が不可欠。東南アジアは品質(QDR)と販売網で差別化<br>
+    ・<b>株主還元:</b> 1兆円の自社株買いを発表。政策保有株売却資金を活用し、増配と組み合わせた多層的還元。ネット資金量11兆円の維持を確保
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/12</td><td class="note-s">初版。FY2027/3期Q1決算(決算要旨・質疑応答要旨)、通期上方修正と関税影響、中期テーマ(電池・SDV・Woven City)を収録</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: トヨタ自動車 2027年3月期第1四半期決算要旨(2026/8/4) / 同 投資家向け決算説明会 質疑応答要旨(2026/8/4) / トヨタ自動車ニュースルーム「Toyota Woven Cityで実証を開始」(2025/9/25) / Car Watch(2026/8/4) / Response.jp / ビジネス+IT / 日本経済新聞 / Yahoo!ファイナンス(2026/8/10時点)。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+</body>
+</html>

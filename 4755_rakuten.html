@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>楽天グループ [4755] 銘柄レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --good-text: #006300; --warn: #c77f00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --good-text: #0ca30c; --warn: #e0a030;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 760px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+</style>
+</head>
+<body class="viz-root">
+
+<div class="head">
+  <div>
+    <h1>楽天グループ <span style="font-weight:400;color:var(--text-muted)">[4755] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">EC・金融・モバイル</span> <span class="badge">12月期決算</span></div>
+  </div>
+  <div class="px">
+    <div class="v down">747.9円</div>
+    <div class="note-s">2026/8/12 大引け(前日比−13.43%)</div>
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--warn)">
+  <h2>サマリー</h2>
+  <div class="body">
+    2026年12月期第2四半期(2026/8/10発表)は、<b>7年ぶりに上期営業黒字を達成</b>(1〜6月営業利益504億円)し、4〜6月期は税引後77億円と<b>6年ぶりの四半期最終黒字</b>を計上した。牽引役はフィンテック(+692億円)とEC(+231億円)で、<b>モバイルは依然四半期331億円の営業赤字ながら改善が継続</b>。会社は税前・税後利益の通期黒字化を目指すと明言している。<br><br>
+    ただし<b>市場予想との対比では明確な未達</b>である。上期営業利益504億円に対し<b>QUICK集計のアナリスト予想(9社)は708億円</b>で、<b>204億円・28.8%の下振れ</b>となった。売上高6,655億円(4〜6月期)は予想6,549億円を上回ったものの、利益面の未達が重く受け止められ、決算後最初の取引日である<b>8/12に−13.43%(747.9円、ほぼ安値引け)</b>の大幅安となった。出来高は6,167万株と直近数か月で最大規模である。「7年ぶりの黒字化」という定性的な前進と、コンセンサス比で3割近い利益未達という定量的な事実が、同じ決算のなかに同居している点がこの銘柄の評価を難しくしている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算 — 2026年12月期 第2四半期(2026/8/10発表)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">2026/1〜6月(上期)</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">13,090億円</td><td class="num up">+12.9%</td></tr>
+      <tr><td><b>営業利益(IFRS)</b></td><td class="num"><b>504億円</b></td><td class="num up"><b>黒字転換</b>(前年同期−66億円)</td></tr>
+      <tr><td>最終損益</td><td class="num down">−109億円</td><td class="num up">赤字縮小(前年同期−1,244億円)</td></tr>
+      <tr><td>4〜6月期 最終損益</td><td class="num up"><b>+77億円</b></td><td class="num up">黒字転換(税引後は2020年以来6年ぶりの四半期黒字)</td></tr>
+      <tr><td>4〜6月期 Non-GAAP営業利益</td><td class="num up">420億円</td><td class="num up">+109.6%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <table>
+    <thead><tr><th>セグメント(4〜6月期)</th><th class="num">売上収益</th><th class="num">Non-GAAP営業損益</th></tr></thead>
+    <tbody>
+      <tr><td>インターネットサービス(EC等)</td><td class="num">3,381億円 <span class="up">+4.2%</span></td><td class="num up">+231億円(+68.6%)</td></tr>
+      <tr><td>フィンテック</td><td class="num">2,954億円 <span class="up">+27.0%</span></td><td class="num up">+692億円(+60.1%)</td></tr>
+      <tr><td><b>モバイル</b></td><td class="num">1,214億円 <span class="up">+8.3%</span></td><td class="num down"><b>−331億円</b>(41億円改善)</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益構造の要点:</b> 全社黒字化の牽引役は<b>フィンテック(+692億円)とEC(+231億円)</b>であり、<b>モバイルは依然として四半期331億円の営業赤字</b>。「モバイルが黒字化した」わけではなく、「モバイルの赤字を他事業の利益が吸収して余りが出る構造に達した」というのが正確な理解となる。モバイル単体では解約率1.38%(改善)、ARPU 2,921円(+60円)、EBITDA 68億円(黒字)、契約回線数1,075万(+178万)と各指標は改善方向だが、EBITDAはQ4/25の141億円から季節要因・エネルギー原価で減少している。<br><br>
+    <b>利益の質の確認(一過性要因の分解):</b><br>
+    ・決算発表と同日、<b>ロジスティクス事業(倉庫スペース貸出)で約170億円の損失</b>(減損損失157億円+引当金13億円)を計上。貸出用途を自社利用へ転換し、回収可能価額をゼロと評価したもの。過年度もQ3/25に茨木倉庫撤退で約270億円、Q4/25に約100億円と<b>物流減損は3四半期連続</b>だが、会社側は「ネットスーパー・物流の自社倉庫はすべて簿価全額減損済みで、バランスシート上のリスクは解消された」(加賀Vice CFO)と説明——<b>今回で打ち止めというのが会社側の立場</b><br>
+    ・減損は非資金支出であり、キャッシュ創出力(Q2 EBITDA 1,153億円、+11.7%)とは切り離して評価できる<br><br>
+    <b>7年ぶり上期営業黒字の意味:</b> モバイル本格参入(2020年)以降、先行投資負担が長らく全社利益を押し下げてきた。三木谷会長は「一過性のものとせず、恒常的な利益体質となるよう取り組む」とし、<b>税前・税後利益の今年度通期黒字化を目指す</b>と明言した。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株価の文脈</h2>
+  <div class="body">
+    <b>時系列:</b> 株価は2026年7月上旬の安値686.1円から上昇基調に入り、決算発表直前には886.5円(+29%)まで買われていた。決算は<b>8/10の取引終了後(16:50)に発表</b>され、同日終値は864.0円。翌8/11は休場のため、<b>決算後最初の取引日は8/12</b>となった。8/12は849円で寄り付いた後に売りが止まらず、<b>安値747.0円・終値747.9円(−13.43%)とほぼ安値引け</b>。出来高6,167万株は直近数か月で最大となった。<br><br>
+    <b>下落の性格:</b> 「決算前の急騰の反動」という需給要因だけでは説明が難しい。上期営業利益がコンセンサス比<b>28.8%の未達</b>という実体のある材料があり、報道でも「モバイル投資負担の長期化観測が広がり、業績拡大期待がしぼんだ」と整理されている。加えて<b>配当再開時期は未定</b>(2025年12月期は無配)であり、利益未達と還元期待の不在が重なった。<br><br>
+    <b>テクニカル上の位置:</b> 終値747.9円は7月上旬の安値686.1円まで約8%の距離にある。25日移動平均線(概ね800円前後)を大きく下回って引けており、短期的には同線が戻り売り圧力となる位置関係。<b>安値引けであること</b>は、下ヒゲを伴って引ける売り枯れ型の急落とは形状が異なり、下落1日目としての性格が強い。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    <b>金利:</b> 楽天銀行・楽天カード等の金融セグメントを抱えるため、日銀の利上げ観測は預貸金利ざやの観点でプラス材料になりうる一方、モバイル事業は依然として設備投資負担が大きく金利上昇は調達コスト面でマイナスに働く、両面のある銘柄。<br>
+    <b>規制:</b> ふるさと納税ポータルの掲載手数料をめぐり総務省が仲介事業者に引き下げを要請する動きが2026年に入り継続的に報じられており、EC関連事業の収益源の一つとして注視が必要。<br>
+    <b>セクター:</b> 通信インフラ(Rakuten Symphony含む)への投資は継続中であり、設備投資計画の規模・進捗が今後の重工投資負担を左右する。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ① <b>コンセンサス未達の反復リスク</b> — 上期営業利益はアナリスト予想比28.8%の下振れ。会社は通期の税前・税後黒字化を掲げるが、市場の織り込みと会社計画の距離が縮まらない限り、次の四半期でも同種の失望が生じうる<br>
+    ② <b>モバイル投資負担の長期化</b> — 年2,000億円の設備投資計画は据え置き。四半期331億円の営業赤字は縮小中だが、KDDIローミング縮小のコスト削減効果が投資負担を相殺できるかが焦点<br>
+    ③ <b>還元の不在</b> — 配当再開時期は未定(2025年12月期は無配)。利益成長が鈍る局面で株価を下支えする材料に乏しい<br>
+    ④ <b>物流減損の履歴</b> — 3四半期連続(270億→100億→170億)。会社は「自社倉庫は簿価全額減損済み・リスク解消」と説明しており、この説明どおりなら再発余地は限定的だが、実績としての反復は投資家心理に残る<br>
+    ⑤ <b>フィンテック再編(2026/10/1統合)の執行リスク</b> — シナジー目標850億円の実現性と、統合に伴う資本政策(種類株転換等をめぐる希薄化懸念の報道が過去にある)<br>
+    ⑥ <b>有利子負債と金利上昇</b> — 社債償還は2027年分まで原資確保済みと説明されているが、金利上昇局面での借換コストは構造的な重石
+  </div>
+</div>
+
+<div class="card">
+  <h2>決算説明会(スクリプト)の要点</h2>
+  <div class="body">
+    <b>モバイル戦略:</b> 三木谷会長は契約回線数について「間もなく1,100万回線に到達」「顧客基盤の質向上に向けた持続的な純増構造を確立」と説明。<b>自社カバーエリアではKDDIローミングを順次縮小</b>する方針を表明(コスト削減要因)。設備投資は年2,000億円の期初計画を維持(Q2実績393億円)、年内の電波発射目標に対し前工程約90%完了。<br><br>
+    <b>フィンテック再編:</b> 2026/10/1付で楽天銀行・楽天カード・楽天証券HDを統合。シナジー効果は2027年3月期に約250億円→2030年3月期に850億円以上を目標とする。<br><br>
+    <b>財務:</b> 2026年5月に保有有価証券の一部売却で約2,000億円を調達。2026年償還の社債は全額償還完了、2027年償還原資も確保済みとし、セルフファンディング強化を強調。<br><br>
+    <b>AI:</b> 検索最適化で年間128億円のGMS(流通総額)押し上げ効果と説明。<br><br>
+    <span class="note-s">※アナリストとの質疑応答の個別要旨は未取得。次回更新時の確認事項: 8/10以降の株価急落について会社側の受け止め、ローミング縮小の具体的なコスト削減額。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/12</td><td class="note-s">初版。Q2決算短信・減損開示の確認、急落の整理を収録</td></tr>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/12(2)</td><td class="note-s">決算説明会プレゼン資料・スクリプトを読了し全面改訂。セグメント表を追加、<b>モバイルは営業「利益」ではなく営業損失331億円(改善中)と訂正</b>。減損の3四半期連続の経緯・「打ち止め」説明、フィンテック再編、ローミング縮小方針、財務(2,000億円調達・社債償還)を追記</td></tr>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/12(3)</td><td class="note-s"><b>重要な訂正。</b>初版・第2版は下落の性格を「決算前急騰の反動」と整理していたが、<b>市場コンセンサスとの照合が抜けていた</b>。上期営業利益504億円はQUICK集計の予想708億円に対し<b>28.8%の未達</b>であり、需給要因ではなく実体のある未達が下落の主因。また株価の時系列も誤っており、決算は8/10の引け後発表、8/11は休場のため<b>8/12が決算後最初の取引日</b>(「8/10に−10%、8/12に再び下落」という第2版までの記述は誤り)。8/12終値747.9円(−13.43%)・ほぼ安値引け・出来高6,167万株を反映し、株価の文脈とリスク要因を全面改訂</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: 楽天グループ 2026年12月期第2四半期決算短信・決算説明会プレゼンテーション資料(スクリプト付)・決算ハイライト・「減損損失等の計上についてのお知らせ」(いずれも2026/8/10) / 株探ニュース / ITmedia Mobile / 日本経済新聞。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三菱商事 [8058] 銘柄レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2:#f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --good-text: #006300; --warn: #c77f00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2:#232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --good-text: #0ca30c; --warn: #e0a030;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 780px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.74rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .box { background:var(--surface-2); border-radius:9px; padding:11px 12px; margin:9px 0; }
+</style>
+</head>
+<body class="viz-root">
+
+<div class="head">
+  <div>
+    <h1>三菱商事 <span style="font-weight:400;color:var(--text-muted)">[8058] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">総合商社</span> <span class="badge">3月期決算(IFRS)</span> <span class="badge">時価総額17.9兆円</span></div>
+  </div>
+  <div class="px">
+    <div class="v">4,822円</div>
+    <div class="note-s">2026/8/13 場中(−0.70%)</div>
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>サマリー</h2>
+  <div class="body">
+    2027年3月期第1四半期(2026/8/3発表)は<b>収益5兆1,810億円(+22.8%)・税引前利益3,880億円(+53.4%)・親会社帰属四半期純利益2,985億円(+47.0%)</b>と大幅増益。通期予想<b>1兆1,000億円(+37.4%)</b>は据え置かれた。<br><br>
+    <b>ただし増益の中身は市況への依存が大きい。</b>7セグメントの純利益増減を積み上げると、<b>金属資源が単独で+616億円(前年250億円→866億円、+246.5%)</b>と全体の増益幅(約954億円)の6割超を占める。銅と原料炭の市況回復が主因であり、価格が反転すれば同じ方向に振れる。一方で<b>社会インフラ(−17.3%)とS.L.C.(−21.4%)は減益</b>で、セグメント間の明暗が分かれた。<br><br>
+    <b>もう一つ重要なのは「+37.4%」の分母である。</b>前期(2026年3月期)は<b>3期連続の減益で−26%</b>と大きく落ち込んだ年だった。今期の高い伸び率は、その反動を含んでいる。<br><br>
+    構造面では、<b>総合商社史上最大となる1.2兆円の米シェールガス企業エーソン(Aethon)買収</b>が今期から寄与を開始し、<b>1兆円の自社株買い(発行済株式の約17%)が2026年4月30日に全株消却済み</b>である点が、他の商社と異なる大きな特徴となる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算 — FY2027 Q1(2026/8/3発表)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY27/Q1</th><th class="num">前年同期</th><th class="num">増減</th></tr></thead>
+    <tbody>
+      <tr><td>収益</td><td class="num">51,810億円</td><td class="num">42,187億円</td><td class="num up">+22.8%</td></tr>
+      <tr><td>税引前利益</td><td class="num">3,880億円</td><td class="num">2,529億円</td><td class="num up">+53.4%</td></tr>
+      <tr><td>四半期純利益</td><td class="num">3,143億円</td><td class="num">2,206億円</td><td class="num up">+42.5%</td></tr>
+      <tr><td><b>親会社帰属四半期純利益</b></td><td class="num"><b>2,985億円</b></td><td class="num">2,031億円</td><td class="num up"><b>+47.0%</b></td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <table>
+    <thead><tr><th>セグメント</th><th class="num">Q1純利益</th><th class="num">前年同期</th><th class="num">増減額</th><th class="num">増減率</th></tr></thead>
+    <tbody>
+      <tr style="background:rgba(42,120,214,0.08)"><td><b>金属資源</b><br><span class="note-s">銅・原料炭・鉄鉱石</span></td><td class="num"><b>866億円</b></td><td class="num">250億円</td><td class="num up"><b>+616億円</b></td><td class="num up"><b>+246.5%</b></td></tr>
+      <tr style="background:rgba(42,120,214,0.05)"><td><b>エネルギー&パワー</b><br><span class="note-s">LNG・電力</span></td><td class="num">719億円</td><td class="num">393億円</td><td class="num up">+326億円</td><td class="num up">+82.8%</td></tr>
+      <tr><td><b>食品産業</b></td><td class="num">362億円</td><td class="num">210億円</td><td class="num up">+152億円</td><td class="num up">+72.6%</td></tr>
+      <tr><td><b>モビリティ</b><br><span class="note-s">自動車・船舶</span></td><td class="num">312億円</td><td class="num">265億円</td><td class="num up">+47億円</td><td class="num up">+17.9%</td></tr>
+      <tr><td><b>社会インフラ</b></td><td class="num">296億円</td><td class="num">358億円</td><td class="num down">−62億円</td><td class="num down">−17.3%</td></tr>
+      <tr><td><b>S.L.C.</b><br><span class="note-s">(Smart-Life Creation：小売・ヘルスケア等)</span></td><td class="num">205億円</td><td class="num">261億円</td><td class="num down">−56億円</td><td class="num down">−21.4%</td></tr>
+      <tr><td><b>マテリアル</b><br><span class="note-s">化学品・金属製品</span></td><td class="num">178億円</td><td class="num">119億円</td><td class="num up">+59億円</td><td class="num up">+49.9%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card" style="border:2px solid var(--warn)">
+  <h2>⚠️ 増益の質 — 金属資源が6割超を占める</h2>
+  <div class="body">
+    親会社帰属純利益の増益幅は<b>約954億円</b>(2,031億円→2,985億円)。セグメント別の増減を積み上げると次のようになる。
+  </div>
+  <table style="margin-top:8px">
+    <thead><tr><th>寄与</th><th class="num">増減額</th><th class="num">増益幅に占める割合</th></tr></thead>
+    <tbody>
+      <tr style="background:rgba(42,120,214,0.08)"><td><b>金属資源</b></td><td class="num up"><b>+616億円</b></td><td class="num"><b>約65%</b></td></tr>
+      <tr><td>エネルギー&パワー</td><td class="num up">+326億円</td><td class="num">約34%</td></tr>
+      <tr><td>食品産業</td><td class="num up">+152億円</td><td class="num">約16%</td></tr>
+      <tr><td>マテリアル</td><td class="num up">+59億円</td><td class="num">約6%</td></tr>
+      <tr><td>モビリティ</td><td class="num up">+47億円</td><td class="num">約5%</td></tr>
+      <tr><td>社会インフラ</td><td class="num down">−62億円</td><td class="num">—</td></tr>
+      <tr><td>S.L.C.</td><td class="num down">−56億円</td><td class="num">—</td></tr>
+      <tr style="background:rgba(199,127,0,0.10)"><td><b>7セグメント合計</b></td><td class="num"><b>+1,082億円</b></td><td class="num note-s">実際の増益+954億円との差△128億円は全社・調整</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    <b>金属資源の+246.5%は、銅と原料炭の市況回復によるものである。</b>商社の資源セグメントは、自らの努力ではなく<b>国際商品市況で利益が決まる部分が大きい</b>。今回の増益はその追い風を受けたものであり、市況が反転すれば同じ振れ幅が逆向きに出る。<br><br>
+    <b>非資源側は一様ではない。</b>食品産業(+72.6%)とマテリアル(+49.9%)は伸びた一方、<b>社会インフラ(−17.3%)とS.L.C.(−21.4%)は減益</b>。「資源が牽引し、非資源の一部が足を引っ張る」というのが今期Q1の実像である。<br><br>
+    <b>Q1の通期進捗率は27.1%</b>(2,985億円/1兆1,000億円)。四半期平均25%をやや上回る水準で、大きく上振れているわけではない。
+  </div>
+</div>
+
+<div class="card">
+  <h2>「+37.4%」の分母 — 前期に何が起きたか</h2>
+  <div class="body">
+    今期の通期予想1兆1,000億円は前期比+37.4%だが、<b>前期(2026年3月期)は3期連続の減益で、前々期比−26%と大きく落ち込んだ年</b>である。逆算すると前期の純利益は約8,000億円で、2024年度(2025年3月期)の9,500億円から下がっている。<br><br>
+    <b>前期に減益となった主な要因:</b><br>
+    ① <b>資源価格の下落</b> — 銅・原料炭の市況軟化、LNG関連の営業キャッシュフロー後退<br>
+    ② <b>円高</b> — 150円台から140円台への進行によるドル建て収益の換算目減り<br>
+    ③ <b>一過性損失と反動</b> — 洋上風力発電事業からの撤退に伴う<b>522億円の評価損</b>、およびローソンの持分法適用化に伴う前期の再評価益(+1,232億円)の<b>反動</b><br><br>
+    <b>つまり今期の高い伸び率は、①市況の反転 ②一過性損失の剥落 ③前期の低い基準、が重なった結果である。</b>「+37.4%」という数字をそのまま実力の伸びと読むことはできない。<br>
+    <span class="note-s">なお前期は上期が−42.4%と大きく崩れたが、下期に4,400億円超を稼ぎ、会社予想7,000億円を1,000億円以上上回って着地している。下期にかけての回復力そのものは示された形になる。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと前提 — 為替前提は保守的</h2>
+  <table>
+    <thead><tr><th></th><th class="num">FY27予想</th><th class="num">前期比</th></tr></thead>
+    <tbody>
+      <tr><td><b>親会社帰属当期利益</b></td><td class="num"><b>1兆1,000億円</b></td><td class="num up"><b>+37.4%</b></td></tr>
+      <tr><td>1株当たり当期利益(EPS)</td><td class="num">300.42円</td><td class="num">—</td></tr>
+      <tr><td>年間配当</td><td class="num">125円<br><span class="note-s">(中間62円/期末63円)</span></td><td class="num up">+15円<br><span class="note-s">前期110円</span></td></tr>
+      <tr><td>修正の有無</td><td class="num" colspan="2">無(据え置き)</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>会社が置いている前提:</b><br>
+    ・<b>為替 1ドル150円</b> — Q1実勢(159円前後)より<b>円高側の保守的な前提</b>。円安が続けば上振れ余地が生じる関係にある<br>
+    ・<b>原油 1バレル78ドル</b><br>
+    ・<b>中東情勢による300億円の減益バッファーを織り込み済み</b><br><br>
+    <b>増益ドライバー(約3,000億円)は3層に分かれる:</b><br>
+    ① <b>構造的</b> — カナダLNG(LNG Canada)の本格寄与、三菱食品の完全子会社化、<b>米エーソン買収</b>の寄与開始<br>
+    ② <b>市況回復</b> — 銅需給の引き締まり、原料炭の底値からの戻り、サーモン養殖市況の改善<br>
+    ③ <b>基準の低さ</b> — 前期の一過性損失の剥落<br><br>
+    <span class="note-s">①は継続性がある一方、②は市況次第で反転し、③は今期限りの効果である。<b>3つを分けて評価する必要がある。</b></span>
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>米エーソン(Aethon)買収 — 総合商社史上最大の1.2兆円</h2>
+  <div class="body">
+    <div class="box">
+      <b>買収金額:</b> 総額約75.3億ドル(<b>約1.2兆円</b>)。株式取得額52億ドル + 純有利子負債相当額23.3億ドル<br>
+      <b>対象:</b> 米シェールガス企業Aethonの全株式。テキサス州・ルイジアナ州の<b>ヘインズビル・シェール層</b>の権益が主対象<br>
+      <b>生産規模:</b> ピーク時<b>26億立方フィート/日</b>、LNG換算で<b>年約1,800万トン</b> — <b>日本のLNG需要の約4分の1に相当</b><br>
+      <b>完了時期:</b> 2026年度第1四半期ごろまで(=<b>今期から寄与開始</b>)<br>
+      <b>収益見込み:</b> 取得後の純利益<b>700〜800億円</b>を見込む<br>
+      <b>資金面:</b> JBIC(国際協力銀行)からの融資を含む報道がある
+    </div>
+    <b>狙いは「上流ガスから電力・データセンター・化学品へつながる複合バリューチェーンの構築」</b>と会社は説明している。経営戦略2027で掲げる「Create(創る)」の重点領域である天然ガスバリューチェーンとデータセンター事業に、直接つながる投資と位置づけられる。<br><br>
+    <b>評価が分かれる点:</b> 純利益700〜800億円は今期予想1兆1,000億円に対し約7%にあたり、規模としては大きい。一方で1.2兆円という投下資本に対する利回りは6〜7%程度の計算になり、<b>資源価格に左右される事業へ過去最大の資本を投じたこと</b>への評価は分かれている。報道では「結局は化石燃料頼み」との指摘も出ている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>経営戦略2027(2025/4/3公表)</h2>
+  <div class="body">
+    2025年度〜2027年度の3か年計画。<b>今期(2027年3月期)は計画2年目</b>にあたる。
+  </div>
+  <table style="margin-top:8px">
+    <thead><tr><th>2027年度(2028年3月期)目標</th><th class="num">水準</th></tr></thead>
+    <tbody>
+      <tr><td><b>ROE</b></td><td class="num"><b>12%以上</b><span class="note-s">(2024年度見通し10.4%)</span></td></tr>
+      <tr><td>営業収益キャッシュフロー</td><td class="num">平均成長率10%以上</td></tr>
+      <tr><td>Net DER(負債資本倍率)</td><td class="num">0.6倍(上限目処)</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    <b>投資計画: 総額3.0兆円以上</b><br>
+    ・拡張・追加投資 2.0兆円(Enhance 1.0兆円 / Reshape 1.2兆円 / Create 0.8兆円)<br>
+    ・更新投資 1.0兆円以上 / 売却による回収 1.7兆円以上<br><br>
+    <b>3つの成長軸:</b><br>
+    ・<b>Enhance(磨く)</b> — 既存事業強化で営業収益CF+3,000億円、連結純利益+2,500億円<br>
+    ・<b>Reshape(変革)</b> — 業界再編に繋がるM&A・資本政策。事例として銅鉱山の統合操業、ローソン非上場化(KDDIとの共同経営)<br>
+    ・<b>Create(創る)</b> — 天然ガスバリューチェーン、バイオ資源バリューチェーン、次世代型インダストリアルパーク、<b>データセンター事業</b><br><br>
+    <b>ROEの現在地:</b> 今期予想1兆1,000億円を親会社帰属持分9兆6,352億円(2026年6月末)で割ると<b>約11.4%</b>。目標の12%以上まで近い位置にある。<b>自社株買いによる持分の圧縮が、ROE押し上げに直接効いている</b>構造になっている。
+  </div>
+</div>
+
+<div class="card" style="border:2px solid var(--good-text)">
+  <h2>株主還元 — 1兆円の自社株買いは消却まで完了</h2>
+  <div class="body">
+    <b>方針は「累進配当 + 機動的な自己株式取得」。</b>経営戦略2027の3年間で<b>総還元2.4兆円以上、総還元性向40%目処</b>を掲げる(配当1.4兆円以上 + 自己株式取得1.0兆円以上)。<br><br>
+    <b>■ 配当</b><br>
+    1株110円を起点とする<b>累進配当</b>(減配しない方針)。今期は<b>年125円(+15円)</b>を予想。現在の配当利回りは<b>2.59%</b>。<br><br>
+    <b>■ 自己株式取得 — 実行済み</b>
+    <div class="box">
+      ・<b>総額1兆円</b>(TOB 2,300億円 + 市場買付 7,700億円)<br>
+      ・実行期間: 2025年4月4日〜2026年3月31日<br>
+      ・取得規模: 最大<b>6億8,900万株</b> = <b>発行済株式の約17%</b><br>
+      ・<b>2026年4月30日に全株消却済み</b>
+    </div>
+    <b>発行済株式の約17%が消却されたことは、EPSと1株当たり配当を構造的に押し上げる。</b>今期のEPS予想300.42円には、この消却後の株数が反映されている。<b>「利益が増えた」だけでなく「株数が減った」ことが、1株利益の伸びに二重に効いている</b>点は押さえておく必要がある。<br><br>
+    <b>■ 大株主</b><br>
+    バークシャー・ハサウェイが<b>10.8%</b>を保有していると報じられている。同社は日本の5大商社株を長期保有する方針を示しており、需給面での下支え要因として意識されやすい。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th></tr></thead>
+    <tbody>
+      <tr><td>株価</td><td class="num">4,822円(2026/8/13 12:53)</td></tr>
+      <tr><td>予想PER</td><td class="num">16.0倍(EPS 300.42円)</td></tr>
+      <tr><td>PBR</td><td class="num">1.83倍</td></tr>
+      <tr><td>配当利回り</td><td class="num">2.59%(年125円)</td></tr>
+      <tr><td>時価総額</td><td class="num">17兆8,921億円</td></tr>
+      <tr><td>年初来高値</td><td class="num">6,012円(5/15) → <span class="down">−19.8%</span></td></tr>
+      <tr><td>年初来安値</td><td class="num">3,610円(1/5) → <span class="up">+33.6%</span></td></tr>
+      <tr><td>最低投資金額</td><td class="num">48.2万円(100株)</td></tr>
+      <tr><td>自己資本比率</td><td class="num">41.1%(2026/6末)</td></tr>
+      <tr><td>総資産 / 親会社帰属持分</td><td class="num">23.45兆円 / 9.64兆円</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>5/15の年初来高値6,012円から約20%調整した位置</b>にあり、1/5の安値3,610円からは+33.6%。年初来のレンジ幅が3,610〜6,012円と<b>約1.7倍の開き</b>があり、値動きの荒さが目立つ1年になっている。<br><br>
+    <b>PBR1.83倍は総合商社としては高い水準である。</b>商社株は長らくPBR1倍を下回る「万年割安」の代表とされてきたが、株主還元の強化とROEの改善によって評価が切り上がった。<b>「割安だから買う」という従来の商社株の投資論は、現在の水準ではそのまま当てはまらない。</b><br><br>
+    <b>予想PER16.0倍</b>は、前期の落ち込みから+37.4%回復した後の利益に対する倍率である。市況要因を含む利益に16倍という評価をどう見るかが、判断の分かれ目になる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>参考: 三井物産との比較</h2>
+  <table>
+    <thead><tr><th></th><th class="num">三菱商事 8058</th><th class="num">三井物産 8031</th></tr></thead>
+    <tbody>
+      <tr><td>株価(8/13前後)</td><td class="num">4,822円</td><td class="num">4,876円</td></tr>
+      <tr><td>Q1純利益</td><td class="num">2,985億円<br><span class="up">+47.0%</span></td><td class="num">2,941億円<br><span class="up">+53.5%</span></td></tr>
+      <tr><td>予想PER</td><td class="num">16.0倍</td><td class="num">約15倍</td></tr>
+      <tr><td><b>PBR</b></td><td class="num"><b>1.83倍</b></td><td class="num"><b>約1.6倍</b></td></tr>
+      <tr><td>配当利回り</td><td class="num">2.59%</td><td class="num">約2.9%</td></tr>
+      <tr><td>自社株買い</td><td class="num">1兆円(消却済)</td><td class="num">2,000億円</td></tr>
+      <tr><td>時価総額</td><td class="num">17.9兆円</td><td class="num">約14兆円</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    Q1の純利益額はほぼ並ぶが、<b>三菱商事のほうがPBRで約14%高く評価されている</b>。1兆円・発行済17%という自社株買いの規模、およびバークシャーの保有比率の違いが、この評価差の一因とみられる。一方で<b>配当利回りは三井物産が上回る</b>。<span class="warn">※三井物産の数値は本ライブラリの同社レポート作成時点のもので、基準日が完全には揃っていない。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    <b>資源価格:</b> 銅・原料炭・鉄鉱石・LNG・原油。Q1の増益の6割超を担った金属資源は、この市況で決まる。会社前提は原油78ドル/バレル。<br>
+    <b>為替:</b> 会社前提は1ドル150円で、実勢(159円前後)より円高側。<b>円安が続けば上振れ、日銀の追加利上げ等で円高が進めば会社前提に収束</b>する関係。<br>
+    <b>中東情勢:</b> 会社は300億円の減益バッファーを通期計画に織り込み済み。<br>
+    <b>米国のエネルギー政策:</b> エーソン買収は米政権の政策支援が追い風になるとの報道がある。LNG輸出許認可の動向が関係する。<br>
+    <b>金利:</b> 総資産23.45兆円・自己資本比率41.1%で有利子負債を抱える。金利上昇は調達コスト面でマイナス。<br>
+    <b>データセンター:</b> 経営戦略2027の「Create」の重点領域の一つ。天然ガス上流から電力・DCへつなぐ構想の一部として位置づけられる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ① <b>市況依存</b> — Q1増益の約65%が金属資源。銅・原料炭の価格が反転すれば同じ幅で逆に振れる<br>
+    ② <b>「+37.4%」の読み方</b> — 前期が3期連続減益・−26%と落ち込んだ年であり、伸び率には基準の低さが含まれる<br>
+    ③ <b>非資源の一部が減益</b> — 社会インフラ−17.3%、S.L.C.−21.4%。非資源で全体を支える構造にはまだ至っていない<br>
+    ④ <b>1.2兆円投資の回収</b> — エーソンの純利益見込み700〜800億円に対し投下資本1.2兆円。資源価格に左右される事業への過去最大の投資<br>
+    ⑤ <b>PBR1.83倍</b> — 商社株の伝統的な割安論はこの水準では当てはまらない。還元強化とROE改善が織り込まれた後の水準<br>
+    ⑥ <b>還元の次の一手</b> — 1兆円の自社株買いは実行・消却まで完了済み。次の還元策が示されない期間は、需給面の支えが弱まる可能性<br>
+    ⑦ <b>洋上風力のような一過性損失の再発</b> — 前期は522億円の評価損を計上。大型プロジェクトの見直しは今後も起こりうる<br>
+    ⑧ <b>株価の変動幅</b> — 年初来で3,610〜6,012円と約1.7倍のレンジ。値動きが荒い
+  </div>
+</div>
+
+<div class="card">
+  <h2>決算説明会・質疑応答</h2>
+  <div class="body">
+    決算短信(2026/8/3)の内容は本レポートに反映済み。<b>決算説明会資料およびアナリスト質疑応答の要旨は未取得。</b><span class="warn">次回更新時の確認事項: エーソンの寄与額の実績と進捗、社会インフラ・S.L.C.の減益要因の詳細、次の株主還元策、経営戦略2027の進捗(ROE12%への道筋)。</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/13</td><td class="note-s">初版。FY27/Q1決算短信と経営戦略2027を読了し収録。<b>増益約954億円のうち金属資源が+616億円(約65%)を占める市況依存構造</b>を分解。前期が3期連続減益・−26%であったこと(洋上風力522億円の評価損、ローソン再評価益の反動を含む)を「+37.4%」の分母として明記。エーソン買収1.2兆円と、1兆円・発行済17%の自社株買いが2026年4月30日に消却完了している点を収録。決算説明会資料・質疑応答は未取得</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: 三菱商事 2027年3月期第1四半期決算短信(2026/8/3) / 経営戦略2027(2025/4/3公表) / 株主還元情報 / RIM Intelligence・Bloomberg・日本経済新聞・ダイヤモンド(エーソン買収報道) / 株探・松井証券(株価指標、2026/8/13)。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+</body>
+</html>

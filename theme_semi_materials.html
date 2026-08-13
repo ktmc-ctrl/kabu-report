@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>半導体・データセンター 素材サプライチェーン マップ</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1:#fcfcfb; --surface-2:#f2f1ec; --page:#f9f9f7;
+    --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#898781;
+    --grid:#e1e0d9; --baseline:#c3c2b7; --border:rgba(11,11,11,0.10);
+    --pos:#2a78d6; --neg:#e34948; --good-text:#006300; --warn:#c77f00;
+    --l1:#2a78d6; --l2:#eb6834; --l3:#1baf7a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1:#1a1a19; --surface-2:#232322; --page:#0d0d0d;
+      --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#898781;
+      --grid:#2c2c2a; --baseline:#383835; --border:rgba(255,255,255,0.10);
+      --pos:#3987e5; --neg:#e66767; --good-text:#0ca30c; --warn:#e0a030;
+      --l1:#3987e5; --l2:#d95926; --l3:#199e70;
+    }
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background:var(--page); color:var(--text-primary);
+    padding:16px; max-width:820px; margin:0 auto; line-height:1.65;
+    font-variant-numeric:tabular-nums;
+  }
+  h1 { font-size:1.15rem; margin-bottom:2px; }
+  .subtitle { color:var(--text-secondary); font-size:0.76rem; margin-bottom:14px; }
+  .card { background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:12px; }
+  h2 { font-size:0.92rem; margin-bottom:8px; }
+  h3 { font-size:0.8rem; margin:14px 0 6px; padding-left:9px; border-left:3px solid var(--l1); }
+  table { width:100%; border-collapse:collapse; font-size:0.73rem; }
+  th { text-align:left; color:var(--text-muted); font-weight:600; padding:5px 4px; border-bottom:1px solid var(--baseline); }
+  td { padding:6px 4px; border-bottom:1px solid var(--grid); vertical-align:top; }
+  th.num, td.num { text-align:right; }
+  .up { color:var(--good-text); } .down { color:var(--neg); } .warn { color:var(--warn); }
+  .badge { display:inline-block; font-size:0.63rem; border-radius:6px; padding:1px 6px; border:1px solid var(--border); white-space:nowrap; color:var(--text-muted); }
+  .badge.hot { color:var(--neg); border-color:var(--neg); }
+  .badge.core { color:var(--pos); border-color:var(--pos); }
+  .body { font-size:0.8rem; color:var(--text-secondary); line-height:1.85; }
+  .body b { color:var(--text-primary); }
+  .note-s { font-size:0.7rem; color:var(--text-muted); }
+  hr.sep { border:none; border-top:1px solid var(--grid); margin:11px 0; }
+  .layer { border-radius:10px; padding:11px 12px; margin-bottom:9px; border:1px solid var(--border); background:var(--surface-2); }
+  .layer .lh { font-size:0.78rem; font-weight:700; margin-bottom:2px; }
+  .layer .ld { font-size:0.7rem; color:var(--text-muted); margin-bottom:7px; }
+  .co { font-size:0.73rem; line-height:1.9; }
+  .co b { color:var(--text-primary); }
+  .stage { display:flex; align-items:center; gap:8px; margin:16px 0 8px; }
+  .stage .n { font-size:0.66rem; font-weight:700; color:#fff; background:var(--l1); border-radius:999px; padding:2px 10px; }
+  .stage.s2 .n { background:var(--l2); }
+  .stage.s3 .n { background:var(--l3); }
+  .stage .t { font-size:0.88rem; font-weight:700; }
+  .stage .d { font-size:0.68rem; color:var(--text-muted); }
+</style>
+</head>
+<body class="viz-root">
+
+<style>
+/* テーマ固有スタイル(ポータルに埋め込んでも効くよう body 内に置く) */
+.viz-root { --l1:#2a78d6; --l2:#eb6834; --l3:#1baf7a; }
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) .viz-root { --l1:#3987e5; --l2:#d95926; --l3:#199e70; }
+}
+.tmap h3 { font-size:0.8rem; margin:14px 0 6px; padding-left:9px; border-left:3px solid var(--l1); }
+.tmap .layer { border-radius:10px; padding:11px 12px; margin-bottom:9px; border:1px solid var(--border); background:var(--surface-2, rgba(127,127,127,0.06)); }
+.tmap .layer .lh { font-size:0.78rem; font-weight:700; margin-bottom:2px; }
+.tmap .layer .ld { font-size:0.7rem; color:var(--text-muted); margin-bottom:7px; }
+.tmap .co { font-size:0.73rem; line-height:1.9; color:var(--text-secondary); }
+.tmap .co b { color:var(--text-primary); }
+.tmap .stage { display:flex; align-items:baseline; gap:8px; margin:18px 0 8px; flex-wrap:wrap; }
+.tmap .stage .n { font-size:0.66rem; font-weight:700; color:#fff; background:var(--l1); border-radius:999px; padding:3px 11px; white-space:nowrap; }
+.tmap .stage.s2 .n { background:var(--l2); }
+.tmap .stage.s3 .n { background:var(--l3); }
+.tmap .stage .t { font-size:0.88rem; font-weight:700; }
+.tmap .stage .d { font-size:0.68rem; color:var(--text-muted); }
+.tmap .badge.hot { color:var(--neg); border-color:var(--neg); }
+.tmap table { width:100%; border-collapse:collapse; font-size:0.73rem; }
+</style>
+
+<div class="tmap">
+
+<h1>🗺 半導体・データセンター 素材サプライチェーン マップ</h1>
+<div class="subtitle">日本の化学・素材メーカーが、AI半導体とデータセンターのどこに入っているか ・ 2026/8/12時点</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>この地図の要点</h2>
+  <div class="body">
+    AI半導体・データセンター(DC)関連の素材は、大きく<b>3つの段階</b>に分かれる。<br>
+    <b>①前工程</b>(シリコンからチップを作る) / <b>②後工程</b>(チップをパッケージに載せる) / <b>③データセンター側</b>(チップの外側 — 光配線・冷却・電力)。<br><br>
+    <b>2024〜2026年に最も収益が伸びたのは②の後工程材料である。</b>AIチップはHBM(広帯域メモリ)を何段も積み、1パッケージあたりの面積・発熱・配線層数が急増した。その結果、パッケージ基板の絶縁フィルム、封止材、放熱材、接合フィルムといった「チップとチップの間を埋める材料」の使用量が構造的に増えた。前工程材料(ウェハー・レジスト)は枚数に比例するが、後工程材料は<b>1チップあたりの使用量そのものが増える</b>ため、伸び方が違う。<br><br>
+    もう一点、見落とされやすいのが③である。DCの投資額の内訳では、半導体そのものより<b>建屋・電力・冷却・光配線</b>の比重が大きい。ここには化学メーカー(フッ素系冷却液)、電線メーカー(光ファイバ・銅)、空調メーカーが入っており、半導体市況とは異なるサイクルで動く。
+  </div>
+</div>
+
+<!-- ===== ① 前工程 ===== -->
+<div class="stage"><span class="n">① 前工程</span><span class="t">シリコンからチップを作る</span></div>
+<div class="card">
+  <div class="body" style="margin-bottom:10px">
+    ウェハーに回路を焼き付け、削り、洗う工程。<b>材料の消費量は「処理するウェハー枚数」に概ね比例する</b>ため、AI向けに限らず半導体市況全体の影響を受けやすい。日本企業のシェアが非常に高い領域が多い。
+  </div>
+
+  <div class="layer">
+    <div class="lh">1. シリコンウェハー</div>
+    <div class="ld">すべての土台。世界シェアの約6割を日本2社が占める</div>
+    <div class="co">
+      <b>信越化学 [4063]</b> 世界シェア約30%で首位 ・ <b>SUMCO [3436]</b> 世界シェア約25%で2位<br>
+      <span class="note-s">SUMCOは先端ウェハー新工場の減価償却負担で足元は最終赤字だが、AI向け先端ウェハーの需給逼迫観測から株価は年初来で大きく上昇した。「赤字なのに高値」という、業績ではなく需給思惑で動く典型例。</span>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh">2. フォトレジスト(感光材)</div>
+    <div class="ld">回路の形を転写する薬品。世界シェアの約9割が日本勢</div>
+    <div class="co">
+      <b>東京応化工業 [4186]</b> シェア約25%で首位級、EUV用の主力 ・ <b>信越化学</b> 約20% ・ <b>富士フイルムHD [4901]</b> 約15% ・ <b>住友化学 [4005]</b> 約10%<br>
+      <span class="note-s">JSRも約25%を持つ大手だが、産業革新投資機構(JIC)による買収で非上場化しており、株式市場からは投資できない。</span>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh">3. フォトマスク・ブランクス</div>
+    <div class="ld">回路の「原版」となるガラス基板。EUV用は事実上2社の寡占</div>
+    <div class="co">
+      <b>HOYA [7741]</b> 世界シェア7割超 ・ <b>AGC [5201]</b> 2番手 ・ <b>信越化学</b>(合成石英基板)
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh">4. 特殊ガス・エッチングガス</div>
+    <div class="ld">削る・洗う・膜をつける工程で消費される。装置1台あたりの使用量が決まっている</div>
+    <div class="co">
+      <b>日本酸素HD [4091]</b> 電子材料ガス世界大手 ・ <b>関東電化工業 [4047]</b> NF3・COF2などのエッチング/クリーニングガス ・ <b>セントラル硝子 [4044]</b> ClF3等のフッ素系ガス<br>
+      <span class="note-s">関東電化はNANDメモリの増産と連動しやすい構造。メモリ各社の設備投資計画が直接の追い風・逆風になる。</span>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh">5. 高純度薬液</div>
+    <div class="ld">洗浄・エッチングに使う超高純度の液体。純度の桁が製品差になる</div>
+    <div class="co">
+      <b>ステラケミファ [4109]</b> 高純度フッ酸で世界的地位 ・ <b>トクヤマ [4043]</b> 超高純度IPA、多結晶シリコン ・ <b>三菱ガス化学 [4182]</b> 過酸化水素・BT材料 ・ <b>東ソー [4042]</b> 高純度エッチング薬液
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh">6. CMPスラリー(研磨剤)</div>
+    <div class="ld">配線層を平らに削る液。積層数が増えるほど研磨回数も増える</div>
+    <div class="co">
+      <b>フジミインコーポレーテッド [5384]</b> ・ <b>富士フイルムHD [4901]</b> シェア約20% ・ <b>レゾナックHD [4004]</b><br>
+      <span class="note-s">AIチップの多層化・HBM化でCMP工程数が増えるため、構造的な数量成長が期待される領域。</span>
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh">7. スパッタリングターゲット(配線金属の材料)</div>
+    <div class="ld">チップ内部の金属配線を成膜するための高純度金属</div>
+    <div class="co">
+      <b>JX金属 [5016]</b> 世界トップ級 ・ <b>三菱マテリアル [5711]</b> 高純度銅・貴金属材料
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="lh">8. 製造装置の部材(セラミック・石英)</div>
+    <div class="ld">装置メーカーに納入される消耗部品。装置の稼働率に連動する</div>
+    <div class="co">
+      <b>日本碍子 [5333]</b> 静電チャック・セラミックヒーター ・ <b>日本特殊陶業 [5334]</b> 静電チャック・ICパッケージ ・ <b>京セラ [6971]</b> セラミック部材 ・ <b>フェローテックHD [6890]</b> 真空シール(世界シェア約65%)・石英部材 ・ <b>東ソー [4042]</b> 石英ガラス治具
+    </div>
+  </div>
+</div>
+
+<!-- ===== ② 後工程 ===== -->
+<div class="stage s2"><span class="n">② 後工程</span><span class="t">チップをパッケージに載せる</span><span class="d">— AIで最も伸びた層</span></div>
+<div class="card" style="border:2px solid var(--l2)">
+  <div class="body" style="margin-bottom:10px">
+    複数のチップとHBMを1つの基板に載せ、配線し、樹脂で固め、熱を逃がす工程。<b>AI向けパッケージは面積が大きく、積層数が多く、発熱量が桁違いに大きい</b>。そのため<b>1個あたりの材料使用量が増える</b>——ここが前工程との決定的な違いであり、この層の各社が2025〜2026年に業績を大きく伸ばした理由である。
+  </div>
+
+  <div class="layer" style="border-color:var(--l2)">
+    <div class="lh">9. パッケージ基板の絶縁フィルム(ABF) <span class="badge hot">ほぼ独占</span></div>
+    <div class="ld">CPU・GPUのパッケージ基板で層と層を絶縁するフィルム</div>
+    <div class="co">
+      <b>味の素 [2802]</b> — 「味の素ビルドアップフィルム(ABF)」で<b>世界シェア95%級</b>。調味料メーカーという印象と実態が最も乖離している例で、電子材料が同社の利益成長を牽引している。2026年は純利益が大幅増となる見込みと報じられ、値上げではなく能力増強で需要に応える方針を表明している。<br>
+      <span class="note-s">ABFはアミノ酸研究の副産物として生まれた技術で、代替が難しく、AI向けフリップチップ基板の増加が直接効く構造にある。</span>
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:var(--l2)">
+    <div class="lh">10. 先端後工程材料(NCF・CCL・放熱材) <span class="badge hot">伸び最大</span></div>
+    <div class="ld">チップ同士を接合するフィルム、AI基板用の銅張積層板、熱を逃がす材料</div>
+    <div class="co">
+      <b>レゾナックHD [4004]</b> — AIサーバ向け後工程3製品を明示している:<br>
+      ・<b>NCF</b>(ノンコンダクティブフィルム) — HBMの積層接合に使う。2026年度は前年度比2倍弱を想定<br>
+      ・<b>CCL</b>(AI向け銅張積層板) — <b>2026年度に前年度比4倍弱</b>の売上規模を見込む<br>
+      ・<b>TIM</b>(放熱材) — 同2倍弱<br>
+      2026年12月期上期の半導体・電子材料セグメントは売上2,990億円(+30%)・コア営業利益815億円(+92%)。通期のセグメントコア営業利益予想を1,280億円→<b>1,950億円へ大幅上方修正</b>した。
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:var(--l2)">
+    <div class="lh">11. 半導体封止材(モールド樹脂)</div>
+    <div class="ld">チップを樹脂で固めて保護する。パッケージが大きくなるほど使用量が増える</div>
+    <div class="co">
+      <b>住友ベークライト [4203]</b> 世界シェア首位級。「AIデータセンター向け」を明示して封止材を3割増産すると発表 ・ <b>レゾナックHD [4004]</b>
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:var(--l2)">
+    <div class="lh">12. フィラー・放熱材料</div>
+    <div class="ld">封止材や基板に混ぜる微粒子、熱を逃がすシート</div>
+    <div class="co">
+      <b>デンカ [4061]</b> 球状シリカ(封止材・基板用フィラー)、放熱シート、窒化ホウ素 ・ <b>信越化学 [4063]</b> シリコーン系の放熱材(TIM)<br>
+      <span class="note-s">AIチップの発熱密度が上がるほど、放熱材の性能要求と使用量が増える。「熱」はAI半導体の最大の物理的制約であり、この層は構造的な追い風を受けやすい。</span>
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:var(--l2)">
+    <div class="lh">13. 銅箔・パッケージ基板材料</div>
+    <div class="ld">基板の配線になる極薄の銅、およびパッケージそのもの</div>
+    <div class="co">
+      <b>三井金属鉱業 [5706]</b> キャリア付極薄銅箔「MicroThin」 ・ <b>JX金属 [5016]</b> 圧延銅箔 ・ <b>古河電気工業 [5801]</b> 電解銅箔 ・ <b>京セラ [6971]</b> 有機/セラミックパッケージ(AI半導体向け売上3倍を目標に掲げ、部品事業へ6,500億円投資を発表)
+    </div>
+  </div>
+</div>
+
+<!-- ===== ③ DC側 ===== -->
+<div class="stage s3"><span class="n">③ DC側</span><span class="t">チップの外側 — 光・冷却・電力</span></div>
+<div class="card" style="border:2px solid var(--l3)">
+  <div class="body" style="margin-bottom:10px">
+    データセンターへの投資額のうち、半導体そのものが占める割合は一部にすぎない。<b>建屋・電力設備・冷却・光配線</b>が大きな比重を占め、ここには半導体材料とは別の企業群が入る。<b>半導体市況が調整しても、DC建設のパイプラインは別のサイクルで動く</b>点が、投資対象としての性格の違いになる。
+  </div>
+
+  <div class="layer" style="border-color:var(--l3)">
+    <div class="lh">14. 光ファイバ・光配線</div>
+    <div class="ld">DC内部とDC間をつなぐ。AIは大量のGPU間通信を必要とするため配線量が急増する</div>
+    <div class="co">
+      <b>住友電気工業 [5802]</b> 光ファイバ・光トランシーバ ・ <b>フジクラ [5803]</b> DC内光配線 ・ <b>古河電気工業 [5801]</b> 光ファイバ<br>
+      <b>信越化学 [4063]</b> — <b>光ファイバの母材(プリフォーム)</b>。ファイバを引き延ばす前の元になるガラス棒で、電線3社の上流に位置する。<br>
+      <b>フェローテックHD [6890]</b> — 光トランシーバの温度制御に使うサーモモジュール。2026年中に月900万枚体制へ増強予定。
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:var(--l3)">
+    <div class="lh">15. 冷却(空調・液冷・液浸)</div>
+    <div class="ld">AIサーバの発熱は従来サーバの数倍。空冷から液冷への移行が進む</div>
+    <div class="co">
+      <b>ダイキン工業 [6367]</b> — DC向け空調が成長源。加えてフッ素化学部門が<b>液浸冷却液</b>やフッ素ゴムをDC/半導体向けに展開 ・ <b>AGC [5201]</b> フッ素系材料<br>
+      <span class="note-s">液浸冷却はサーバを丸ごと絶縁性の液体に沈める方式。フッ素系の特殊液体が必要で、フッ素化学に強い企業が候補になる。ただし普及速度については見方が分かれる。</span>
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:var(--l3)">
+    <div class="lh">16. 電力・配電</div>
+    <div class="ld">DCは大量の電力を消費する。受変電設備・銅ケーブル・パワー半導体</div>
+    <div class="co">
+      <b>住友電工 [5802] / フジクラ [5803] / 古河電工 [5801]</b> 電力ケーブル ・ <b>三菱重工 [7011]</b> ガスタービン(DC向け電源) ・ パワー半導体・受変電機器メーカー各社<br>
+      <span class="note-s">DCの電力需要が発電設備そのものの需要を押し上げている点は、重工・電機セクターまで波及している。</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 信越化学の位置づけ ===== -->
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>なぜ信越化学が「複数レイヤーに同時に乗る」のか</h2>
+  <div class="body">
+    上の地図を通して見ると、信越化学工業 [4063] は<b>5つの異なるレイヤーに同時に登場する</b>数少ない企業である。<br><br>
+    ① シリコンウェハー(世界シェア首位) / ② フォトレジスト(シェア約20%) / ③ フォトマスク用合成石英基板 / ⑫ シリコーン系放熱材(TIM) / ⑭ 光ファイバ母材<br><br>
+    <b>個々のレイヤーで首位ではないものもあるが、レイヤーをまたいで存在していること自体が同社の特徴である。</b>半導体材料の中のどの工程が伸びても、また半導体ではなくDCの光配線が伸びても、どこかで拾える構造になっている。同社の営業利益に占める電子材料の比率が高い(直近四半期で約59%)のはこの積み上がりの結果といえる。<br><br>
+    <span class="note-s">※一方、同社の塩化ビニル事業(米Shintech)は住宅・建設市況に連動し、半導体・DCとは無関係に動く。「電子材料が伸びても塩ビが足を引っ張る」構図が起きうる点は、単純な半導体関連銘柄との違いになる。</span>
+  </div>
+</div>
+
+<!-- ===== 株価水準 ===== -->
+<div class="card">
+  <h2>株価水準の一覧(2026/8/12終値)</h2>
+  <div class="note-s" style="margin-bottom:8px">年初来安値からの倍率と、年初来高値からの下落率を並べた。この2つを同時に見ると、各銘柄がサイクルのどこにいるかが読み取りやすい。</div>
+  <table>
+    <thead><tr><th>銘柄</th><th class="num">終値<br>(前日比)</th><th class="num">予想PER<br>PBR</th><th class="num">年初来安値<br>からの倍率</th><th class="num">年初来高値<br>からの下落</th><th class="num">最低投資<br>金額</th></tr></thead>
+    <tbody>
+      <tr><td><b>味の素</b> 2802<br><span class="badge">ABF</span></td><td class="num">5,456<br><span class="up">+3.49%</span></td><td class="num">40.7倍<br>5.47倍</td><td class="num up">1.67倍</td><td class="num">−13.9%</td><td class="num">54.6万</td></tr>
+      <tr><td><b>レゾナックHD</b> 4004<br><span class="badge">NCF/CCL/TIM</span></td><td class="num">17,410<br><span class="up">+6.58%</span></td><td class="num">29.3倍<br>1.69倍</td><td class="num up"><b>2.62倍</b></td><td class="num">−15.1%</td><td class="num">174.1万</td></tr>
+      <tr><td><b>東京応化工業</b> 4186<br><span class="badge">EUVレジスト</span></td><td class="num">9,336<br><span class="up">+3.45%</span></td><td class="num">26.3倍<br>3.06倍</td><td class="num up">1.59倍</td><td class="num down">−27.8%</td><td class="num">93.4万</td></tr>
+      <tr><td><b>住友ベークライト</b> 4203<br><span class="badge">封止材</span></td><td class="num">7,658<br><span class="up">+2.93%</span></td><td class="num">22.9倍<br>1.22倍</td><td class="num up">1.63倍</td><td class="num">−4.1%</td><td class="num">76.6万</td></tr>
+      <tr><td><b>デンカ</b> 4061<br><span class="badge">球状シリカ・放熱</span></td><td class="num">3,596<br><span class="up">+5.15%</span></td><td class="num">19.3倍<br>1.00倍</td><td class="num up">1.32倍</td><td class="num down">−21.8%</td><td class="num">36.0万</td></tr>
+      <tr><td><b>日本酸素HD</b> 4091<br><span class="badge">電子材料ガス</span></td><td class="num">6,136<br><span class="up">+0.56%</span></td><td class="num">20.3倍<br>1.97倍</td><td class="num up">1.37倍</td><td class="num">−5.7%</td><td class="num">61.4万</td></tr>
+      <tr><td><b>関東電化工業</b> 4047<br><span class="badge">エッチングガス</span></td><td class="num">2,786<br><span class="down">−2.11%</span></td><td class="num">21.0倍<br>1.07倍</td><td class="num up"><b>2.49倍</b></td><td class="num down"><b>−36.8%</b></td><td class="num">27.9万</td></tr>
+      <tr><td><b>ステラケミファ</b> 4109<br><span class="badge">高純度フッ酸</span></td><td class="num">5,450<br><span class="up">+2.83%</span></td><td class="num">19.0倍<br>1.23倍</td><td class="num up">1.24倍</td><td class="num down"><b>−32.7%</b></td><td class="num">54.5万</td></tr>
+      <tr><td><b>三菱ガス化学</b> 4182<br><span class="badge">過酸化水素・BT材</span></td><td class="num">4,050<br><span class="up">+6.16%</span></td><td class="num">14.3倍<br>1.19倍</td><td class="num up">1.43倍</td><td class="num down">−29.4%</td><td class="num">40.5万</td></tr>
+      <tr><td><b>トクヤマ</b> 4043<br><span class="badge">多結晶Si・IPA</span></td><td class="num">4,025<br><span class="down">−0.89%</span></td><td class="num">11.1倍<br>0.95倍</td><td class="num up">1.14倍</td><td class="num down">−30.2%</td><td class="num">40.3万</td></tr>
+      <tr><td><b>SUMCO</b> 3436<br><span class="badge">ウェハー2位</span></td><td class="num">3,647<br><span class="up">+4.59%</span></td><td class="num"><span class="warn">赤字</span><br>2.24倍</td><td class="num up"><b>2.54倍</b></td><td class="num down"><b>−38.6%</b></td><td class="num">36.5万</td></tr>
+      <tr><td><b>HOYA</b> 7741<br><span class="badge">EUVブランクス</span></td><td class="num">26,010<br><span class="down">−0.91%</span></td><td class="num">—<br>8.73倍</td><td class="num">1.11倍</td><td class="num">−14.4%</td><td class="num">260.1万</td></tr>
+      <tr><td><b>AGC</b> 5201<br><span class="badge">ブランクス基板・フッ素</span></td><td class="num">5,811<br><span class="up">+0.43%</span></td><td class="num">16.0倍<br>0.74倍</td><td class="num up">1.12倍</td><td class="num down">−30.1%</td><td class="num">58.1万</td></tr>
+      <tr><td><b>日本碍子</b> 5333<br><span class="badge">静電チャック</span></td><td class="num">5,763<br><span class="up">+1.28%</span></td><td class="num">19.8倍<br>1.41倍</td><td class="num up">1.70倍</td><td class="num down">−27.0%</td><td class="num">57.6万</td></tr>
+      <tr><td><b>京セラ</b> 6971<br><span class="badge">パッケージ・部材</span></td><td class="num">3,790<br><span class="down">−0.84%</span></td><td class="num">30.5倍<br>0.94倍</td><td class="num up">1.73倍</td><td class="num">−5.7%</td><td class="num">37.9万</td></tr>
+      <tr><td><b>フジミインコ</b> 5384<br><span class="badge">CMPスラリー</span></td><td class="num">4,075<br><span class="down"><b>−9.24%</b></span></td><td class="num">32.0倍<br>2.37倍</td><td class="num up">1.73倍</td><td class="num down">−20.0%</td><td class="num">40.8万</td></tr>
+      <tr><td><b>フェローテックHD</b> 6890<br><span class="badge">真空シール・サーモ</span></td><td class="num">8,950<br><span class="down">−1.01%</span></td><td class="num">14.8倍<br>1.14倍</td><td class="num up">1.78倍</td><td class="num down">−23.5%</td><td class="num">89.5万</td></tr>
+      <tr><td><b>三菱マテリアル</b> 5711<br><span class="badge">ターゲット材</span></td><td class="num">5,290<br><span class="up">+3.48%</span></td><td class="num">4.8倍<br>0.85倍</td><td class="num up">1.43倍</td><td class="num down">−13.7%</td><td class="num">52.9万</td></tr>
+      <tr><td><b>ダイキン工業</b> 6367<br><span class="badge">DC空調・冷却液</span></td><td class="num">21,570<br><span class="down">−2.95%</span></td><td class="num">21.4倍<br>1.99倍</td><td class="num up">1.24倍</td><td class="num down">−18.4%</td><td class="num">215.7万</td></tr>
+      <tr><td><b>富士フイルムHD</b> 4901<br><span class="badge">スラリー・レジスト</span></td><td class="num">3,198<br><span class="up">+1.14%</span></td><td class="num">13.7倍<br>0.93倍</td><td class="num">1.12倍</td><td class="num down">−18.2%</td><td class="num">32.0万</td></tr>
+      <tr><td><b>セントラル硝子</b> 4044<br><span class="badge">フッ素系ガス</span></td><td class="num">3,980<br><span class="down">−2.93%</span></td><td class="num">13.7倍<br>0.79倍</td><td class="num">1.15倍</td><td class="num">−12.6%</td><td class="num">39.8万</td></tr>
+      <tr><td><b>東ソー</b> 4042<br><span class="badge">石英・薬液</span></td><td class="num">2,736<br><span class="down">−0.15%</span></td><td class="num">14.3倍<br>0.86倍</td><td class="num">1.23倍</td><td class="num down">−11.3%</td><td class="num">27.4万</td></tr>
+      <tr><td><b>住友化学</b> 4005<br><span class="badge">プロセス材料</span></td><td class="num">525.9<br><span class="up">+1.19%</span></td><td class="num">12.5倍<br>0.82倍</td><td class="num">1.18倍</td><td class="num down">−15.9%</td><td class="num">5.3万</td></tr>
+      <tr><td><b>日本特殊陶業</b> 5334<br><span class="badge">静電チャック</span></td><td class="num">9,685<br><span class="down">−1.55%</span></td><td class="num">18.0倍<br>1.85倍</td><td class="num up">1.51倍</td><td class="num down">−14.0%</td><td class="num">96.9万</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">HOYAは会社が業績予想を非開示のため予想PERは算出不可。SUMCOは最終赤字予想のため同じくPERは算出不可。三菱マテリアルの予想PER4.8倍には資産売却益等の一過性要因が含まれる可能性がある。</div>
+</div>
+
+<!-- ===== 読み方 ===== -->
+<div class="card">
+  <h2>この表から読み取れること</h2>
+  <div class="body">
+    <b>① セクター全体が、すでに大きく買われている。</b>24銘柄のうち多くが年初来安値から1.1〜2.6倍になっている。レゾナック2.62倍、SUMCO2.54倍、関東電化2.49倍が上位で、<b>「まだ誰も気づいていない出遅れ銘柄」を探す段階はすでに過ぎている</b>とみるのが素直な解釈になる。<br><br>
+    <b>② ただし多くが高値から2〜4割調整している。</b>SUMCO−38.6%、関東電化−36.8%、ステラケミファ−32.7%、AGC−30.1%、トクヤマ−30.2%、三菱ガス化学−29.4%、東京応化−27.8%、日本碍子−27.0%。高値の多くが<b>2026年5〜7月に集中</b>しており、その後の調整局面にある。「年初来では2倍だが、直近高値からは3割安」という状態にある銘柄が多い。<br><br>
+    <b>③ 前工程系ほど調整が深く、後工程系ほど浅い。</b>高値からの下落率を並べると、ウェハー・ガス・薬液といった前工程材料(SUMCO、関東電化、ステラケミファ、トクヤマ)が3割前後下げている一方、後工程材料(住友ベークライト−4.1%、味の素−13.9%、レゾナック−15.1%)は浅い。<b>市場が「AIで確実に量が増えるのは後工程」と判別している</b>ことの表れと読める。<br><br>
+    <b>④ 8/12は素材セクターに買いが戻った日。</b>レゾナック+6.58%、三菱ガス化学+6.16%、デンカ+5.15%、SUMCO+4.59%、味の素+3.49%、三菱マテリアル+3.48%、東京応化+3.45%。一方でフジミインコは−9.24%と大きく下げており、セクター内で一律ではない。個別要因の確認が必要になる。<br><br>
+    <b>⑤ 単価の壁がある。</b>1単元(100株)で買う場合、HOYA260万円、ダイキン216万円、レゾナック174万円と、資金規模によっては1銘柄で口座の大半を占めてしまう水準にある。同じテーマでも住友化学5.3万円、東ソー27.4万円、関東電化27.9万円のように単価が大きく異なるため、<b>「分析上の魅力」と「実際に組み入れられるか」は別問題</b>になる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/12</td><td class="note-s">初版。前工程8層・後工程5層・DC側3層に分けたサプライチェーンマップと、関連24銘柄の株価水準表を収録。信越化学が5レイヤーに跨る構造を整理</td></tr>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/12(2)</td><td class="note-s"><b>訂正:</b> デンカの8/12終値を3,817円(−1.90%)としていたが、正しくは<b>3,596円(+5.15%、前日終値3,420円)</b>。初出時に参照した株価ページが8/12の値に更新されていなかったことによる誤り。PER・PBR・年初来倍率・下落率もあわせて修正。<span class="note-s">他銘柄は株探の8/12大引け値と突き合わせ、一致を確認した。</span></td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: レゾナックHD 2026年12月期第2四半期決算(マイナビニュース) / 東京応化工業 業績上方修正(日本経済新聞) / 住友ベークライト 封止材増産(日本経済新聞) / 味の素 ABF能力増強 / 日本酸素HD・AGC・HOYA・京セラ・SUMCO・フェローテック各社決算報道 / ダイキン工業 フッ素化学 Data Center Japan 2026 / 松井証券・株探(株価指標、2026/8/12終値)。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+</div>
+
+</body>
+</html>
