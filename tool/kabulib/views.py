@@ -116,8 +116,11 @@ def ladder(store: Store, code: str | None = None) -> str:
             out.append(c(f"  → {l.recommended:,.0f} へ引き上げ。確保が "
                          f"{yen(l.locked, True)} → {yen(l.locked_after, True)} になる", "yellow"))
             out.append(c(f"     kabu stop {h['code']} {l.recommended:.0f}", "dim"))
-        elif l.recommended is not None:
+        elif l.ladder_stop is not None:
             out.append(f"  段の要求値は {l.ladder_stop:,.0f}。今の逆指値の方が上なので据え置き。")
+        elif l.recommended is not None:
+            # 第1段(まだ +5% に届いていない)は段の要求値が無い。初期の損切り位置のまま。
+            out.append("  まだ第1段。⑩の引き上げは +5% から始まるので、いまは初期の損切り位置のまま。")
         if l.distance is not None:
             mark = {"in": "green", "tight": "yellow", "wide": "yellow",
                     "initial": "dim", "none": "dim"}[l.band]
