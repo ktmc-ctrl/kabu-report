@@ -2,3 +2,15 @@
 Thumbs.db
 *.log
 node_modules/
+__pycache__/
+*.pyc
+
+# ── 私的ファイル(絶対に commit しない)──────────────────
+# ポジション・取得単価・逆指値・運用ルールが入る。
+# このリポジトリは GitHub Pages で公開されているので、ここに置いたものは
+# 世界中から読める。private/ の中身は kabu が生成・更新するが、git は見ない。
+private/
+
+# 口調・ルールブックなど、友達に見せる必要のない運用の指示書。
+# Claude Code は CLAUDE.md と一緒にこれも読む(git には乗らない)。
+CLAUDE.local.md

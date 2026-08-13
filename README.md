@@ -2,26 +2,29 @@
 
 日本株の個別銘柄レポートと、テーマ特集をまとめた静的サイトです。
 
-**公開URL**: `https://<ユーザー名>.github.io/kabu-reports/`
+**公開URL**: https://ktmc-ctrl.github.io/kabu-report/
 
 ---
 
 ## 収録内容
 
 - **個別銘柄 27社** — 決算・バリュエーション・中期経営計画を1銘柄1ページに整理
-- **特集 3本**
+- **特集 5本**
   - 🏢 データセンター 全体マップ — 電力・冷却・回線
+  - ⚡ 電力 全体マップ — 需要・発電・送配電
+  - 💳 フィンテック 全体マップ — 決済・証券・銀行・SaaS
   - 🗺 半導体・データセンター 素材サプライチェーン マップ
   - ⚗️ 日本の化学メーカー 比較 — 信越化学はどこに立っているか
 
 トップページ (`index.html`) は全レポートを内包した1ファイル完結版です。
-ボタンで銘柄・特集を切り替えられ、「セクター別」「割安・割高別」の2通りで並べ替えできます。
+ボタンで銘柄・特集を切り替えられ、「セクター別」「割安・割高別」の2通りで並べ替えでき、
+銘柄名・コード・キーワードで絞り込めます。
 
 個別ファイルにも直接アクセスできます。
 
 ```
-https://<ユーザー名>.github.io/kabu-reports/4063_shinetsu.html
-https://<ユーザー名>.github.io/kabu-reports/theme_datacenter.html
+https://ktmc-ctrl.github.io/kabu-report/4063_shinetsu.html
+https://ktmc-ctrl.github.io/kabu-report/theme_datacenter.html
 ```
 
 ---
@@ -41,32 +44,44 @@ https://<ユーザー名>.github.io/kabu-reports/theme_datacenter.html
 
 ---
 
-## GitHub Pages で公開する手順
+## サイトの作り方
 
-1. GitHub で新しいリポジトリを作る(例: `kabu-reports`、Public)
-2. このフォルダを push する
-
-   ```bash
-   git remote add origin https://github.com/<ユーザー名>/kabu-reports.git
-   git branch -M main
-   git push -u origin main
-   ```
-
-3. リポジトリの **Settings → Pages** を開く
-4. **Source** を `Deploy from a branch`、**Branch** を `main` / `/ (root)` に設定して Save
-5. 1〜2分待つと `https://<ユーザー名>.github.io/kabu-reports/` が公開される
-
-`.nojekyll` を置いてあるので、Jekyll による変換は走りません。
-
-### 更新するとき
+サイトは `tool/` の **kabu** で生成しています。レポートのメタデータは
+`data/reports.json` の1箇所にまとまっていて、そこから `index.html` が組み上がります。
 
 ```bash
-git add -A
-git commit -m "レポートを更新"
-git push
+python3 tool/kabu.py report new 6367 --name ダイキン工業 --sector 重工・機械・自動車
+python3 tool/kabu.py portal      # index.html を生成
+python3 tool/kabu.py check       # 整合性とプライバシーの検査
+python3 tool/kabu.py publish --push -m "レポートを更新"
 ```
 
-push するだけで公開ページに反映されます。
+`check` は、未登録の評価区分やセクター(タイルが表示されなくなる)、
+ポータルに取り込むと効かなくなる CSS の書き方、免責文の欠落を検出します。
+検査に落ちると `publish` は commit しません。
+
+コマンドの一覧とデータ構造は [`tool/README.md`](tool/README.md) にあります。
+
+### ローカルで確認する
+
+```bash
+python3 -m http.server 8000
+# → http://localhost:8000/
+```
+
+### テスト
+
+```bash
+python3 -m unittest discover -s tool/tests
+```
+
+---
+
+## GitHub Pages
+
+`.nojekyll` を置いてあるので Jekyll による変換は走りません。
+**Settings → Pages** で Source を `Deploy from a branch`、Branch を `main` / `/ (root)`
+にしてあります。push すると数分で反映されます。
 
 ---
 

@@ -11,7 +11,8 @@
     --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
     --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
     --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
-    --pos: #2a78d6; --neg: #e34948; --good-text: #006300; --warn: #c77f00;
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
     --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
   }
   @media (prefers-color-scheme: dark) {
@@ -20,7 +21,8 @@
       --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
       --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
       --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
-      --pos: #3987e5; --neg: #e66767; --good-text: #0ca30c; --warn: #e0a030;
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
       --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
     }
   }
@@ -42,6 +44,7 @@
   th.num, td.num { text-align: right; }
   .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
   .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
   .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
   .body b { color: var(--text-primary); }
   .note-s { font-size: 0.7rem; color: var(--text-muted); }
@@ -49,6 +52,15 @@
   .px { text-align: right; }
   .px .v { font-size: 1.4rem; font-weight: 700; }
   hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
 
   .topbar { display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
   .brand { font-size:1.15rem; font-weight:700; }
@@ -107,7 +119,6 @@
   .theme-lead { font-size:0.66rem; font-weight:700; color:var(--text-muted); letter-spacing:.06em; margin-bottom:7px; }
   .foot { font-size:0.68rem; color:var(--text-muted); margin-top:18px; padding-top:12px; border-top:1px solid var(--grid); }
 
-  /* ---- grouping toggle ---- */
   .seg { display:inline-flex; background:var(--surface-2); border:1px solid var(--border); border-radius:999px; padding:3px; gap:2px; margin-bottom:4px; }
   .seg button {
     font-family:inherit; font-size:0.74rem; font-weight:600; cursor:pointer;
@@ -124,6 +135,11 @@
   .bdesc { font-size:0.68rem; color:var(--text-muted); margin:-2px 0 9px; }
   .secchip { display:inline-block; font-size:0.62rem; font-weight:600; border-radius:5px; padding:1px 6px;
              border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .search { width:100%; padding:9px 12px; border:1px solid var(--baseline); border-radius:10px;
+            background:var(--surface-1); color:var(--text-primary); font-size:0.82rem;
+            font-family:inherit; margin-bottom:12px; }
+  .search:focus-visible { outline:2px solid var(--pos); outline-offset:1px; }
+  .empty { font-size:0.76rem; color:var(--text-muted); padding:14px 2px; display:none; }
 </style>
 </head>
 <body class="viz-root">
@@ -134,12 +150,12 @@
 </div>
 
 <div class="view active" id="v-home">
-  <div class="subtitle">決算説明資料・中期経営計画・バリュエーションを1銘柄1ページに整理 ・ 全27銘柄 ・ 2026/8/12時点</div>
+  <div class="subtitle">決算説明資料・中期経営計画・バリュエーションを1銘柄1ページに整理 ・ 全27銘柄 ・ 2026/8/13時点</div>
 
   <div class="card">
     <div class="body" style="font-size:0.78rem">
       各レポートは<b>会社が公表した決算短信・決算説明資料(一次資料)</b>を読み込んだうえで、①最新決算と利益の質(一過性要因の分解) ②通期見通しと変動要因 ③バリュエーション(PER・PBR・52週レンジ内の位置) ④中期経営計画と今後のテーマ ⑤環境要因(為替・金利・関税) ⑥リスク要因、の順に整理している。決算発表や大きなニュースの都度、更新履歴を残しながら改訂する。<br>
-      <span class="note-s">※タイル上のバッジは各レポート内のバリュエーション評価を要約したもの。※本ライブラリは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。</span>
+      <span class="note-s">※タイル上のバッジは各レポート内のバリュエーション評価を要約したもの。※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</span>
     </div>
   </div>
 
@@ -147,6 +163,16 @@
   <button class="theme-btn" onclick="show('theme-dc')">
     <div class="tt">🏢 データセンター 全体マップ — 電力・冷却・回線</div>
     <div class="td">建設費の40〜45%は電気設備、冷却は15〜20%。液冷と液浸の違い、GPUファブリックで光配線が増える仕組み、関連22銘柄まで。DCを5層に分けて整理</div>
+    <div class="tg">マップを開く →</div>
+  </button>
+  <button class="theme-btn" onclick="show('theme-power')">
+    <div class="tt">⚡ 電力 全体マップ — 需要・発電・送配電</div>
+    <div class="td">数十年ぶりに増加へ転じた電力需要、原子力15基復帰、納入2030年以降という変圧器逼迫。電力会社と重電で評価が真逆になる構図を、関連16銘柄で整理</div>
+    <div class="tg">マップを開く →</div>
+  </button>
+  <button class="theme-btn" onclick="show('theme-fintech')">
+    <div class="tt">💳 フィンテック 全体マップ — 決済・証券・銀行・SaaS</div>
+    <div class="td">キャッシュレス58%の主役は今もカード(82.7%)。PayPay一強、楽天再編(10/1)、利上げで一番動いているのは実は銀行——関連13銘柄で整理</div>
     <div class="tg">マップを開く →</div>
   </button>
   <button class="theme-btn" onclick="show('theme-semi')">
@@ -160,29 +186,32 @@
     <div class="tg">マップを開く →</div>
   </button>
 
+  <label class="theme-lead" for="q">さがす</label>
+  <input class="search" id="q" type="search" placeholder="銘柄名・コード・セクター・キーワード" oninput="filter(this.value)" autocomplete="off">
+
   <div class="seg" role="tablist" aria-label="グループ分けの切り替え">
     <button id="tab-sector" class="on" role="tab" aria-selected="true" onclick="setGroup('sector')">セクター別</button>
     <button id="tab-val" role="tab" aria-selected="false" onclick="setGroup('val')">割安・割高別</button>
   </div>
 
   <div id="grp-sector">
-    <div class="sector-h">重工・機械・自動車</div>
+    <div class="sector-h" data-group>重工・機械・自動車</div>
     <div class="grid">
-      <button class="tile" onclick="show('7011')" aria-label="三菱重工業のレポートを開く">
+      <button class="tile" data-q="7011 三菱重工業 7011 重工・機械・自動車 割高圏 Q1事業利益+65%・純利益+97%。受注7兆円・FCF6,000億円へ上方修正。GTCC・防衛が牽引も一過性約250億円を含む" onclick="show('7011')" aria-label="三菱重工業のレポートを開く">
         <div class="tile-top"><span class="tile-name">三菱重工業</span><span class="tile-code">7011</span></div>
         <div class="tile-px">4,004<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb hi">割高圏</span></div>
         <div class="tile-sum">Q1事業利益+65%・純利益+97%。受注7兆円・FCF6,000億円へ上方修正。GTCC・防衛が牽引も一過性約250億円を含む</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('7203')" aria-label="トヨタ自動車のレポートを開く">
+      <button class="tile" data-q="7203 トヨタ自動車 7203 重工・機械・自動車 割安圏 Q1営業減益8.8%も通期3.4兆円へ4,000億円上方修正。関税影響は緩和方向、前提160円。1兆円自社株買い" onclick="show('7203')" aria-label="トヨタ自動車のレポートを開く">
         <div class="tile-top"><span class="tile-name">トヨタ自動車</span><span class="tile-code">7203</span></div>
         <div class="tile-px">2,981<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb lo">割安圏</span></div>
         <div class="tile-sum">Q1営業減益8.8%も通期3.4兆円へ4,000億円上方修正。関税影響は緩和方向、前提160円。1兆円自社株買い</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('6367')" aria-label="ダイキン工業のレポートを開く">
+      <button class="tile" data-q="6367 ダイキン工業 6367 重工・機械・自動車 中立 Q1は売上+18%・営業+8%で過去最高も、利益率は10.0%→9.2%へ低下。増益97億に対し為替+55億と関税還付ネット+59億で、外部要因を除くと実質増益が見えない" onclick="show('6367')" aria-label="ダイキン工業のレポートを開く">
         <div class="tile-top"><span class="tile-name">ダイキン工業</span><span class="tile-code">6367</span></div>
         <div class="tile-px">21,390<small>円 ・ 8/13</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
@@ -190,23 +219,23 @@
         <div class="go">レポートを見る →</div>
       </button>
     </div>
-    <div class="sector-h">電機・エンタメ</div>
+    <div class="sector-h" data-group>電機・エンタメ</div>
     <div class="grid">
-      <button class="tile" onclick="show('6758')" aria-label="ソニーグループのレポートを開く">
+      <button class="tile" data-q="6758 ソニーグループ 6758 電機・エンタメ 中立 Q1営業利益+40%で過去最高、通期1.72兆円へ上方修正。熊本地震の影響は通期予想に未反映。タムロン買収提案" onclick="show('6758')" aria-label="ソニーグループのレポートを開く">
         <div class="tile-top"><span class="tile-name">ソニーグループ</span><span class="tile-code">6758</span></div>
         <div class="tile-px">3,764<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
         <div class="tile-sum">Q1営業利益+40%で過去最高、通期1.72兆円へ上方修正。熊本地震の影響は通期予想に未反映。タムロン買収提案</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('7974')" aria-label="任天堂のレポートを開く">
+      <button class="tile" data-q="7974 任天堂 7974 電機・エンタメ 中立 FY27/Q1は減収ながら営業利益2.5倍。IP・ソフト中心へ収益構成が転換。為替前提150円が保守的で上振れ余地" onclick="show('7974')" aria-label="任天堂のレポートを開く">
         <div class="tile-top"><span class="tile-name">任天堂</span><span class="tile-code">7974</span></div>
         <div class="tile-px">8,265<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
         <div class="tile-sum">FY27/Q1は減収ながら営業利益2.5倍。IP・ソフト中心へ収益構成が転換。為替前提150円が保守的で上振れ余地</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('9684')" aria-label="スクウェア・エニックスHDのレポートを開く">
+      <button class="tile" data-q="9684 スクウェア・エニックスHD 9684 電機・エンタメ 割高圏 Q1営業益+88.9%・経常+172.4%も通期は減益計画のまま据え置き。8/12は年初来高値3,300円で寄り付き後に反落する寄り天" onclick="show('9684')" aria-label="スクウェア・エニックスHDのレポートを開く">
         <div class="tile-top"><span class="tile-name">スクウェア・エニックスHD</span><span class="tile-code">9684</span></div>
         <div class="tile-px">2,991<small>円 ・ 8/12</small></div>
         <div style="margin-top:6px"><span class="vb hi">割高圏</span></div>
@@ -214,23 +243,23 @@
         <div class="go">レポートを見る →</div>
       </button>
     </div>
-    <div class="sector-h">素材・化学</div>
+    <div class="sector-h" data-group>素材・化学</div>
     <div class="grid">
-      <button class="tile" onclick="show('3402')" aria-label="東レのレポートを開く">
+      <button class="tile" data-q="3402 東レ 3402 素材・化学 中立 Q1営業利益+72%・純利益は予想を51%超過、上期上方修正。航空機炭素繊維・水処理が牽引し年初来高値圏" onclick="show('3402')" aria-label="東レのレポートを開く">
         <div class="tile-top"><span class="tile-name">東レ</span><span class="tile-code">3402</span></div>
         <div class="tile-px">1,349<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
         <div class="tile-sum">Q1営業利益+72%・純利益は予想を51%超過、上期上方修正。航空機炭素繊維・水処理が牽引し年初来高値圏</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('4063')" aria-label="信越化学工業のレポートを開く">
+      <button class="tile" data-q="4063 信越化学工業 4063 素材・化学 中立 Q1営業利益+4%。電子材料が利益の59%・+23%と伸長、塩ビは−34%と二極化。営業利益率25.9%は日本の化学で首位" onclick="show('4063')" aria-label="信越化学工業のレポートを開く">
         <div class="tile-top"><span class="tile-name">信越化学工業</span><span class="tile-code">4063</span></div>
         <div class="tile-px">6,410<small>円 ・ 8/12</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
         <div class="tile-sum">Q1営業利益+4%。電子材料が利益の59%・+23%と伸長、塩ビは−34%と二極化。営業利益率25.9%は日本の化学で首位</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('4182')" aria-label="三菱ガス化学のレポートを開く">
+      <button class="tile" data-q="4182 三菱ガス化学 4182 素材・化学 中立 Q1営業益+153.5%・通期上方修正も、増益+168億の59%はメタノール市況(うち在庫受払差が価格要因の2/3)。ICT3事業は通期横ばい計画、中計目標には140億未達" onclick="show('4182')" aria-label="三菱ガス化学のレポートを開く">
         <div class="tile-top"><span class="tile-name">三菱ガス化学</span><span class="tile-code">4182</span></div>
         <div class="tile-px">4,050<small>円 ・ 8/12</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
@@ -238,37 +267,37 @@
         <div class="go">レポートを見る →</div>
       </button>
     </div>
-    <div class="sector-h">電線・非鉄</div>
+    <div class="sector-h" data-group>電線・非鉄</div>
     <div class="grid">
-      <button class="tile" onclick="show('5802')" aria-label="住友電気工業のレポートを開く">
+      <button class="tile" data-q="5802 住友電気工業 5802 電線・非鉄 中立 Q1営業利益+61%。情報通信(DC向け光)が利益3.5倍で主役交代、上期・通期を上方修正" onclick="show('5802')" aria-label="住友電気工業のレポートを開く">
         <div class="tile-top"><span class="tile-name">住友電気工業</span><span class="tile-code">5802</span></div>
         <div class="tile-px">2,161<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
         <div class="tile-sum">Q1営業利益+61%。情報通信(DC向け光)が利益3.5倍で主役交代、上期・通期を上方修正</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('5803')" aria-label="フジクラのレポートを開く">
+      <button class="tile" data-q="5803 フジクラ 5803 電線・非鉄 やや割高 DC向け光配線が牽引しQ1営業益2.6倍、通期営業益4,320億円へ大幅上方修正。中計目標を初年度で超過" onclick="show('5803')" aria-label="フジクラのレポートを開く">
         <div class="tile-top"><span class="tile-name">フジクラ</span><span class="tile-code">5803</span></div>
         <div class="tile-px">5,580<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb hi">やや割高</span></div>
         <div class="tile-sum">DC向け光配線が牽引しQ1営業益2.6倍、通期営業益4,320億円へ大幅上方修正。中計目標を初年度で超過</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('5801')" aria-label="古河電気工業のレポートを開く">
+      <button class="tile" data-q="5801 古河電気工業 5801 電線・非鉄 中立 Q1営業益3.1倍・過去最高、光ソリューション黒字転換。通期経常43%上方修正。銅価・円安の寄与も大" onclick="show('5801')" aria-label="古河電気工業のレポートを開く">
         <div class="tile-top"><span class="tile-name">古河電気工業</span><span class="tile-code">5801</span></div>
         <div class="tile-px">3,952<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
         <div class="tile-sum">Q1営業益3.1倍・過去最高、光ソリューション黒字転換。通期経常43%上方修正。銅価・円安の寄与も大</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('5706')" aria-label="三井金属鉱業のレポートを開く">
+      <button class="tile" data-q="5706 三井金属鉱業 5706 電線・非鉄 中立 MicroThin/VSP数量増でQ1営業益84%増も、通期減益計画が市場予想に届かず8/10に13.6%急落" onclick="show('5706')" aria-label="三井金属鉱業のレポートを開く">
         <div class="tile-top"><span class="tile-name">三井金属鉱業</span><span class="tile-code">5706</span></div>
         <div class="tile-px">27,855<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
         <div class="tile-sum">MicroThin/VSP数量増でQ1営業益84%増も、通期減益計画が市場予想に届かず8/10に13.6%急落</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('5016')" aria-label="JX金属のレポートを開く">
+      <button class="tile" data-q="5016 JX金属 5016 電線・非鉄 割高圏 Q1営業利益2.8倍・通期を大幅上方修正。AI半導体向けターゲット増販と銅価・円安が寄与。譲渡益190億円は一過性" onclick="show('5016')" aria-label="JX金属のレポートを開く">
         <div class="tile-top"><span class="tile-name">JX金属</span><span class="tile-code">5016</span></div>
         <div class="tile-px">3,845<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb hi">割高圏</span></div>
@@ -276,23 +305,23 @@
         <div class="go">レポートを見る →</div>
       </button>
     </div>
-    <div class="sector-h">半導体</div>
+    <div class="sector-h" data-group>半導体</div>
     <div class="grid">
-      <button class="tile" onclick="show('6920')" aria-label="レーザーテックのレポートを開く">
+      <button class="tile" data-q="6920 レーザーテック 6920 半導体 やや割高 FY26は減収減益も受注+126%回復。FY27最高益予想もOPM3年連続低下で決算翌日13%超急落" onclick="show('6920')" aria-label="レーザーテックのレポートを開く">
         <div class="tile-top"><span class="tile-name">レーザーテック</span><span class="tile-code">6920</span></div>
         <div class="tile-px">38,590<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb hi">やや割高</span></div>
         <div class="tile-sum">FY26は減収減益も受注+126%回復。FY27最高益予想もOPM3年連続低下で決算翌日13%超急落</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('6857')" aria-label="アドバンテストのレポートを開く">
+      <button class="tile" data-q="6857 アドバンテスト 6857 半導体 割高圏 推論AI特需でQ1営業益+53%・通期を35%上方修正。株価は年初来高値圏、PER37倍の期待維持が焦点" onclick="show('6857')" aria-label="アドバンテストのレポートを開く">
         <div class="tile-top"><span class="tile-name">アドバンテスト</span><span class="tile-code">6857</span></div>
         <div class="tile-px">34,260<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb hi">割高圏</span></div>
         <div class="tile-sum">推論AI特需でQ1営業益+53%・通期を35%上方修正。株価は年初来高値圏、PER37倍の期待維持が焦点</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('285A')" aria-label="キオクシアHDのレポートを開く">
+      <button class="tile" data-q="285A キオクシアHD 285A 半導体 市況次第 NAND急騰でQ1営業益1.27兆円・純利益46倍。8千億円自社株買い・1対3分割発表も高値から57%調整" onclick="show('285A')" aria-label="キオクシアHDのレポートを開く">
         <div class="tile-top"><span class="tile-name">キオクシアHD</span><span class="tile-code">285A</span></div>
         <div class="tile-px">48,010<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb mid">市況次第</span></div>
@@ -300,37 +329,37 @@
         <div class="go">レポートを見る →</div>
       </button>
     </div>
-    <div class="sector-h">投資・商社・小売</div>
+    <div class="sector-h" data-group>投資・商社・小売</div>
     <div class="grid">
-      <button class="tile" onclick="show('9984')" aria-label="ソフトバンクGのレポートを開く">
+      <button class="tile" data-q="9984 ソフトバンクG 9984 投資・商社・小売 割安圏 Q1純利益3,473億円(−17.7%)もNAV72.3兆円と過去最高。OpenAI評価が寄与、LTV13%。NAV比5割前後のディスカウント" onclick="show('9984')" aria-label="ソフトバンクGのレポートを開く">
         <div class="tile-top"><span class="tile-name">ソフトバンクG</span><span class="tile-code">9984</span></div>
         <div class="tile-px">5,484<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb lo">割安圏</span></div>
         <div class="tile-sum">Q1純利益3,473億円(−17.7%)もNAV72.3兆円と過去最高。OpenAI評価が寄与、LTV13%。NAV比5割前後のディスカウント</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('8058')" aria-label="三菱商事のレポートを開く">
+      <button class="tile" data-q="8058 三菱商事 8058 投資・商社・小売 中立 Q1純利益+47%も、増益954億の65%は金属資源(市況)。前期は3期連続減益−26%で分母が低い。1兆円・発行済17%の自社株買いは消却完了、エーソン1.2兆円買収が今期寄与" onclick="show('8058')" aria-label="三菱商事のレポートを開く">
         <div class="tile-top"><span class="tile-name">三菱商事</span><span class="tile-code">8058</span></div>
         <div class="tile-px">4,822<small>円 ・ 8/13</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
         <div class="tile-sum">Q1純利益+47%も、増益954億の65%は金属資源(市況)。前期は3期連続減益−26%で分母が低い。1兆円・発行済17%の自社株買いは消却完了、エーソン1.2兆円買収が今期寄与</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('8031')" aria-label="三井物産のレポートを開く">
+      <button class="tile" data-q="8031 三井物産 8031 投資・商社・小売 割安寄り Q1純利益2,941億円(+53.5%)で過去最高。自社株買い2,000億円。中経2029は累進配当140円下限・ROE12%目標" onclick="show('8031')" aria-label="三井物産のレポートを開く">
         <div class="tile-top"><span class="tile-name">三井物産</span><span class="tile-code">8031</span></div>
         <div class="tile-px">4,897<small>円 ・ 8/11</small></div>
         <div style="margin-top:6px"><span class="vb lo">割安寄り</span></div>
         <div class="tile-sum">Q1純利益2,941億円(+53.5%)で過去最高。自社株買い2,000億円。中経2029は累進配当140円下限・ROE12%目標</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('8267')" aria-label="イオンのレポートを開く">
+      <button class="tile" data-q="8267 イオン 8267 投資・商社・小売 割高圏 Q1営業利益752億円(+33.6%)で過去最高。薬局統合が牽引もGMS・SMは先行投資で赤字。純利益は薄い" onclick="show('8267')" aria-label="イオンのレポートを開く">
         <div class="tile-top"><span class="tile-name">イオン</span><span class="tile-code">8267</span></div>
         <div class="tile-px">1,395<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb hi">割高圏</span></div>
         <div class="tile-sum">Q1営業利益752億円(+33.6%)で過去最高。薬局統合が牽引もGMS・SMは先行投資で赤字。純利益は薄い</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('9301')" aria-label="三菱倉庫のレポートを開く">
+      <button class="tile" data-q="9301 三菱倉庫 9301 投資・商社・小売 中立 Q1営業益−2.6%と減益スタート。通期は営業+9.9%増益だが純利益は−58%——政策保有株の売却益が剥落。経営計画は2030年に事業利益2.8倍を掲げる" onclick="show('9301')" aria-label="三菱倉庫のレポートを開く">
         <div class="tile-top"><span class="tile-name">三菱倉庫</span><span class="tile-code">9301</span></div>
         <div class="tile-px">1,504<small>円 ・ 8/13</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
@@ -338,23 +367,23 @@
         <div class="go">レポートを見る →</div>
       </button>
     </div>
-    <div class="sector-h">金融</div>
+    <div class="sector-h" data-group>金融</div>
     <div class="grid">
-      <button class="tile" onclick="show('8306')" aria-label="三菱UFJ FGのレポートを開く">
+      <button class="tile" data-q="8306 三菱UFJ FG 8306 金融 割高圏 Q1純利益8,094億円(+48%)で過去最高、通期2.7兆円へ進捗30%。利上げ追い風もPBR1.74倍と織り込み進む" onclick="show('8306')" aria-label="三菱UFJ FGのレポートを開く">
         <div class="tile-top"><span class="tile-name">三菱UFJ FG</span><span class="tile-code">8306</span></div>
         <div class="tile-px">3,510<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb hi">割高圏</span></div>
         <div class="tile-sum">Q1純利益8,094億円(+48%)で過去最高、通期2.7兆円へ進捗30%。利上げ追い風もPBR1.74倍と織り込み進む</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('8316')" aria-label="三井住友FGのレポートを開く">
+      <button class="tile" data-q="8316 三井住友FG 8316 金融 やや割高 Q1純利益5,014億円(+55%)。6月利上げ効果+800億円が発現。新中計はROTE13%・純利益2兆円、毎期増配コミット" onclick="show('8316')" aria-label="三井住友FGのレポートを開く">
         <div class="tile-top"><span class="tile-name">三井住友FG</span><span class="tile-code">8316</span></div>
         <div class="tile-px">6,629<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb hi">やや割高</span></div>
         <div class="tile-sum">Q1純利益5,014億円(+55%)。6月利上げ効果+800億円が発現。新中計はROTE13%・純利益2兆円、毎期増配コミット</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('8411')" aria-label="みずほFGのレポートを開く">
+      <button class="tile" data-q="8411 みずほFG 8411 金融 中立 Q1純利益4,229億円(+45%)、通期1.4兆円へ上方修正・自社株買い倍増。日銀利上げ追い風でROE12.5%" onclick="show('8411')" aria-label="みずほFGのレポートを開く">
         <div class="tile-top"><span class="tile-name">みずほFG</span><span class="tile-code">8411</span></div>
         <div class="tile-px">8,244<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
@@ -362,16 +391,16 @@
         <div class="go">レポートを見る →</div>
       </button>
     </div>
-    <div class="sector-h">ネット・通信</div>
+    <div class="sector-h" data-group>ネット・通信</div>
     <div class="grid">
-      <button class="tile" onclick="show('9432')" aria-label="NTTのレポートを開く">
+      <button class="tile" data-q="9432 NTT 9432 ネット・通信 中立 Q1営業収益過去最高(+10.9%)・16期連続増配へ。安定収益+還元が軸、IOWN・DCが中期テーマ" onclick="show('9432')" aria-label="NTTのレポートを開く">
         <div class="tile-top"><span class="tile-name">NTT</span><span class="tile-code">9432</span></div>
         <div class="tile-px">158.9<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
         <div class="tile-sum">Q1営業収益過去最高(+10.9%)・16期連続増配へ。安定収益+還元が軸、IOWN・DCが中期テーマ</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('4755')" aria-label="楽天グループのレポートを開く">
+      <button class="tile" data-q="4755 楽天グループ 4755 ネット・通信 PER非適用 7年ぶり上期営業黒字も、上期営業益504億はコンセンサス708億に28.8%未達。決算後初日の8/12に−13.43%・安値引け" onclick="show('4755')" aria-label="楽天グループのレポートを開く">
         <div class="tile-top"><span class="tile-name">楽天グループ</span><span class="tile-code">4755</span></div>
         <div class="tile-px">747.9<small>円 ・ 8/12</small></div>
         <div style="margin-top:6px"><span class="vb mid">PER非適用</span></div>
@@ -382,24 +411,24 @@
   </div>
 
   <div id="grp-val" style="display:none">
-    <div class="sector-h val lo">割安 <span class="cnt">3銘柄</span></div>
+    <div class="sector-h val lo" data-group>割安 <span class="cnt">3銘柄</span></div>
     <div class="bdesc">予想PER・PBRが過去比/同業比で低位、または資産価値対比のディスカウントが大きい</div>
     <div class="grid">
-      <button class="tile" onclick="show('7203')" aria-label="トヨタ自動車のレポートを開く">
+      <button class="tile" data-q="7203 トヨタ自動車 7203 重工・機械・自動車 割安圏 Q1営業減益8.8%も通期3.4兆円へ4,000億円上方修正。関税影響は緩和方向、前提160円。1兆円自社株買い" onclick="show('7203')" aria-label="トヨタ自動車のレポートを開く">
         <div class="tile-top"><span class="tile-name">トヨタ自動車</span><span class="tile-code">7203</span></div>
         <div class="tile-px">2,981<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">重工・機械・自動車</span></div>
         <div class="tile-sum">Q1営業減益8.8%も通期3.4兆円へ4,000億円上方修正。関税影響は緩和方向、前提160円。1兆円自社株買い</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('9984')" aria-label="ソフトバンクGのレポートを開く">
+      <button class="tile" data-q="9984 ソフトバンクG 9984 投資・商社・小売 割安圏 Q1純利益3,473億円(−17.7%)もNAV72.3兆円と過去最高。OpenAI評価が寄与、LTV13%。NAV比5割前後のディスカウント" onclick="show('9984')" aria-label="ソフトバンクGのレポートを開く">
         <div class="tile-top"><span class="tile-name">ソフトバンクG</span><span class="tile-code">9984</span></div>
         <div class="tile-px">5,484<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">投資・商社・小売</span></div>
         <div class="tile-sum">Q1純利益3,473億円(−17.7%)もNAV72.3兆円と過去最高。OpenAI評価が寄与、LTV13%。NAV比5割前後のディスカウント</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('8031')" aria-label="三井物産のレポートを開く">
+      <button class="tile" data-q="8031 三井物産 8031 投資・商社・小売 割安寄り Q1純利益2,941億円(+53.5%)で過去最高。自社株買い2,000億円。中経2029は累進配当140円下限・ROE12%目標" onclick="show('8031')" aria-label="三井物産のレポートを開く">
         <div class="tile-top"><span class="tile-name">三井物産</span><span class="tile-code">8031</span></div>
         <div class="tile-px">4,897<small>円 ・ 8/11</small></div>
         <div style="margin-top:6px"><span class="secchip">投資・商社・小売</span></div>
@@ -407,94 +436,94 @@
         <div class="go">レポートを見る →</div>
       </button>
     </div>
-    <div class="sector-h val mid">中立 <span class="cnt">13銘柄</span></div>
+    <div class="sector-h val mid" data-group>中立 <span class="cnt">13銘柄</span></div>
     <div class="bdesc">指標面に大きな歪みはなく、業績見通しとおおむね整合的な水準</div>
     <div class="grid">
-      <button class="tile" onclick="show('6758')" aria-label="ソニーグループのレポートを開く">
+      <button class="tile" data-q="6758 ソニーグループ 6758 電機・エンタメ 中立 Q1営業利益+40%で過去最高、通期1.72兆円へ上方修正。熊本地震の影響は通期予想に未反映。タムロン買収提案" onclick="show('6758')" aria-label="ソニーグループのレポートを開く">
         <div class="tile-top"><span class="tile-name">ソニーグループ</span><span class="tile-code">6758</span></div>
         <div class="tile-px">3,764<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">電機・エンタメ</span></div>
         <div class="tile-sum">Q1営業利益+40%で過去最高、通期1.72兆円へ上方修正。熊本地震の影響は通期予想に未反映。タムロン買収提案</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('6367')" aria-label="ダイキン工業のレポートを開く">
+      <button class="tile" data-q="6367 ダイキン工業 6367 重工・機械・自動車 中立 Q1は売上+18%・営業+8%で過去最高も、利益率は10.0%→9.2%へ低下。増益97億に対し為替+55億と関税還付ネット+59億で、外部要因を除くと実質増益が見えない" onclick="show('6367')" aria-label="ダイキン工業のレポートを開く">
         <div class="tile-top"><span class="tile-name">ダイキン工業</span><span class="tile-code">6367</span></div>
         <div class="tile-px">21,390<small>円 ・ 8/13</small></div>
         <div style="margin-top:6px"><span class="secchip">重工・機械・自動車</span></div>
         <div class="tile-sum">Q1は売上+18%・営業+8%で過去最高も、利益率は10.0%→9.2%へ低下。増益97億に対し為替+55億と関税還付ネット+59億で、外部要因を除くと実質増益が見えない</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('7974')" aria-label="任天堂のレポートを開く">
+      <button class="tile" data-q="7974 任天堂 7974 電機・エンタメ 中立 FY27/Q1は減収ながら営業利益2.5倍。IP・ソフト中心へ収益構成が転換。為替前提150円が保守的で上振れ余地" onclick="show('7974')" aria-label="任天堂のレポートを開く">
         <div class="tile-top"><span class="tile-name">任天堂</span><span class="tile-code">7974</span></div>
         <div class="tile-px">8,265<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">電機・エンタメ</span></div>
         <div class="tile-sum">FY27/Q1は減収ながら営業利益2.5倍。IP・ソフト中心へ収益構成が転換。為替前提150円が保守的で上振れ余地</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('3402')" aria-label="東レのレポートを開く">
+      <button class="tile" data-q="3402 東レ 3402 素材・化学 中立 Q1営業利益+72%・純利益は予想を51%超過、上期上方修正。航空機炭素繊維・水処理が牽引し年初来高値圏" onclick="show('3402')" aria-label="東レのレポートを開く">
         <div class="tile-top"><span class="tile-name">東レ</span><span class="tile-code">3402</span></div>
         <div class="tile-px">1,349<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">素材・化学</span></div>
         <div class="tile-sum">Q1営業利益+72%・純利益は予想を51%超過、上期上方修正。航空機炭素繊維・水処理が牽引し年初来高値圏</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('4063')" aria-label="信越化学工業のレポートを開く">
+      <button class="tile" data-q="4063 信越化学工業 4063 素材・化学 中立 Q1営業利益+4%。電子材料が利益の59%・+23%と伸長、塩ビは−34%と二極化。営業利益率25.9%は日本の化学で首位" onclick="show('4063')" aria-label="信越化学工業のレポートを開く">
         <div class="tile-top"><span class="tile-name">信越化学工業</span><span class="tile-code">4063</span></div>
         <div class="tile-px">6,410<small>円 ・ 8/12</small></div>
         <div style="margin-top:6px"><span class="secchip">素材・化学</span></div>
         <div class="tile-sum">Q1営業利益+4%。電子材料が利益の59%・+23%と伸長、塩ビは−34%と二極化。営業利益率25.9%は日本の化学で首位</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('4182')" aria-label="三菱ガス化学のレポートを開く">
+      <button class="tile" data-q="4182 三菱ガス化学 4182 素材・化学 中立 Q1営業益+153.5%・通期上方修正も、増益+168億の59%はメタノール市況(うち在庫受払差が価格要因の2/3)。ICT3事業は通期横ばい計画、中計目標には140億未達" onclick="show('4182')" aria-label="三菱ガス化学のレポートを開く">
         <div class="tile-top"><span class="tile-name">三菱ガス化学</span><span class="tile-code">4182</span></div>
         <div class="tile-px">4,050<small>円 ・ 8/12</small></div>
         <div style="margin-top:6px"><span class="secchip">素材・化学</span></div>
         <div class="tile-sum">Q1営業益+153.5%・通期上方修正も、増益+168億の59%はメタノール市況(うち在庫受払差が価格要因の2/3)。ICT3事業は通期横ばい計画、中計目標には140億未達</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('5802')" aria-label="住友電気工業のレポートを開く">
+      <button class="tile" data-q="5802 住友電気工業 5802 電線・非鉄 中立 Q1営業利益+61%。情報通信(DC向け光)が利益3.5倍で主役交代、上期・通期を上方修正" onclick="show('5802')" aria-label="住友電気工業のレポートを開く">
         <div class="tile-top"><span class="tile-name">住友電気工業</span><span class="tile-code">5802</span></div>
         <div class="tile-px">2,161<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">電線・非鉄</span></div>
         <div class="tile-sum">Q1営業利益+61%。情報通信(DC向け光)が利益3.5倍で主役交代、上期・通期を上方修正</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('5801')" aria-label="古河電気工業のレポートを開く">
+      <button class="tile" data-q="5801 古河電気工業 5801 電線・非鉄 中立 Q1営業益3.1倍・過去最高、光ソリューション黒字転換。通期経常43%上方修正。銅価・円安の寄与も大" onclick="show('5801')" aria-label="古河電気工業のレポートを開く">
         <div class="tile-top"><span class="tile-name">古河電気工業</span><span class="tile-code">5801</span></div>
         <div class="tile-px">3,952<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">電線・非鉄</span></div>
         <div class="tile-sum">Q1営業益3.1倍・過去最高、光ソリューション黒字転換。通期経常43%上方修正。銅価・円安の寄与も大</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('5706')" aria-label="三井金属鉱業のレポートを開く">
+      <button class="tile" data-q="5706 三井金属鉱業 5706 電線・非鉄 中立 MicroThin/VSP数量増でQ1営業益84%増も、通期減益計画が市場予想に届かず8/10に13.6%急落" onclick="show('5706')" aria-label="三井金属鉱業のレポートを開く">
         <div class="tile-top"><span class="tile-name">三井金属鉱業</span><span class="tile-code">5706</span></div>
         <div class="tile-px">27,855<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">電線・非鉄</span></div>
         <div class="tile-sum">MicroThin/VSP数量増でQ1営業益84%増も、通期減益計画が市場予想に届かず8/10に13.6%急落</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('8058')" aria-label="三菱商事のレポートを開く">
+      <button class="tile" data-q="8058 三菱商事 8058 投資・商社・小売 中立 Q1純利益+47%も、増益954億の65%は金属資源(市況)。前期は3期連続減益−26%で分母が低い。1兆円・発行済17%の自社株買いは消却完了、エーソン1.2兆円買収が今期寄与" onclick="show('8058')" aria-label="三菱商事のレポートを開く">
         <div class="tile-top"><span class="tile-name">三菱商事</span><span class="tile-code">8058</span></div>
         <div class="tile-px">4,822<small>円 ・ 8/13</small></div>
         <div style="margin-top:6px"><span class="secchip">投資・商社・小売</span></div>
         <div class="tile-sum">Q1純利益+47%も、増益954億の65%は金属資源(市況)。前期は3期連続減益−26%で分母が低い。1兆円・発行済17%の自社株買いは消却完了、エーソン1.2兆円買収が今期寄与</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('9301')" aria-label="三菱倉庫のレポートを開く">
+      <button class="tile" data-q="9301 三菱倉庫 9301 投資・商社・小売 中立 Q1営業益−2.6%と減益スタート。通期は営業+9.9%増益だが純利益は−58%——政策保有株の売却益が剥落。経営計画は2030年に事業利益2.8倍を掲げる" onclick="show('9301')" aria-label="三菱倉庫のレポートを開く">
         <div class="tile-top"><span class="tile-name">三菱倉庫</span><span class="tile-code">9301</span></div>
         <div class="tile-px">1,504<small>円 ・ 8/13</small></div>
         <div style="margin-top:6px"><span class="secchip">投資・商社・小売</span></div>
         <div class="tile-sum">Q1営業益−2.6%と減益スタート。通期は営業+9.9%増益だが純利益は−58%——政策保有株の売却益が剥落。経営計画は2030年に事業利益2.8倍を掲げる</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('8411')" aria-label="みずほFGのレポートを開く">
+      <button class="tile" data-q="8411 みずほFG 8411 金融 中立 Q1純利益4,229億円(+45%)、通期1.4兆円へ上方修正・自社株買い倍増。日銀利上げ追い風でROE12.5%" onclick="show('8411')" aria-label="みずほFGのレポートを開く">
         <div class="tile-top"><span class="tile-name">みずほFG</span><span class="tile-code">8411</span></div>
         <div class="tile-px">8,244<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">金融</span></div>
         <div class="tile-sum">Q1純利益4,229億円(+45%)、通期1.4兆円へ上方修正・自社株買い倍増。日銀利上げ追い風でROE12.5%</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('9432')" aria-label="NTTのレポートを開く">
+      <button class="tile" data-q="9432 NTT 9432 ネット・通信 中立 Q1営業収益過去最高(+10.9%)・16期連続増配へ。安定収益+還元が軸、IOWN・DCが中期テーマ" onclick="show('9432')" aria-label="NTTのレポートを開く">
         <div class="tile-top"><span class="tile-name">NTT</span><span class="tile-code">9432</span></div>
         <div class="tile-px">158.9<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">ネット・通信</span></div>
@@ -502,66 +531,66 @@
         <div class="go">レポートを見る →</div>
       </button>
     </div>
-    <div class="sector-h val hi">割高 <span class="cnt">9銘柄</span></div>
+    <div class="sector-h val hi" data-group>割高 <span class="cnt">9銘柄</span></div>
     <div class="bdesc">指標が過去比・同業比で高位。将来の成長期待の織り込みが進んでいる</div>
     <div class="grid">
-      <button class="tile" onclick="show('7011')" aria-label="三菱重工業のレポートを開く">
+      <button class="tile" data-q="7011 三菱重工業 7011 重工・機械・自動車 割高圏 Q1事業利益+65%・純利益+97%。受注7兆円・FCF6,000億円へ上方修正。GTCC・防衛が牽引も一過性約250億円を含む" onclick="show('7011')" aria-label="三菱重工業のレポートを開く">
         <div class="tile-top"><span class="tile-name">三菱重工業</span><span class="tile-code">7011</span></div>
         <div class="tile-px">4,004<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">重工・機械・自動車</span></div>
         <div class="tile-sum">Q1事業利益+65%・純利益+97%。受注7兆円・FCF6,000億円へ上方修正。GTCC・防衛が牽引も一過性約250億円を含む</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('9684')" aria-label="スクウェア・エニックスHDのレポートを開く">
+      <button class="tile" data-q="9684 スクウェア・エニックスHD 9684 電機・エンタメ 割高圏 Q1営業益+88.9%・経常+172.4%も通期は減益計画のまま据え置き。8/12は年初来高値3,300円で寄り付き後に反落する寄り天" onclick="show('9684')" aria-label="スクウェア・エニックスHDのレポートを開く">
         <div class="tile-top"><span class="tile-name">スクウェア・エニックスHD</span><span class="tile-code">9684</span></div>
         <div class="tile-px">2,991<small>円 ・ 8/12</small></div>
         <div style="margin-top:6px"><span class="secchip">電機・エンタメ</span></div>
         <div class="tile-sum">Q1営業益+88.9%・経常+172.4%も通期は減益計画のまま据え置き。8/12は年初来高値3,300円で寄り付き後に反落する寄り天</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('5803')" aria-label="フジクラのレポートを開く">
+      <button class="tile" data-q="5803 フジクラ 5803 電線・非鉄 やや割高 DC向け光配線が牽引しQ1営業益2.6倍、通期営業益4,320億円へ大幅上方修正。中計目標を初年度で超過" onclick="show('5803')" aria-label="フジクラのレポートを開く">
         <div class="tile-top"><span class="tile-name">フジクラ</span><span class="tile-code">5803</span></div>
         <div class="tile-px">5,580<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">電線・非鉄</span></div>
         <div class="tile-sum">DC向け光配線が牽引しQ1営業益2.6倍、通期営業益4,320億円へ大幅上方修正。中計目標を初年度で超過</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('5016')" aria-label="JX金属のレポートを開く">
+      <button class="tile" data-q="5016 JX金属 5016 電線・非鉄 割高圏 Q1営業利益2.8倍・通期を大幅上方修正。AI半導体向けターゲット増販と銅価・円安が寄与。譲渡益190億円は一過性" onclick="show('5016')" aria-label="JX金属のレポートを開く">
         <div class="tile-top"><span class="tile-name">JX金属</span><span class="tile-code">5016</span></div>
         <div class="tile-px">3,845<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">電線・非鉄</span></div>
         <div class="tile-sum">Q1営業利益2.8倍・通期を大幅上方修正。AI半導体向けターゲット増販と銅価・円安が寄与。譲渡益190億円は一過性</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('6920')" aria-label="レーザーテックのレポートを開く">
+      <button class="tile" data-q="6920 レーザーテック 6920 半導体 やや割高 FY26は減収減益も受注+126%回復。FY27最高益予想もOPM3年連続低下で決算翌日13%超急落" onclick="show('6920')" aria-label="レーザーテックのレポートを開く">
         <div class="tile-top"><span class="tile-name">レーザーテック</span><span class="tile-code">6920</span></div>
         <div class="tile-px">38,590<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">半導体</span></div>
         <div class="tile-sum">FY26は減収減益も受注+126%回復。FY27最高益予想もOPM3年連続低下で決算翌日13%超急落</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('6857')" aria-label="アドバンテストのレポートを開く">
+      <button class="tile" data-q="6857 アドバンテスト 6857 半導体 割高圏 推論AI特需でQ1営業益+53%・通期を35%上方修正。株価は年初来高値圏、PER37倍の期待維持が焦点" onclick="show('6857')" aria-label="アドバンテストのレポートを開く">
         <div class="tile-top"><span class="tile-name">アドバンテスト</span><span class="tile-code">6857</span></div>
         <div class="tile-px">34,260<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">半導体</span></div>
         <div class="tile-sum">推論AI特需でQ1営業益+53%・通期を35%上方修正。株価は年初来高値圏、PER37倍の期待維持が焦点</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('8267')" aria-label="イオンのレポートを開く">
+      <button class="tile" data-q="8267 イオン 8267 投資・商社・小売 割高圏 Q1営業利益752億円(+33.6%)で過去最高。薬局統合が牽引もGMS・SMは先行投資で赤字。純利益は薄い" onclick="show('8267')" aria-label="イオンのレポートを開く">
         <div class="tile-top"><span class="tile-name">イオン</span><span class="tile-code">8267</span></div>
         <div class="tile-px">1,395<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">投資・商社・小売</span></div>
         <div class="tile-sum">Q1営業利益752億円(+33.6%)で過去最高。薬局統合が牽引もGMS・SMは先行投資で赤字。純利益は薄い</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('8306')" aria-label="三菱UFJ FGのレポートを開く">
+      <button class="tile" data-q="8306 三菱UFJ FG 8306 金融 割高圏 Q1純利益8,094億円(+48%)で過去最高、通期2.7兆円へ進捗30%。利上げ追い風もPBR1.74倍と織り込み進む" onclick="show('8306')" aria-label="三菱UFJ FGのレポートを開く">
         <div class="tile-top"><span class="tile-name">三菱UFJ FG</span><span class="tile-code">8306</span></div>
         <div class="tile-px">3,510<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">金融</span></div>
         <div class="tile-sum">Q1純利益8,094億円(+48%)で過去最高、通期2.7兆円へ進捗30%。利上げ追い風もPBR1.74倍と織り込み進む</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('8316')" aria-label="三井住友FGのレポートを開く">
+      <button class="tile" data-q="8316 三井住友FG 8316 金融 やや割高 Q1純利益5,014億円(+55%)。6月利上げ効果+800億円が発現。新中計はROTE13%・純利益2兆円、毎期増配コミット" onclick="show('8316')" aria-label="三井住友FGのレポートを開く">
         <div class="tile-top"><span class="tile-name">三井住友FG</span><span class="tile-code">8316</span></div>
         <div class="tile-px">6,629<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">金融</span></div>
@@ -569,17 +598,17 @@
         <div class="go">レポートを見る →</div>
       </button>
     </div>
-    <div class="sector-h val mid">評価難 <span class="cnt">2銘柄</span></div>
+    <div class="sector-h val mid" data-group>評価難 <span class="cnt">2銘柄</span></div>
     <div class="bdesc">利益が市況変動や黒字化途上にあり、PERによる評価が機能しにくい</div>
     <div class="grid">
-      <button class="tile" onclick="show('285A')" aria-label="キオクシアHDのレポートを開く">
+      <button class="tile" data-q="285A キオクシアHD 285A 半導体 市況次第 NAND急騰でQ1営業益1.27兆円・純利益46倍。8千億円自社株買い・1対3分割発表も高値から57%調整" onclick="show('285A')" aria-label="キオクシアHDのレポートを開く">
         <div class="tile-top"><span class="tile-name">キオクシアHD</span><span class="tile-code">285A</span></div>
         <div class="tile-px">48,010<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">半導体</span></div>
         <div class="tile-sum">NAND急騰でQ1営業益1.27兆円・純利益46倍。8千億円自社株買い・1対3分割発表も高値から57%調整</div>
         <div class="go">レポートを見る →</div>
       </button>
-      <button class="tile" onclick="show('4755')" aria-label="楽天グループのレポートを開く">
+      <button class="tile" data-q="4755 楽天グループ 4755 ネット・通信 PER非適用 7年ぶり上期営業黒字も、上期営業益504億はコンセンサス708億に28.8%未達。決算後初日の8/12に−13.43%・安値引け" onclick="show('4755')" aria-label="楽天グループのレポートを開く">
         <div class="tile-top"><span class="tile-name">楽天グループ</span><span class="tile-code">4755</span></div>
         <div class="tile-px">747.9<small>円 ・ 8/12</small></div>
         <div style="margin-top:6px"><span class="secchip">ネット・通信</span></div>
@@ -588,6 +617,8 @@
       </button>
     </div>
   </div>
+
+  <div class="empty" id="empty">該当なし。</div>
 
   <div class="foot">
     株価は各レポート記載時点の終値等。バリュエーション評価は予想PER・PBR・52週レンジ内の位置に基づく相対的な整理であり、将来の株価を示唆するものではありません。<br>
@@ -4826,6 +4857,420 @@
 </div>
 </div>
 
+<div class="view" id="v-theme-power">
+<style>
+.pwr { --p1:#2a78d6; --p2:#eb6834; --p3:#1baf7a; --p4:#4a3aa7; }
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) .pwr { --p1:#3987e5; --p2:#d95926; --p3:#199e70; --p4:#9085e9; }
+}
+.pwr .card { background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:12px; }
+.pwr h2 { font-size:0.92rem; margin-bottom:6px; }
+.pwr .cap { font-size:0.7rem; color:var(--text-muted); margin-bottom:10px; }
+.pwr table { width:100%; border-collapse:collapse; font-size:0.72rem; }
+.pwr th { text-align:left; color:var(--text-muted); font-weight:600; padding:5px 3px; border-bottom:1px solid var(--baseline); }
+.pwr td { padding:6px 3px; border-bottom:1px solid var(--grid); vertical-align:top; }
+.pwr th.num, .pwr td.num { text-align:right; }
+.pwr .up { color:var(--good-text); } .pwr .down { color:var(--neg); } .pwr .warn { color:var(--warn); }
+.pwr .badge { display:inline-block; font-size:0.62rem; border-radius:6px; padding:1px 6px; border:1px solid var(--border); white-space:nowrap; color:var(--text-muted); }
+.pwr .body { font-size:0.8rem; color:var(--text-secondary); line-height:1.85; }
+.pwr .body b { color:var(--text-primary); }
+.pwr .note-s { font-size:0.7rem; color:var(--text-muted); }
+.pwr hr.sep { border:none; border-top:1px solid var(--grid); margin:11px 0; }
+.pwr svg { display:block; width:100%; height:auto; overflow:visible; }
+.pwr .legend { display:flex; gap:13px; flex-wrap:wrap; font-size:0.69rem; color:var(--text-secondary); margin-bottom:9px; }
+.pwr .legend i { display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:5px; vertical-align:-1px; }
+.pwr .stage { display:flex; align-items:baseline; gap:9px; margin:20px 0 8px; flex-wrap:wrap; }
+.pwr .stage .n { font-size:0.66rem; font-weight:700; color:#fff; border-radius:999px; padding:3px 12px; white-space:nowrap; background:var(--p1); }
+.pwr .stage.s2 .n { background:var(--p2); }
+.pwr .stage.s3 .n { background:var(--p3); }
+.pwr .stage.s4 .n { background:var(--p4); }
+.pwr .stage .t { font-size:0.9rem; font-weight:700; }
+.pwr .layer { border-radius:10px; padding:11px 12px; margin-bottom:9px; border:1px solid var(--border); background:var(--surface-2, rgba(127,127,127,0.06)); }
+.pwr .layer .lh { font-size:0.79rem; font-weight:700; margin-bottom:2px; }
+.pwr .layer .ld { font-size:0.7rem; color:var(--text-muted); margin-bottom:7px; }
+.pwr .co { font-size:0.74rem; line-height:1.9; color:var(--text-secondary); }
+.pwr .co b { color:var(--text-primary); }
+.pwr .box { background:var(--surface-2, rgba(127,127,127,0.06)); border-radius:9px; padding:11px 12px; margin:9px 0; font-size:0.76rem; line-height:1.85; color:var(--text-secondary); }
+.pwr .box b { color:var(--text-primary); }
+</style>
+
+<div class="pwr">
+
+<h1>⚡ 電力 全体マップ</h1>
+<div class="subtitle">需要の転換・発電・送配電・変圧器 ・ 関連16銘柄 ・ 2026/8/13時点</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>この特集の要点</h2>
+  <div class="body">
+    <b>① 日本の電力需要は「減る前提」から「増える前提」へ転換した。</b>2007年度をピークに長期減少してきた電力需要が、DC(データセンター)と半導体工場の新増設で増加に転じた。OCCTOの2025年度想定では、DC・半導体だけで<b>2034年度に最大需要+715万kW</b>(DC+616万kW、半導体+99万kW)を個別に織り込み、全国需要は<b>年+0.6%の増加基調</b>へ見通しを変えた。数十年ぶりの構造転換である。<br><br>
+    <b>② ただし「電力会社」と「重電メーカー」で株価の景色がまったく違う。</b>電力会社はPER7〜14倍・PBR0.35〜0.89倍と極端に安く、重電(三菱重・IHI・日立・三菱電機)はPBR2.7〜4.5倍と高い。<b>需要増の恩恵を先に収益化できるのは設備を売る側</b>で、市場はそれを織り込んでいる。<br><br>
+    <b>③ ボトルネックは変圧器。</b>大型変圧器は世界的に不足し、三菱電機赤穂工場は「いま受注しても納入は2030年以降」と述べる。<b>商談が5〜7年先の生産枠確保にまで及ぶ</b>異常な需給で、メーカー各社が増産投資を競っている。<br><br>
+    <b>④ 原子力は15基まで戻った。</b>柏崎刈羽6号機が2026年4月に14年ぶり営業運転入りし、東電の原発が事故後初めて復帰。エネルギー基本計画は「依存度低減」の文言を転換し、次世代炉への建て替えを政策として明記した。
+  </div>
+</div>
+
+<div class="card">
+  <h2>PBRで見る「2つの世界」</h2>
+  <div class="cap">同じ「電力テーマ」でも、電力会社と設備メーカーで評価がまるで違う</div>
+  <div class="legend">
+    <span><i style="background:var(--p1)"></i>電力会社・卸</span>
+    <span><i style="background:var(--p2)"></i>発電設備・重電</span>
+    <span><i style="background:var(--p3)"></i>送配電機器・蓄電</span>
+  </div>
+  <div id="pchart"></div>
+  <div class="note-s" style="margin-top:6px">実績PBR(2026/8/13、株探)。電力会社が軒並み1倍を大きく割る一方、重電は2.7〜4.5倍。<b>「需要は電力会社に来るが、利益は先にメーカーに落ちる」</b>という市場の見立てがそのまま出ている。</div>
+</div>
+
+<!-- ①電力会社 -->
+<div class="stage"><span class="n">① 電力会社</span><span class="t">需要増の受け皿 — だが利益は市況と制度で振れる</span></div>
+<div class="card">
+  <div class="body" style="margin-bottom:10px">
+    収益は(1)小売(規制料金+自由料金) (2)送配電(レベニューキャップ制度で収入上限が規制される託送料金) (3)発電・卸に分かれる。<b>燃料費調整制度により燃料価格の転嫁が数か月遅れる「期ずれ」があり、四半期利益が実力と乖離して大きく振れる</b>。2026年4〜6月期に関電・中部電・北海道電の営業益が急減したのも主にこの反動である。利益の予見性の低さ、原発の停止・訴訟リスク、巨額の有利子負債が重なり、<b>PERは市場平均を大きく下回る一桁台に据え置かれやすい</b>。DC需要増と原発再稼働は、このディスカウントを緩和しうる材料として注目されている。
+  </div>
+  <div class="layer">
+    <div class="lh">関西電力 [9503] <span class="badge">原子力比率トップ</span></div>
+    <div class="co">国内最多の<b>原発7基</b>(高浜・大飯・美浜)を再稼働済み。低コストの原子力を軸に関西圏のDC集積の受け皿。次世代炉の建て替え調査(美浜)でも先頭。Q1は期ずれ反動で営業−84.2%だが最終+38.2%。PER8.6倍・PBR0.75倍・利回り3.33%</div>
+  </div>
+  <div class="layer">
+    <div class="lh">九州電力 [9508] <span class="badge">半導体の地元</span></div>
+    <div class="co">川内2基+玄海2基の<b>原発4基フル稼働</b>で大手電力最良の収益体質。TSMC熊本など半導体進出の電力需要を直接取り込む。Q1営業+34.9%・最終+30.7%と大幅増益。<b>PER7.0倍</b>は16銘柄で最安級</div>
+  </div>
+  <div class="layer">
+    <div class="lh">東京電力HD [9501] <span class="badge warn">再稼働と賠償の綱引き</span></div>
+    <div class="co">柏崎刈羽6号機が2026/4/16に<b>14年ぶり営業運転入り</b>。首都圏はDC立地の集積地(東京エリアがDC需要の62%)で、送配電の託送収入拡大の恩恵が最大の一社。ただし福島賠償・廃炉負担が重く、Q1は営業赤字343億円・<b>通期予想は非開示・無配</b>。PBR0.35倍は「リスクの値段」でもある</div>
+  </div>
+  <div class="layer">
+    <div class="lh">北海道電力 [9509] / 中部電力 [9502] / 東京瓦斯 [9531] / J-POWER [9513]</div>
+    <div class="co"><b>北海道電</b>—泊3号機の再稼働が最大のカタリスト。千歳のラピダスと道内DC誘致で「需要増加エリア」の代表格だが、現状は再稼働前でQ1最終−52.0% ・ <b>中部電</b>—発電はJERA持分が柱。浜岡停止中。Q1で通期を下方修正 ・ <b>東京瓦斯</b>—「ガス+電力」。DC向けコージェネの引き合い増 ・ <b>J-POWER</b>—卸専業。石炭火力+全国の水力・風力。需給逼迫は容量市場収入の押し上げ要因。<b>PBR0.48倍</b>は16銘柄最安</div>
+  </div>
+</div>
+
+<!-- ②発電設備 -->
+<div class="stage s2"><span class="n">② 発電設備</span><span class="t">需要増を最初に収益化する側</span></div>
+<div class="card" style="border:2px solid var(--p2)">
+  <div class="layer" style="border-color:var(--p2)">
+    <div class="lh">三菱重工業 [7011] <span class="badge">保有中</span></div>
+    <div class="co">発電設備の国内最大手。<b>DC電力需要で世界的に受注が急増するガスタービン(GTCC)</b>が最大の成長ドライバー。原子力もPWR保全・再稼働対応で独占的地位、次世代炉SRZ-1200を開発中。Q1経常+99.0%・最終+97.4%とほぼ倍増。<span class="warn">ただしPER37.6倍・PBR4.51倍と、期待の織り込みは16銘柄で最も進んでいる</span></div>
+  </div>
+  <div class="layer" style="border-color:var(--p2)">
+    <div class="lh">IHI [7013] / 日立製作所 [6501]</div>
+    <div class="co"><b>IHI</b>—発電用ボイラ・原子力機器(圧力容器等)。Q1営業益3.5倍で通期を上方修正(営業+51.0%)。PBR4.53倍 ・ <b>日立</b>—傘下の日立エナジーが<b>変圧器・HVDC(高圧直流送電)で世界大手</b>。世界的な送電網投資ブームの最大の受益者。変圧器製造に15億ドル超、国内でも部品増産に370億円。Q1営業+39.5%で通期上方修正</div>
+  </div>
+</div>
+
+<!-- ③送配電・変圧器 -->
+<div class="stage s3"><span class="n">③ 送配電・変圧器</span><span class="t">世界的な不足 — 納入は2030年以降</span></div>
+<div class="card" style="border:2px solid var(--p3)">
+  <div class="box">
+    <b>変圧器の需給逼迫が、このテーマの核心である。</b>背景は3つ: ①レベニューキャップ制度導入(2023年度)に伴う送配電会社の発注集中 ②高度成長期に入れた設備の一斉更新期 ③DC・半導体向けの系統増強。三菱電機赤穂工場の幹部は<b>「いま大型機器を受注しても納入は2030年以降」</b>と述べ、従来1〜2年だった商談が<b>5〜7年先の生産枠確保</b>にまで及んでいる。<br><br>
+    <b>各社の増産投資:</b> 明電舎160億円(能力1.5倍) / 東芝550億円(2030年度に能力2倍) / ダイヘン100億円(能力倍増) / 日立エナジー15億ドル超。<b>数年分の受注残を抱えた状態で値上げも通る</b>、メーカーに極端に有利な市場になっている。
+  </div>
+  <div class="layer" style="border-color:var(--p3)">
+    <div class="lh">三菱電機 [6503] / 富士電機 [6504] / 明電舎 [6508]</div>
+    <div class="co"><b>三菱電機</b>—系統向け大型変圧器(赤穂)は受注が2030年以降まで埋まる。パワー半導体との両輪。Q1営業+24.6%で通期上方修正 ・ <b>富士電機</b>—受変電・UPS(国内シェア約4割)・パワー半導体。DCの電源設備を直接取り込む代表格。Q1営業+38.3% ・ <b>明電舎</b>—変電設備の中堅。<b>Q1営業益13倍</b>で上期を大幅上方修正。8/13も+4.21%と物色が続く</div>
+  </div>
+  <div class="layer" style="border-color:var(--p3)">
+    <div class="lh">東光高岳 [6617] / GSユアサ [6674] / 東洋電機製造 [6505]</div>
+    <div class="co"><b>東光高岳</b>—東電系の送配電機器(変圧器・開閉器・スマートメーター)。Q1最終6.1倍、通期最終+51.5%予想。国内変圧器不足の受益株 ・ <b>GSユアサ</b>—系統用蓄電池とDCバックアップ電源(UPS用電池)。Q1営業+39.3%で通期売上を上方修正 ・ <b>東洋電機</b>—鉄道電機品が主でDCへの直接エクスポージャーは限定的。利回り4.80%</div>
+  </div>
+</div>
+
+<!-- 制度・構造 -->
+<div class="stage s4"><span class="n">④ 制度</span><span class="t">容量市場と原子力 — 中期の変数</span></div>
+<div class="card">
+  <div class="body">
+    <b>■ 容量市場 — 「kW価値」に値段がつき始めた</b><br>
+    将来の供給力を取引する容量市場では、2029年度向けメインオークション(2026年1月公表)が<b>約定総額約2兆2,094億円</b>。エリア価格は北海道14,972円/kW、東京15,111円/kW、九州15,112円/kWと、<b>需要急増で予備率確保が難しいエリアほど高く</b>、中西日本(12,388円/kW)との市場分断が発生した。発電を持つ事業者には<b>販売電力量に依存しない安定収入</b>となり、J-POWERや大手電力の発電部門に効く。<br><br>
+    <b>■ 原子力 — 15基まで復帰、次は「建て替え」</b><br>
+    震災後の再稼働は柏崎刈羽6号機を含め<b>15基</b>。審査中・許可済みには女川、島根3号機、泊3号機などが残る。第7次エネルギー基本計画(2025年2月)は「原発依存度低減」の文言を転換し、<b>廃炉敷地内での次世代革新炉への建て替え</b>を政策として明記した(関西電力の美浜での調査が先行)。実現すれば三菱重工(SRZ-1200)・日立・東芝系のプラントメーカーに10年単位の仕事が生まれる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>関連銘柄一覧(2026/8/13 大引け)</h2>
+  <table>
+    <thead><tr><th>銘柄</th><th>役割</th><th class="num">終値<br>(前日比)</th><th class="num">予想PER<br>PBR</th><th class="num">利回り</th><th class="num">最低<br>投資額</th></tr></thead>
+    <tbody>
+      <tr><td><b>関西電力</b> 9503</td><td><span class="badge">電力</span> 原子力7基</td><td class="num">2,399.5<br><span class="up">+1.16%</span></td><td class="num">8.6倍<br>0.75倍</td><td class="num">3.33%</td><td class="num">24.0万</td></tr>
+      <tr><td><b>九州電力</b> 9508</td><td><span class="badge">電力</span> 原子力4基</td><td class="num">1,858.5<br><span class="up">+2.12%</span></td><td class="num"><b>7.0倍</b><br>0.89倍</td><td class="num">2.69%</td><td class="num">18.6万</td></tr>
+      <tr><td><b>東京電力HD</b> 9501</td><td><span class="badge">電力</span> 柏崎刈羽</td><td class="num">520.9<br><span class="up">+0.83%</span></td><td class="num">—<br><b>0.35倍</b></td><td class="num warn">無配</td><td class="num">5.2万</td></tr>
+      <tr><td><b>北海道電力</b> 9509</td><td><span class="badge">電力</span> 泊+ラピダス</td><td class="num">1,032<br><span class="up">+1.62%</span></td><td class="num">10.2倍<br>0.52倍</td><td class="num">3.20%</td><td class="num">10.3万</td></tr>
+      <tr><td><b>中部電力</b> 9502</td><td><span class="badge">電力</span> JERA持分</td><td class="num">2,821<br><span class="up">+3.37%</span></td><td class="num">13.3倍<br>0.67倍</td><td class="num">2.48%</td><td class="num">28.2万</td></tr>
+      <tr><td><b>東京瓦斯</b> 9531</td><td><span class="badge">電力</span> ガス+電力</td><td class="num">6,009<br><span class="down">−0.40%</span></td><td class="num">14.4倍<br>1.14倍</td><td class="num">2.00%</td><td class="num">60.1万</td></tr>
+      <tr><td><b>J-POWER</b> 9513</td><td><span class="badge">電力</span> 卸・容量市場</td><td class="num">3,886<br><span class="down">−0.49%</span></td><td class="num">8.4倍<br><b>0.48倍</b></td><td class="num">2.70%</td><td class="num">38.9万</td></tr>
+      <tr><td><b>三菱重工業</b> 7011</td><td><span class="badge">設備</span> GTCC・原子力</td><td class="num">4,256<br><span class="up">+3.96%</span></td><td class="num"><b>37.6倍</b><br><b>4.51倍</b></td><td class="num">0.68%</td><td class="num">42.6万</td></tr>
+      <tr><td><b>IHI</b> 7013</td><td><span class="badge">設備</span> ボイラ・原子力</td><td class="num">2,975<br><span class="up">+2.71%</span></td><td class="num">18.3倍<br>4.53倍</td><td class="num">0.77%</td><td class="num">29.8万</td></tr>
+      <tr><td><b>日立製作所</b> 6501</td><td><span class="badge">送配電</span> 変圧器・HVDC</td><td class="num">5,702<br><span class="up">+0.58%</span></td><td class="num">28.2倍<br>3.87倍</td><td class="num">—</td><td class="num">57.0万</td></tr>
+      <tr><td><b>三菱電機</b> 6503</td><td><span class="badge">送配電</span> 変圧器・パワ半</td><td class="num">6,020<br><span class="up">+2.17%</span></td><td class="num">24.8倍<br>2.70倍</td><td class="num">1.00%</td><td class="num">60.2万</td></tr>
+      <tr><td><b>富士電機</b> 6504</td><td><span class="badge">送配電</span> UPS・受変電</td><td class="num">14,970<br><span class="up">+3.31%</span></td><td class="num">19.6倍<br>2.76倍</td><td class="num">—</td><td class="num">149.7万</td></tr>
+      <tr><td><b>明電舎</b> 6508</td><td><span class="badge">送配電</span> 変圧器</td><td class="num">11,880<br><span class="up">+4.21%</span></td><td class="num">21.5倍<br>3.04倍</td><td class="num">—</td><td class="num">118.8万</td></tr>
+      <tr><td><b>東光高岳</b> 6617</td><td><span class="badge">送配電</span> 東電系機器</td><td class="num">7,680<br><span class="up">+3.23%</span></td><td class="num">11.9倍<br>1.70倍</td><td class="num">1.74%</td><td class="num">76.8万</td></tr>
+      <tr><td><b>GSユアサ</b> 6674</td><td><span class="badge">蓄電</span> 蓄電池・UPS</td><td class="num">5,612<br><span class="up">+1.67%</span></td><td class="num">14.2倍<br>1.43倍</td><td class="num">1.75%</td><td class="num">56.1万</td></tr>
+      <tr><td><b>東洋電機製造</b> 6505</td><td><span class="badge">機器</span> 鉄道電機品</td><td class="num">2,418<br><span class="up">+0.71%</span></td><td class="num">8.9倍<br>0.76倍</td><td class="num"><b>4.80%</b></td><td class="num">24.2万</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">日立・富士電機・明電舎の予想配当利回りは会社予想が未開示のため「—」。東京電力HDは通期予想非開示・無配のためPER算出不可。</div>
+</div>
+
+<div class="card">
+  <h2>この地図から読み取れること</h2>
+  <div class="body">
+    <b>① 需要増は事実だが、収益化の順番がある。</b>設備を売る側(重電・変圧器)は受注残と値上げで<b>すでに利益が出ている</b>(明電舎Q1営業13倍、IHI3.5倍、日立+39.5%)。電力会社は需要増が売電収入になるまでに時間がかかり、しかも期ずれで四半期利益が乱高下する。<b>「同じテーマの川上と川下」で業績の確度がまるで違う</b>。<br><br>
+    <b>② 市場はそれを極端なまでに織り込んだ。</b>三菱重PBR4.51倍・IHI4.53倍に対し、東電0.35倍・J-POWER0.48倍・北海道電0.52倍。<b>重電側は「良いことが起き続ける」前提の値段、電力会社側は「悪いことが起き続ける」前提の値段</b>になっている。どちらかの前提が崩れたときの振れ幅は、割高側・割安側の両方に存在する。<br><br>
+    <b>③ 電力会社の中でも差が大きい。</b>原発を回せている関電・九電はPER7〜9倍で増益、回せていない北海道電・中部電は減益。<b>「原発が動いているか」が電力株の収益力をほぼ決めている</b>。泊3号機(北海道電)と柏崎刈羽の追加号機(東電)は、再稼働が決まれば収益構造が変わる残されたカタリスト。<br><br>
+    <b>④ 8/13は電力テーマも広く買われた日。</b>明電舎+4.21%、三菱重+3.96%、中部電+3.37%、富士電機+3.31%、東光高岳+3.23%。DC関連の物色が素材→設備→電力へ広がる流れが見える。<br><br>
+    <b>⑤ 保有銘柄との関係。</b>三菱重工(保有中)はこのマップの「②発電設備」の中心にいる。PER37.6倍という水準は、GTCC受注の伸びが続く前提の値段であり、<b>DC投資の減速は素材(信越化学)・光(住友電工)・工事(きんでん)と同時にここへも効く</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/13</td><td class="note-s">初版。需要転換(OCCTO 2034年度+715万kW)、原子力15基復帰、容量市場2.2兆円、変圧器逼迫(納入2030年以降)を整理し、関連16銘柄を収録</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: OCCTO「全国及び供給区域ごとの需要想定(2025年度)」 / 資源エネルギー庁「今後の電力需要の見通しについて」「燃料費調整制度について」「容量市場について」 / 原子力産業新聞(柏崎刈羽6号機営業運転開始) / 電気新聞「大型変圧器、全国で不足」 / 日本経済新聞(明電舎160億円・ダイヘン100億円・日立エナジー15億ドル・東芝550億円の増産投資) / 各社2026年4-6月期決算短信 / 株探(株価指標、2026/8/13大引け)。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+<script>
+(function(){
+  const D = [
+    { n:'東京電力HD', v:0.35, g:1 }, { n:'J-POWER', v:0.48, g:1 }, { n:'北海道電力', v:0.52, g:1 },
+    { n:'中部電力', v:0.67, g:1 }, { n:'関西電力', v:0.75, g:1 }, { n:'東洋電機製造', v:0.76, g:3 },
+    { n:'九州電力', v:0.89, g:1 }, { n:'東京瓦斯', v:1.14, g:1 }, { n:'GSユアサ', v:1.43, g:3 },
+    { n:'東光高岳', v:1.70, g:3 }, { n:'三菱電機', v:2.70, g:3 }, { n:'富士電機', v:2.76, g:3 },
+    { n:'明電舎', v:3.04, g:3 }, { n:'日立製作所', v:3.87, g:2 }, { n:'三菱重工業', v:4.51, g:2 }, { n:'IHI', v:4.53, g:2 },
+  ];
+  const W=700, RH=22, T=8, B=26, NAMEW=118, VALW=52;
+  const H=T+B+D.length*RH, pw=W-NAMEW-VALW, max=5;
+  const x=v=>NAMEW+(v/max)*pw;
+  let g='';
+  [1,2,3,4].forEach(v=>{
+    g+=`<line x1="${x(v)}" y1="${T-4}" x2="${x(v)}" y2="${T+D.length*RH+2}" stroke="${v===1?'var(--baseline)':'var(--grid)'}" stroke-width="1"/>`;
+    g+=`<text x="${x(v)}" y="${H-8}" font-size="9.5" text-anchor="middle" fill="var(--text-muted)">${v}倍</text>`;
+  });
+  D.forEach((s,i)=>{
+    const cy=T+i*RH+RH/2;
+    const col=s.g===1?'var(--p1)':(s.g===2?'var(--p2)':'var(--p3)');
+    const w=Math.max(2,x(s.v)-NAMEW);
+    g+=`<rect x="${NAMEW}" y="${cy-7}" width="${w}" height="13" rx="2.5" fill="${col}"/>`;
+    g+=`<text x="${NAMEW-7}" y="${cy+3.6}" font-size="10" text-anchor="end" fill="var(--text-secondary)">${s.n}</text>`;
+    g+=`<text x="${NAMEW+w+6}" y="${cy+3.6}" font-size="10" font-weight="700" fill="var(--text-primary)">${s.v.toFixed(2)}</text>`;
+  });
+  document.getElementById('pchart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="電力関連16銘柄のPBR比較"><g>${g}</g></svg>`;
+})();
+</script>
+
+</div>
+</div>
+
+<div class="view" id="v-theme-fintech">
+<style>
+.fin { --f1:#2a78d6; --f2:#eb6834; --f3:#1baf7a; --f4:#eda100; --f5:#4a3aa7; }
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) .fin { --f1:#3987e5; --f2:#d95926; --f3:#199e70; --f4:#c98500; --f5:#9085e9; }
+}
+.fin .card { background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:12px; }
+.fin h2 { font-size:0.92rem; margin-bottom:6px; }
+.fin .cap { font-size:0.7rem; color:var(--text-muted); margin-bottom:10px; }
+.fin table { width:100%; border-collapse:collapse; font-size:0.72rem; }
+.fin th { text-align:left; color:var(--text-muted); font-weight:600; padding:5px 3px; border-bottom:1px solid var(--baseline); }
+.fin td { padding:6px 3px; border-bottom:1px solid var(--grid); vertical-align:top; }
+.fin th.num, .fin td.num { text-align:right; }
+.fin .up { color:var(--good-text); } .fin .down { color:var(--neg); } .fin .warn { color:var(--warn); }
+.fin .badge { display:inline-block; font-size:0.62rem; border-radius:6px; padding:1px 6px; border:1px solid var(--border); white-space:nowrap; color:var(--text-muted); }
+.fin .body { font-size:0.8rem; color:var(--text-secondary); line-height:1.85; }
+.fin .body b { color:var(--text-primary); }
+.fin .note-s { font-size:0.7rem; color:var(--text-muted); }
+.fin hr.sep { border:none; border-top:1px solid var(--grid); margin:11px 0; }
+.fin svg { display:block; width:100%; height:auto; overflow:visible; }
+.fin .stage { display:flex; align-items:baseline; gap:9px; margin:20px 0 8px; flex-wrap:wrap; }
+.fin .stage .n { font-size:0.66rem; font-weight:700; color:#fff; border-radius:999px; padding:3px 12px; white-space:nowrap; background:var(--f1); }
+.fin .stage.s2 .n { background:var(--f2); }
+.fin .stage.s3 .n { background:var(--f3); }
+.fin .stage.s4 .n { background:var(--f4); }
+.fin .stage.s5 .n { background:var(--f5); }
+.fin .stage .t { font-size:0.9rem; font-weight:700; }
+.fin .layer { border-radius:10px; padding:11px 12px; margin-bottom:9px; border:1px solid var(--border); background:var(--surface-2, rgba(127,127,127,0.06)); }
+.fin .layer .lh { font-size:0.79rem; font-weight:700; margin-bottom:2px; }
+.fin .co { font-size:0.74rem; line-height:1.9; color:var(--text-secondary); }
+.fin .co b { color:var(--text-primary); }
+.fin .box { background:var(--surface-2, rgba(127,127,127,0.06)); border-radius:9px; padding:11px 12px; margin:9px 0; font-size:0.76rem; line-height:1.85; color:var(--text-secondary); }
+.fin .box b { color:var(--text-primary); }
+</style>
+
+<div class="fin">
+
+<h1>💳 フィンテック 全体マップ</h1>
+<div class="subtitle">決済・ネット証券・ネット銀行・SaaS ・ 関連13銘柄 ・ 2026/8/13時点</div>
+
+<div class="card" style="border:2px solid var(--pos)">
+  <h2>この特集の要点</h2>
+  <div class="body">
+    <b>① 日本のキャッシュレス比率は58.0%(2025年、162.7兆円)まで来た。</b>政府目標は2030年に65%、将来80%。ただし内訳は<b>クレジットカードが82.7%と圧倒的</b>で、話題のQRコード決済は10.2%にすぎない。<b>「キャッシュレス化の主役はいまもカード」</b>という事実は、銘柄選びの前提として重要である。<br><br>
+    <b>② QRの中ではPayPayの一強。</b>登録7,500万人・年間決済88.8億回で、国内キャッシュレス決済額の2割超を占めるとされる。PayPayに投資するならLINEヤフー[4689]かソフトバンク[9434]経由になる。米国上場観測も注目材料。<br><br>
+    <b>③ 2026/10/1に楽天のフィンテックが再編される。</b>楽天銀行が楽天カードと楽天証券HDを子会社化し、<b>銀行を頂点とする「新楽天銀行グループ」</b>へ。シナジーは中期で年850億円超を見込む。楽天銀行の上場は維持され、みずほが主要株主に入る。<br><br>
+    <b>④ 日銀利上げ(政策金利1.0%)がネット銀行の利ざやに直撃的な追い風。</b>楽天銀行(預金13.3兆円)は通期を上方修正、ゆうちょ銀行はQ1経常+65%。<b>フィンテックの中で今いちばん業績が動いているのは、実は地味な「銀行」側</b>である。<br><br>
+    <b>⑤ SaaS勢(マネフォ・freee)は黒字化の入口。</b>成長率は高いがPBR8倍前後と、利益ではなく成長を買う値段が続いている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>キャッシュレス決済の内訳(2025年・162.7兆円)</h2>
+  <div class="cap">経済産業省 2026/3/31公表。「QRの時代」に見えて、金額ではカードが8割</div>
+  <div id="fchart"></div>
+  <div class="note-s" style="margin-top:6px">決済代行のGMOペイメントゲートウェイや、カード会社を抱える楽天・銀行系が「カードの成長」を取り込む側。QRの成長はPayPay(LINEヤフー/ソフトバンク)にほぼ集約される。</div>
+</div>
+
+<!-- ①決済 -->
+<div class="stage"><span class="n">① 決済</span><span class="t">カードが主役、QRはPayPay一強</span></div>
+<div class="card">
+  <div class="layer">
+    <div class="lh">LINEヤフー [4689] / ソフトバンク [9434] <span class="badge">PayPay</span></div>
+    <div class="co">PayPayは<b>登録7,500万人・年間決済88.8億回</b>でQR圧倒的首位。LINE・ヤフーの1億人接点に経済圏を接続。LINEヤフーQ1は最終+19%で株価10か月ぶり高値。ソフトバンクは「通信×金融」の本丸でPayPay銀行・カード・証券を連結、<b>PayPayの米国上場観測</b>が注目材料</div>
+  </div>
+  <div class="layer">
+    <div class="lh">GMOペイメントゲートウェイ [3769] <span class="badge">決済インフラ</span></div>
+    <div class="co">EC向けオンライン決済代行の国内最大手。カード与信処理・送金を裏側で担う<b>「キャッシュレス化そのものに賭ける」インフラ株</b>。2025年9月期は営業利益313億円(+24%)と成長継続。PER33.0倍・PBR6.59倍と高評価が続く。<span class="note-s">3Q決算は8/14発表予定</span></div>
+  </div>
+  <div class="layer">
+    <div class="lh">セブン銀行 [8410] / メルカリ [4385]</div>
+    <div class="co"><b>セブン銀行</b>—ATMプラットフォーム。ファミマ約1.6万台受託でATM台数国内首位。現金の出口を握る「キャッシュレスの裏側」。今期経常を一転+11%増益へ上方修正。利回り3.33%・3.3万円から買える ・ <b>メルカリ</b>—フリマGMVを土台にメルペイ・メルカードで「売上金を使う」循環型金融。金融売上約500億円・債権残高約2,400億円。本決算はコア営業益+60%で4期連続最高益、初の自社株買い(100億円)</div>
+  </div>
+</div>
+
+<!-- ②ネット証券 -->
+<div class="stage s2"><span class="n">② ネット証券</span><span class="t">手数料ゼロでも儲かる仕組みに転換済み</span></div>
+<div class="card" style="border:2px solid var(--f2)">
+  <div class="box">
+    <b>2023年秋の売買手数料無料化は「収益源の引っ越し」だった。</b>SBI・楽天証券は無料化後、①信用取引の金利・貸株料 ②FX・為替スプレッド ③投信残高連動報酬 ④預り金の運用金利 ⑤IPO・法人ビジネスへ収益を移した。新NISAで口座が急増し(SBI 1,600万口座=国内初、楽天証券1,439万口座)、<b>「無料で集客 → 残高・金利・信用で収益化」のモデルが定着</b>。SBIHDの2026年3月期は純利益2.6倍の4,275億円と最高益で、無料化後にむしろ収益力が上がった。<b>利上げは預り金運用と信用金利の両面でこのモデルに追い風</b>になる。
+  </div>
+  <div class="layer" style="border-color:var(--f2)">
+    <div class="lh">SBIホールディングス [8473] / マネックスグループ [8698]</div>
+    <div class="co"><b>SBI</b>—証券・銀行(SBI新生)・保険・暗号資産・ステーブルコイン(JPYSC)の総合金融。Q1純利益1,481億円と大幅増益 ・ <b>マネックス</b>—マネックス証券はドコモ傘下へ。子会社コインチェック(暗号資産)と米TradeStationが軸。Q1は増収減益。利回り4.43%</div>
+  </div>
+</div>
+
+<!-- ③ネット銀行 -->
+<div class="stage s3"><span class="n">③ 銀行</span><span class="t">利上げの恩恵が最も直接的に出る場所</span></div>
+<div class="card" style="border:2px solid var(--f3)">
+  <div class="body" style="margin-bottom:10px">
+    日銀は2026年6月に政策金利を<b>0.75%→1.0%</b>へ引き上げ(7月は据え置き、年内1.25%の観測も)。預金を大量に持つ銀行ほど利ざや拡大が直撃する。<b>普通預金0.4%台がベースになり預金獲得競争も激化</b>している。
+  </div>
+  <div class="layer" style="border-color:var(--f3)">
+    <div class="lh">楽天銀行 [5838] <span class="badge">10/1から楽天金融の頂点</span></div>
+    <div class="co"><b>口座1,846万・預金13.3兆円(+13.9%)</b>の国内最大級ネット銀行。Q1で今期経常を+9%上方修正し最高益予想を上乗せ。<b>10/1にカード・証券を傘下に持つ「新楽天銀行グループ」の中核会社になる</b>——単なるネット銀行から、楽天フィンテック全体の持株会社へ性格が変わる。8/13は+3.78%</div>
+  </div>
+  <div class="layer" style="border-color:var(--f3)">
+    <div class="lh">ゆうちょ銀行 [7182] / 三菱UFJ FG [8306]</div>
+    <div class="co"><b>ゆうちょ</b>—貯金約190兆円・1億超口座の「金利敏感株」の極み。Q1経常+65%、8/10に貯金金利引き上げ ・ <b>三菱UFJ</b>—Q1純利益8,094億円(+48%)で過去最高。ステーブルコイン基盤「<b>Progmat</b>」でデジタル資産のインフラ側も押さえる<span class="note-s">(保有中・詳細は個別レポート)</span></div>
+  </div>
+  <div class="layer" style="border-color:var(--f3)">
+    <div class="lh warn">⚠️ 住信SBIネット銀行 [7163] — 上場廃止</div>
+    <div class="co">BaaS(NEOBANK)の先駆だったが、<b>2025年にNTTドコモのTOBが成立し上場廃止</b>。マネックス証券もドコモ傘下。<b>「通信キャリアがフィンテックを買っていく」</b>流れの象徴で、上場フィンテック銘柄が減っていく構図は投資対象選びに効いてくる</div>
+  </div>
+</div>
+
+<!-- ④SaaS -->
+<div class="stage s4"><span class="n">④ SaaS</span><span class="t">会計・家計簿 — 成長を買う値段</span></div>
+<div class="card">
+  <div class="layer">
+    <div class="lh">マネーフォワード [3994] / freee [4478]</div>
+    <div class="co"><b>マネフォ</b>—家計簿アプリ+法人会計SaaS。SaaS ARR+34%、Fintech ARR16.8億円(+90%)。2Qで四半期営業黒字化(1.7億円)・過去最高 ・ <b>freee</b>—スモールビジネス向けERP。ARR300億円突破(+29%)、本決算は経常+81%で2期連続最高益。<br><span class="warn">両社ともPBR8倍前後。黒字化はしたが、利益で正当化できる値段ではまだなく、成長率の維持が生命線</span></div>
+  </div>
+</div>
+
+<!-- ⑤制度 -->
+<div class="stage s5"><span class="n">⑤ 制度</span><span class="t">再編とステーブルコイン</span></div>
+<div class="card">
+  <div class="body">
+    <b>■ 楽天フィンテック再編(2026/10/1効力発生予定)</b><br>
+    株式交付により<b>楽天銀行が楽天カードと楽天証券HDを子会社化</b>。シナジーは2028年3月期に約330億円、中期で<b>年850億円超(経常利益ベース)</b>を見込む。楽天銀行の上場は維持され少数株主はそのまま。楽天グループの持分は転換後49.94%となり、楽天カード株15%を持っていた<b>みずほが再編後は楽天銀行の主要株主</b>として資本業務提携。<span class="note-s">親の楽天グループ[4755]にとっては、フィンテックの利益(Q2で+692億円)を銀行の下に束ね直す資本政策でもある。</span><br><br>
+    <b>■ ステーブルコイン — 「規制整備済み市場」としての日本</b><br>
+    2023年施行の改正資金決済法で制度化されて以降、円建てステーブルコインの発行が相次ぐ。<b>JPYC</b>(資金移動業型・日本初)、SBIの<b>JPYSC</b>(国内初の信託型)、三菱UFJ信託系の<b>Progmat Coin</b>、EJPYなど複数方式が併存。信託型は大口決済(100万円の送金上限超)への活用が期待され、SBIは米CircleのUSDC流通も展開。<b>インフラ側(Progmat=三菱UFJ、JPYSC=SBI)を上場株で押さえられる</b>のがこのテーマの投資上の入口になる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>関連銘柄一覧(2026/8/13 大引け)</h2>
+  <table>
+    <thead><tr><th>銘柄</th><th>役割</th><th class="num">終値<br>(前日比)</th><th class="num">予想PER<br>PBR</th><th class="num">利回り</th><th class="num">最低<br>投資額</th></tr></thead>
+    <tbody>
+      <tr><td><b>LINEヤフー</b> 4689</td><td><span class="badge">決済</span> PayPay</td><td class="num">500.8<br><span class="up">+0.22%</span></td><td class="num">—<br>1.14倍</td><td class="num">2.20%</td><td class="num">5.0万</td></tr>
+      <tr><td><b>ソフトバンク</b> 9434</td><td><span class="badge">決済</span> PayPay親</td><td class="num">233.4<br><span class="up">+1.79%</span></td><td class="num">20.2倍<br>4.24倍</td><td class="num"><b>3.77%</b></td><td class="num">2.3万</td></tr>
+      <tr><td><b>GMOペイメントG</b> 3769</td><td><span class="badge">決済</span> 決済代行</td><td class="num">10,180<br><span class="note-s">+0.05%※</span></td><td class="num">33.0倍<br>6.59倍</td><td class="num">1.67%</td><td class="num">101.8万</td></tr>
+      <tr><td><b>セブン銀行</b> 8410</td><td><span class="badge">決済</span> ATM網</td><td class="num">330.6<br><span class="up">+0.30%</span></td><td class="num">19.3倍<br>1.38倍</td><td class="num">3.33%</td><td class="num"><b>3.3万</b></td></tr>
+      <tr><td><b>メルカリ</b> 4385</td><td><span class="badge">決済</span> 循環型金融</td><td class="num">4,761<br><span class="up">+0.59%</span></td><td class="num">—<br>5.74倍</td><td class="num">—</td><td class="num">47.6万</td></tr>
+      <tr><td><b>SBIホールディングス</b> 8473</td><td><span class="badge">証券</span> 総合金融</td><td class="num">3,095<br><span class="up">+0.95%</span></td><td class="num">—<br>1.07倍</td><td class="num">—</td><td class="num">31.0万</td></tr>
+      <tr><td><b>マネックスG</b> 8698</td><td><span class="badge">証券</span> 暗号資産</td><td class="num">695<br>0.00%</td><td class="num">—<br>1.34倍</td><td class="num"><b>4.43%</b></td><td class="num">7.0万</td></tr>
+      <tr><td><b>楽天銀行</b> 5838</td><td><span class="badge">銀行</span> 新楽天金融の核</td><td class="num">5,905<br><span class="up"><b>+3.78%</b></span></td><td class="num">11.6倍<br>2.62倍</td><td class="num">—</td><td class="num">59.1万</td></tr>
+      <tr><td><b>ゆうちょ銀行</b> 7182</td><td><span class="badge">銀行</span> 金利敏感</td><td class="num">3,211<br><span class="up">+2.20%</span></td><td class="num">17.3倍<br>1.24倍</td><td class="num">2.90%</td><td class="num">32.1万</td></tr>
+      <tr><td><b>三菱UFJ FG</b> 8306</td><td><span class="badge">銀行</span> Progmat</td><td class="num">3,706<br><span class="up">+2.77%</span></td><td class="num">15.4倍<br>1.84倍</td><td class="num">2.59%</td><td class="num">37.1万</td></tr>
+      <tr><td><b>楽天グループ</b> 4755</td><td><span class="badge">経済圏</span> 再編の親</td><td class="num">760.7<br><span class="up">+2.11%</span></td><td class="num">—<br>1.81倍</td><td class="num">—</td><td class="num">7.6万</td></tr>
+      <tr><td><b>マネーフォワード</b> 3994</td><td><span class="badge">SaaS</span> 会計・家計簿</td><td class="num">5,857<br><span class="up">+1.05%</span></td><td class="num">—<br><b>7.88倍</b></td><td class="num">—</td><td class="num">58.6万</td></tr>
+      <tr><td><b>freee</b> 4478</td><td><span class="badge">SaaS</span> 会計ERP</td><td class="num">2,844<br><span class="up">+1.14%</span></td><td class="num">—<br><b>8.01倍</b></td><td class="num">—</td><td class="num">28.4万</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">「—」は会社予想未発表等で算出不可(株探)。※GMO-PGは大引け間際の取得値に揺れがあり要再確認(3Q決算は8/14発表予定)。住信SBIネット銀行[7163]は2025年に上場廃止のため表から除外。</div>
+</div>
+
+<div class="card">
+  <h2>この地図から読み取れること</h2>
+  <div class="body">
+    <b>① 「フィンテック」の中でいま業績が動いているのは銀行である。</b>楽天銀行が通期上方修正、ゆうちょQ1経常+65%、三菱UFJ純利益+48%。<b>派手なアプリ側ではなく、金利という一番古い収益源が一番効いている</b>。日銀の利上げサイクルが続く限り、この構図は変わりにくい。<br><br>
+    <b>② 決済はレイヤーで選ぶ。</b>キャッシュレスの主役はカード(82.7%)であり、その裏側の決済代行(GMO-PG)とカード会社(楽天・銀行系)が金額ベースの成長を取り込む。QRの成長に賭けるならPayPay=LINEヤフー/ソフトバンク経由の間接投資になる。<b>「QRが伸びる」と「QR銘柄が儲かる」は別の話</b>。<br><br>
+    <b>③ 上場フィンテックは「買われて消える」。</b>住信SBIネット銀行とマネックス証券はドコモ傘下へ、ウェルスナビは三菱UFJへ。<b>通信キャリアとメガバンクが有望どころを非公開化していく</b>ため、残る上場銘柄への資金集中が起きやすい一方、投資対象そのものが減っていく。<br><br>
+    <b>④ 10/1の楽天再編はイベントとして具体的。</b>楽天銀行は「ネット銀行」から「楽天フィンテック持株会社」へ性格が変わる。シナジー850億円の実現性、みずほの関与、親会社楽天G(当ライブラリに個別レポートあり)の財務改善への波及——<b>再編前後で評価軸が変わる銘柄</b>として注視に値する。<br><br>
+    <b>⑤ バリュエーションの幅が極端。</b>PBRはLINEヤフー1.14倍・SBI1.07倍からfreee8.01倍・マネフォ7.88倍まで。同じ「フィンテック」の看板でも、<b>金利で稼ぐ銘柄は銀行の物差し、SaaSは成長率の物差し</b>で値付けされており、テーマ買いは物差しの混同を招きやすい。
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <table>
+    <tbody>
+      <tr><td class="note-s" style="white-space:nowrap">2026/8/13</td><td class="note-s">初版。キャッシュレス58.0%(カード82.7%/QR10.2%)、PayPay7,500万人、楽天フィンテック再編(10/1)、利上げとネット銀行、ステーブルコイン制度を整理し、関連13銘柄を収録(住信SBIネット銀行は上場廃止のため除外)</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:8px">
+    出典: 経済産業省「2025年のキャッシュレス決済比率」(2026/3/31) / PayPayプレスリリース(2026/8/10) / 楽天グループ「グループ内組織再編に関するお知らせ」(2026/5/20) / SBIホールディングス(証券総合口座1,600万達成) / 各社2026年4-6月期決算短信・決算発表 / 株探(株価指標、2026/8/13大引け)。<br>
+    ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
+  </div>
+</div>
+
+<script>
+(function(){
+  const SEG = [
+    { n:'クレジットカード', v:82.7, c:'var(--f1)' },
+    { n:'コード決済',       v:10.2, c:'var(--f2)' },
+    { n:'電子マネー',       v:3.7,  c:'var(--f3)' },
+    { n:'デビット',         v:3.4,  c:'var(--f4)' },
+  ];
+  const W=700, H=104, L=8, R=8, BY=26, BH=42;
+  const iw=W-L-R;
+  let x=L, g='';
+  SEG.forEach(s=>{
+    const w=iw*s.v/100;
+    g+=`<rect x="${x}" y="${BY}" width="${Math.max(w-2,2)}" height="${BH}" rx="3" fill="${s.c}"/>`;
+    if(w>200){
+      g+=`<text x="${x+w/2-1}" y="${BY+BH/2+4}" font-size="12.5" font-weight="700" text-anchor="middle" fill="#fff">${s.v}%</text>`;
+      g+=`<text x="${x+w/2-1}" y="${BY-8}" font-size="10.5" text-anchor="middle" fill="var(--text-secondary)">${s.n}</text>`;
+    }
+    x+=w;
+  });
+  g+=`<text x="${W-R}" y="${BY-8}" font-size="9.5" text-anchor="end" fill="var(--text-muted)">コード10.2% / 電子マネー3.7% / デビット3.4%</text>`;
+  g+=`<text x="${L}" y="${BY+BH+18}" font-size="9.5" fill="var(--text-muted)">金額ベース。政府目標: 2030年に65%、将来80%(現在58.0%)</text>`;
+  document.getElementById('fchart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="キャッシュレス決済の内訳"><g>${g}</g></svg>`;
+})();
+</script>
+
+</div>
+</div>
+
 <div class="view" id="v-theme-semi">
 <style>
 /* テーマ固有スタイル(ポータルに埋め込んでも効くよう body 内に置く) */
@@ -5305,7 +5750,8 @@
 </div>
 
 <script>
-var NAMES = {"7011": "三菱重工業 [7011]", "7203": "トヨタ自動車 [7203]", "6758": "ソニーグループ [6758]", "6367": "ダイキン工業 [6367]", "7974": "任天堂 [7974]", "9684": "スクウェア・エニックスHD [9684]", "3402": "東レ [3402]", "4063": "信越化学工業 [4063]", "4182": "三菱ガス化学 [4182]", "5802": "住友電気工業 [5802]", "5803": "フジクラ [5803]", "5801": "古河電気工業 [5801]", "5706": "三井金属鉱業 [5706]", "5016": "JX金属 [5016]", "6920": "レーザーテック [6920]", "6857": "アドバンテスト [6857]", "285A": "キオクシアHD [285A]", "9984": "ソフトバンクG [9984]", "8058": "三菱商事 [8058]", "8031": "三井物産 [8031]", "8267": "イオン [8267]", "9301": "三菱倉庫 [9301]", "8306": "三菱UFJ FG [8306]", "8316": "三井住友FG [8316]", "8411": "みずほFG [8411]", "9432": "NTT [9432]", "4755": "楽天グループ [4755]", "theme-dc": "🏢 データセンター 全体マップ — 電力・冷却・回線", "theme-semi": "🗺 半導体・データセンター 素材サプライチェーン マップ", "theme-chem": "⚗️ 日本の化学メーカー 比較 — 信越化学はどこに立っているか"};
+var NAMES = {"7011": "三菱重工業 [7011]", "7203": "トヨタ自動車 [7203]", "6758": "ソニーグループ [6758]", "6367": "ダイキン工業 [6367]", "7974": "任天堂 [7974]", "9684": "スクウェア・エニックスHD [9684]", "3402": "東レ [3402]", "4063": "信越化学工業 [4063]", "4182": "三菱ガス化学 [4182]", "5802": "住友電気工業 [5802]", "5803": "フジクラ [5803]", "5801": "古河電気工業 [5801]", "5706": "三井金属鉱業 [5706]", "5016": "JX金属 [5016]", "6920": "レーザーテック [6920]", "6857": "アドバンテスト [6857]", "285A": "キオクシアHD [285A]", "9984": "ソフトバンクG [9984]", "8058": "三菱商事 [8058]", "8031": "三井物産 [8031]", "8267": "イオン [8267]", "9301": "三菱倉庫 [9301]", "8306": "三菱UFJ FG [8306]", "8316": "三井住友FG [8316]", "8411": "みずほFG [8411]", "9432": "NTT [9432]", "4755": "楽天グループ [4755]", "theme-dc": "🏢 データセンター 全体マップ — 電力・冷却・回線", "theme-power": "⚡ 電力 全体マップ — 需要・発電・送配電", "theme-fintech": "💳 フィンテック 全体マップ — 決済・証券・銀行・SaaS", "theme-semi": "🗺 半導体・データセンター 素材サプライチェーン マップ", "theme-chem": "⚗️ 日本の化学メーカー 比較 — 信越化学はどこに立っているか"};
+var HOME = "📚 銘柄レポート ライブラリ";
 function show(id) {
   var vs = document.querySelectorAll('.view');
   for (var i=0;i<vs.length;i++) vs[i].classList.remove('active');
@@ -5313,7 +5759,7 @@ function show(id) {
   if (!t) { t = document.getElementById('v-home'); id='home'; }
   t.classList.add('active');
   document.body.classList.toggle('detail', id !== 'home');
-  document.getElementById('brand').textContent = id==='home' ? '📚 銘柄レポート ライブラリ' : NAMES[id];
+  document.getElementById('brand').textContent = id==='home' ? HOME : NAMES[id];
   window.scrollTo(0,0);
   if (location.hash !== '#'+id) history.replaceState(null,'','#'+id);
 }
@@ -5324,6 +5770,27 @@ function setGroup(g) {
   var ts = document.getElementById('tab-sector'), tv = document.getElementById('tab-val');
   ts.classList.toggle('on', isSec); tv.classList.toggle('on', !isSec);
   ts.setAttribute('aria-selected', isSec); tv.setAttribute('aria-selected', !isSec);
+}
+function filter(q) {
+  q = (q||'').trim().toLowerCase();
+  var tiles = document.querySelectorAll('#v-home .tile'), hits = 0;
+  for (var i=0;i<tiles.length;i++) {
+    var ok = !q || tiles[i].getAttribute('data-q').toLowerCase().indexOf(q) >= 0;
+    tiles[i].style.display = ok ? '' : 'none';
+    if (ok) hits++;
+  }
+  // 中身が全部隠れた見出しと、その直後のグリッドも畳む
+  var groups = document.querySelectorAll('#v-home [data-group]');
+  for (var j=0;j<groups.length;j++) {
+    var grid = groups[j].nextElementSibling;
+    while (grid && !grid.classList.contains('grid')) grid = grid.nextElementSibling;
+    var visible = grid ? grid.querySelectorAll('.tile:not([style*="none"])').length : 0;
+    groups[j].style.display = visible ? '' : 'none';
+    var between = groups[j].nextElementSibling;
+    while (between && between !== grid) { between.style.display = visible ? '' : 'none'; between = between.nextElementSibling; }
+    if (grid) grid.style.display = visible ? '' : 'none';
+  }
+  document.getElementById('empty').style.display = (q && hits===0) ? 'block' : 'none';
 }
 window.addEventListener('hashchange', function(){ show(location.hash.slice(1)||'home'); });
 if (location.hash.length>1) show(location.hash.slice(1));
