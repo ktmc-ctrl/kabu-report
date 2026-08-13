@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>東北電力(9506) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+</style>
+</head>
+<body class="viz-root">
+<div class="head">
+  <div>
+    <h1>東北電力 <span class="note">[9506] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">電力</span> <span class="badge">3月期決算</span> <span class="badge">女川2号機</span></div>
+  </div>
+  <div class="px"><div class="v">1,238.5円</div><div class="note">2026/8/13 終値</div></div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は経常利益544億円(−5.4%)。売上+46.7%は間接オークションに伴う自己約定の増加分1,473億円を含み、<b>費用も同額計上されるため収支に影響しない</b>と会社が明記している——見かけの増収率をそのまま読まないこと。実質(期ずれ・時価評価除き)は406→377億円の小幅減益で、主因は女川2号機の定期検査(−100億円)。その女川2号機は6/9に営業運転を再開済み。<b>通期予想は「未定」を継続</b>しており、PERは非算定。PBR0.53倍、東日本のDC・半導体需要増(10年で+9%程度)が中期の追い風。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/29発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">7,853億円</td><td class="num">+46.7% ※</td></tr>
+      <tr><td>営業利益</td><td class="num">600億円</td><td class="num down">−6.6%</td></tr>
+      <tr><td>経常利益</td><td class="num">544億円</td><td class="num down">−5.4%</td></tr>
+      <tr><td>純利益</td><td class="num">361億円</td><td class="num down">−4.2%</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:6px">※増収のうち1,473億円は間接オークションの自己約定分。費用も同額で収支への影響なし(会社明記)。</div>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解(経常−31億円の内訳)</b><br>
+    ・燃料費調整の<b>期ずれ差引−300億円</b>(前年+170億円の差益→当期−130億円の差損)<br>
+    ・電力先渡取引等の<b>時価評価影響+297億円</b>(前年度末計上分の振戻し。一時的で実質収支ニュートラルと会社明記)<br>
+    ・<b>女川2号機の稼働減−100億円</b>(1/14から定期検査。原子力設備利用率30.4%→13.7%)<br>
+    ・市場・販売環境の変化+50億円、送配電+27億円<br><br>
+    期ずれ・時価評価影響を除いた実質の経常利益は<b>406→377億円(−28億円)</b>の小幅減益。小売販売電力量は+8.7%と伸び、産業・業務用が+14.6%(新規顧客獲得とキオクシア北上K2など需要環境)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    <b>通期業績予想は「未定」を継続。</b>理由は①中東の地政学リスクによる燃料価格の不透明さ ②託送料金の期中調整申請 ③需給調整関連収支の動向。会社計画がないため進捗率は算定できない。<br><br>
+    <b>コンセンサス:</b> 経常1,762億円(+39.4%)・純利益1,196億円。Q1経常544億円はコンセンサス比進捗30.9%で、市場予想対比では順調な滑り出しといえる。ただし会社が数字を出していない以上、この「順調」はアナリスト予想という物差しでの話である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">非算定</td><td>通期会社予想が未定のため(コンセンサス純利益ベースの参考値は約5.2倍)</td></tr>
+      <tr><td>PBR</td><td class="num">0.53倍</td><td>電力のレンジ(0.35〜0.89倍)の中でも低め</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">3.27%</td><td>年40円(業績未定でも予見性確保のため公表)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">972.2〜1,323円</td><td>高値から−6.4%・安値から+27.4%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    決算発表日(7/29)は+2.5%、翌日(7/30)は−1.1%と反応は軽微。会社予想が無い間はPERという物差しが使えず、コンセンサスベースの約5.2倍という数字も前提の置き方次第で大きく動く。<b>評価: PER非適用</b>(通期予想の公表と託送料金の期中調整の決着が評価の再開点)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    「よりそうnext+PLUS」は<b>期ずれ除き連結経常で2026年度1,900億円・2030年度2,000億円以上</b>、自己資本比率2030年度25%以上、ROIC 3.5%程度を掲げる。<br><br>
+    <b>東日本(50Hz)エリアの需要増が構造的な追い風。</b>DC・半導体工場の新設で今後10年間で+9%程度(326億kWh程度)の需要増見通し(広域機関ベース)。キオクシア北上K2は2025/9に稼働開始、2026年前半に本格出荷でフル稼働時は北上の生産能力がほぼ倍増。東北6県・新潟へのDC誘致を専任チームで推進し、分散型AIデータセンター構築も検討中。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    方針は安定配当を基本に<b>DOE(株主資本配当率)2%を目安</b>。2027/3期予想は年40円(20+20)。2021〜22年度の自己資本毀損からの回復途上で、「今後の配当方針は2026年度を通して検討を深める」と明記。自社株買いの発表は確認できない。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>燃料:</b> 中東情勢による価格変動が通期予想「未定」の理由そのもの<br>
+    ・<b>制度:</b> 託送料金の期中調整申請、需給調整関連収支という制度面の不確定要素<br>
+    ・<b>金利:</b> 自己資本比率20%程度と大手電力で低水準。Q1支払利息+24億円<br>
+    ・<b>需要:</b> 東日本の DC・半導体需要増は中期の追い風
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>女川2号機の次回長期停止:</b> 特定重大事故等対処施設のつなぎ込み工事に約14か月を要し、完了は2028年8月見通し。次回定期検査で再び長期停止が発生する見込み<br>
+    ・<b>Q1の下支えは一時的:</b> 時価評価影響+297億円は振戻しで剥落する性質のもの<br>
+    ・<b>制度決着待ち:</b> 託送料金の期中調整の帰結次第で通期の絵が変わる(未定継続の理由)<br>
+    ・<b>期ずれ差損:</b> 燃料高・円安の継続で下期に拡大しうる<br>
+    ・<b>強気材料の裏返し:</b> DC・半導体の需要増は投資判断がAIサイクルに依存。計画の後ずれは需要想定ごと剥落する
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: 東北電力 2027年3月期Q1決算短信(<span class="note">tohoku-epco.co.jp/ir_n/report/results/pdf/2027_1_tan.pdf</span>) / Q1決算説明資料(<span class="note">tohoku-epco.co.jp/ir_n/report/presentation/pdf/2026_1_kessan.pdf</span>) / 女川2号機営業運転再開リリース / 松井証券(株価・指標、2026/8/13) / 株予報Pro(コンセンサス)。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

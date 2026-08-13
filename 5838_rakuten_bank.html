@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>楽天銀行(5838) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+</style>
+</head>
+<body class="viz-root">
+<div class="head">
+  <div>
+    <h1>楽天銀行 <span class="note">[5838] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">ネット銀行</span> <span class="badge">3月期決算</span> <span class="badge">10/1 グループ再編</span></div>
+  </div>
+  <div class="px"><div class="v">5,916円</div><div class="note">2026/8/13 終値</div></div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は経常利益302億円(+26.1%)でQ1として過去最高。同日(8/6)に<b>通期を上方修正</b>し(経常1,156→1,257億円、+8.7%)、7期連続最高益予想を上乗せした。増益は資金利益が中心で一過性は見当たらず、利益の質は良い。決算翌日は+4.7%。ただしこの会社の最大の変数は業績ではなく<b>2026/10/1のグループ再編</b>——楽天カード・楽天証券HDを株式交付で子会社化し、潜在株式ベースで<b>既存発行済の132%という大規模な希薄化</b>を伴う。2月の公表時に−13.6%、5月の最終合意後にストップ安と、市場はこの構造を一度大きく織り込みに行った。PER11.7倍・PBR2.63倍はROE22%の成長見合いだが、希薄化後のEPSで測り直す局面が10月に来る。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/6発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>経常収益</td><td class="num">784億円</td><td class="num up">+36.3%</td></tr>
+      <tr><td>経常利益</td><td class="num">302億円</td><td class="num up">+26.1%</td></tr>
+      <tr><td>純利益</td><td class="num">210億円</td><td class="num up">+24.5%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解</b><br>
+    ・資金運用収益 <b>+195億円(+44.6%)</b> — 運用資産の増加と利回り上昇。うち当期の利上げ効果は39億円(会社試算)<br>
+    ・役務取引等収益 +16億円(+12.9%)<br>
+    ・費用側: 資金調達費用+83億円(2026/2の普通預金金利引き上げ・預金増)、営業経費+37億円(+28.5%)<br>
+    ・再編プロジェクト関連費用16.7億円を計上(除きベースの経常は+33.1%)<br>
+    ・資産売却益などの一過性は見当たらない。<b>増益ドライバーは金利収支</b><br><br>
+    預金残高13兆3,656億円(+13.9%)、口座数1,846万(+138万)。年換算ROE 22.0%。金利感応度は+25bpの追加利上げで年間+139億円(会社試算)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    8/6に上方修正: 経常収益3,434億円(+9.1%)・経常利益<b>1,257億円(+8.7%)</b>・純利益881億円(+8.3%)。前提は<b>政策金利1.00%で追加利上げを織り込まず</b>、10月以降のカード・証券の連結影響も未反映。Q1進捗率は経常24.0%。<br><br>
+    <b>コンセンサスとの差:</b> 修正後の会社予想1,257億円はコンセンサス(1,513億円)を約255億円下回るが、コンセンサス側は追加利上げや再編影響を含む前提の違いがあり単純比較はできない。決算翌日+4.66%の反応はポジティブ評価を示す。
+  </div>
+</div>
+
+<div class="card">
+  <h2>グループ再編(2026/10/1予定)</h2>
+  <div class="body">
+    楽天銀行を株式交付親会社として<b>楽天カードと楽天証券HDを子会社化</b>し、銀行を頂点とする新グループへ(2026/5/20最終合意)。対価はA種種類株式で、<b>潜在普通株式2億3,089万株=既存発行済の132.3%</b>という大規模な希薄化を伴う。みずほ銀行は楽天カード株14.9998%の対価として転換後<b>10.52%を保有する主要株主</b>となり、資本業務提携を締結。<br><br>
+    シナジーは2030年3月期に経常利益ベース<b>850億円以上</b>(財務530億+個人顧客向け320億)、新グループで経常利益<b>4,000億円以上</b>目標。市場の初期反応は厳しく、2/26に−13.57%、5/20合意後はストップ安。株価は年初来高値9,317円(2/20)から6/1安値4,342円まで下げた後、利上げと好決算で戻り歩調にある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">11.7倍</td><td>希薄化前のEPSベース</td></tr>
+      <tr><td>PBR</td><td class="num">2.63倍</td><td>銀行としては高いがROE22%の裏付け</td></tr>
+      <tr><td>配当利回り</td><td class="num">—</td><td>無配(成長優先)</td></tr>
+      <tr><td>年初来レンジ</td><td class="num">4,342〜9,317円</td><td>高値から−36.5%・安値から+36.3%(52週高安は取得不可)</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    決算翌日(8/7)は+4.66%。ROE22%・7期連続最高益という成長の値段としてPER11.7倍は高くないが、10月の再編でEPSの分母が大きく変わる。希薄化とシナジーのどちらが先に数字に出るかで評価が割れており、指標を額面通り比較できない過渡期にある。<b>評価: 中立</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    <b>無配を継続。</b>「配当よりも成長を優先。今後は資本効率を踏まえ配当支払いを含む資本政策も検討」(8/6質疑応答)。新グループの中期目標は2030年3月期に経常利益4,000億円以上。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>金利:</b> 業績前提は政策金利1.00%。追加利上げは上振れ余地(+25bpで年+139億円)、利下げ転換なら前提が崩れる<br>
+    ・<b>預金獲得競争:</b> 会社は預金ベータ前提を「保守的に60%弱」と説明。調達費用はQ1で+83億円<br>
+    ・<b>再編:</b> 10月以降はカードの信用コスト・証券の市況依存収益が連結に入り、業績変動要因が増える
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>大規模希薄化:</b> A種転換で潜在132.3%。EPS・需給の不確実性は10月をまたいで残る<br>
+    ・<b>金利ピークアウト:</b> 増益の中心が金利収支である以上、利上げサイクルの終わりは成長率の終わりに直結<br>
+    ・<b>ミドルリスク資産の拡大:</b> 投資用マンションローン+23.1%など、会社自身がミドルリスクと位置づける資産が伸びている<br>
+    ・<b>親子上場の構造:</b> 楽天グループが転換後も約半数〜7割を握る。少数株主の利益がグループ都合に劣後する懸念は再編後も消えない<br>
+    ・<b>強気材料の裏返し:</b> シナジー850億円は政策金利0.75%前提の計画値。前提が動けば数字も動く
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: 楽天銀行 2027年3月期Q1決算短信・説明会資料・質疑応答要旨(<span class="note">rakuten-bank.co.jp/corp/investors/</span>) / 再編最終合意リリース 2026/5/20(<span class="note">corp.rakuten.co.jp/news/press/2026/0520_11.html</span>) / 株探(株価・指標、2026/8/13終値) / 株予報Pro(コンセンサス)。<br>
+    ※52週高安は取得不可のため年初来で代替。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

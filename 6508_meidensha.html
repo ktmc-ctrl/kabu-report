@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>明電舎(6508) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+</style>
+</head>
+<body class="viz-root">
+<div class="head">
+  <div>
+    <h1>明電舎 <span class="note">[6508] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">重電</span> <span class="badge">3月期決算</span> <span class="badge">変圧器増産</span></div>
+  </div>
+  <div class="px"><div class="v">11,880円</div><div class="note">2026/8/13 終値</div></div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は営業利益46.6億円と<b>前年3.4億円から13倍超</b>。極端な倍率は前年Q1が異常に薄かったため(通期の1.3%)で、率より中身を見るべき決算である。中身は良い——<b>受注高+12.4%・営業CF+307億円</b>、電力インフラは米国需要とインド大型案件で伸び、Q1と同時に通期営業利益を290→<b>330億円へ上方修正</b>(4期連続最高益予想)。中計2027の営業利益目標250億円はすでに大きく超えている。ただし株価は年初来安値から<b>+110%</b>、年初来高値圏(8/13に更新)で、アナリスト目標株価の平均を約10%上回る。PER21.5倍・PBR3倍——変圧器逼迫という強いテーマを、株価がかなり先まで織り込んだ位置にある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/31発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期</th><th class="num">増減</th></tr></thead>
+    <tbody>
+      <tr><td>受注高</td><td class="num">1,046.5億円</td><td class="num">931.3億円</td><td class="num up">+12.4%</td></tr>
+      <tr><td>売上高</td><td class="num">734.1億円</td><td class="num">583.9億円</td><td class="num up">+25.7%</td></tr>
+      <tr><td>営業利益</td><td class="num">46.6億円</td><td class="num">3.4億円</td><td class="num up">+43.1億円</td></tr>
+      <tr><td>純利益</td><td class="num">50.5億円</td><td class="num">4.6億円</td><td class="num up">+45.9億円</td></tr>
+      <tr><td>営業CF</td><td class="num">+307.0億円</td><td class="num">+232.7億円</td><td class="num up">+74.3億円</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解</b><br>
+    ・営業増益+43.1億円は<b>事業由来</b>(電力インフラ+22.8億、社会システム+22.7億が主)。営業段階の一過性は確認されない<br>
+    ・純利益には投資有価証券売却益<b>15.9億円</b>(特別利益・一過性)を含む——純増益+45.9億円のうち約16億円(税前)はこれ<br>
+    ・電力インフラは「アメリカの需要の伸びとインドの大型プロジェクト進捗」で増収増益。海外売上高比率34.2%<br>
+    ・産業電子モビリティはEVの納入時期ずれで減収も、半導体関連の受注が増加<br>
+    ・受注残は2026年3月末4,120億円(+376億円)。Q1末の受注残は開示なし(取得不可)
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    Q1と同時に<b>上方修正</b>: 売上3,650億円(+11.9%)・営業利益<b>330億円(+21.7%、修正率+13.8%)</b>・純利益250億円。上期営業利益は40→80億円へ倍増修正。理由は電力インフラ・社会システムの案件進捗が想定超+採算性改善。<br><br>
+    <b>コンセンサスとの差:</b> 決算前のIFIS経常コンセンサス322億円は旧会社予想(290億円)より強気だったが、<b>修正後の会社予想335億円はそれをさらに約4%上回った</b>。期待の上を会社が出した形。進捗率14.1%は低く見えるが、この会社は極端な下期偏重型(前年Q1は通期の1.3%)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">21.5倍</td><td>重電の中でも高め</td></tr>
+      <tr><td>PBR</td><td class="num">3.04倍</td><td>重電レンジ(2.7〜4.5倍)の中位</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">—</td><td>配当予想が未定のため非表示</td></tr>
+      <tr><td>年初来レンジ</td><td class="num">5,660〜11,970円</td><td>高値圏(高値比−0.8%)・安値から+110%(52週高安は取得不可)</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    発表当日(7/31)+15.1%、翌営業日(8/3)<b>+8.5%</b>と急伸し、その後も年初来高値を更新し続けている。株価はアナリスト目標株価の平均(10,717円)を<b>約10%上回り</b>、半年余りで2倍強。変圧器・送配電のテーマは本物だが、値段はそのテーマをかなり先まで払っている。<b>評価: 割高圏</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    中計2027(FY2025-27)の2027年度目標は受注3,800億・売上3,700億・営業利益250億(利益率6.7%)・ROE10%・ROIC8%。<b>営業利益は2025年度実績271億円で前倒し超過</b>し、今期予想330億円は目標を大きく上回る。<br><br>
+    <b>変圧器増産が中期の柱。</b>沼津事業所の変圧器工場に<b>160億円</b>を投じ生産能力を約1.5倍へ(2028年度稼働目標)。背景はレベニューキャップ制度・データセンター電力需要・再エネ送配電網整備。今期の設備投資計画は320億円(前期実績181億円)、うち電力インフラは前期比約2.8倍の152億円と投資を急いでいる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    方針は配当性向<b>安定的に30%レベル</b>(中計2027)。前期実績は年157円(性向30.1%)。<b>今期の配当予想は「未定」</b>(Q1短信)。直近の自社株買いの発表は確認できない。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>需要:</b> 米国の電力インフラ需要・インド大型案件・国内レベニューキャップ制度下の送配電投資が追い風<br>
+    ・<b>為替:</b> Q1営業外で差益2.0億円と影響は小さい。在外子会社の換算を期中平均レートへ変更(影響軽微と会社明記)<br>
+    ・<b>原材料・通商:</b> エネルギー・原材料価格の高騰、米通商政策・中東の地政学リスクを会社が懸念として明記
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>織り込みの進行:</b> 株価は目標株価平均を約10%上回り、PER21.5倍。上方修正が続かなければ値段の方が先に息切れする<br>
+    ・<b>EV事業:</b> 新車種投入遅れを会社自身が通期の懸念として明記<br>
+    ・<b>下期偏重の構造:</b> Q1進捗14.1%はこの会社の通常だが、下期の案件進捗が計画からずれると振れ幅が大きい<br>
+    ・<b>投資回収の時間差:</b> 沼津160億円の稼働は2028年度。中計期間内には利益貢献しない<br>
+    ・<b>強気材料の裏返し:</b> 変圧器逼迫はDC・再エネ投資の継続が前提。AI投資の減速は受注の前提ごと崩す
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: 明電舎 2027年3月期Q1決算短信・補足資料・業績予想修正(2026/7/31、<span class="note">ssl4.eir-parts.net/doc/6508/</span>) / IR説明資料2026年5月(受注残・中計2027) / 沼津変圧器工場投資リリース(2025/10/30) / 株探・松井証券(株価・指標、2026/8/13終値) / 株予報Pro(目標株価)。<br>
+    ※Q1末受注残・52週高安は取得不可(受注残は3月末値、株価は年初来で代替)。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

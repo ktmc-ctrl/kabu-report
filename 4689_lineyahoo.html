@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LINEヤフー(4689) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+</style>
+</head>
+<body class="viz-root">
+<div class="head">
+  <div>
+    <h1>LINEヤフー <span class="note">[4689] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">ネット</span> <span class="badge">3月期決算</span> <span class="badge">PayPay連結</span></div>
+  </div>
+  <div class="px"><div class="v">499.5円</div><div class="note">2026/8/13 終値</div></div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は売上収益5,540億円(+13.1%)・純利益581億円(+19.2%)で、純利益は<b>市場予想を約40%上回った</b>。牽引役は戦略セグメント(PayPay連結)で調整後EBITDA+64.4%。決算翌日+3.1%から上げ続け、8/13に年初来高値を更新した。PayPayは<b>2026年3月にNASDAQ上場済み(PAYP、時価総額約2.2兆円)</b>で、上場後もLINEヤフーの連結子会社のまま——「PayPayに投資する経路」としての位置づけは上場後も変わっていない。ただし検索広告・ディスプレイ広告はともに減収で、会社自身が「AIの一発回答でクエリ数が増えにくい」と構造課題を認める。本体の広告が痩せながらPayPayが伸びる、二層構造の決算である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/3発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上収益</td><td class="num">5,540億円</td><td class="num up">+13.1%(同四半期で過去最高)</td></tr>
+      <tr><td>営業利益</td><td class="num">1,012億円</td><td class="num up">+6.4%</td></tr>
+      <tr><td>純利益</td><td class="num">581億円</td><td class="num up">+19.2%</td></tr>
+      <tr><td>調整後EBITDA</td><td class="num">1,549億円</td><td class="num up">+23.1%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>セグメント別(売上/調整後EBITDA)</b><br>
+    ・<b>メディア</b>: 1,820億円(+2.6%)/761億円(+14.2%)。アカウント広告+13.3%が牽引する一方、<b>検索広告・ディスプレイ広告はともに減収</b>。EBITDA増は人件費・生成AI関連費用の減少込み<br>
+    ・<b>コマース</b>: 2,428億円(+12.5%)/420億円(+10.2%)。BEENOS・LINE MAN連結化とZOZO等の増収<br>
+    ・<b>戦略(PayPay連結)</b>: 1,302億円(+34.9%)/<b>350億円(+64.4%)</b>。PayPay連結取扱高5.5兆円(+23.0%)、PayPay銀行貸出金+37.5%<br><br>
+    <b>中身の注意点:</b> 大型の一過性売却益は見当たらないが、増収+13.1%には前期のM&amp;A連結化(BEENOS・LINE MAN・LINE Bank Taiwan)による嵩上げを含む(オーガニック内訳は取得不可)。質疑応答では「コマースはQ1予定の販促費を使わずに済んだ。Q2から販管費が正常化するとQ1ほどの利益にはならない」と会社が明言している。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期計画は据え置き: 売上収益2兆2,400億円(+10.0%)・調整後EBITDA<b>5,850億円(+17.8%)</b>・調整後EPS 30円(営業利益・純利益の通期予想は非開示)。進捗率は売上24.7%・調整後EBITDA26.5%で、会社は「余裕をもってガイダンスを超えられる自信」「Q1で貯金を作れた」と説明。<br><br>
+    <b>コンセンサスとの差:</b> Q1純利益581億円は市場予想平均415億円を<b>約40%上回った</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>PayPayの位置づけ</h2>
+  <div class="body">
+    PayPayは2026年3月12日にNASDAQへ上場(ティッカー<b>PAYP</b>、公開価格16ドル、初日終値18.16ドル、上場時時価総額約2.2兆円)。売出し中心のIPOで、<b>上場後もLINEヤフーの連結子会社のまま</b>「連結業績への重要な影響なし」(会社開示)。登録ユーザーは2026年8月に7,500万人を突破、PayPay単体のQ1は営業収益+27%・純利益+83%と高成長が続く。LINEヤフー株は、上場したPayPayを連結で抱える持株的な性格を強めており、PAYP株価の変動が評価に波及しやすくなった。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">非表示</td><td>純利益予想が非開示。調整後EPS30円ベースの参考値は約16.7倍</td></tr>
+      <tr><td>PBR</td><td class="num">約1.14倍</td><td>短信の親会社帰属持分ベースの算出値(情報源により0.88倍表示あり)</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">2.20%</td><td>年11円予想(+3.7円増配)</td></tr>
+      <tr><td>年初来レンジ</td><td class="num">365.1〜501.3円</td><td>8/13に年初来高値を更新。安値から+36.8%(52週高安は取得不可)</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    決算翌日(8/4)は+3.1%(場中一時+8%)で年初来高値を更新し、その後も発表前比+11.9%まで上昇。「株価10カ月ぶり高値、PayPay貢献」(日経)。調整後EPSベース約17倍は、広告の構造課題とPayPayの成長を合わせた値段としては行き過ぎともいえない。<b>評価: 中立</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    <b>2025年度からの5年間で累計総還元性向70%以上</b>が方針。配当は7.30円→11.00円予想へ増配、2027/3期以降は「利益成長に応じた配当」へ移行。自社株買いは2025年5-6月に1,162億円(3.05%)実施済み。カカクコムTOBが成立しても示したキャピタルアロケーションに変更なしと明言している。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>AIと検索:</b> 生成AIの一発回答でクエリ数が構造的に増えにくい——検索広告の逆風は業界共通<br>
+    ・<b>金利・為替:</b> PayPay銀行・PayPayカードの金融収益は金利環境に連動<br>
+    ・<b>M&amp;A環境:</b> カカクコムを巡り欧州EQTと買収価格の競り合い(最大3,640円へ引き上げ、9月中旬TOB開始見込み)
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>検索・ディスプレイ広告の構造的減収:</b> 会社自身が「検索数は厳しい状況が続く」と認める。本体メディアの土台が痩せていく<br>
+    ・<b>Q2以降の減速が予告済み:</b> 販管費正常化+前年ふるさと納税特需の反動で、Q1の利益水準は続かないと会社が明言<br>
+    ・<b>カカクコム争奪戦:</b> 価格競争で高値掴みになるリスクと、降りた場合の代替投資の不在<br>
+    ・<b>PayPay依存:</b> 利益成長の中心が戦略セグメントに偏り、PAYP株価の変動が本体の評価に波及する<br>
+    ・<b>強気材料の裏返し:</b> Q1の「コンセンサス+40%」は販促費の後ずれという時期要因を含む。年初来高値圏はその上振れをすでに織り込んだ
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: LINEヤフー 2027年3月期Q1決算短信・質疑応答要旨(<span class="note">lycorp.co.jp/ja/ir/</span>) / PayPay米国IPO完了の適時開示(2026/3/30) / 株主還元ページ / 松井証券(株価・指標、2026/8/13) / 日経・Bloomberg(カカクコムTOB・PAYP上場報道)。<br>
+    ※オーガニック成長率の内訳・52週高安は取得不可(年初来で代替)。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

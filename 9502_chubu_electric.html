@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中部電力(9502) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+</style>
+</head>
+<body class="viz-root">
+<div class="head">
+  <div>
+    <h1>中部電力 <span class="note">[9502] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">電力</span> <span class="badge">3月期決算</span> <span class="badge">JERA持分50%</span></div>
+  </div>
+  <div class="px"><div class="v">2,821円</div><div class="note">2026/8/13 終値</div></div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は経常利益271億円で<b>前年同期比−74.1%</b>。燃料費調整の期ずれが前年+290億円の差益から当期−90億円の差損へ振れ(差引−380億円)、小売のミライズは電源調達費用の増加で−246億円の赤字に沈んだ。JERA持分は+155億円と増えたが補いきれない。期初「未定」だった通期予想を7/29に公表したが、経常1,850億円はコンセンサスを約9%下回り、同日発覚が続く<b>浜岡原発の地震データ不正問題</b>と重なって翌日−3.9%と売られた。PBR0.62倍と指標は低位だが、ガバナンス問題の帰結が見えるまで評価は動きにくい。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/29発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">8,258億円</td><td class="num up">+3.2%</td></tr>
+      <tr><td>営業損益</td><td class="num">−250億円</td><td class="num down">前年679億円から悪化</td></tr>
+      <tr><td>経常利益</td><td class="num">271億円</td><td class="num down">−74.1%</td></tr>
+      <tr><td>純利益</td><td class="num">352億円</td><td class="num down">−58.7%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解(経常−776億円の内訳)</b><br>
+    ・燃料費調整の<b>期ずれ差引−380億円</b>(前年+290億円の差益→当期−90億円の差損)<br>
+    ・期ずれを除いた実質の減益 −396億円程度(実質経常は758億円程度→361億円程度)<br>
+    ・セグメント別: ミライズ 514→<b>−246億円</b>(中東情勢等による電源調達費用増−450億円が主因)、パワーグリッド 40→−122億円(需給調整費用増・物価上昇)、<b>JERA持分 424→579億円(+155億円</b>。期ずれ除きでは+395億円程度の増益で、卸電力市場販売の増益など市況要因を含む)<br>
+    ・原子力発電電力量はゼロ(浜岡停止中)。ミライズ販売電力量−9.1%
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    期初に中東情勢を理由に「未定」としていた通期予想を7/29に公表: 売上3兆9,000億円(+10.0%)・経常<b>1,850億円(−36.4%)</b>・純利益1,600億円(−29.8%)。前提は原油CIF 90$/b・159円/$。経常進捗率は14.7%。<br><br>
+    <b>コンセンサスとの差:</b> 公表された経常1,850億円はコンセンサス(2,031億円)を<b>約180億円(約9%)下回った</b>。決算翌日の−3.9%はこの未達と浜岡問題の複合とみられる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">12.9倍</td><td>電力大手ではやや高め</td></tr>
+      <tr><td>PBR</td><td class="num">0.62倍</td><td>電力のレンジ(0.35〜0.89倍)の中位</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">2.57%</td><td>年70円(据え置き予想)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">2,141〜3,286円</td><td>高値から−14.2%・安値から+31.8%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    決算発表日(7/29)は−1.7%、翌日(7/30)は<b>−3.9%</b>。通期計画のコンセンサス未達に浜岡の不正問題が重なった。PBR0.62倍は低位だが、次期中期経営計画が「ガバナンス改革の方向性を見極める必要がある」として策定保留になっており、再評価の手掛かりが出るまで時間を要する。<b>評価: 中立</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    現行中計(2022年策定)の2025年度目標(期ずれ除き経常2,000億円以上・ROIC3.2%以上)は達成済み(ROE目安7%は未達の6.3%)。経営ビジョン2.0は<b>2030年に連結経常2,500億円</b>を掲げる。<br><br>
+    <b>次期中計は浜岡問題で策定保留。</b>再稼働審査に関わる地震データを意図的に小さく見せ、規制庁の調査開始後(2025年5月以降)もデータ操作を続けていたことが判明。2026/7/29に社長が謝罪した。審査の長期化とガバナンス改革の帰結が、この会社の中期の絵を左右する。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    方針は安定配当の継続を基本に<b>連結配当性向30%以上</b>。2026/3期実績は年70円(1978年度以降の最高額)、2027/3期予想も年70円で据え置き。自社株買いはキャッシュ・アロケーション上の選択肢として明示されているが、直近の実施発表は確認できない(取得不可)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>燃料:</b> Q1の原油CIF実績112.8$/b(前年75.2$/b)。通期前提90$/bとの乖離が期ずれ差損を左右<br>
+    ・<b>為替:</b> 前提159円/$(Q1実績159.5円)<br>
+    ・<b>市況:</b> JERAの増益は卸電力市場販売など市況要因を含み、反転しうる<br>
+    ・<b>競争:</b> ミライズの販売電力量は通期で−89億kWh程度の競争影響を想定
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>浜岡データ不正の帰結:</b> 審査長期化・ガバナンス改革・次期中計への影響。調査は継続中<br>
+    ・<b>期ずれ差損の拡大:</b> 2026年度は差損局面。燃料高・円安が続けば下振れ<br>
+    ・<b>ミライズの構造問題:</b> 電源調達費用の増加と販売電力量の構造的減少が同時進行<br>
+    ・<b>JERA依存:</b> 持分利益の増益は市況要因を含み、利益の質としては割り引いて見る必要<br>
+    ・<b>強気材料の裏返し:</b> PBR0.62倍の「安さ」は、浜岡の帰結が見えるまで解消の触媒を欠く
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: 中部電力 2026年度Q1決算説明資料・決算短信(<span class="note">chuden.co.jp/ir/ir_siryo/kessan/</span>) / 中期経営計画ページ(次期中計の策定保留の記載) / 松井証券(株価・指標、2026/8/13) / 株予報Pro(コンセンサス) / 日経(浜岡データ不正報道)。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

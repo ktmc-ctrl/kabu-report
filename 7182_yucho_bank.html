@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ゆうちょ銀行(7182) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+</style>
+</head>
+<body class="viz-root">
+<div class="head">
+  <div>
+    <h1>ゆうちょ銀行 <span class="note">[7182] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">銀行</span> <span class="badge">3月期決算</span> <span class="badge">貯金186兆円</span></div>
+  </div>
+  <div class="px"><div class="v">3,223円</div><div class="note">2026/8/13 終値</div></div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は経常利益2,535億円で<b>前年同期比+64.7%</b>。見出しの増益率は大きいが、中身はむしろ健全で、<b>前年の株式売却益の剥落(臨時損益−655億円)を資金利益+1,748億円が丸ごと吸収して</b>なお+65%を達成した。外国証券利息+1,506億円と国内金利上昇による国債利息+304億円が主役で、資金粗利鞘は0.39%→0.73%へ改善。通期進捗26.5%と順調。予想PER17.3倍は銀行としては高めで、中計(2028年度純利益1兆円超・ROE10%程度)の達成を株価が先に織り込みつつある。好決算にもかかわらず決算後は−1.4%→−3.2%と材料出尽くしの反応だった。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/7発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>経常収益</td><td class="num">8,482億円</td><td class="num up">+27.1%</td></tr>
+      <tr><td>経常利益</td><td class="num">2,535億円</td><td class="num up">+64.7%</td></tr>
+      <tr><td>純利益</td><td class="num">1,776億円</td><td class="num up">+69.3%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解(経常+996億円の内訳)</b><br>
+    ・資金利益 <b>+1,748億円</b>(2,322→4,071億円)。外国証券利息+1,506億円(外債投資信託からの収益増)、国債利息+304億円(国内金利上昇)、貸出金利息+71億円<br>
+    ・調達側は貯金金利引き上げで貯金利息+416億円(694→1,110億円)<br>
+    ・臨時損益 <b>−655億円</b>(前年の株式売却益の剥落)——一過性はむしろ縮小<br>
+    ・国債等債券損益は▲0億円で、<b>債券の益出しに頼らない増益</b><br>
+    ・資金粗利鞘 0.39%→<b>0.73%</b><br><br>
+    貯金残高186.26兆円、運用資産218.1兆円(国債19.4%・外国証券等40.1%)。その他有価証券の評価損益は▲1兆807億円(国内金利上昇による国債の評価損。前年度末比では+1,526億円改善)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期予想は据え置き: 経常利益<b>9,550億円(+25.7%)</b>・純利益6,600億円(+25.5%)。Q1進捗率は経常26.5%・純利益26.9%と「堅調」(会社コメント)。<br><br>
+    <b>コンセンサスとの差:</b> コンセンサス(経常9,626億円・純利益6,707億円)は会社計画を小幅に上回る水準で、Q1はコンセンサス対比でも概ね順調な滑り出し。政策金利+25bpあたりの感応度の単一数値は開示がなく取得不可。中計は「円金利が現状水準でフラットでも2028年度純利益1兆円超・ROE10%程度を目指す」と明記する。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">17.3倍</td><td>メガバンク(12〜13倍前後)より高め</td></tr>
+      <tr><td>PBR</td><td class="num">1.24倍</td><td>Q1年換算ROEは7.13%</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">2.89%</td><td>年93円(19円増配予想・配当性向50%)</td></tr>
+      <tr><td>年初来レンジ</td><td class="num">2,238〜3,465円</td><td>高値から−7.0%・安値から+44.0%(52週高安は取得不可)</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    好決算にもかかわらず発表当日(8/7)−1.36%、翌営業日(8/10)−3.17%。金融株全般安の地合いと材料出尽くしの利益確定とみられ、株価が先に走っていたことの裏返しでもある。ROE7%に対しPBR1.24倍・PER17.3倍は、中計目標(ROE10%)の達成をかなり織り込んだ水準。<b>評価: やや割高</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    中期経営計画2026-2028(2026/5公表)は2028年度に<b>純利益1兆円超・ROE10%程度・OHR40%程度</b>を掲げる。前提は2026年3月末基準のインプライド・フォワードレートで、円金利フラットでも目標を目指すと明記。戦略投資領域(PEファンド・不動産ファンド等)の損益は802→1,273億円と拡大しており、資金利益と並ぶ第二の柱に育ちつつある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    <b>配当性向50%程度・利益成長を通じた累進的な配当</b>が方針。配当は58円→74円→<b>93円予想(+19円)</b>と2年で6割増えた。自社株買いは前中計5年間で総額約2,400億円実施(総還元性向は年度により55.8〜102.5%)、今後も日本郵政グループの保有方針等を踏まえ随時検討とする。500株以上の株主優待(カタログギフト)あり。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>金利:</b> 国内利上げが国債利息を押し上げる一方、保有国債の評価損(▲1兆807億円)も同時に抱える両刃<br>
+    ・<b>外貨・市況:</b> 外債投資信託の収益はクレジットスプレッド・為替に依存<br>
+    ・<b>調達コスト:</b> 2026/8/10に貯金金利を引き上げ。Q1で貯金利息+416億円と負担は増加中
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>日本郵政の売出し:</b> 持株比率49.87%。2025年に最大約6,300億円規模の売出しを行った実績があり、追加売出し=需給悪化の余地が常にある<br>
+    ・<b>金利ピークアウト:</b> 資金利益の急増は利上げ+外債投信頼み。利上げ一巡なら伸びは鈍化する<br>
+    ・<b>評価損の拡大:</b> 金利上昇が続けば国債評価損▲1兆円超がさらに膨らむ<br>
+    ・<b>市況依存:</b> 外債投信・戦略投資領域の収益は市況変動が大きい<br>
+    ・<b>強気材料の裏返し:</b> PER17.3倍は中計達成を先に織り込んだ値段。1兆円への道筋が一度でも揺らげば剥落しやすい
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: ゆうちょ銀行 2027年3月期Q1決算短信・決算説明資料・決算のポイント(<span class="note">jp-bank.japanpost.jp/aboutus/press/2026/</span>) / 中期経営計画2026-2028(2026/5/15) / 株探(株価・指標、2026/8/13終値) / 株予報Pro(コンセンサス)。<br>
+    ※政策金利感応度の単一数値と52週高安は取得不可(年初来で代替)。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

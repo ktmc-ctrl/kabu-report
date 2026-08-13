@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>関西電力(9503) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+</style>
+</head>
+<body class="viz-root">
+<div class="head">
+  <div>
+    <h1>関西電力 <span class="note">[9503] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">電力</span> <span class="badge">3月期決算</span> <span class="badge">原子力7基保有</span></div>
+  </div>
+  <div class="px"><div class="v">2,399.5円</div><div class="note">2026/8/13 終値</div></div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は経常利益528億円と<b>前年同期比−60.8%の大幅減益</b>。燃料・卸電力市況の変動で−870億円、原子力利用率の低下(78.8%→59.8%)で−250億円が効いた。一方、純利益は1,370億円(+38.2%)と増えているが、<b>これはきんでん株のTOB応募による売却益1,050億円(連結)がほぼ全額</b>で、本業の減益を一過性が覆い隠した形である。通期も経常−44.1%の減益計画。予想PER8.6倍・PBR0.75倍と指標は低位だが、Q1経常はコンセンサスを4.6%下回り、通期会社計画もコンセンサス比約1割低い。指標の安さをそのまま受け取りにくい局面にある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/31発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">1兆79億円</td><td class="num up">+9.8%</td></tr>
+      <tr><td>営業利益</td><td class="num">203億円</td><td class="num down">−84.2%</td></tr>
+      <tr><td>経常利益</td><td class="num">528億円</td><td class="num down">−60.8%</td></tr>
+      <tr><td>純利益</td><td class="num">1,370億円</td><td class="num up">+38.2%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解(経常−818億円の内訳)</b><br>
+    ・為替・燃料価格等の変動影響 <b>−870億円</b>(JEPX調達単価差−370、燃料費増−280、燃調収入減等−180、再エネ交付金−40)<br>
+    ・原子力利用率の低下 <b>−250億円</b>(高浜1〜4号−170、大飯3・4号−80。利用率78.8%→59.8%)<br>
+    ・電力販売の増 +264億円(小売販売電力量+6.4%)、不動産+92億円(分譲引渡200→377戸)<br>
+    ・燃料費調整の<b>期ずれ差損−270億円</b>を含む(期ずれ調整後の経常は798億円)<br><br>
+    <b>純利益の増益は一過性。</b>持分法適用会社きんでんの自己株TOBに応募し、関係会社株式売却益1,050億円(連結)を特別利益計上(3,350万株・1株6,677円、保有割合37.13%→24.33%)。これを除けば純利益も本業同様の減益である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期計画は据え置き: 売上4兆5,000億円(+10.9%)・経常<b>2,900億円(−44.1%)</b>・純利益3,100億円(−18.4%)。経常進捗率は18.2%と低いが、期ずれ差損(通期−510億円想定)の下期回収を織り込んだ計画である。前提は原子力利用率70%程度・原油CIF 80$/b・160円/$。感応度は利用率+1%→+57億円、+1円/$の円安→−12億円。<br><br>
+    <b>コンセンサスとの差:</b> Q1経常528億円はIFISコンセンサス554億円を<b>4.6%下回った</b>。通期会社計画2,900億円もコンセンサス(約3,190億円)を<b>約1割下回る</b>水準にあり、市場は託送料金見直し(2026/7/10承認申請、認可なら単年度400〜500億円の上積みと会社側が説明)などの上振れを織り込んでいるとみられる。認可の成否が通期の分かれ目になる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">8.6倍</td><td>純利益にきんでん売却益(一過性)を含む点に留意</td></tr>
+      <tr><td>PBR</td><td class="num">0.75倍</td><td>電力大手のレンジ(0.35〜0.89倍)の中では上位</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">3.33%</td><td>年80円(5円増配予想)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">1,981〜2,826円</td><td>高値から−15.1%・安値から+21.1%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    決算発表日(7/31)は−0.41%、翌営業日(8/3)は+0.61%と反応は小さく、市場は減益を「ほぼ想定線」と受け止めた。指標は低位だが、PERの分母は一過性で膨らんでおり、期ずれ調整後の実力(通期3,410億円)を基準にすると見かけほどの割安ではない。<b>評価: 中立</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    「経営計画2026」(2026/4策定)は2026-2028年度平均で<b>ROE 8.0%以上・ROIC 3.3%以上・EBITDA 8,000億円以上・純利益2,700億円以上</b>を掲げる。3年累計投資2.5兆円(維持1.5兆+成長1兆)。資産入替2,200億円程度はきんでん売却でQ1に概ね達成した。<br><br>
+    <b>データセンターが次のテーマ。</b>米CyrusOneとの合弁「関西電力サイラスワン」でハイパースケールDCに<b>10年で1兆円以上・総受電容量900MW</b>を計画し、関西圏で1号案件の用地を確保。2026年度からDC事業を情報通信セグメントへ移管し事業化段階に入った。国内初の原子力活用フィジカルPPAの窓口も開設(2026/7)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    2026/4に方針を見直し、<b>連結配当性向25〜35%を目安に「配当維持または増配」</b>を明示。2027/3期は年80円予想(前期75円から5円増配)。3年累計2,700億円以上の株主還元を計画する。自社株買いの発表は確認できない(2026/8/13時点)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>燃料:</b> Q1の原油CIF実績112.7$/b(中東情勢で前年75.2$/bから急騰)に対し通期前提は80$/b。乖離が続けば期ずれ差損の拡大要因<br>
+    ・<b>為替:</b> 前提160円/$(Q1実績159円)<br>
+    ・<b>金利:</b> 有利子負債4兆3,398億円。Q1支払利息は125億円と前年比+22%で、利上げの負担が数字に出始めている<br>
+    ・<b>規制:</b> 送配電子会社の託送料金変更承認申請が審査中。認可の成否が通期業績に直結
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>原子力の稼働低下:</b> 7基中3基が定期検査中(美浜3号は蒸気漏れによる前倒し定検)。下期も大飯3号・高浜4号・高浜1号が順次定検入りし、通期前提70%の達成は定検工程次第<br>
+    ・<b>一過性依存:</b> 通期純利益3,100億円はきんでん売却益が下支え。経常ベースは−44.1%の大幅減益計画で、来期は売却益の剥落が待つ<br>
+    ・<b>燃料価格:</b> JEPX単価差だけでQ1に−370億円。燃料高の継続は期ずれ差損を積み増す<br>
+    ・<b>金利上昇:</b> 4.3兆円の有利子負債は電力大手でも大きく、利払い増が続く<br>
+    ・<b>強気材料の裏返し:</b> DC・PPAへの1兆円投資は、AI投資が減速すれば受電容量900MWの前提ごと揺らぐ
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: 関西電力 2027年3月期Q1決算短信・決算説明資料(<span class="note">kepco.co.jp/corporate/pr/2026/pdf/20260731_1j.pdf</span>) / 原子力発電所の運営状況 2026/7/1(<span class="note">kepco.co.jp/corporate/pr/2026/pdf/20260701_1j.pdf</span>) / 経営計画2026(<span class="note">kepco.co.jp/corporate/policy/pdf/plan_2026.pdf</span>) / 株探(株価・指標、2026/8/13終値) / アイフィス株予報(コンセンサス)。<br>
+    ※決算説明会での託送料金の言及は説明会要約(二次情報)に基づく。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
