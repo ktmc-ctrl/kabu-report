@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>東洋炭素(5310) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+</style>
+</head>
+<body class="viz-root">
+<div class="head">
+  <div>
+    <h1>東洋炭素 <span class="note">[5310] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">等方性黒鉛</span> <span class="badge">12月期決算</span> <span class="badge">SiC・原子力部材</span></div>
+  </div>
+  <div class="px">
+    <div class="v">7,480円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 8,990円(2026/6)から <b>-16.8%</b><br>(8/13終値 7,480円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    中間期(2026年1-6月)は売上224億円(−2.7%)に対し<b>営業利益17.8億円(−53.7%)</b>と、減収率に不釣り合いな大幅減益。SiC半導体向けコーティング黒鉛と半導体デバイス用部材という高付加価値品の数量減で製品構成が悪化した。自社の中間計画にも営業で−31.6%の未達で、通期進捗28.7%は<b>下方修正リスク</b>を残す。一方で先行指標は逆を向いており、<b>受注高261億円(+31.8%)・受注残+33.6%</b>と「在庫調整一巡、明るい兆し」(会社)。減益決算の翌営業日に+2.77%と買われたのは市場が受注を見ている証拠である。PER31倍はこの回復期待を織り込んだ値段で、実績が追いつくのはFY2027以降と会社自身が言っている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/7発表・2026年12月期 中間)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">中間実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">223.7億円</td><td class="num down">−2.7%</td></tr>
+      <tr><td>営業利益</td><td class="num">17.8億円</td><td class="num down">−53.7%</td></tr>
+      <tr><td>経常利益</td><td class="num">22.3億円</td><td class="num down">−41.2%</td></tr>
+      <tr><td>純利益</td><td class="num">16.8億円</td><td class="num down">−37.4%</td></tr>
+      <tr><td>受注高</td><td class="num">261.1億円</td><td class="num up">+31.8%</td></tr>
+      <tr><td>営業CF</td><td class="num">+79.7億円</td><td class="num up">前年28.1億円</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>減益の中身の分解</b><br>
+    ・減収−2.7%に対し営業−53.7%の乖離。主因は<b>製品構成の悪化</b>——SiCコーティング黒鉛(「SiC半導体向けが大幅減、前期前倒しの反動」)と半導体デバイス用部材(エレクトロニクス分野−15.9%)という高採算品の数量減<br>
+    ・<b>在庫未実現利益の計上</b>も営業を圧縮(会社の差異説明に明記)。会計上の調整で、実損ではない<br>
+    ・経常の減益率が浅いのは為替(前年差損3.6億→当期差益1.5億、約+5億円のスイング)<br>
+    ・一般産業分野(連続鋳造・工業炉)は+9.9%と堅調で、下を支えている<br><br>
+    <b>先行指標は回復:</b> 受注は四半期別にQ1 115億→Q2 146億円と加速し、受注残167.6億円(+33.6%)。「期後半にかけてAI関連需要が拡大、EVも緩やかな回復基調で在庫調整が一巡」(短信)。米X-Energyの高温ガス炉向け黒鉛(受注残23.8億円)という原子力の新しい柱も持つ。営業CF+79.7億円は前受金の増加が押し上げ。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期予想は据え置き: 売上490億円(+6.1%)・営業利益<b>62億円(−8.3%)</b>・経常60億円・純利益50億円。ただし進捗率は営業28.7%・経常37.2%(前年同期の経常進捗54.1%)と<b>下期偏重で、未達リスクがある</b>。燃料コスト上昇は「業績予想に織り込んでいない」と短信に明記されている点も下振れ方向。<br><br>
+    <b>コンセンサスとの差:</b> 経常コンセンサス69.5億円に対し<b>会社計画60億円はそれを13.7%下回り</b>、中間実績は両方に未達。それでも決算翌営業日(8/10)は+2.77%——市場は足元の数字より受注回復を買った。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">31.3倍</td><td>利益が底の年の倍率。回復期待込み</td></tr>
+      <tr><td>PBR</td><td class="num">1.61倍</td><td>自己資本比率81.6%</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">1.94%</td><td>年145円(据え置き予想・性向60.8%)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">3,850〜8,990円</td><td>高値(6/18)から−16.8%・年初来+55.2%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    6月に前回SiCブームのピーク(2024年4月の8,480円)を更新しており、株価は「FY2027以降の本格回復」をすでに前借りしている。受注+31.8%はその裏付けとして本物だが、通期は未達・下方修正リスクを抱えたままの高倍率。<b>評価: やや割高</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    中計2026-2030(2026/2公表)は<b>FY2030に売上740億円・営業利益180億円(利益率24%)・ROE10%</b>。注目すべきは前中計(FY2029: 820億/220億)からの<b>引き下げ</b>で、理由は「SiC半導体用途の需要を慎重に見積もった」——SiC一本足の絵を修正し、Si半導体用途と<b>次世代原子力(高温ガス炉。受注の蓋然性が高い案件のみ織り込み)</b>を成長ドライバーに据え直した。「FY2026の業績回復は限定的、FY2027以降本格回復」と時間軸も明示。設備投資は5年で375億円、高純度化増強(いわき、FY2027完成)で能力1.9倍。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    中計で<b>配当性向の基準値を40%に引き上げ</b>。2026/12期予想は年145円(前期同額、予想性向60.8%と基準超過の水準を維持)。自社株買いの発表は確認できない。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>SiC市況:</b> EV減速でウエハー需要減・価格下落が続いたが、業界では2025年後半に在庫正常化・2026年以降拡大の見方。同社受注も同じ絵を示す<br>
+    ・<b>AI:</b> 期後半にかけてAI関連需要が拡大(短信)。半導体デバイス用部材の回復役<br>
+    ・<b>原子力:</b> 米X-Energyの高温ガス炉向け黒鉛が新しい柱。SMR建設の進捗に連動<br>
+    ・<b>コスト:</b> 燃料価格上昇が予想に未織り込み。中国売上比率24.3%で中国景気の影響も
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>通期未達・下方修正:</b> 進捗28.7%は下期に大きく賭けた形。会社計画すらコンセンサス比−13.7%<br>
+    ・<b>SiC回復の遅延:</b> EV販売次第。中計自体が「FY2026回復は限定的」と明言している<br>
+    ・<b>燃料コスト:</b> 予想に未織り込みの上昇分がそのまま下振れ要因<br>
+    ・<b>中国依存:</b> 売上の24.3%。景気停滞の影響を短信が明記<br>
+    ・<b>強気材料の裏返し:</b> 受注+31.8%の中心はAI関連と在庫補充。実需の回復でなければ受注は一巡で止まり、株価の前借り分が剥落する
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: 東洋炭素 2026年12月期中間決算短信・計画差異のお知らせ 2026/8/7 / 中期経営計画2026-2030 2026/2/24(<span class="note">toyotanso.co.jp/IR/plan_20260224.pdf</span>) / 株探(株価・指標、2026/8/13終値) / 株予報Pro(コンセンサス)。<br>
+    ※中間期の決算説明資料は8/20公開予定で未入手。Q2単独の経常(約14億円)は累計差引の計算値。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

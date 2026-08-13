@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>電力効率 全体マップ — 変換ロス・電源熱・計測</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+</style>
+</head>
+<body class="viz-root">
+<style>
+/* 名前空間 .eff — build_portal は body 内の style のみ取り込むためここに置く */
+.eff .layer { border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin: 10px 0; background: var(--surface-2); }
+.eff .layer h3 { margin: 0 0 4px; font-size: 1.02rem; color: var(--text-primary); }
+.eff .layer .role { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px; }
+.eff .items { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 8px; }
+.eff .item { border: 1px solid var(--border); border-radius: 9px; padding: 9px 11px; font-size: 0.82rem; background: var(--page); }
+.eff .item b { display: block; margin-bottom: 2px; }
+.eff .item .note { display: block; font-size: 0.74rem; }
+.eff .item.ghost { border-style: dashed; opacity: 0.75; }
+.eff .arrow { text-align: center; color: var(--text-muted); font-size: 0.9rem; margin: -2px 0; }
+</style>
+
+<div class="eff">
+
+<div class="head">
+  <div>
+    <h1>電力効率 全体マップ <span class="note">— 変換ロス・電源熱・計測のニッチトップ</span></h1>
+    <div class="subtitle"><span class="badge">特集</span> <span class="badge">関連7銘柄</span> <span class="badge">2026/8/13 時点</span></div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>この特集の視点</h2>
+  <div class="body">
+    AIデータセンターと電化の時代、電力の話は「作る・運ぶ」(発電・送配電)だけでは半分である。もう半分は<b>「無駄にしない」</b>——電気を変換するたびに数%ずつ失われるロスを削り、電源と熱をまともに設計し、その効率を0.1%単位で検証する仕事だ。この領域は市場が細分化されており、それぞれの隙間に世界シェア上位の日本企業が収まっている。本特集はこれを<b>①変換ロスを削る材料 → ②電源・熱そのもの → ③効率を測る</b>の3層で整理する。<br><br>
+    先に断っておくと、<b>本当のニッチトップほど非上場か大手の子会社</b>という側面がある(後述)。上場している各社は、その周縁で「投資可能な入口」になっている存在と捉えるのが正確である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>3層の全体像</h2>
+
+  <div class="layer">
+    <h3>① 変換ロスを削る — パワー半導体まわりの材料</h3>
+    <div class="role">SiC・GaNパワー半導体の性能は、素子だけでなく基板・部材の放熱と純度で決まる。放熱=実効効率。</div>
+    <div class="items">
+      <div class="item"><b>MARUWA [5344]</b><span class="note">窒化アルミ基板で世界シェア上位。窒化ケイ素はアルミナ比で曲げ強度約2倍・熱伝導率3倍以上でSiCパワーモジュールのど真ん中。ただし現在の収益エンジンは光通信基板</span></div>
+      <div class="item"><b>東洋炭素 [5310]</b><span class="note">SiC単結晶育成に使う等方性黒鉛・SiCコーティング黒鉛。SiC供給網の隠れたボトルネック。足元はSiC調整で減益、受注は+32%と底打ちの兆し</span></div>
+      <div class="item ghost"><b>プロテリアル(非上場)</b><span class="note">旧日立金属。アモルファス・ナノ結晶磁性材(FINEMET)は変圧器・電源の変換ロス削減の本丸だが、Bain傘下で投資経路なし</span></div>
+    </div>
+  </div>
+  <div class="arrow">▼ 材料が支える ▼</div>
+
+  <div class="layer">
+    <h3>② 電源・熱そのもの — 変換・給電・冷却の機器</h3>
+    <div class="role">データセンターのPUE(電力使用効率)と工場の電源品質を直接左右する層。</div>
+    <div class="items">
+      <div class="item"><b>山洋電気 [6516]</b><span class="note">高静圧ファン「San Ace」+UPS+サーボ。生成AIサーバーの空冷と半導体装置の両方に入る。受注+57%。論点は液冷シフト</span></div>
+      <div class="item"><b>コーセル [6905]</b><span class="note">高効率ユニット電源・ノイズフィルタ専業。地味だがPUE直撃。GPU向け装置電源で受注+60%、業績は黒字転換の途上</span></div>
+      <div class="item"><b>ダイヘン [6622]</b><span class="note">柱上変圧器 国内61%で1位+半導体装置向けRF電源 国内40%。変圧器能力を2倍へ増産投資中</span></div>
+      <div class="item"><b>フェローテック [6890]</b><span class="note">ペルチェ素子(熱電変換)で世界トップシェア級。AIデータセンターの光トランシーバー温調で需要急増、営業+58%への上方修正</span></div>
+      <div class="item ghost"><b>KELK(コマツ子会社・非上場)</b><span class="note">熱電モジュールの最高峰とされるが、コマツ[6301]の一部門で単独の投資経路なし</span></div>
+    </div>
+  </div>
+  <div class="arrow">▼ 成果を検証する ▼</div>
+
+  <div class="layer">
+    <h3>③ 「効率を測る」層 — 計測・検証</h3>
+    <div class="role">効率改善は測れなければ主張できない。規格試験・量産検査・研究開発のすべてに計測器が要る。</div>
+    <div class="items">
+      <div class="item"><b>日置電機 [6866]</b><span class="note">パワーアナライザ。インバータ・モータの効率を0.1%単位で検証する計測器の世界的リファレンス。地味だが参入障壁が高い。受注+39%</span></div>
+      <div class="item ghost"><b>横河計測・エヌエフ回路など</b><span class="note">競合・周辺は親会社の一部門(横河電機[6841]傘下等)か小型で、純粋な投資経路は限られる</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>層ごとの読み方</h2>
+  <div class="body">
+    <b>① 材料層はSiCサイクルの影響下。</b> EV減速でSiC投資が調整し、東洋炭素は中間営業−54%・MARUWAもパワー半導体向けは「底堅い」止まり。両社とも足元の主役は別(東洋炭素=一般産業と原子力、MARUWA=光通信)で、SiCは「次の波」ポジション。受注は両社とも回復を示し始めた。<br><br>
+    <b>② 機器層は生成AIの実需が最初に着弾している層。</b> 山洋電気(ファン)・コーセル(装置電源)・ダイヘン(RF電源)・フェローテック(光トランシーバー温調)のQ1受注はいずれも+46〜127%。ただし全員AI投資サイクルの同じ波に乗っており、<b>分散しているようで分散していない</b>点は意識しておく。<br><br>
+    <b>③ 計測層は最も景気耐性がある。</b> 日置電機は装置が売れても売れなくても、効率規制と研究開発がある限り必要とされる。その分、値段も安くない。<br><br>
+    <b>非上場問題。</b> 変換ロス削減の技術的な本丸(FINEMET磁性材、最高効率の熱電素子)はプロテリアルとKELKが握るが、前者はファンド傘下・後者はコマツの一部門で、株式市場から直接は買えない。上場7社はいずれも「本丸の隣の、それ自体強い城」であり、テーマの純度と投資可能性はトレードオフになっている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>関連銘柄一覧(2026/8/13終値)</h2>
+  <table>
+    <thead><tr><th>銘柄</th><th>層</th><th class="num">終値</th><th class="num">予想PER</th><th class="num">利回り</th><th>評価</th><th>一言</th></tr></thead>
+    <tbody>
+      <tr><td><b>MARUWA</b> [5344]</td><td>①材料</td><td class="num">62,170円</td><td class="num">非開示 ※1</td><td class="num">0.18%</td><td><span class="tag">やや割高</span></td><td>営業利益率33%。上方修正でも下げる期待の高さ</td></tr>
+      <tr><td><b>東洋炭素</b> [5310]</td><td>①材料</td><td class="num">7,480円</td><td class="num">31.3倍</td><td class="num">1.94%</td><td><span class="tag">やや割高</span></td><td>中間−54%も受注+32%。回復はFY2027以降と会社明言</td></tr>
+      <tr><td><b>山洋電気</b> [6516]</td><td>②機器</td><td class="num">5,930円</td><td class="num">17.5倍</td><td class="num">2.87%</td><td><span class="tag">中立</span></td><td>Q1営業+138%・受注+57%。液冷シフトが論点</td></tr>
+      <tr><td><b>コーセル</b> [6905]</td><td>②機器</td><td class="num">1,375円</td><td class="num">35.2倍</td><td class="num">4.36%</td><td><span class="tag">市況次第</span></td><td>受注+60%先行、黒字転換はこれから。DOE4.5%累進配当</td></tr>
+      <tr><td><b>ダイヘン</b> [6622]</td><td>②機器</td><td class="num">13,980円</td><td class="num">20.0倍</td><td class="num">1.50%</td><td><span class="tag">中立</span></td><td>受注+46.5%。変圧器×RF電源の二枚看板。10/1に1:5分割</td></tr>
+      <tr><td><b>フェローテック</b> [6890]</td><td>②機器</td><td class="num">9,230円</td><td class="num">参考13.1倍 ※2</td><td class="num">約2.2%</td><td><span class="tag">中立</span></td><td>営業+58%上方修正→ストップ高。中国56%が割引要因。Q1は8/14発表</td></tr>
+      <tr><td><b>日置電機</b> [6866]</td><td>③計測</td><td class="num">12,030円</td><td class="num">21.3倍</td><td class="num">2.00%</td><td><span class="tag">やや割高</span></td><td>受注+39%・実質増益。再増額期待が値段に入る</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:6px">※1 MARUWAは純利益予想非開示(実績EPSベース参考値 約42倍)。※2 フェローテックは9ヵ月変則決算のEPSベース。各銘柄の詳細は個別レポート参照。評価は個別レポートのバリュエーション節と同一。</div>
+</div>
+
+<div class="card">
+  <h2>共通リスク</h2>
+  <div class="body">
+    ・<b>同じ波:</b> 7社の受注急増はいずれも生成AI・データセンター投資が源流。AI投資の減速は全層に同時に効く<br>
+    ・<b>SiCの回復時期:</b> 材料層の本格回復はEVとSiC投資の再開待ち。会社側の想定でも2027年以降<br>
+    ・<b>織り込みの進行:</b> 7社中5社が2026年に5年高値(≒上場来高値)を付けており、期待が入った値段からのスタートになる<br>
+    ・<b>為替・部材コスト:</b> 円高は輸出型(日置・山洋・フェローテック等)の増益の一部を巻き戻す。メモリ部品高騰は電源各社の原価を圧迫
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴・出典</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: 各社の決算短信・決算説明資料(2026年7-8月発表の直近決算。詳細URLは各個別レポートの更新履歴に記載) / 株探(株価・指標、2026/8/13終値) / IFIS株予報・株予報Pro(コンセンサス)。プロテリアル・KELKの記述は各社公開情報に基づく定性情報。
+  </div>
+</div>
+
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
