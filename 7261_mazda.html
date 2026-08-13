@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マツダ(7261) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>マツダ <span class="note">[7261] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">四輪</span> <span class="badge">3月期決算</span> <span class="badge">米国比率高・PBR0.38倍</span></div>
+  </div>
+  <div class="px">
+    <div class="v">1,147円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 1,961円(2024/2)から <b>-41.5%</b><br>(8/13終値 1,147円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は売上1兆2,857億円(+17%、Q1最高)・営業利益328億円で<b>前年の−461億円から黒字転換</b>(+789億円の改善)。ただし改善の中身は<b>為替+413億円と関税の制度要因+203億円(税率27.5%→15%)で大半</b>を占め、販売奨励金は−209億円と増加、営業CFは−406億円とまだマイナス——実力の回復はこれからである。純利益はQUICK予想を上回ったが、<b>通期据え置き(営業1,500億円、進捗21.9%の下期偏重)が失望され当日−2.8%</b>。関税負担は年約750億円が残る。PER8.0倍・<b>PBR0.38倍</b>・利回り4.80%という極端な安さは、外部変数(為替・関税・奨励金)に利益が支配される構造の値段。下期の生命線は受注好調な新型CX-5(欧州2万台超・日本1万台超)の台数寄与。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/4発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">1兆2,857億円</td><td class="num up">+17%(Q1最高)</td></tr>
+      <tr><td>営業利益</td><td class="num">328億円</td><td class="num up">前年−461億円から黒字転換</td></tr>
+      <tr><td>純利益</td><td class="num">296億円</td><td class="num up">前年−421億円から黒字転換</td></tr>
+      <tr><td>営業CF</td><td class="num">−406億円</td><td class="num">前年−1,411億円から改善もマイナス継続</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解(営業+789億円の内訳、会社説明資料)</b><br>
+    ・<b>為替 +413億円</b>(160円/$・185円/€ほか)——改善の半分強<br>
+    ・台数・構成 +434億円: 台数構成・価格+364、<b>関税影響+203(制度要因: 税率引き下げ)</b>、販売奨励金<b>−209</b><br>
+    ・原材料−249億円、コスト改善+157億円、成長投資−98億円<br>
+    ・資産売却益などの一過性はなし。ただし改善の主因は為替と関税制度で、実力(価格・原価)の寄与は限定的<br><br>
+    <b>販売:</b> 世界30.4万台(+1%)。米国10.7万台(+7%、CX-50 HV牽引)、欧州+12%、豪州−22%。関税負担はQ1でなお<b>約300億円</b>(CFO)。ネットキャッシュ3,719億円・自己資本比率43%と財務は傷んでいない。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期予想は据え置き: 売上5兆5,000億円(+12%)・営業利益<b>1,500億円(+191%)</b>・純利益900億円(+157%)。前提155円/$・販売132.4万台(+8%)。<b>関税負担は年約5億ドル(約750億円)想定</b>(前期実績は−1,549億円)。Q1進捗21.9%は低く、<b>CX-5の台数寄与が本格化する下期偏重の計画</b>。<br><br>
+    <b>コンセンサスとの差:</b> Q1純利益296億円はQUICK予想(187億円)を上回った。通期コンセンサス(経常1,576億円・純利益1,000億円)は会社計画をやや上回る。それでも発表当日−2.8%——「Q1は良いが通期を上げない」ことへの失望だった。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">8.0倍</td><td>V字回復計画の分母ベース</td></tr>
+      <tr><td>PBR</td><td class="num">0.38倍</td><td>日系OEMでも最低水準</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">4.80%</td><td>年55円(据え置き)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">978.5〜1,395円</td><td>過去5年高値1,961円(2024/2)から−41.5%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    PBR0.38倍・利回り4.8%・ネットキャッシュ3,719億円——指標の安さは日系で際立つ。その理由は、利益が為替と関税にほぼ支配され、奨励金増・営業CFマイナスと実力の裏付けが薄いこと。CX-5の下期寄与と関税・為替の安定が確認されれば見直し余地は大きい。<b>評価: 割安寄り</b>(質への疑問がディスカウントの理由、という前提つき)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    <b>ライトアセット戦略(2025/3公表)が生存戦略の核。</b>2030年までの電動化投資を約2兆円→<b>1.5兆円程度へ圧縮</b>(電池は協業で半減)。2027年導入予定の自社BEVは協業活用で開発投資40%減、BEV専用工場は建てず<b>混流生産</b>(初期投資85%減)。2030年のBEV比率想定は25〜40%と幅を持たせた現実路線。<br><br>
+    商品はCX-5(受注好調)、MAZDA6e・CX-6e(長安との協業EV、欧州投入)、次期CX-3(タイ開発、2027年)。前中計の財務目標(ROS5%・ROE10%)は関税で崩れており、立て直しの絵はCX-5の成否に懸かる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    今期予想は年55円(据え置き、前期は配当性向98.9%まで悪化した中でも維持)。自社株買いの公表はなし。中間・期末の内訳は開示ソースから取得不可。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>関税:</b> 15%の「新常態」で年約750億円。前期の−1,549億円からは半減<br>
+    ・<b>為替:</b> Q1実績160円 vs 前提155円。円高転換は改善の半分を吐き出す規模<br>
+    ・<b>米国市場:</b> CX-50 HVが牽引する一方、奨励金競争は継続<br>
+    ・<b>新興国:</b> 豪州−22%・その他−14%と弱い
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>下期偏重:</b> 進捗21.9%でCX-5頼み。立ち上がりが遅れれば通期未達が早々に見える<br>
+    ・<b>外部変数依存:</b> Q1改善の大半が為替+関税制度。どちらかが逆流すれば黒字転換ごと巻き戻る<br>
+    ・<b>奨励金の増勢:</b> −209億円/四半期のペースが続けば価格側の努力を食い尽くす<br>
+    ・<b>営業CFマイナス:</b> FCF−692億円。ネットキャッシュがある間に回復できるかの時間勝負<br>
+    ・<b>強気材料の裏返し:</b> ライトアセット戦略は投資圧縮の裏返しとして、電動化の波が再加速したときの選択肢が細い
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: マツダ 2027年3月期Q1決算説明会資料 2026/8/4(TDnet掲載原本) / ライトアセット戦略リリース 2025/3/18 / 株探・松井証券(株価・指標、2026/8/13終値) / IFIS株予報・QUICK(コンセンサス) / 日経・ITmedia(CFO発言・関税額)。<br>
+    ※決算短信・質疑応答要旨は会社サイトのアクセス制限で取得不可(説明会資料と取材報道で代替)。配当の中間/期末内訳も取得不可。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
