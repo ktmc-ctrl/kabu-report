@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>サンリオ(8136) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>サンリオ <span class="note">[8136] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">キャラクターIP</span> <span class="badge">3月期決算</span> <span class="badge">ライセンス売上が過半</span></div>
+  </div>
+  <div class="px">
+    <div class="v">1,227円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 1,737円(2025/8)から <b>-29.4%</b><br>(8/13終値 1,227円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は売上520億円(+20.7%)・営業利益224億円(+11.1%)で<b>6期連続の増収増益・Q1過去最高</b>——にもかかわらず、発表翌営業日(8/12)に<b>−18.1%(一時−20%、12年ぶりの下落率)</b>と急落した。理由は営業利益がコンセンサス(234億円)を約4%下回ったことと、費用約20億円がQ1からQ2以降へ期ずれしただけ(=Q2以降に費用が乗る)という中身。ライセンス売上268億円(+23%)が過半のアセットライト経営で営業利益率43%・ROE35%という収益性は健在だが、PBR9.1倍という値段は「市場予想を超え続けること」を前提にしており、その脆さが一日で露呈した。株価は2025年8月の上場来高値から約3割下、キャラクター分散(ポムポムプリン1位・クロミ等)と欧州+56%が次の柱。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/10発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">520億円</td><td class="num up">+20.7%</td></tr>
+      <tr><td>営業利益</td><td class="num">224億円</td><td class="num up">+11.1%</td></tr>
+      <tr><td>(調整後営業利益)</td><td class="num">221億円</td><td class="num up">+21.8%</td></tr>
+      <tr><td>純利益</td><td class="num">155億円</td><td class="num up">+9.3%</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:6px">※海外子会社は12月決算のため海外分の対象期間は2026年1-3月。調整後=決算期ずれ連結調整前の会社独自指標。</div>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解</b><br>
+    ・<b>販管費約20億円がQ2以降へ期ずれ</b>し、Q1利益は「想定より若干上振れ」と会社が明言——通期の費用見通しは不変で、この分はQ2以降に乗る<br>
+    ・販管費146→182億円: 人件費増+グローバルの戦略的マーケティング投資。営業利益率は46.9%→43.1%へ低下<br>
+    ・売上の内訳: <b>ライセンス268億円(+23.0%)</b>/物販ほか251億円(+18.5%)。円安(156円/$・183円/€)も追い風(定量寄与は開示なし)<br><br>
+    <b>地域別(営業利益):</b> 日本149億円(+25.0%)が主柱。<b>アジア55億円(−4.9%)・北米22億円(−19.9%)は増収減益</b>(マーケ投資と関税影響)。欧州は+38.9%と急伸(売上+56%)。中国物販はYoY+125%・62店と拡大continuing。ピューロランド来場者はQ1過去最高。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期予想は据え置き: 売上2,298億円(+18.4%)・営業利益<b>895億円(+15.0%)</b>・純利益638億円。Q1進捗25.1%(上期計画比53.0%)と数字上は順調。為替前提は155円/$。<br><br>
+    <b>コンセンサスとの差:</b> Q1営業利益224億円は<b>市場予想234億円を約4%下回った</b>。通期でもコンセンサス(経常928.5億円)が会社計画を2.9%上回る。発表日はザラ場で年初来高値を付けた後、PTSで急落→<b>翌営業日−18.1%</b>。「過去最高でもサプライズ不足」(報道)が示す通り、期待値がすべてを決める銘柄になっている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">23.3倍</td><td>成長率+17%との対比では標準圏</td></tr>
+      <tr><td>PBR</td><td class="num">9.12倍</td><td>ROE 35%のアセットライト経営の値段</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">1.30%</td><td>年16円(分割後・性向30%以上)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">818.8〜1,737円</td><td>高値(2025/8、上場来高値)から−29.4%・安値(5/7)から+49.9%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    ライセンス主体・ROE35%という事業の質にPBR9倍が付く構造は、コンセンサス比±数%で±20%動く株価が示す通り期待依存度が極めて高い。2025年12月の日中関係悪化での急落、今回の−18%と、高値からの調整は既に3割進んでいるが、Q2以降は期ずれ費用20億円が乗る分だけハードルが上がる。<b>評価: やや割高</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    中計(〜2027/3期)の当初目標(営業利益400億円以上)は今期計画895億円で大幅超過済み。長期ビジョン(2025/5公表)は<b>2035年に向け時価総額5兆円・10年平均営業利益成長率10%以上</b>を掲げる。<br><br>
+    <b>キャラクター分散が進行中:</b> キャラクター大賞はポムポムプリンが1位(過去最多7,064万票)、クロミ・シナモロールの単独採用が北米・台湾・東南アジアで進展。SNSフォロワー全世界1億超。欧州は大手ファストファッション・玩具経由で+56%、インドでReliance 40店舗展開開始。5か年ロードマップには自社製作ゲーム2本(2027/3期)やワーナー・ブラザースとの映画も。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    <b>配当性向30%以上</b>が方針。今期予想は年16円(2026/4/1の1:5分割後ベース)。注目は「<b>魅力的なM&amp;A・出資が2027年3月期末までに実現しない場合、追加で最大300億円の株主還元を検討</b>」という条件付きコミットメント。ネットキャッシュは1,235億円。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>グローバルのキャラクター人気:</b> ライセンスの伸び(+23%)が業績の中心。海外配信・SNSが波及経路<br>
+    ・<b>中国・地政学:</b> 中国は物販+125%と最大の成長源である一方、2025年12月には日中関係悪化で株価急落した実績。インバウンドも中国渡航者減が物販に既に響いている<br>
+    ・<b>為替:</b> 前提155円/$。円高転換は逆風<br>
+    ・<b>関税:</b> 北米の減益要因の一つとして残存
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>期待値ゲームの怖さ:</b> コンセンサス比−4%で−18%。PBR9倍は予想超過が続くことを前提にした値段<br>
+    ・<b>Q2以降の費用増:</b> 期ずれ約20億円+マーケ投資の継続で、利益率の低下傾向が数字に出やすい<br>
+    ・<b>海外の増収減益:</b> 北米・アジアはマーケ費先行。投資が売上に化けるまでの時間差<br>
+    ・<b>ガバナンス:</b> 元役員の不適切報酬問題で通期決算発表が遅延した実績(2026/6)。損害賠償訴訟は係争中<br>
+    ・<b>強気材料の裏返し:</b> キティ依存からの分散は道半ばで、中国の成長中心はなおキティ。特定キャラ・特定市場のブーム反転が直撃する構造は残る
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: サンリオ 2027年3月期Q1決算短信・決算説明資料 2026/8/10(TDnet掲載原本) / 2026年3月期決算短信(2026/6/23) / 中計・長期ビジョン・株主還元ページ(<span class="note">corporate.sanrio.co.jp/ir/</span>) / 株探・松井証券(株価・指標、2026/8/13終値) / IFIS株予報(コンセンサス) / 日経・Bloomberg(8/12急落報道)。<br>
+    ※2026/4/1付で1:5の株式分割——過去の株価は分割調整後。Q1営業CF・為替の定量寄与は取得不可。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
