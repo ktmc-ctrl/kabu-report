@@ -63,6 +63,9 @@ BASE_CSS = """
   .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
          font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
   .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
   /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
   .pagenav { margin-bottom: 12px; }
   .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
@@ -85,6 +88,15 @@ PORTAL_CSS = """
   body.detail .btn-back { display:inline-flex; }
 
   a.tile, a.theme-btn { text-decoration:none; }
+  .chips { display:flex; gap:6px; overflow-x:auto; padding:2px 0 10px; scrollbar-width:none; }
+  .chips::-webkit-scrollbar { display:none; }
+  .chips button { flex:0 0 auto; font-family:inherit; font-size:0.72rem; font-weight:600;
+                  padding:5px 12px; border-radius:999px; border:1px solid var(--border);
+                  background:var(--surface-1); color:var(--text-secondary); cursor:pointer;
+                  transition:background .12s ease, color .12s ease; }
+  .chips button.on { background:var(--pos); border-color:var(--pos); color:#fff; }
+  .chips button:focus-visible { outline:2px solid var(--pos); outline-offset:2px; }
+  body.searching .chips { display:none; }
   .sector-h { font-size:0.72rem; font-weight:700; color:var(--text-muted); letter-spacing:.06em;
               margin:16px 0 8px; padding-bottom:5px; border-bottom:1px solid var(--grid); }
   .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(232px,1fr)); gap:10px; }

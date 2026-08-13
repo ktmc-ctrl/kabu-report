@@ -61,6 +61,9 @@
   .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
          font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
   .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
   /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
   .pagenav { margin-bottom: 12px; }
   .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
@@ -81,6 +84,15 @@
   body.detail .btn-back { display:inline-flex; }
 
   a.tile, a.theme-btn { text-decoration:none; }
+  .chips { display:flex; gap:6px; overflow-x:auto; padding:2px 0 10px; scrollbar-width:none; }
+  .chips::-webkit-scrollbar { display:none; }
+  .chips button { flex:0 0 auto; font-family:inherit; font-size:0.72rem; font-weight:600;
+                  padding:5px 12px; border-radius:999px; border:1px solid var(--border);
+                  background:var(--surface-1); color:var(--text-secondary); cursor:pointer;
+                  transition:background .12s ease, color .12s ease; }
+  .chips button.on { background:var(--pos); border-color:var(--pos); color:#fff; }
+  .chips button:focus-visible { outline:2px solid var(--pos); outline-offset:2px; }
+  body.searching .chips { display:none; }
   .sector-h { font-size:0.72rem; font-weight:700; color:var(--text-muted); letter-spacing:.06em;
               margin:16px 0 8px; padding-bottom:5px; border-bottom:1px solid var(--grid); }
   .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(232px,1fr)); gap:10px; }
@@ -167,54 +179,28 @@ window.addEventListener('hashchange', goLegacy);
 
 <div class="subtitle">決算説明資料・中期経営計画・バリュエーションを1銘柄1ページに整理 ・ 全45銘柄 ・ 2026/8/13時点</div>
 
-  <div class="card">
-    <div class="body" style="font-size:0.78rem">
-      各レポートは<b>会社が公表した決算短信・決算説明資料(一次資料)</b>を読み込んだうえで、①最新決算と利益の質(一過性要因の分解) ②通期見通しと変動要因 ③バリュエーション(PER・PBR・52週レンジ内の位置) ④中期経営計画と今後のテーマ ⑤環境要因(為替・金利・関税) ⑥リスク要因、の順に整理している。決算発表や大きなニュースの都度、更新履歴を残しながら改訂する。<br>
-      <span class="note-s">※タイル上のバッジは各レポート内のバリュエーション評価を要約したもの。※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</span>
-    </div>
-  </div>
-
-  <div class="theme-lead">特集</div>
-  <a class="theme-btn" href="theme_datacenter.html">
-    <div class="tt">🏢 データセンター 全体マップ — 電力・冷却・回線</div>
-    <div class="td">建設費の40〜45%は電気設備、冷却は15〜20%。液冷と液浸の違い、GPUファブリックで光配線が増える仕組み、関連22銘柄まで。DCを5層に分けて整理</div>
-    <div class="tg">マップを開く →</div>
-  </a>
-  <a class="theme-btn" href="theme_power.html">
-    <div class="tt">⚡ 電力 全体マップ — 需要・発電・送配電</div>
-    <div class="td">数十年ぶりに増加へ転じた電力需要、原子力15基復帰、納入2030年以降という変圧器逼迫。電力会社と重電で評価が真逆になる構図を、関連16銘柄で整理</div>
-    <div class="tg">マップを開く →</div>
-  </a>
-  <a class="theme-btn" href="theme_fintech.html">
-    <div class="tt">💳 フィンテック 全体マップ — 決済・証券・銀行・SaaS</div>
-    <div class="td">キャッシュレス58%の主役は今もカード(82.7%)。PayPay一強、楽天再編(10/1)、利上げで一番動いているのは実は銀行——関連13銘柄で整理</div>
-    <div class="tg">マップを開く →</div>
-  </a>
-  <a class="theme-btn" href="theme_semi_materials.html">
-    <div class="tt">🗺 半導体・データセンター 素材サプライチェーン マップ</div>
-    <div class="td">日本の化学・素材メーカーがAI半導体とDCのどこに入っているかを、前工程8層・後工程5層・DC側3層に分けて整理。関連24銘柄の株価水準つき</div>
-    <div class="tg">マップを開く →</div>
-  </a>
-  <a class="theme-btn" href="theme_chemicals.html">
-    <div class="tt">⚗️ 日本の化学メーカー 比較 — 信越化学はどこに立っているか</div>
-    <div class="td">主要18社を営業利益率で3グループに分類。3.8%〜25.9%という約7倍の開きが何から生まれているかと、2026年の石化反転・エチレン設備統合の動き</div>
-    <div class="tg">マップを開く →</div>
-  </a>
-  <a class="theme-btn" href="theme_efficiency.html">
-    <div class="tt">🔌 電力効率 全体マップ — 変換ロス・電源熱・計測</div>
-    <div class="td">電気は「作る・運ぶ」の先で数%ずつ失われる。変換ロスを削る材料、電源・熱の機器、効率を測る計測器の3層に、それぞれニッチトップが収まる構図を関連7銘柄で整理。本当の本丸ほど非上場、という論点も</div>
-    <div class="tg">マップを開く →</div>
-  </a>
-
-  <label class="theme-lead" for="q">さがす</label>
+  <label class="theme-lead" for="q" style="margin-top:2px">さがす</label>
   <input class="search" id="q" type="search" placeholder="銘柄名・コード・セクター・キーワード" oninput="filter(this.value)" autocomplete="off">
 
-  <div class="seg" role="tablist" aria-label="グループ分けの切り替え">
+  <div class="seg" role="tablist" aria-label="表示の切り替え">
     <button id="tab-sector" class="on" role="tab" aria-selected="true" onclick="setGroup('sector')">セクター別</button>
     <button id="tab-val" role="tab" aria-selected="false" onclick="setGroup('val')">割安・割高別</button>
+    <button id="tab-themes" role="tab" aria-selected="false" onclick="setGroup('themes')">特集 <small>6</small></button>
   </div>
 
   <div id="grp-sector">
+    <div class="chips" id="chips-sector">
+<button data-pick="電力・重電" onclick="pick('sector', this.dataset.pick)">電力・重電 <small>8</small></button>
+<button data-pick="重工・機械・自動車" onclick="pick('sector', this.dataset.pick)">重工・機械・自動車 <small>3</small></button>
+<button data-pick="電機・エンタメ" onclick="pick('sector', this.dataset.pick)">電機・エンタメ <small>6</small></button>
+<button data-pick="素材・化学" onclick="pick('sector', this.dataset.pick)">素材・化学 <small>5</small></button>
+<button data-pick="電線・非鉄" onclick="pick('sector', this.dataset.pick)">電線・非鉄 <small>5</small></button>
+<button data-pick="半導体" onclick="pick('sector', this.dataset.pick)">半導体 <small>4</small></button>
+<button data-pick="投資・商社・小売" onclick="pick('sector', this.dataset.pick)">投資・商社・小売 <small>5</small></button>
+<button data-pick="金融" onclick="pick('sector', this.dataset.pick)">金融 <small>5</small></button>
+<button data-pick="ネット・通信" onclick="pick('sector', this.dataset.pick)">ネット・通信 <small>4</small></button>
+    </div>
+    <div class="sec-block" data-name="電力・重電">
     <div class="sector-h" data-group>電力・重電</div>
     <div class="grid">
       <a class="tile" href="9503_kansai_electric.html" data-q="9503 関西電力 9503 電力・重電 中立 Q1経常−60.8%。純利益+38%はきんでん売却益1,050億がほぼ全額。通期経常−44%計画はコンセンサス比約1割低く、託送料金認可が分かれ目" aria-label="関西電力のレポートを開く">
@@ -274,6 +260,8 @@ window.addEventListener('hashchange', goLegacy);
         <div class="go">レポートを見る →</div>
       </a>
     </div>
+    </div>
+    <div class="sec-block" data-name="重工・機械・自動車">
     <div class="sector-h" data-group>重工・機械・自動車</div>
     <div class="grid">
       <a class="tile" href="7011_mhi.html" data-q="7011 三菱重工業 7011 重工・機械・自動車 割高圏 Q1事業利益+65%・純利益+97%。受注7兆円・FCF6,000億円へ上方修正。GTCC・防衛が牽引も一過性約250億円を含む" aria-label="三菱重工業のレポートを開く">
@@ -298,6 +286,8 @@ window.addEventListener('hashchange', goLegacy);
         <div class="go">レポートを見る →</div>
       </a>
     </div>
+    </div>
+    <div class="sec-block" data-name="電機・エンタメ">
     <div class="sector-h" data-group>電機・エンタメ</div>
     <div class="grid">
       <a class="tile" href="6758_sony.html" data-q="6758 ソニーグループ 6758 電機・エンタメ 中立 Q1営業利益+40%で過去最高、通期1.72兆円へ上方修正。熊本地震の影響は通期予想に未反映。タムロン買収提案" aria-label="ソニーグループのレポートを開く">
@@ -343,6 +333,8 @@ window.addEventListener('hashchange', goLegacy);
         <div class="go">レポートを見る →</div>
       </a>
     </div>
+    </div>
+    <div class="sec-block" data-name="素材・化学">
     <div class="sector-h" data-group>素材・化学</div>
     <div class="grid">
       <a class="tile" href="3402_toray.html" data-q="3402 東レ 3402 素材・化学 中立 Q1営業利益+72%・純利益は予想を51%超過、上期上方修正。航空機炭素繊維・水処理が牽引し年初来高値圏" aria-label="東レのレポートを開く">
@@ -381,6 +373,8 @@ window.addEventListener('hashchange', goLegacy);
         <div class="go">レポートを見る →</div>
       </a>
     </div>
+    </div>
+    <div class="sec-block" data-name="電線・非鉄">
     <div class="sector-h" data-group>電線・非鉄</div>
     <div class="grid">
       <a class="tile" href="5802_sumitomo_electric.html" data-q="5802 住友電気工業 5802 電線・非鉄 中立 Q1営業利益+61%。情報通信(DC向け光)が利益3.5倍で主役交代、上期・通期を上方修正" aria-label="住友電気工業のレポートを開く">
@@ -419,6 +413,8 @@ window.addEventListener('hashchange', goLegacy);
         <div class="go">レポートを見る →</div>
       </a>
     </div>
+    </div>
+    <div class="sec-block" data-name="半導体">
     <div class="sector-h" data-group>半導体</div>
     <div class="grid">
       <a class="tile" href="6920_lasertec.html" data-q="6920 レーザーテック 6920 半導体 やや割高 FY26は減収減益も受注+126%回復。FY27最高益予想もOPM3年連続低下で決算翌日13%超急落" aria-label="レーザーテックのレポートを開く">
@@ -450,6 +446,8 @@ window.addEventListener('hashchange', goLegacy);
         <div class="go">レポートを見る →</div>
       </a>
     </div>
+    </div>
+    <div class="sec-block" data-name="投資・商社・小売">
     <div class="sector-h" data-group>投資・商社・小売</div>
     <div class="grid">
       <a class="tile" href="9984_softbankg.html" data-q="9984 ソフトバンクG 9984 投資・商社・小売 割安圏 Q1純利益3,473億円(−17.7%)もNAV72.3兆円と過去最高。OpenAI評価が寄与、LTV13%。NAV比5割前後のディスカウント" aria-label="ソフトバンクGのレポートを開く">
@@ -488,6 +486,8 @@ window.addEventListener('hashchange', goLegacy);
         <div class="go">レポートを見る →</div>
       </a>
     </div>
+    </div>
+    <div class="sec-block" data-name="金融">
     <div class="sector-h" data-group>金融</div>
     <div class="grid">
       <a class="tile" href="8306_mufg.html" data-q="8306 三菱UFJ FG 8306 金融 割高圏 Q1純利益8,094億円(+48%)で過去最高、通期2.7兆円へ進捗30%。利上げ追い風もPBR1.74倍と織り込み進む" aria-label="三菱UFJ FGのレポートを開く">
@@ -526,6 +526,8 @@ window.addEventListener('hashchange', goLegacy);
         <div class="go">レポートを見る →</div>
       </a>
     </div>
+    </div>
+    <div class="sec-block" data-name="ネット・通信">
     <div class="sector-h" data-group>ネット・通信</div>
     <div class="grid">
       <a class="tile" href="9432_ntt.html" data-q="9432 NTT 9432 ネット・通信 中立 Q1営業収益過去最高(+10.9%)・16期連続増配へ。安定収益+還元が軸、IOWN・DCが中期テーマ" aria-label="NTTのレポートを開く">
@@ -557,9 +559,17 @@ window.addEventListener('hashchange', goLegacy);
         <div class="go">レポートを見る →</div>
       </a>
     </div>
+    </div>
   </div>
 
   <div id="grp-val" style="display:none">
+    <div class="chips" id="chips-val">
+<button data-pick="割安" onclick="pick('val', this.dataset.pick)">割安 <small>4</small></button>
+<button data-pick="中立" onclick="pick('val', this.dataset.pick)">中立 <small>21</small></button>
+<button data-pick="割高" onclick="pick('val', this.dataset.pick)">割高 <small>16</small></button>
+<button data-pick="評価難" onclick="pick('val', this.dataset.pick)">評価難 <small>4</small></button>
+    </div>
+    <div class="sec-block" data-name="割安">
     <div class="sector-h val lo" data-group>割安 <span class="cnt">4銘柄</span></div>
     <div class="bdesc">予想PER・PBRが過去比/同業比で低位、または資産価値対比のディスカウントが大きい</div>
     <div class="grid">
@@ -592,6 +602,8 @@ window.addEventListener('hashchange', goLegacy);
         <div class="go">レポートを見る →</div>
       </a>
     </div>
+    </div>
+    <div class="sec-block" data-name="中立">
     <div class="sector-h val mid" data-group>中立 <span class="cnt">21銘柄</span></div>
     <div class="bdesc">指標面に大きな歪みはなく、業績見通しとおおむね整合的な水準</div>
     <div class="grid">
@@ -743,6 +755,8 @@ window.addEventListener('hashchange', goLegacy);
         <div class="go">レポートを見る →</div>
       </a>
     </div>
+    </div>
+    <div class="sec-block" data-name="割高">
     <div class="sector-h val hi" data-group>割高 <span class="cnt">16銘柄</span></div>
     <div class="bdesc">指標が過去比・同業比で高位。将来の成長期待の織り込みが進んでいる</div>
     <div class="grid">
@@ -859,6 +873,8 @@ window.addEventListener('hashchange', goLegacy);
         <div class="go">レポートを見る →</div>
       </a>
     </div>
+    </div>
+    <div class="sec-block" data-name="評価難">
     <div class="sector-h val mid" data-group>評価難 <span class="cnt">4銘柄</span></div>
     <div class="bdesc">利益が市況変動や黒字化途上にあり、PERによる評価が機能しにくい</div>
     <div class="grid">
@@ -891,9 +907,50 @@ window.addEventListener('hashchange', goLegacy);
         <div class="go">レポートを見る →</div>
       </a>
     </div>
+    </div>
+  </div>
+
+  <div id="grp-themes" style="display:none">
+  <a class="theme-btn" href="theme_datacenter.html">
+    <div class="tt">🏢 データセンター 全体マップ — 電力・冷却・回線</div>
+    <div class="td">建設費の40〜45%は電気設備、冷却は15〜20%。液冷と液浸の違い、GPUファブリックで光配線が増える仕組み、関連22銘柄まで。DCを5層に分けて整理</div>
+    <div class="tg">マップを開く →</div>
+  </a>
+  <a class="theme-btn" href="theme_power.html">
+    <div class="tt">⚡ 電力 全体マップ — 需要・発電・送配電</div>
+    <div class="td">数十年ぶりに増加へ転じた電力需要、原子力15基復帰、納入2030年以降という変圧器逼迫。電力会社と重電で評価が真逆になる構図を、関連16銘柄で整理</div>
+    <div class="tg">マップを開く →</div>
+  </a>
+  <a class="theme-btn" href="theme_fintech.html">
+    <div class="tt">💳 フィンテック 全体マップ — 決済・証券・銀行・SaaS</div>
+    <div class="td">キャッシュレス58%の主役は今もカード(82.7%)。PayPay一強、楽天再編(10/1)、利上げで一番動いているのは実は銀行——関連13銘柄で整理</div>
+    <div class="tg">マップを開く →</div>
+  </a>
+  <a class="theme-btn" href="theme_semi_materials.html">
+    <div class="tt">🗺 半導体・データセンター 素材サプライチェーン マップ</div>
+    <div class="td">日本の化学・素材メーカーがAI半導体とDCのどこに入っているかを、前工程8層・後工程5層・DC側3層に分けて整理。関連24銘柄の株価水準つき</div>
+    <div class="tg">マップを開く →</div>
+  </a>
+  <a class="theme-btn" href="theme_chemicals.html">
+    <div class="tt">⚗️ 日本の化学メーカー 比較 — 信越化学はどこに立っているか</div>
+    <div class="td">主要18社を営業利益率で3グループに分類。3.8%〜25.9%という約7倍の開きが何から生まれているかと、2026年の石化反転・エチレン設備統合の動き</div>
+    <div class="tg">マップを開く →</div>
+  </a>
+  <a class="theme-btn" href="theme_efficiency.html">
+    <div class="tt">🔌 電力効率 全体マップ — 変換ロス・電源熱・計測</div>
+    <div class="td">電気は「作る・運ぶ」の先で数%ずつ失われる。変換ロスを削る材料、電源・熱の機器、効率を測る計測器の3層に、それぞれニッチトップが収まる構図を関連7銘柄で整理。本当の本丸ほど非上場、という論点も</div>
+    <div class="tg">マップを開く →</div>
+  </a>
   </div>
 
   <div class="empty" id="empty">該当なし。</div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="body" style="font-size:0.74rem">
+      各レポートは<b>会社が公表した決算短信・決算説明資料(一次資料)</b>を読み込んだうえで、①最新決算と利益の質(一過性要因の分解) ②通期見通しと変動要因 ③バリュエーション(PER・PBR・52週レンジ内の位置) ④中期経営計画と今後のテーマ ⑤環境要因 ⑥リスク要因、の順に整理している。決算発表や大きなニュースの都度、更新履歴を残しながら改訂する。<br>
+      <span class="note-s">※タイル上のバッジは各レポート内のバリュエーション評価を要約したもの。※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</span>
+    </div>
+  </div>
 
   <div class="foot">
     株価は各レポート記載時点の終値等。バリュエーション評価は予想PER・PBR・52週レンジ内の位置に基づく相対的な整理であり、将来の株価を示唆するものではありません。<br>
@@ -901,35 +958,70 @@ window.addEventListener('hashchange', goLegacy);
   </div>
 
 <script>
+var GROUP = 'sector';
+var PICK = { sector: null, val: null };
+
 function setGroup(g) {
-  var isSec = (g !== 'val');
-  document.getElementById('grp-sector').style.display = isSec ? '' : 'none';
-  document.getElementById('grp-val').style.display = isSec ? 'none' : '';
-  var ts = document.getElementById('tab-sector'), tv = document.getElementById('tab-val');
-  ts.classList.toggle('on', isSec); tv.classList.toggle('on', !isSec);
-  ts.setAttribute('aria-selected', isSec); tv.setAttribute('aria-selected', !isSec);
+  GROUP = g;
+  ['sector', 'val', 'themes'].forEach(function (k) {
+    document.getElementById('grp-' + k).style.display = (k === g) ? '' : 'none';
+    var t = document.getElementById('tab-' + k);
+    t.classList.toggle('on', k === g);
+    t.setAttribute('aria-selected', k === g);
+  });
+  applyPick();
 }
+
+function pick(group, name) {
+  PICK[group] = name;
+  applyPick();
+}
+
+function applyPick() {
+  ['sector', 'val'].forEach(function (group) {
+    var pane = document.getElementById('grp-' + group);
+    var chips = document.getElementById('chips-' + group).querySelectorAll('button');
+    if (!PICK[group] && chips.length) PICK[group] = chips[0].dataset.pick;
+    for (var i = 0; i < chips.length; i++)
+      chips[i].classList.toggle('on', chips[i].dataset.pick === PICK[group]);
+    var blocks = pane.querySelectorAll('.sec-block');
+    for (var j = 0; j < blocks.length; j++)
+      blocks[j].style.display = (blocks[j].dataset.name === PICK[group]) ? '' : 'none';
+  });
+}
+
 function filter(q) {
-  q = (q||'').trim().toLowerCase();
-  var tiles = document.querySelectorAll('.tile'), hits = 0;
-  for (var i=0;i<tiles.length;i++) {
-    var ok = !q || tiles[i].getAttribute('data-q').toLowerCase().indexOf(q) >= 0;
-    tiles[i].style.display = ok ? '' : 'none';
-    if (ok) hits++;
+  q = (q || '').trim().toLowerCase();
+  var searching = !!q;
+  document.body.classList.toggle('searching', searching);
+  if (!searching) {
+    // 検索解除: タイルを全部戻して、タブ+チップの表示に復帰
+    var all = document.querySelectorAll('.tile');
+    for (var i = 0; i < all.length; i++) all[i].style.display = '';
+    document.getElementById('empty').style.display = 'none';
+    setGroup(GROUP);
+    return;
   }
-  // 中身が全部隠れた見出しと、その直後のグリッドも畳む
-  var groups = document.querySelectorAll('[data-group]');
-  for (var j=0;j<groups.length;j++) {
-    var grid = groups[j].nextElementSibling;
-    while (grid && !grid.classList.contains('grid')) grid = grid.nextElementSibling;
-    var visible = grid ? grid.querySelectorAll('.tile:not([style*="none"])').length : 0;
-    groups[j].style.display = visible ? '' : 'none';
-    var between = groups[j].nextElementSibling;
-    while (between && between !== grid) { between.style.display = visible ? '' : 'none'; between = between.nextElementSibling; }
-    if (grid) grid.style.display = visible ? '' : 'none';
+  // 検索中: セクター別ペインを全セクター表示にして、その中を絞り込む
+  document.getElementById('grp-sector').style.display = '';
+  document.getElementById('grp-val').style.display = 'none';
+  document.getElementById('grp-themes').style.display = 'none';
+  var hits = 0;
+  var blocks = document.querySelectorAll('#grp-sector .sec-block');
+  for (var b = 0; b < blocks.length; b++) {
+    var tiles = blocks[b].querySelectorAll('.tile'), vis = 0;
+    for (var i = 0; i < tiles.length; i++) {
+      var ok = tiles[i].getAttribute('data-q').toLowerCase().indexOf(q) >= 0;
+      tiles[i].style.display = ok ? '' : 'none';
+      if (ok) vis++;
+    }
+    blocks[b].style.display = vis ? '' : 'none';
+    hits += vis;
   }
-  document.getElementById('empty').style.display = (q && hits===0) ? 'block' : 'none';
+  document.getElementById('empty').style.display = hits === 0 ? 'block' : 'none';
 }
+
+applyPick();
 </script>
 
 </body>

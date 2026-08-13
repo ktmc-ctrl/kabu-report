@@ -4,7 +4,11 @@
 かつては全レポートを1ファイルに内包していたが、45銘柄を超えて 700KB 台まで
 膨らんだため分割した。いまの index.html は**一覧だけ**を持ち、タイルは各銘柄の
 個別ページ(リポジトリ直下の <code>XXXX_name.html</code>)への通常リンクになる。
+一覧は「特集 / セクター別 / 割安・割高別」のタブ+カテゴリチップで、
+一度に1カテゴリぶんだけ表示する(縦に伸びない)。
 旧形式の共有リンク(<code>/#6866</code>)は index.html が個別ページへリダイレクトする。
+
+ビルド時に crosslink.py で全レポート本文の銘柄名へ相互リンクも張る。
 
 data/reports.json だけを見て組み立てる。不整合があれば生成せずに落とす——
 「タイルが黙って消える」より、ビルドが止まる方がいい。
@@ -16,6 +20,7 @@ import json
 from pathlib import Path
 
 from . import config
+from .crosslink import apply_all
 from .reports import Library, ReportError
 from .theme import BASE_CSS, PORTAL_CSS
 
@@ -48,29 +53,42 @@ def build(lib: Library | None = None, public_dir: Path | None = None,
     for w in warnings:
         print(f"  ! {w}")
 
-    # セクター別
-    sections = []
+    n_linked = apply_all(lib.data, public_dir)
+    if n_linked:
+        print(f"  ✓ 銘柄名の相互リンクを更新({n_linked}ファイル)")
+
+    # セクター別(チップで1セクターずつ表示)
+    sec_blocks, sec_chips = [], []
     for sec in lib.sectors:
         tiles = [_tile(lib, s, False) for s in lib.stocks if s["sector"] == sec]
         if not tiles:
             continue
-        sections.append(f'    <div class="sector-h" data-group>{html.escape(sec)}</div>\n'
-                        f'    <div class="grid">\n' + "\n".join(tiles) + "\n    </div>")
-    sector_grid = "\n".join(sections)
+        esc = html.escape(sec)
+        sec_chips.append(f'<button data-pick="{esc}" onclick="pick(\'sector\', this.dataset.pick)">{esc} <small>{len(tiles)}</small></button>')
+        sec_blocks.append(
+            f'    <div class="sec-block" data-name="{esc}">\n'
+            f'    <div class="sector-h" data-group>{esc}</div>\n'
+            f'    <div class="grid">\n' + "\n".join(tiles) + "\n    </div>\n    </div>")
+    sector_pane = "\n".join(sec_blocks)
+    sector_chips = "\n".join(sec_chips)
 
-    # 割安・割高別
-    vsections = []
+    # 割安・割高別(チップで1バケットずつ表示)
+    val_blocks, val_chips = [], []
     for b in lib.buckets:
         tiles = [_tile(lib, s, True) for s in lib.stocks
                  if lib.verdicts.get(s["verdict"]) == b["name"]]
         if not tiles:
             continue
-        vsections.append(
-            f'    <div class="sector-h val {b["class"]}" data-group>{html.escape(b["name"])} '
+        esc = html.escape(b["name"])
+        val_chips.append(f'<button data-pick="{esc}" onclick="pick(\'val\', this.dataset.pick)">{esc} <small>{len(tiles)}</small></button>')
+        val_blocks.append(
+            f'    <div class="sec-block" data-name="{esc}">\n'
+            f'    <div class="sector-h val {b["class"]}" data-group>{esc} '
             f'<span class="cnt">{len(tiles)}銘柄</span></div>\n'
             f'    <div class="bdesc">{html.escape(b["desc"])}</div>\n'
-            f'    <div class="grid">\n' + "\n".join(tiles) + "\n    </div>")
-    val_grid = "\n".join(vsections)
+            f'    <div class="grid">\n' + "\n".join(tiles) + "\n    </div>\n    </div>")
+    val_pane = "\n".join(val_blocks)
+    val_chips_html = "\n".join(val_chips)
 
     theme_banner = "\n".join(
         f'''  <a class="theme-btn" href="{html.escape(t["file"])}">
@@ -113,33 +131,41 @@ window.addEventListener('hashchange', goLegacy);
 
 <div class="subtitle">決算説明資料・中期経営計画・バリュエーションを1銘柄1ページに整理 ・ 全{n}銘柄{' ・ ' + html.escape(asof) + '時点' if asof else ''}</div>
 
-  <div class="card">
-    <div class="body" style="font-size:0.78rem">
-      各レポートは<b>会社が公表した決算短信・決算説明資料(一次資料)</b>を読み込んだうえで、①最新決算と利益の質(一過性要因の分解) ②通期見通しと変動要因 ③バリュエーション(PER・PBR・52週レンジ内の位置) ④中期経営計画と今後のテーマ ⑤環境要因(為替・金利・関税) ⑥リスク要因、の順に整理している。決算発表や大きなニュースの都度、更新履歴を残しながら改訂する。<br>
-      <span class="note-s">※タイル上のバッジは各レポート内のバリュエーション評価を要約したもの。{config.DISCLAIMER}</span>
-    </div>
-  </div>
-
-  <div class="theme-lead">特集</div>
-{theme_banner}
-
-  <label class="theme-lead" for="q">さがす</label>
+  <label class="theme-lead" for="q" style="margin-top:2px">さがす</label>
   <input class="search" id="q" type="search" placeholder="銘柄名・コード・セクター・キーワード" oninput="filter(this.value)" autocomplete="off">
 
-  <div class="seg" role="tablist" aria-label="グループ分けの切り替え">
+  <div class="seg" role="tablist" aria-label="表示の切り替え">
     <button id="tab-sector" class="on" role="tab" aria-selected="true" onclick="setGroup('sector')">セクター別</button>
     <button id="tab-val" role="tab" aria-selected="false" onclick="setGroup('val')">割安・割高別</button>
+    <button id="tab-themes" role="tab" aria-selected="false" onclick="setGroup('themes')">特集 <small>{len(lib.themes)}</small></button>
   </div>
 
   <div id="grp-sector">
-{sector_grid}
+    <div class="chips" id="chips-sector">
+{sector_chips}
+    </div>
+{sector_pane}
   </div>
 
   <div id="grp-val" style="display:none">
-{val_grid}
+    <div class="chips" id="chips-val">
+{val_chips_html}
+    </div>
+{val_pane}
+  </div>
+
+  <div id="grp-themes" style="display:none">
+{theme_banner}
   </div>
 
   <div class="empty" id="empty">該当なし。</div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="body" style="font-size:0.74rem">
+      各レポートは<b>会社が公表した決算短信・決算説明資料(一次資料)</b>を読み込んだうえで、①最新決算と利益の質(一過性要因の分解) ②通期見通しと変動要因 ③バリュエーション(PER・PBR・52週レンジ内の位置) ④中期経営計画と今後のテーマ ⑤環境要因 ⑥リスク要因、の順に整理している。決算発表や大きなニュースの都度、更新履歴を残しながら改訂する。<br>
+      <span class="note-s">※タイル上のバッジは各レポート内のバリュエーション評価を要約したもの。{config.DISCLAIMER}</span>
+    </div>
+  </div>
 
   <div class="foot">
     株価は各レポート記載時点の終値等。バリュエーション評価は予想PER・PBR・52週レンジ内の位置に基づく相対的な整理であり、将来の株価を示唆するものではありません。<br>
@@ -147,35 +173,70 @@ window.addEventListener('hashchange', goLegacy);
   </div>
 
 <script>
+var GROUP = 'sector';
+var PICK = {{ sector: null, val: null }};
+
 function setGroup(g) {{
-  var isSec = (g !== 'val');
-  document.getElementById('grp-sector').style.display = isSec ? '' : 'none';
-  document.getElementById('grp-val').style.display = isSec ? 'none' : '';
-  var ts = document.getElementById('tab-sector'), tv = document.getElementById('tab-val');
-  ts.classList.toggle('on', isSec); tv.classList.toggle('on', !isSec);
-  ts.setAttribute('aria-selected', isSec); tv.setAttribute('aria-selected', !isSec);
+  GROUP = g;
+  ['sector', 'val', 'themes'].forEach(function (k) {{
+    document.getElementById('grp-' + k).style.display = (k === g) ? '' : 'none';
+    var t = document.getElementById('tab-' + k);
+    t.classList.toggle('on', k === g);
+    t.setAttribute('aria-selected', k === g);
+  }});
+  applyPick();
 }}
+
+function pick(group, name) {{
+  PICK[group] = name;
+  applyPick();
+}}
+
+function applyPick() {{
+  ['sector', 'val'].forEach(function (group) {{
+    var pane = document.getElementById('grp-' + group);
+    var chips = document.getElementById('chips-' + group).querySelectorAll('button');
+    if (!PICK[group] && chips.length) PICK[group] = chips[0].dataset.pick;
+    for (var i = 0; i < chips.length; i++)
+      chips[i].classList.toggle('on', chips[i].dataset.pick === PICK[group]);
+    var blocks = pane.querySelectorAll('.sec-block');
+    for (var j = 0; j < blocks.length; j++)
+      blocks[j].style.display = (blocks[j].dataset.name === PICK[group]) ? '' : 'none';
+  }});
+}}
+
 function filter(q) {{
-  q = (q||'').trim().toLowerCase();
-  var tiles = document.querySelectorAll('.tile'), hits = 0;
-  for (var i=0;i<tiles.length;i++) {{
-    var ok = !q || tiles[i].getAttribute('data-q').toLowerCase().indexOf(q) >= 0;
-    tiles[i].style.display = ok ? '' : 'none';
-    if (ok) hits++;
+  q = (q || '').trim().toLowerCase();
+  var searching = !!q;
+  document.body.classList.toggle('searching', searching);
+  if (!searching) {{
+    // 検索解除: タイルを全部戻して、タブ+チップの表示に復帰
+    var all = document.querySelectorAll('.tile');
+    for (var i = 0; i < all.length; i++) all[i].style.display = '';
+    document.getElementById('empty').style.display = 'none';
+    setGroup(GROUP);
+    return;
   }}
-  // 中身が全部隠れた見出しと、その直後のグリッドも畳む
-  var groups = document.querySelectorAll('[data-group]');
-  for (var j=0;j<groups.length;j++) {{
-    var grid = groups[j].nextElementSibling;
-    while (grid && !grid.classList.contains('grid')) grid = grid.nextElementSibling;
-    var visible = grid ? grid.querySelectorAll('.tile:not([style*="none"])').length : 0;
-    groups[j].style.display = visible ? '' : 'none';
-    var between = groups[j].nextElementSibling;
-    while (between && between !== grid) {{ between.style.display = visible ? '' : 'none'; between = between.nextElementSibling; }}
-    if (grid) grid.style.display = visible ? '' : 'none';
+  // 検索中: セクター別ペインを全セクター表示にして、その中を絞り込む
+  document.getElementById('grp-sector').style.display = '';
+  document.getElementById('grp-val').style.display = 'none';
+  document.getElementById('grp-themes').style.display = 'none';
+  var hits = 0;
+  var blocks = document.querySelectorAll('#grp-sector .sec-block');
+  for (var b = 0; b < blocks.length; b++) {{
+    var tiles = blocks[b].querySelectorAll('.tile'), vis = 0;
+    for (var i = 0; i < tiles.length; i++) {{
+      var ok = tiles[i].getAttribute('data-q').toLowerCase().indexOf(q) >= 0;
+      tiles[i].style.display = ok ? '' : 'none';
+      if (ok) vis++;
+    }}
+    blocks[b].style.display = vis ? '' : 'none';
+    hits += vis;
   }}
-  document.getElementById('empty').style.display = (q && hits===0) ? 'block' : 'none';
+  document.getElementById('empty').style.display = hits === 0 ? 'block' : 'none';
 }}
+
+applyPick();
 </script>
 
 </body>
