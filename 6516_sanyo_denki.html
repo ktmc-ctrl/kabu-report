@@ -61,9 +61,17 @@
   .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
          font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
   .box b { color: var(--text-primary); }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
 </style>
 </head>
 <body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
 <div class="head">
   <div>
     <h1>山洋電気 <span class="note">[6516] 東証プライム</span></h1>

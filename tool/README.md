@@ -101,7 +101,7 @@ python3 tool/kabu.py decompose 458 --item "不動産売却益=400" --prior 274
 | `report list` | 公開レポート一覧 |
 | `report new <コード> --name ... --sector ...` | 9つの節の雛形を作ってメタに登録 |
 | `report set <コード> --price ... --verdict ...` | メタの更新 |
-| `portal [--asof 2026/8/13]` | `index.html` を生成 |
+| `portal [--asof 2026/8/13]` | `index.html`(一覧ページ)を生成。レポート本体は個別ページへのリンク |
 | `check` | 🔒 プライバシー検査 + メタ整合性検査 |
 | `render [diary\|performance\|all]` | 私的HTMLを生成 |
 | `publish [--push] [-m メッセージ]` | 生成 → 検査 → commit → push |
@@ -112,8 +112,8 @@ python3 tool/kabu.py decompose 458 --item "不動産売却益=400" --prior 274
 
 ```
 kabu-report/
-├── index.html              公開ポータル(生成物)
-├── <コード>_<名前>.html     公開レポート27本 + 特集5本
+├── index.html              公開ポータル=一覧ページ(生成物。レポートは内包せずリンク)
+├── <コード>_<名前>.html     公開レポート45本 + 特集6本(1銘柄=1ページ)
 ├── data/reports.json       公開レポートのメタ(旧 build_portal.py の META)
 ├── CLAUDE.md               公開側の手順
 ├── CLAUDE.local.md         口調・運用の指示     ← .gitignore

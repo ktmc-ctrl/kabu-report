@@ -107,8 +107,11 @@ python3 tool/kabu.py publish --push -m "レポートを更新"
 `.note` / `.tag` / `.box`)だけで書く。
 
 独自 CSS が要るときは **`<body>` の中に `<style>` を置き、ラッパークラスで名前空間を切る**
-(`.tmap` / `.chem` のように)。`<head>` に書くとポータルに取り込まれず、そこだけ崩れる——
-`kabu check` がこれを検出する。
+(`.tmap` / `.chem` のように)。`kabu check` がこの規約を検査する。
+
+ポータルは分割構成: `index.html` は一覧だけを持ち、タイルは各レポートの個別ページへの
+リンクになる(旧 `#コード` リンクは index がリダイレクト)。個別ページの上部の
+「← 一覧に戻る」は `theme.document(back="index.html")` が付ける——手で書かない。
 
 ## テスト
 

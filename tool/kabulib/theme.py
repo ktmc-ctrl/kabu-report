@@ -63,6 +63,12 @@ BASE_CSS = """
   .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
          font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
   .box b { color: var(--text-primary); }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
 """
 
 PORTAL_CSS = """
@@ -78,6 +84,7 @@ PORTAL_CSS = """
   .btn-back:active { transform:scale(0.97); }
   body.detail .btn-back { display:inline-flex; }
 
+  a.tile, a.theme-btn { text-decoration:none; }
   .sector-h { font-size:0.72rem; font-weight:700; color:var(--text-muted); letter-spacing:.06em;
               margin:16px 0 8px; padding-bottom:5px; border-bottom:1px solid var(--grid); }
   .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(232px,1fr)); gap:10px; }
@@ -175,7 +182,10 @@ DIARY_CSS = """
 """
 
 
-def document(title: str, body: str, extra_css: str = "", lang: str = "ja") -> str:
+def document(title: str, body: str, extra_css: str = "", lang: str = "ja",
+             back: str | None = None) -> str:
+    """HTML ページの器。back を渡すと上部に「← 一覧に戻る」を付ける(公開レポート用)。"""
+    nav = f'<div class="pagenav"><a href="{back}">← 一覧に戻る</a></div>\n\n' if back else ""
     return f"""<!DOCTYPE html>
 <html lang="{lang}">
 <head>
@@ -185,7 +195,7 @@ def document(title: str, body: str, extra_css: str = "", lang: str = "ja") -> st
 <style>{BASE_CSS}{extra_css}</style>
 </head>
 <body class="viz-root">
-{body}
+{nav}{body}
 </body>
 </html>
 """

@@ -274,4 +274,4 @@ def scaffold(code: str, name: str, ticker: str = "", price: str = "—",
 
     cards.append(f'<div class="note-s">{config.DISCLAIMER}</div>')
     from .theme import document
-    return document(f"{name}({ticker}) レポート", "\n\n".join(cards))
+    return document(f"{name}({ticker}) レポート", "\n\n".join(cards), back="index.html")

@@ -8,26 +8,31 @@
   :root { color-scheme: light dark; }
   .viz-root {
     color-scheme: light;
-    --surface-1: #fcfcfb; --page: #f9f9f7;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
     --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
     --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
-    --pos: #2a78d6; --neg: #e34948; --good-text: #006300; --warn: #c77f00;
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
   }
   @media (prefers-color-scheme: dark) {
     :root:where(:not([data-theme="light"])) .viz-root {
       color-scheme: dark;
-      --surface-1: #1a1a19; --page: #0d0d0d;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
       --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
       --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
-      --pos: #3987e5; --neg: #e66767; --good-text: #0ca30c; --warn: #e0a030;
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
     }
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body.viz-root {
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     background: var(--page); color: var(--text-primary);
-    padding: 16px; max-width: 760px; margin: 0 auto; line-height: 1.65;
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
     font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
   }
   h1 { font-size: 1.15rem; margin-bottom: 2px; }
   .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
@@ -39,6 +44,7 @@
   th.num, td.num { text-align: right; }
   .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
   .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
   .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
   .body b { color: var(--text-primary); }
   .note-s { font-size: 0.7rem; color: var(--text-muted); }
@@ -46,9 +52,25 @@
   .px { text-align: right; }
   .px .v { font-size: 1.4rem; font-weight: 700; }
   hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
 </style>
 </head>
 <body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
 
 <div class="head">
   <div>
@@ -177,6 +199,5 @@
     ※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。
   </div>
 </div>
-
 </body>
 </html>
