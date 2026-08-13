@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日置電機(6866) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+</style>
+</head>
+<body class="viz-root">
+<div class="head">
+  <div>
+    <h1>日置電機 <span class="note">[6866] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">電気計測器</span> <span class="badge">12月期決算</span> <span class="badge">海外比率65%</span></div>
+  </div>
+  <div class="px">
+    <div class="v">12,030円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 13,800円(2026/6)から <b>-12.8%</b><br>(8/13終値 12,030円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    中間期(2026年1-6月)は売上241億円(+23.5%、半期として過去最高)・営業利益50.5億円(<b>+53.5%</b>)。<b>受注高は+38.5%の272億円</b>で売上を大きく上回り、受注残は前年同期末の約47億円から約82億円へ積み上がった。増益に一過性はなく、数量が主・円安が従(増益17.6億円のうち約7.2億円=4割が為替)。牽引役はデータセンター向け受動部品の量産検査と、EVからESS(定置用蓄電池)へ多極化したバッテリー計測。6月に上方修正済みの通期計画(営業95億円)はQ2で据え置いたが、コンセンサスはそれを約16%上回っており、再増額への期待が値段に入っている。株価は年初来約2倍・PER21.3倍で、6月の上場来高値から−12.8%の位置。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/15発表・2026年12月期 中間)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">中間実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">241.3億円</td><td class="num up">+23.5%</td></tr>
+      <tr><td>営業利益</td><td class="num">50.5億円</td><td class="num up">+53.5%</td></tr>
+      <tr><td>純利益</td><td class="num">39.9億円</td><td class="num up">+73.7%</td></tr>
+      <tr><td>受注高</td><td class="num">272.5億円</td><td class="num up">+38.5%</td></tr>
+      <tr><td>営業CF</td><td class="num">+48.8億円</td><td class="num">—</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解(営業+17.6億円の内訳、会社説明資料)</b><br>
+    ・売上増に伴う粗利増 <b>+25.7億円</b>(数量要因が主役)<br>
+    ・為替影響 <b>+7.2億円</b>(平均158.18円/$、前年148.61円)——増益の約4割<br>
+    ・粗利益率悪化 −1.7億円、固定費増(人件費・経費)−13.6億円<br>
+    ・<b>資産売却益などの一過性はなし。</b>営業利益率は16.9%→21.0%<br><br>
+    <b>製品群別:</b> 電子測定器(LCRメータ・バッテリテスタ等)売上+34.9%/受注+43.9%。現場測定器+22.1%。<b>自動試験装置(基板検査)は売上−6.0%だが受注+127.3%</b>——生成AIサーバー向けボードテスタの受注が急増したもののリードタイムが長く、納入は下期以降で受注残に積み上がっている。<br>
+    <b>地域別:</b> 中国+30.1%(構成比28.8%)、台湾+44.2%(受注は+204.7%)、韓国+37.1%。市場別では国内コンポーネント+108%・中国バッテリー+53%。Q2単体(4-6月)は営業+86%と加速。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期計画は6/5に上方修正済み: 売上477億円(+17.7%)・営業利益<b>95億円(+39.9%、修正幅+23.7%)</b>・純利益75.4億円。為替前提157.66円/$。Q2時点では据え置きで、進捗率は営業53.2%。据え置きの理由は「下期の不透明感と部材価格の高止まりリスクを慎重に見極めるため」で、短信には部品代の上昇が通期営業利益に影響する可能性も注記されている。<br><br>
+    <b>コンセンサスとの差:</b> IFISコンセンサス(営業110億円)は<b>会社計画を約16%上回る</b>。アナリストは再増額を織り込んでおり、Q2の「据え置き」は期待比では物足りない形。決算翌日(7/16)は寄りで+10%超まで買われた後に<b>終値−4.0%</b>へ失速し、翌日も−3.5%——好決算でも期待が先に高かったことの表れである。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">21.3倍</td><td>会社予想EPSベース。コンセンサス通りなら約18倍</td></tr>
+      <tr><td>PBR</td><td class="num">3.52倍</td><td>自己資本比率86.2%の資本を抱えてこの水準</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">2.00%</td><td>年240円(40円増配予想・性向42.8%)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">5,580〜13,800円</td><td>高値(6/4、上場来高値)から−12.8%・安値から+115.6%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    株価は年初来で約2倍。受注+38.5%・実質増益という中身は本物だが、コンセンサスが会社計画の16%上に置かれたまま、その期待込みでPER21倍を払っている状態。再増額が出れば正当化され、出なければ7/16のような剥落が繰り返される。<b>評価: やや割高</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    ビジョン2030は<b>営業利益率25%・海外売上高比率75%・ROE15%以上</b>。中間目標の2027年計画(売上512億円・OPM22.5%)に対し、2026年修正予想(477億円・OPM19.9%)は前倒しペースで進む。<br><br>
+    <b>市場の重心が動いている。</b>バッテリーはEV一本足からESS(定置用蓄電池)へ多極化——中国の電池販売量(1-5月)は動力+34.9%に対しESS+87.7%。データセンターは受動部品の量産検査・電源竣工試験・GPU電源評価と4市場すべてに波及。SiC/GaNパワー半導体や全固体電池など新評価領域も広がる。研究開発費は売上比10%以上を維持し、名古屋テクニカルセンターが2026/4に稼働した。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    <b>配当性向40%目途。</b>配当は160→180→200→200円ときて2026年は<b>240円予想(+40円増配)</b>。自社株買いは2月枠(15億円)を消化済みで、<b>6月に上限40万株・30億円の新枠</b>を決議(進行中)。自己資本比率86.2%は自社ガイドライン(60%前後を目指す)と乖離が大きく、還元の原資はまだ厚い。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>為替:</b> 上期増益の約4割が円安効果。通期前提は157.66円/$で、円高反転は業績と前提の両面に逆風(1円あたりの感応度は開示なし・取得不可)<br>
+    ・<b>調達コスト:</b> 半導体・機構部品・補材の価格上昇(前年比約5倍と会社予想、特にメモリー部品)。長納期部品は1年〜1年半の先行手配で対応中<br>
+    ・<b>中国:</b> 売上比率28.8%(受注31.2%)。バッテリー・部品の投資サイクルに連動<br>
+    ・<b>AI・データセンター:</b> 受動部品増産と多層基板検査の需要が受注を押し上げている
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>期待剥落:</b> コンセンサスが会社計画比+16%のまま。再増額が出なければ7/16(−4.0%)の反応が繰り返されやすい<br>
+    ・<b>為替依存:</b> 増益の約4割が円安。円高転換は実力の伸びを覆い隠す規模<br>
+    ・<b>中国集中:</b> 3割弱の売上が中国。景気減速や米中規制の直撃を受ける<br>
+    ・<b>受注→売上の時間差:</b> 自動試験装置の受注+127%は下期にすぐ売上化しない(会社明言)。受注の勢いだけで今期業績を先取りしないこと<br>
+    ・<b>部材コスト:</b> メモリー部品等の上昇を会社自身が通期リスクとして注記<br>
+    ・<b>強気材料の裏返し:</b> ESS・AIサーバーの急伸は投資サイクルの産物。中国ESS補助金や AI投資が減速すれば受注の前提ごと崩れる
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: 日置電機 2026年12月期中間決算短信 2026/7/15(<span class="note">hioki.com/ja/download/49334</span>) / 決算説明会資料 2026/7/28(<span class="note">hioki.com/ja/download/49376</span>) / 業績予想・配当予想修正 2026/6/5(TDnet) / 株探(株価・指標・時系列、2026/8/13終値) / IFIS株予報(コンセンサス)。<br>
+    ※質疑応答要旨は公表を確認できず(取得不可)。受注残高(約47億→約82億円)は説明資料のグラフ読み取りにつき概数。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
