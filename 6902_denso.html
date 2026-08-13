@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>デンソー(6902) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>デンソー <span class="note">[6902] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">自動車部品 世界2位級</span> <span class="badge">3月期決算</span> <span class="badge"><a class="xref" href="7203_toyota.html">トヨタ</a>系再編の中心</span></div>
+  </div>
+  <div class="px">
+    <div class="v">1,901.5円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 2,993.5円(2024/4)から <b>-36.5%</b><br>(8/13終値 1,901.5円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は増収(+9.1%)ながら営業利益842億円で<b>−21.5%</b>。減益の主因は<b>部材費(銅・アルミ)の高騰−395億円・品質関連費用−150億円・賃上げ等−135億円</b>で、円安+170億円と合理化+275億円では吸収しきれなかった。欧州は品質費用で営業赤字転落。通期営業5,000億円据え置きはコンセンサス比−7%で、発表当日<b>−10.5%</b>と厳しく売られた。一方、資本の動きは大きい——<b>豊田自動織機の非公開化に伴い、織機保有の自社株6.87%を3,136億円の自己株TOBで取得し、織機株は3,054億円で売却</b>。<a class="xref" href="7203_toyota.html">トヨタ</a>系持ち合い解消の中心にいる。中計CORE 2030は売上8兆円・利益率10%・DOE4.0%。PBR0.93倍・利回り3.89%は、部材費と品質費用の峠が見えるまでの我慢の値段。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/31発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上収益</td><td class="num">1兆9,139億円</td><td class="num up">+9.1%</td></tr>
+      <tr><td>営業利益</td><td class="num">842億円</td><td class="num down">−21.5%</td></tr>
+      <tr><td>純利益</td><td class="num">679億円</td><td class="num down">−14.4%</td></tr>
+      <tr><td>営業CF</td><td class="num">+2,390億円</td><td class="num up">+45.4%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解(営業−230億円の内訳、報道ベース)</b><br>
+    ・逆風: <b>部材費等高騰−395億円</b>(中東情勢起因の銅・アルミ)、品質関連費用−150億円、賃上げ等−135億円、開発投入−80億円<br>
+    ・追い風: 合理化など+275億円、為替+170億円、操業度+145億円<br>
+    ・<b>欧州は−86億円の営業赤字に転落</b>(品質費用)。日本−43%、アジア−12%、北米は合理化で+12%<br>
+    ・トヨタグループ向け1兆619億円(+9.4%)が売上の55%。営業CFは+2,390億円と現金創出は強い<br>
+    ・関税影響のQ1金額・SiC/FAの個別数値は開示なし(取得不可)
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    7/31に売上のみ上方修正(7兆7,500億円)、<b>営業利益5,000億円(−9.5%)・純利益3,820億円は据え置き</b>——円安・操業度の上振れを部材費高騰が相殺する構図。Q1進捗16.8%は低く、下期挽回(操業度・売価回収)前提。H2の為替前提153円/$。<br><br>
+    <b>コンセンサスとの差:</b> 通期営業計画はコンセンサス(5,387億円)を<b>7.2%下回り</b>、純利益では8.8%下。発表当日−10.5%・翌営業日−2.0%の累計−12.3%は、その失望+進捗の低さへの反応。追い風は顧客側で、<a class="xref" href="7203_toyota.html">トヨタ</a>は通期を3.4兆円へ上方修正し6-8月生産計画+7.3%——数量環境自体は悪くない。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">12.4倍</td><td>減益計画の分母ベース</td></tr>
+      <tr><td>PBR</td><td class="num">0.93倍</td><td>解散価値割れ目前</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">3.89%</td><td>年74円(増配予想・DOE 3.0%→2030年4.0%以上へ)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">1,801〜2,373円</td><td>過去5年高値2,993.5円(2024/4)から−36.5%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    世界2位級の部品会社がPBR1倍割れ・利回り3.9%。安さの理由(部材費・品質費用・欧州赤字)は明確で、逆に言えばそれらの正常化が見えれば戻る素直な構図。毎年2,000〜3,000億円ペースの自社株買いの実績も下支え。<b>評価: 中立</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・<a class="xref" href="7203_toyota.html">トヨタ</a>系資本再編</h2>
+  <div class="body">
+    中計<b>CORE 2030</b>(2026/3策定)は2030年に<b>売上8兆円以上・営業利益率10%以上・ROE11%以上・DOE4.0%以上</b>。電動化1.9兆円+知能化(ADAS)1.0兆円で売上を1.5倍へ、非車載はFA 3,000億円・農業1,000億円規模を目指す。<br><br>
+    <b><a class="xref" href="7203_toyota.html">トヨタ</a>系持ち合い解消の中心:</b> 豊田自動織機の非公開化に伴い、①織機が持つデンソー株6.87%を<b>自己株TOB 3,136億円</b>で取得(1,696円、市場価格から10%ディスカウント)②保有する織機株は全株応募で<b>3,054億円売却</b>(売却益2,791億円)。「低収益資産の圧縮」を財務戦略の柱に据え、ロームへの出資提案は取り下げた。自己資本比率は58.1%へ低下(買い戻し資金を有利子負債で調達)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    配当は年74円予想(増配)、<b>DOE 3.0%から2030年4.0%以上へ継続向上</b>の方針。自社株買いは23/3期から約1,000億→2,000億→2,000億→2,500億円、今期は織機関連の自己株TOB 3,136億円と大型が続く。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b><a class="xref" href="7203_toyota.html">トヨタ</a>の生産:</b> 6-8月計画+7.3%・HEV年500万台超志向。数量とHEV部品の両面で追い風<br>
+    ・<b>部材費:</b> 銅・アルミの高騰(中東情勢)が最大の逆風。売価転嫁にはラグ<br>
+    ・<b>為替:</b> H2前提153円/$。円高は減益方向<br>
+    ・<b>熊本地震(2026/7):</b> 仕入先30社中「影響あり」1社・確認中13社
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>下期挽回の前提:</b> 進捗16.8%からの据え置きは操業度・売価回収頼み。部材費が高止まりすれば下方修正リスク<br>
+    ・<b>品質費用の再発:</b> 欧州赤字の主因。過去にも利益率目標未達の原因になってきた持病<br>
+    ・<b>財務の変化:</b> 大型買い戻しを負債で賄い自己資本比率が低下。金利上昇下では規律が問われる<br>
+    ・<b><a class="xref" href="7203_toyota.html">トヨタ</a>依存:</b> 売上55%。<a class="xref" href="7203_toyota.html">トヨタ</a>の生産・価格政策に業績が連動する構造は不変<br>
+    ・<b>強気材料の裏返し:</b> CORE 2030の売上8兆円は電動化・ADASの普及速度が前提。EV減速の長期化はその分母を細らせる
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: デンソー 2027年3月期Q1決算短信・業績予想修正 2026/7/31(TDnet掲載原本) / 中計CORE 2030(2026/3/31) / 自己株TOB・織機株売却の開示(2026/3-6月) / 株探・日経(株価・指標、2026/8/13終値) / QUICK(コンセンサス)。<br>
+    ※2023/10/1付で1:4の株式分割——過去の株価は分割調整後。決算説明資料・質疑応答は会社サイトのアクセス制限で取得不可(短信・修正開示・報道で代替)。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

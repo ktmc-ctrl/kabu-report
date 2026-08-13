@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ホンダ(7267) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>ホンダ <span class="note">[7267] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">四輪・二輪</span> <span class="badge">3月期決算</span> <span class="badge">二輪 世界首位</span></div>
+  </div>
+  <div class="px">
+    <div class="v">1,647.5円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 1,959.5円(2024/3)から <b>-15.9%</b><br>(8/13終値 1,647.5円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は営業利益5,307億円で<b>四半期として過去最高(+117%)</b>。ただし増益の中身は<b>為替+908億円・関税影響の好転+781億円・前年のEV関連損失1,220億円の剥落</b>が大half——実力より外部要因の追い風が大きい。真の主役は<b>二輪(営業2,339億円・利益率20.5%で四半期最高)</b>で、四輪(利益率5.0%)を上回る利益を安定して稼ぐ。通期を+1,500億円上方修正したが<b>全額為替の前提変更</b>で、コンセンサス(営業8,061億円)は修正後の会社計画(6,500億円)をなお24%上回る——市場は「EV損失5,200億円の下期織り込みが保守的すぎる」と見ている。PBR0.52倍・利回り4.25%・ネットキャッシュ3.3兆円。EV戦略は縮小へ大転換し(累計損失最大2.5兆円想定、「来期への大規模持ち越しはしない」とCFO)、2029/3期に営業1.4兆円を目指す。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/5発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上収益</td><td class="num">6兆615億円</td><td class="num up">+13.5%</td></tr>
+      <tr><td>営業利益</td><td class="num">5,307億円</td><td class="num up">+117.4%(四半期最高)</td></tr>
+      <tr><td>純利益</td><td class="num">4,509億円</td><td class="num up">+129.3%</td></tr>
+      <tr><td>営業CF(事業会社)</td><td class="num">+5,291億円</td><td class="num up">FCF+1,283億円</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解(調整後+1,645億円の内訳)</b><br>
+    ・<b>為替 +908億円</b>、<b>関税影響 +781億円</b>(税率引き下げ+北米生産の減免+前期想定分の期ずれ。社内計画比で関税は約1,400億円軽かった)<br>
+    ・実力側はほぼ横ばい: 販売影響−61億円、売価・コスト−33億円<br>
+    ・前年同期のEV関連損失−1,220億円が今期ゼロになった比較の効果も大きい<br><br>
+    <b>セグメント別:</b> <b>二輪 2,339億円(利益率20.5%、四半期最高)</b>——インド・ブラジル牽引で566万台(+10.1%)。四輪 1,921億円(前年−296億円から黒字転換、利益率5.0%)——ただし台数は78.6万台(−6.3%、中国−7.4万台)。金融 1,058億円。<b>米国はガソリン高でHEVシフト</b>が進み、HEV比率17%台へ上昇。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    8/5に上方修正: 営業利益5,000→<b>6,500億円(+1,500億円)</b>・純利益4,000億円。ただし<b>修正は為替前提の変更(145→155円/$)のみ</b>で、事業前提は不変。下期には<b>EV関連損失5,200億円</b>・原材料差約2,000億円が集中する計画で、Q1進捗81.6%の「見かけの余裕」はそれで消える設計。<br><br>
+    <b>コンセンサスとの差:</b> IFISコンセンサス(営業8,061億円)は<b>修正後の会社計画を約24%上回る</b>——市場はEV損失の織り込みや関税前提(通期約−2,000億円相当)を保守的とみる。発表翌日はほぼ横ばい(前日に+3.9%先行)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">16.0倍</td><td>会社計画ベース。コンセンサスEPSなら約10.8倍</td></tr>
+      <tr><td>PBR</td><td class="num">0.52倍</td><td>ネットキャッシュ3兆3,318億円</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">4.25%</td><td>年70円(DOE3.0%目安)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">1,238〜1,730円</td><td>過去5年高値1,959.5円(2024/3)から−15.9%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    PBR0.52倍・利回り4.25%に、二輪という世界首位の安定収益源とネットキャッシュ3.3兆円。EV損失という自傷の処理が今期で峠を越すなら(会社言明)、来期は分母も分子も軽くなる。1.1兆円の自社株買いは2025/9に完了済みで、次の枠が出るかが需給の焦点。<b>評価: 割安寄り</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    2026ビジネスアップデートで<b>2029/3期に営業利益1.4兆円以上</b>を掲げる。戦略の核は大転換した——<b>2040年EV/FCV 100%目標を撤回し、2030年度までHEVを四輪の中核に</b>(次世代HEV 15車種)。北米生産予定EVの上市・開発は中止し、EV関連損失は最大2.5兆円想定のうち前期1.3兆円+今期5,200億円で処理を進める。<br><br>
+    中国は広汽との合弁を2038年まで10年延長(サプライズ視)。<a class="xref" href="7201_nissan.html">日産</a>とは経営統合を前提としない<b>SDV中心の協業協議が継続</b>。米国生産は年約170万台で高稼働、増産は休日稼働と米国内拡大で対応方針。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    <b>DOE 3.0%目安</b>、今期予想は年70円(前期同額)。<b>上限1.1兆円の自社株買いは2025/9にほぼ上限まで取得して終了</b>。Q1の新規取得はゼロで、新たな枠の発表が次の材料。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>関税:</b> 27.5%→15%(2025/9適用、遡及還付あり)。通期は前期比+1,470億円の改善を想定<br>
+    ・<b>為替:</b> 前提155円/$。上方修正の全額が為替である以上、円高は素直に巻き戻る<br>
+    ・<b>HEVシフト:</b> 米ガソリン高が追い風。二輪はインド・ブラジルの構造成長<br>
+    ・<b>熊本地震(2026/7):</b> 熊本製作所(二輪)が9日間生産休止、復旧途上
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>EV損失の見積り:</b> 最大2.5兆円想定に対する追加リスク(取引先への支出は見積り不能と注記)。「今期で処理」が守られるか<br>
+    ・<b>中国四輪:</b> Q1−7.4万台。通期計画達成は「楽観できない」と会社自身が言う<br>
+    ・<b>増益の質:</b> Q1の+117%は為替・関税・前年比較の産物。実力(販売・売価)は横ばい<br>
+    ・<b>コンセンサスとの距離:</b> 市場は+24%上を見ており、上方修正が続かないと期待が剥落<br>
+    ・<b>強気材料の裏返し:</b> HEV全振りは規制が再びEVへ振れたときの二度目の転換コストを孕む
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: ホンダ 2027年3月期Q1決算短信・決算説明会資料・質疑応答議事録 2026/8/5(<span class="note">global.honda/jp/investors/</span>) / 2026ビジネスアップデート / 株探(株価・指標、2026/8/13終値) / IFIS株予報(コンセンサス)。<br>
+    ※2023/10/1付で1:3の株式分割——過去の株価は分割調整後。Q1単体の事前コンセンサスは取得不可。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

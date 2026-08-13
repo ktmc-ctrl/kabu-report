@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自動車 全体マップ — 完成車・部品と関税の序列</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<style>
+/* 名前空間 .auto — 独自CSSは body 内に置きラッパーで切る(規約) */
+.auto .layer { border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin: 10px 0; background: var(--surface-2); }
+.auto .layer h3 { margin: 0 0 4px; font-size: 1.02rem; color: var(--text-primary); }
+.auto .layer .role { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px; }
+.auto .items { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 8px; }
+.auto .item { border: 1px solid var(--border); border-radius: 9px; padding: 9px 11px; font-size: 0.82rem; background: var(--page); }
+.auto .item b { display: block; margin-bottom: 2px; }
+.auto .item .note { display: block; font-size: 0.74rem; }
+.auto .item.ghost { border-style: dashed; opacity: 0.75; }
+</style>
+
+<div class="auto">
+
+<div class="head">
+  <div>
+    <h1>自動車 全体マップ <span class="note">— 完成車・部品と関税の序列</span></h1>
+    <div class="subtitle"><span class="badge">特集</span> <span class="badge">関連9銘柄</span> <span class="badge">2026/8/13 時点</span></div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>この特集の視点</h2>
+  <div class="body">
+    2026年4-6月期の決算が出揃い、自動車セクターの構図がはっきり見えた。キーワードは3つ。<br><br>
+    <b>① 関税15%の「新常態」と、その序列。</b>日米合意で乗用車関税は27.5%→15%へ下がり(2025/9適用)、各社のQ1には前年比の「負担減」がプラス材料として現れた。だが構造的な負担の重さは会社によってまったく違う——<b><a class="xref" href="7269_suzuki.html">スズキ</a>はほぼ無風(北米四輪売上がQ1で1億円)、<a class="xref" href="7202_isuzu.html">いすゞ</a>のトラックは29%と逆に重く</b>、その間に<a class="xref" href="7270_subaru.html">SUBARU</a>・<a class="xref" href="7261_mazda.html">マツダ</a>(米国依存・輸出型)、<a class="xref" href="7203_toyota.html">トヨタ</a>・<a class="xref" href="7267_honda.html">ホンダ</a>(現地生産厚め)が並ぶ。<br><br>
+    <b>② Q1の増益は大半が「為替と関税」でできている。</b><a class="xref" href="7267_honda.html">ホンダ</a>+117%・<a class="xref" href="7202_isuzu.html">いすゞ</a>+31%・<a class="xref" href="7269_suzuki.html">スズキ</a>+11%——見出しは強いが、為替と関税制度要因を除いた実力の増益はどこも薄い。円高転換はセクター一斉に効く。<br><br>
+    <b>③ EV減速でHEV回帰、そして<a class="xref" href="7203_toyota.html">トヨタ</a>系の資本再編。</b><a class="xref" href="7267_honda.html">ホンダ</a>はEV目標を撤回しHEV15車種へ、<a class="xref" href="7270_subaru.html">SUBARU</a>・<a class="xref" href="7261_mazda.html">マツダ</a>も投資圧縮。部品側では<b>豊田自動織機の非公開化を軸に、<a class="xref" href="6902_denso.html">デンソー</a>・<a class="xref" href="7259_aisin.html">アイシン</a>が持ち合いを解消</b>(自己株TOB・政策保有売却・大型消却)する歴史的な再編が進行中である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>米国関税の全景(2027年3月期の織り込み)</h2>
+  <table>
+    <thead><tr><th>会社</th><th class="num">前期実績</th><th class="num">今期の想定</th><th>構図</th></tr></thead>
+    <tbody>
+      <tr><td><a class="xref" href="7203_toyota.html">トヨタ [7203]</a></td><td class="num">—</td><td class="num">緩和方向</td><td>通期を3.4兆円へ上方修正。現地生産と規模で吸収</td></tr>
+      <tr><td><a class="xref" href="7267_honda.html">ホンダ [7267]</a></td><td class="num">−3,469億円</td><td class="num">約−2,000億円</td><td>前期比+1,470億円の改善。北米生産の減免も効く</td></tr>
+      <tr><td><a class="xref" href="7201_nissan.html">日産 [7201]</a></td><td class="num">−2,860億円</td><td class="num">約−2,560億円</td><td>Q1に還付等の一過性+610億円</td></tr>
+      <tr><td><a class="xref" href="7261_mazda.html">マツダ [7261]</a></td><td class="num">−1,549億円</td><td class="num">約−750億円</td><td>負担半減も米国依存は不変</td></tr>
+      <tr><td><a class="xref" href="7270_subaru.html">SUBARU [7270]</a></td><td class="num">大(約3,000億円規模の複合影響)</td><td class="num">改善</td><td>米販売7割・国内輸出型で感応度最大級</td></tr>
+      <tr><td><a class="xref" href="7269_suzuki.html">スズキ [7269]</a></td><td class="num">ほぼゼロ</td><td class="num">ほぼゼロ</td><td>北米四輪売上Q1で1億円。関税と無縁の稀有な存在</td></tr>
+      <tr><td><a class="xref" href="7202_isuzu.html">いすゞ [7202]</a></td><td class="num">−160億円</td><td class="num">−130億円</td><td><b>トラックは29%</b>(232条25%+4%)。乗用車と別世界</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:6px">各社開示・説明会資料より。定義・範囲は会社ごとに異なるため厳密な横比較ではなく規模感の整理。</div>
+</div>
+
+<div class="card">
+  <h2>完成車と部品の地図</h2>
+
+  <div class="layer">
+    <h3>完成車 — グローバル量販</h3>
+    <div class="role">規模と現地生産で関税を吸収できる側。</div>
+    <div class="items">
+      <div class="item"><b><a class="xref" href="7203_toyota.html">トヨタ自動車 [7203]</a></b><span class="note">Q1減益も通期3.4兆円へ上方修正。HEV年500万台志向で6-8月生産+7.3%。1兆円自社株買い</span></div>
+      <div class="item"><b><a class="xref" href="7267_honda.html">ホンダ [7267]</a></b><span class="note">Q1営業最高(為替+関税+EV損失剥落)。実は二輪(利益率20.5%)が主役。EV撤回→HEV15車種へ</span></div>
+      <div class="item"><b><a class="xref" href="7269_suzuki.html">スズキ [7269]</a></b><span class="note">インド53.5万台+33%が独自エンジン。関税無風だがインドの原材料高で営業は下方修正</span></div>
+    </div>
+  </div>
+
+  <div class="layer">
+    <h3>完成車 — 北米依存・再建</h3>
+    <div class="role">関税・為替・米国市況の3変数に業績が支配される側。指標は軒並み解散価値割れ。</div>
+    <div class="items">
+      <div class="item"><b><a class="xref" href="7270_subaru.html">SUBARU [7270]</a></b><span class="note">米販売7割。Q1営業−44%(台数減・奨励金)。PBR0.65+発行済11.2%の自社株買いが下支え</span></div>
+      <div class="item"><b><a class="xref" href="7261_mazda.html">マツダ [7261]</a></b><span class="note">Q1黒字転換も改善の大半は為替+関税制度。PBR0.38・利回り4.8%。下期はCX-5頼み</span></div>
+      <div class="item"><b><a class="xref" href="7201_nissan.html">日産自動車 [7201]</a></b><span class="note">Re:Nissan再建中(削減3,150億円と前倒し)。自動車事業はなお赤字、PBR0.24・無配。鴻海受託の協議報道</span></div>
+      <div class="item"><b><a class="xref" href="7202_isuzu.html">いすゞ自動車 [7202]</a></b><span class="note">商用車で別枠。国内トラック寡占+利回り4.2%だがトラック関税29%と中東−400億円</span></div>
+    </div>
+  </div>
+
+  <div class="layer">
+    <h3>部品 — <a class="xref" href="7203_toyota.html">トヨタ</a>系メガサプライヤー(資本再編の中心)</h3>
+    <div class="role">豊田自動織機の非公開化を軸に、持ち合い解消・大型還元が同時進行。</div>
+    <div class="items">
+      <div class="item"><b><a class="xref" href="6902_denso.html">デンソー [6902]</a></b><span class="note">Q1−21.5%(部材費・品質費用)で当日−10.5%。織機関連の自己株TOB 3,136億円+織機株3,054億円売却。CORE 2030でDOE4.0%へ</span></div>
+      <div class="item"><b><a class="xref" href="7259_aisin.html">アイシン [7259]</a></b><span class="note">Q1−23.6%も電動ユニット+35.4%と転換進行。発行済9%の自社株買い+政策保有ゼロ方針。「ATを使い切って」eAxleへ</span></div>
+      <div class="item ghost"><b>豊田自動織機(非公開化)</b><span class="note"><a class="xref" href="7203_toyota.html">トヨタ</a>不動産等のTOBで2026年に非公開化。<a class="xref" href="7203_toyota.html">トヨタ</a>系持ち合い解消の起点となり、株式市場からは退場</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>読み方 — Q1決算で見えた3つのこと</h2>
+  <div class="body">
+    <b>① 見出しの増益率は信用しない。</b> <a class="xref" href="7267_honda.html">ホンダ</a>+117%の中身は為替+908億・関税+781億・前年EV損失の剥落。<a class="xref" href="7202_isuzu.html">いすゞ</a>+31%は為替+190億を除くと実質減益。<a class="xref" href="7261_mazda.html">マツダ</a>の黒字転換も半分は為替。<b>このセクターのQ1は「円安と関税緩和の決算」であり、実力の改善はどこも1〜2割</b>にすぎない。<br><br>
+    <b>② 稼ぎ頭は「クルマ以外」。</b> <a class="xref" href="7267_honda.html">ホンダ</a>は二輪、<a class="xref" href="7270_subaru.html">SUBARU</a>・<a class="xref" href="7201_nissan.html">日産</a>は販売金融、<a class="xref" href="7203_toyota.html">トヨタ</a>系部品はHEVユニット——新車販売そのものの利益は奨励金競争で薄く、周辺事業が全社を支える構図が共通している。<br><br>
+    <b>③ 還元がバリュエーションの主役。</b> <a class="xref" href="7270_subaru.html">SUBARU</a> 11.2%買い、アイシン9%買い+消却、デンソーTOB 3,136億円、トヨタ1兆円、ホンダ1.1兆円完了——PBR1倍割れが並ぶセクターで、資本政策の強度が株価の下値を決めている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>関連銘柄一覧(2026/8/13終値)</h2>
+  <table>
+    <thead><tr><th>銘柄</th><th class="num">終値</th><th class="num">予想PER</th><th class="num">PBR</th><th class="num">利回り</th><th>評価</th></tr></thead>
+    <tbody>
+      <tr><td><b><a class="xref" href="7203_toyota.html">トヨタ自動車</a></b> <a class="xref" href="7203_toyota.html">[7203]</a></td><td class="num">2,985円</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td><span class="tag">割安圏</span></td></tr>
+      <tr><td><b><a class="xref" href="7267_honda.html">ホンダ</a></b> <a class="xref" href="7267_honda.html">[7267]</a></td><td class="num">1,647.5円</td><td class="num">16.0倍</td><td class="num">0.52</td><td class="num">4.25%</td><td><span class="tag">割安寄り</span></td></tr>
+      <tr><td><b><a class="xref" href="7269_suzuki.html">スズキ</a></b> <a class="xref" href="7269_suzuki.html">[7269]</a></td><td class="num">2,000.5円</td><td class="num">9.1倍</td><td class="num">1.09</td><td class="num">2.55%</td><td><span class="tag">中立</span></td></tr>
+      <tr><td><b><a class="xref" href="7270_subaru.html">SUBARU</a></b> <a class="xref" href="7270_subaru.html">[7270]</a></td><td class="num">2,557.5円</td><td class="num">13.8倍</td><td class="num">0.65</td><td class="num">4.54%</td><td><span class="tag">割安寄り</span></td></tr>
+      <tr><td><b><a class="xref" href="7261_mazda.html">マツダ</a></b> <a class="xref" href="7261_mazda.html">[7261]</a></td><td class="num">1,147円</td><td class="num">8.0倍</td><td class="num">0.38</td><td class="num">4.80%</td><td><span class="tag">割安寄り</span></td></tr>
+      <tr><td><b><a class="xref" href="7201_nissan.html">日産自動車</a></b> <a class="xref" href="7201_nissan.html">[7201]</a></td><td class="num">330.5円</td><td class="num">57.8倍</td><td class="num">0.24</td><td class="num">無配</td><td><span class="tag">PER非適用</span></td></tr>
+      <tr><td><b><a class="xref" href="7202_isuzu.html">いすゞ自動車</a></b> <a class="xref" href="7202_isuzu.html">[7202]</a></td><td class="num">2,234.5円</td><td class="num">9.6倍</td><td class="num">1.02</td><td class="num">4.21%</td><td><span class="tag">中立</span></td></tr>
+      <tr><td><b><a class="xref" href="6902_denso.html">デンソー</a></b> <a class="xref" href="6902_denso.html">[6902]</a></td><td class="num">1,901.5円</td><td class="num">12.4倍</td><td class="num">0.93</td><td class="num">3.89%</td><td><span class="tag">中立</span></td></tr>
+      <tr><td><b><a class="xref" href="7259_aisin.html">アイシン</a></b> <a class="xref" href="7259_aisin.html">[7259]</a></td><td class="num">2,234円</td><td class="num">10.4倍</td><td class="num">0.73</td><td class="num">3.36%</td><td><span class="tag">中立</span></td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:6px"><a class="xref" href="7203_toyota.html">トヨタ</a>の指標は個別レポート参照。評価は各個別レポートのバリュエーション節と同一。</div>
+</div>
+
+<div class="card">
+  <h2>共通リスク</h2>
+  <div class="body">
+    ・<b>円高:</b> Q1増益の主因が為替である以上、円高転換はセクター一斉の逆風。各社前提は150〜155円/$<br>
+    ・<b>関税の再変動:</b> 15%は「合意」であって条約ではない。トラック29%・IEEPA還付の司法判断など流動要素が残る<br>
+    ・<b>中東情勢:</b> 原材料高(<a class="xref" href="7269_suzuki.html">スズキ</a>−1,100億・<a class="xref" href="7202_isuzu.html">いすゞ</a>−400億・<a class="xref" href="7259_aisin.html">アイシン</a>−150億の織り込み)と物流寸断<br>
+    ・<b>中国:</b> <a class="xref" href="7267_honda.html">ホンダ</a>−7.4万台、<a class="xref" href="7201_nissan.html">日産</a>市況−22%、<a class="xref" href="7259_aisin.html">アイシン</a>−49%——全員の弱点<br>
+    ・<b>米国の奨励金競争:</b> <a class="xref" href="7270_subaru.html">SUBARU</a>−249億/四半期など、新車の利ざやを削り続けている<br>
+    ・<b>EV政策の再転換:</b> HEV回帰は現時点の最適解だが、規制が再びEVへ振れれば全員が二度目の転換コストを払う
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴・出典</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: 各社の2027年3月期Q1決算短信・決算説明資料・質疑応答(2026年8月発表。詳細URLは各個別レポートの更新履歴に記載) / 株探・日経(株価・指標、2026/8/13終値) / IFIS株予報・QUICK(コンセンサス) / JETRO(日米関税合意)。
+  </div>
+</div>
+
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

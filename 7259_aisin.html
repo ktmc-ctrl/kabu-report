@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アイシン(7259) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>アイシン <span class="note">[7259] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">駆動系部品</span> <span class="badge">3月期決算</span> <span class="badge">AT世界首位・電動化転換中</span></div>
+  </div>
+  <div class="px">
+    <div class="v">2,234円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 3,155円(2025/12)から <b>-29.2%</b><br>(8/13終値 2,234円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は営業利益366億円で<b>−23.6%</b>、コンセンサス未達で発表当日<b>−11.7%</b>と売られた。減益の内訳は売価・構成−146億円、中東リスク−109億円、人・将来投資−81億円で、体質改善+152億円と為替+152億円では足りなかった。<a class="xref" href="7203_toyota.html">トヨタ</a>生産−5.3%・中国−49%と量の逆風が重なった四半期。ただし<b>電動ユニット(HEV+eAxle)は83万台(+35.4%)</b>と転換は進んでおり、<a class="xref" href="7203_toyota.html">トヨタ</a>向けHEVは堅調。通期営業2,350億円は据え置き(下期偏重・体質改善+820億円前提)。資本側は動きが大きく、<b>上限1,000億円の自社株買い(発行済9%)+3,300万株消却+政策保有株ゼロ方針</b>、豊田自動織機株は1,355億円で売却済み。PER10.4倍・PBR0.73倍は「ATの現金でeAxleへ渡る」転換期の値段。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/31発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上収益</td><td class="num">1兆3,156億円</td><td class="num up">+7.8%</td></tr>
+      <tr><td>営業利益</td><td class="num">366億円</td><td class="num down">−23.6%</td></tr>
+      <tr><td>純利益</td><td class="num">319億円</td><td class="num down">−19.4%</td></tr>
+      <tr><td>営業CF</td><td class="num">+1,242億円</td><td class="num down">−27.5%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解(営業−113億円の内訳、会社説明資料)</b><br>
+    ・逆風: 売上・構成変動等−207億円(うち売価・構成−146億円)、<b>中東リスク影響等−109億円</b>、人・将来投資−81億円、原材料・輸送費−20億円<br>
+    ・追い風: 為替+152億円(159円/$)、企業体質改善+152億円<br>
+    ・前提: <b><a class="xref" href="7203_toyota.html">トヨタ</a>生産241万台(−5.3%)</b>。PTユニット販売は計画比21万台下振れ(半分強が中国)<br><br>
+    <b>電動化転換は進行:</b> 電動ユニット(HEV+eAxle)83万台(<b>+35.4%</b>)。<a class="xref" href="7203_toyota.html">トヨタ</a>向けHEVは堅調、欧米OEM向けは下振れ。地域別では中国51億円(−48.7%)・欧州−6億円(赤字転落)が痛く、日本は+30.7%。質疑応答では「関税の転嫁・回収が一部OEMで後ろ倒し(計画比−19億円)」「BMW向けeAxleは26年度後半立ち上げだが台数リスクはないと言い切れない」と率直な開示。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期予想は据え置き: 売上5兆2,500億円・営業利益<b>2,350億円(+2.7%)</b>・純利益1,500億円。前提150円/$、電動ユニット375万台(+39.3%)。増益は<b>体質改善+820億円(下期偏重)</b>が柱で、中東−150億円を織り込む。Q1進捗15.6%は低いが「利益は例年下期偏重」(会社)。熊本地震はアイシン九州が被災も「通期下方修正は考えていない」。<br><br>
+    <b>コンセンサスとの差:</b> Q1純利益319億円はQUICKコンセンサス(345億円)を<b>下回り</b>、当日−11.7%・翌営業日−3.6%。通期コンセンサス値は取得不可だが、米系証券は強気を継続しつつ目標株価を3,000円へ引き下げた。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">10.4倍</td><td>会社計画ベース</td></tr>
+      <tr><td>PBR</td><td class="num">0.73倍</td><td>ROE予想8.0%</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">3.36%</td><td>年75円(+5円増配予想)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">2,117.5〜3,155円</td><td>高値(2025/12、10年来高値)から−29.2%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    昨年12月の10年来高値から3割の調整。PBR0.73倍に対し、発行済9%の自社株買い枠+消却+政策保有ゼロ方針という資本改革は本気度が高い。業績は中国とeAxle立ち上げ次第で振れるが、還元と改革が下値を作る。<b>評価: 中立</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・<a class="xref" href="7203_toyota.html">トヨタ</a>系資本再編</h2>
+  <div class="body">
+    2028年中計(2026/2策定)は<b>2028年度に営業利益3,300億円(利益率6.2%)・ROE10%</b>。商品戦略は現実的な二正面——<b>AT(世界首位)は「BEV減速によるICE需要」を取り込みシェアアップ・既存設備使い切り</b>、HEV/PHEVは引き合い増で収益化、BEVはeAxle第1・2世代拡販と機能統合ユニット(Xin1)開発。ダイハツ初の量産軽商用BEVにBluE Nexus・<a class="xref" href="6902_denso.html">デンソー</a>との共同開発eAxleが採用された。<br><br>
+    <b>資本再編:</b> 豊田自動織機の非公開化に伴い、織機保有の自社株3.21%を自己株TOB(461.5億円)で取得、保有織機株は全株売却(1,355億円、売却益1,236億円)。<b>政策保有株ゼロ方針</b>を掲げ、最適資本構成(キャピタリゼーション比率25-30%)も明示——<a class="xref" href="7203_toyota.html">トヨタ</a>系で最も踏み込んだ資本改革を進める。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    今期は<b>上限1,000億円(発行済9.0%)の自己株取得を実施中</b>(織機分461.5億円を取得済み)+<b>3,300万株を4月に消却</b>。配当は60→70→<b>75円予想</b>と増配継続(前期DOE3.2%・総還元性向75.4%)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b><a class="xref" href="7203_toyota.html">トヨタ</a>の生産・HEV:</b> Q1は−5.3%と逆風だったが、<a class="xref" href="7203_toyota.html">トヨタ</a>の6-8月計画は+7.3%でHEV増産はATM・HEVユニットの追い風<br>
+    ・<b>中国:</b> 景気減速+燃料高でAT需要に不透明感——会社が「最も懸念」と明言する地域<br>
+    ・<b>資材:</b> アルミは3〜6か月ラグで売価反映される契約構造。中東起因の高騰は一時的な逆風で済むかが焦点<br>
+    ・<b>関税:</b> 転嫁・回収の後ろ倒しが一部残る
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>下期偏重の体質改善+820億円:</b> 未達なら通期据え置きが持たない<br>
+    ・<b>中国の一段悪化:</b> 民族系向け−15.3%が続けば、量と価格の両方で効く<br>
+    ・<b>eAxleの立ち上げ:</b> BMW向け含め「台数リスクはないと言い切れない」と会社自身が認める<br>
+    ・<b>熊本地震の復旧費用:</b> 見積り不能のまま(現時点)<br>
+    ・<b>強気材料の裏返し:</b> 「ATを使い切る」戦略はBEVシフトが再加速した場合、転換の時間を失うリスクと表裏
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: アイシン 2027年3月期Q1決算短信・決算説明資料・質疑応答要旨 2026/7/31(<span class="note">aisin.com</span>) / 2028年中期経営計画(2026/2/19) / 自己株TOB・織機株売却の開示 / 株探・日経(株価・指標、2026/8/13終値) / QUICK(コンセンサス)。<br>
+    ※2024/10/1付で1:3の株式分割——過去の株価は分割調整後。通期コンセンサス値は取得不可。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
