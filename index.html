@@ -164,7 +164,7 @@
 <body class="viz-root">
 <script>
 /* 旧形式の共有リンク(全レポート内包時代の #ハッシュ)を個別ページへ流す */
-var FILES = {"7011": "7011_mhi.html", "7203": "7203_toyota.html", "6758": "6758_sony.html", "6367": "6367_daikin.html", "7974": "7974_nintendo.html", "9684": "9684_squareenix.html", "3402": "3402_toray.html", "4063": "4063_shinetsu.html", "4182": "4182_mgc.html", "5802": "5802_sumitomo_electric.html", "5803": "5803_fujikura.html", "5801": "5801_furukawa.html", "5706": "5706_mitsui_kinzoku.html", "5016": "5016_jx_metals.html", "6920": "6920_lasertec.html", "6857": "6857_advantest.html", "285A": "285A_kioxia.html", "9984": "9984_softbankg.html", "8058": "8058_mitsubishi_corp.html", "8031": "8031_mitsui.html", "8267": "8267_aeon.html", "9301": "9301_mitsubishi_logistics.html", "8306": "8306_mufg.html", "8316": "8316_smfg.html", "8411": "8411_mizuho.html", "9432": "9432_ntt.html", "4755": "4755_rakuten.html", "9503": "9503_kansai_electric.html", "9508": "9508_kyushu_electric.html", "9502": "9502_chubu_electric.html", "9506": "9506_tohoku_electric.html", "9509": "9509_hokkaido_electric.html", "6508": "6508_meidensha.html", "6617": "6617_tktk.html", "5838": "5838_rakuten_bank.html", "7182": "7182_yucho_bank.html", "4689": "4689_lineyahoo.html", "9434": "9434_softbank_kk.html", "6866": "6866_hioki.html", "6516": "6516_sanyo_denki.html", "6905": "6905_cosel.html", "5344": "5344_maruwa.html", "5310": "5310_toyotanso.html", "6622": "6622_daihen.html", "6890": "6890_ferrotec.html", "theme-dc": "theme_datacenter.html", "theme-power": "theme_power.html", "theme-fintech": "theme_fintech.html", "theme-semi": "theme_semi_materials.html", "theme-chem": "theme_chemicals.html", "theme-eff": "theme_efficiency.html"};
+var FILES = {"7011": "7011_mhi.html", "7203": "7203_toyota.html", "6758": "6758_sony.html", "6367": "6367_daikin.html", "7974": "7974_nintendo.html", "9684": "9684_squareenix.html", "3402": "3402_toray.html", "4063": "4063_shinetsu.html", "4182": "4182_mgc.html", "5802": "5802_sumitomo_electric.html", "5803": "5803_fujikura.html", "5801": "5801_furukawa.html", "5706": "5706_mitsui_kinzoku.html", "5016": "5016_jx_metals.html", "6920": "6920_lasertec.html", "6857": "6857_advantest.html", "285A": "285A_kioxia.html", "9984": "9984_softbankg.html", "8058": "8058_mitsubishi_corp.html", "8031": "8031_mitsui.html", "8267": "8267_aeon.html", "9301": "9301_mitsubishi_logistics.html", "8306": "8306_mufg.html", "8316": "8316_smfg.html", "8411": "8411_mizuho.html", "9432": "9432_ntt.html", "4755": "4755_rakuten.html", "9503": "9503_kansai_electric.html", "9508": "9508_kyushu_electric.html", "9502": "9502_chubu_electric.html", "9506": "9506_tohoku_electric.html", "9509": "9509_hokkaido_electric.html", "6508": "6508_meidensha.html", "6617": "6617_tktk.html", "5838": "5838_rakuten_bank.html", "7182": "7182_yucho_bank.html", "4689": "4689_lineyahoo.html", "9434": "9434_softbank_kk.html", "6866": "6866_hioki.html", "6516": "6516_sanyo_denki.html", "6905": "6905_cosel.html", "5344": "5344_maruwa.html", "5310": "5310_toyotanso.html", "6622": "6622_daihen.html", "6890": "6890_ferrotec.html", "4043": "4043_tokuyama.html", "4004": "4004_resonac.html", "4061": "4061_denka.html", "4186": "4186_tok.html", "6861": "6861_keyence.html", "9020": "9020_jr_east.html", "9022": "9022_jr_central.html", "theme-dc": "theme_datacenter.html", "theme-power": "theme_power.html", "theme-fintech": "theme_fintech.html", "theme-semi": "theme_semi_materials.html", "theme-chem": "theme_chemicals.html", "theme-eff": "theme_efficiency.html"};
 function goLegacy() {
   var id = location.hash.slice(1);
   if (id && FILES[id]) location.replace(FILES[id]);
@@ -177,7 +177,7 @@ window.addEventListener('hashchange', goLegacy);
   <div class="brand">📚 銘柄レポート ライブラリ</div>
 </div>
 
-<div class="subtitle">決算説明資料・中期経営計画・バリュエーションを1銘柄1ページに整理 ・ 全45銘柄 ・ 2026/8/13時点</div>
+<div class="subtitle">決算説明資料・中期経営計画・バリュエーションを1銘柄1ページに整理 ・ 全52銘柄 ・ 2026/8/13時点</div>
 
   <label class="theme-lead" for="q" style="margin-top:2px">さがす</label>
   <input class="search" id="q" type="search" placeholder="銘柄名・コード・セクター・キーワード" oninput="filter(this.value)" autocomplete="off">
@@ -192,13 +192,14 @@ window.addEventListener('hashchange', goLegacy);
     <div class="chips" id="chips-sector">
 <button data-pick="電力・重電" onclick="pick('sector', this.dataset.pick)">電力・重電 <small>8</small></button>
 <button data-pick="重工・機械・自動車" onclick="pick('sector', this.dataset.pick)">重工・機械・自動車 <small>3</small></button>
-<button data-pick="電機・エンタメ" onclick="pick('sector', this.dataset.pick)">電機・エンタメ <small>6</small></button>
-<button data-pick="素材・化学" onclick="pick('sector', this.dataset.pick)">素材・化学 <small>5</small></button>
+<button data-pick="電機・エンタメ" onclick="pick('sector', this.dataset.pick)">電機・エンタメ <small>7</small></button>
+<button data-pick="素材・化学" onclick="pick('sector', this.dataset.pick)">素材・化学 <small>8</small></button>
 <button data-pick="電線・非鉄" onclick="pick('sector', this.dataset.pick)">電線・非鉄 <small>5</small></button>
-<button data-pick="半導体" onclick="pick('sector', this.dataset.pick)">半導体 <small>4</small></button>
+<button data-pick="半導体" onclick="pick('sector', this.dataset.pick)">半導体 <small>5</small></button>
 <button data-pick="投資・商社・小売" onclick="pick('sector', this.dataset.pick)">投資・商社・小売 <small>5</small></button>
 <button data-pick="金融" onclick="pick('sector', this.dataset.pick)">金融 <small>5</small></button>
 <button data-pick="ネット・通信" onclick="pick('sector', this.dataset.pick)">ネット・通信 <small>4</small></button>
+<button data-pick="運輸・鉄道" onclick="pick('sector', this.dataset.pick)">運輸・鉄道 <small>2</small></button>
     </div>
     <div class="sec-block" data-name="電力・重電">
     <div class="sector-h" data-group>電力・重電</div>
@@ -332,6 +333,13 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-sum">営業赤字は数量、純損失34億はPRBX売却の一過性。受注+59.8%(GPU向け装置電源)が先行し、来期黒字転換計画。評価軸は受注の売上化と値上げ浸透。DOE4.5%累進配当で利回り4.36%</div>
         <div class="go">レポートを見る →</div>
       </a>
+      <a class="tile" href="6861_keyence.html" data-q="6861 キーエンス 6861 電機・エンタメ やや割高 Q1営業+44.7%・利益率54%、コンセンサス+20%上振れで翌日+9.4%。増益の1/3は円安。上場来高値圏・PER40倍前後に自社株買い期待込み。金融資産3兆円の使い道が論点" aria-label="キーエンスのレポートを開く">
+        <div class="tile-top"><span class="tile-name">キーエンス</span><span class="tile-code">6861</span></div>
+        <div class="tile-px">86,630<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb hi">やや割高</span></div>
+        <div class="tile-sum">Q1営業+44.7%・利益率54%、コンセンサス+20%上振れで翌日+9.4%。増益の1/3は円安。上場来高値圏・PER40倍前後に自社株買い期待込み。金融資産3兆円の使い道が論点</div>
+        <div class="go">レポートを見る →</div>
+      </a>
     </div>
     </div>
     <div class="sec-block" data-name="素材・化学">
@@ -370,6 +378,27 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-px">7,480<small>円 ・ 8/13</small></div>
         <div style="margin-top:6px"><span class="vb hi">やや割高</span></div>
         <div class="tile-sum">中間営業−54%はSiC向け高採算品の数量減。ただし受注+31.8%と底打ちの兆しで減益決算でも株価は上昇。通期進捗28.7%に下方修正リスク。回復はFY2027以降と会社明言</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="4043_tokuyama.html" data-q="4043 トクヤマ 4043 素材・化学 中立 Q1営業−22.9%、コンセンサス−21%未達で当日−9.3%。純利益+6%は売却益と為替の見かけ。多結晶Siは在庫調整で数量減。DOE4.0%目標・4期連続増配が下支え" aria-label="トクヤマのレポートを開く">
+        <div class="tile-top"><span class="tile-name">トクヤマ</span><span class="tile-code">4043</span></div>
+        <div class="tile-px">4,215<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">Q1営業−22.9%、コンセンサス−21%未達で当日−9.3%。純利益+6%は売却益と為替の見かけ。多結晶Siは在庫調整で数量減。DOE4.0%目標・4期連続増配が下支え</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="4004_resonac.html" data-q="4004 レゾナック 4004 素材・化学 やや割高 中間コア営業+156%、AI向けが後工程売上の3割超。通期を+40%上方修正し会社計画がコンセンサスの上。石化は10/1スピンオフ。1年で株価4.4倍・PER28.6倍" aria-label="レゾナックのレポートを開く">
+        <div class="tile-top"><span class="tile-name">レゾナック</span><span class="tile-code">4004</span></div>
+        <div class="tile-px">17,000<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb hi">やや割高</span></div>
+        <div class="tile-sum">中間コア営業+156%、AI向けが後工程売上の3割超。通期を+40%上方修正し会社計画がコンセンサスの上。石化は10/1スピンオフ。1年で株価4.4倍・PER28.6倍</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="4061_denka.html" data-q="4061 デンカ 4061 素材・化学 中立 Q1営業+378%の中身は在庫影響+60億とDPE停止効果+30億が大半で実質+13億程度。純利益はDPE整理損で−43%。上方修正でも売られ、通期はQ2見直し予定" aria-label="デンカのレポートを開く">
+        <div class="tile-top"><span class="tile-name">デンカ</span><span class="tile-code">4061</span></div>
+        <div class="tile-px">3,586<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">Q1営業+378%の中身は在庫影響+60億とDPE停止効果+30億が大半で実質+13億程度。純利益はDPE整理損で−43%。上方修正でも売られ、通期はQ2見直し予定</div>
         <div class="go">レポートを見る →</div>
       </a>
     </div>
@@ -443,6 +472,13 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-px">9,230<small>円 ・ 8/13</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
         <div class="tile-sum">AI装置部材と光トランシーバー向けペルチェで営業600億(+58%)へ大幅上方修正→ストップ高。参考PER13倍の安さは中国56%・有利子負債2千億のディスカウント。Q1は8/14発表予定</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="4186_tok.html" data-q="4186 東京応化 4186 半導体 やや割高 中間営業+45%はほぼ実需で一過性なし・営業CF整合。EUV+35%、WHS材料は27年までに+700%計画。3期連続最高益へ上方修正も、修正後計画がコンセンサス比−2〜3%" aria-label="東京応化のレポートを開く">
+        <div class="tile-top"><span class="tile-name">東京応化</span><span class="tile-code">4186</span></div>
+        <div class="tile-px">9,688<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb hi">やや割高</span></div>
+        <div class="tile-sum">中間営業+45%はほぼ実需で一過性なし・営業CF整合。EUV+35%、WHS材料は27年までに+700%計画。3期連続最高益へ上方修正も、修正後計画がコンセンサス比−2〜3%</div>
         <div class="go">レポートを見る →</div>
       </a>
     </div>
@@ -560,17 +596,36 @@ window.addEventListener('hashchange', goLegacy);
       </a>
     </div>
     </div>
+    <div class="sec-block" data-name="運輸・鉄道">
+    <div class="sector-h" data-group>運輸・鉄道</div>
+    <div class="grid">
+      <a class="tile" href="9020_jr_east.html" data-q="9020 JR東日本 9020 運輸・鉄道 中立 Q1営業+9.4%は運賃改定+約200億が柱。純利益−14%は前年売却益の剥落。通期計画がコンセンサス比−7%で決算翌日−6.9%。人件費・修繕費・利払いの構造増と綱引き" aria-label="JR東日本のレポートを開く">
+        <div class="tile-top"><span class="tile-name">JR東日本</span><span class="tile-code">9020</span></div>
+        <div class="tile-px">3,470<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">Q1営業+9.4%は運賃改定+約200億が柱。純利益−14%は前年売却益の剥落。通期計画がコンセンサス比−7%で決算翌日−6.9%。人件費・修繕費・利払いの構造増と綱引き</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="9022_jr_central.html" data-q="9022 JR東海 9022 運輸・鉄道 割安寄り Q1経常はコンセンサス+9.6%上振れ。PER8.1倍・PBR0.70倍はリニア11兆円・開業未定・性向6.8%の値段で、不確実性が減れば解消余地。200億の自社株買い完了・消却予定" aria-label="JR東海のレポートを開く">
+        <div class="tile-top"><span class="tile-name">JR東海</span><span class="tile-code">9022</span></div>
+        <div class="tile-px">3,833<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb lo">割安寄り</span></div>
+        <div class="tile-sum">Q1経常はコンセンサス+9.6%上振れ。PER8.1倍・PBR0.70倍はリニア11兆円・開業未定・性向6.8%の値段で、不確実性が減れば解消余地。200億の自社株買い完了・消却予定</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+    </div>
+    </div>
   </div>
 
   <div id="grp-val" style="display:none">
     <div class="chips" id="chips-val">
-<button data-pick="割安" onclick="pick('val', this.dataset.pick)">割安 <small>4</small></button>
-<button data-pick="中立" onclick="pick('val', this.dataset.pick)">中立 <small>21</small></button>
-<button data-pick="割高" onclick="pick('val', this.dataset.pick)">割高 <small>16</small></button>
+<button data-pick="割安" onclick="pick('val', this.dataset.pick)">割安 <small>5</small></button>
+<button data-pick="中立" onclick="pick('val', this.dataset.pick)">中立 <small>24</small></button>
+<button data-pick="割高" onclick="pick('val', this.dataset.pick)">割高 <small>19</small></button>
 <button data-pick="評価難" onclick="pick('val', this.dataset.pick)">評価難 <small>4</small></button>
     </div>
     <div class="sec-block" data-name="割安">
-    <div class="sector-h val lo" data-group>割安 <span class="cnt">4銘柄</span></div>
+    <div class="sector-h val lo" data-group>割安 <span class="cnt">5銘柄</span></div>
     <div class="bdesc">予想PER・PBRが過去比/同業比で低位、または資産価値対比のディスカウントが大きい</div>
     <div class="grid">
       <a class="tile" href="7203_toyota.html" data-q="7203 トヨタ自動車 7203 重工・機械・自動車 割安圏 Q1営業減益8.8%も通期3.4兆円へ4,000億円上方修正。関税影響は緩和方向、前提160円。1兆円自社株買い" aria-label="トヨタ自動車のレポートを開く">
@@ -601,10 +656,17 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-sum">原子力4基フル稼働でQ1経常+45.9%・コンセンサス比+71%。進捗48%と好発進。PER7.1倍だが下期は玄海の定検集中と利益の市況性が論点</div>
         <div class="go">レポートを見る →</div>
       </a>
+      <a class="tile" href="9022_jr_central.html" data-q="9022 JR東海 9022 運輸・鉄道 割安寄り Q1経常はコンセンサス+9.6%上振れ。PER8.1倍・PBR0.70倍はリニア11兆円・開業未定・性向6.8%の値段で、不確実性が減れば解消余地。200億の自社株買い完了・消却予定" aria-label="JR東海のレポートを開く">
+        <div class="tile-top"><span class="tile-name">JR東海</span><span class="tile-code">9022</span></div>
+        <div class="tile-px">3,833<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">運輸・鉄道</span></div>
+        <div class="tile-sum">Q1経常はコンセンサス+9.6%上振れ。PER8.1倍・PBR0.70倍はリニア11兆円・開業未定・性向6.8%の値段で、不確実性が減れば解消余地。200億の自社株買い完了・消却予定</div>
+        <div class="go">レポートを見る →</div>
+      </a>
     </div>
     </div>
     <div class="sec-block" data-name="中立">
-    <div class="sector-h val mid" data-group>中立 <span class="cnt">21銘柄</span></div>
+    <div class="sector-h val mid" data-group>中立 <span class="cnt">24銘柄</span></div>
     <div class="bdesc">指標面に大きな歪みはなく、業績見通しとおおむね整合的な水準</div>
     <div class="grid">
       <a class="tile" href="6758_sony.html" data-q="6758 ソニーグループ 6758 電機・エンタメ 中立 Q1営業利益+40%で過去最高、通期1.72兆円へ上方修正。熊本地震の影響は通期予想に未反映。タムロン買収提案" aria-label="ソニーグループのレポートを開く">
@@ -754,10 +816,31 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-sum">AI装置部材と光トランシーバー向けペルチェで営業600億(+58%)へ大幅上方修正→ストップ高。参考PER13倍の安さは中国56%・有利子負債2千億のディスカウント。Q1は8/14発表予定</div>
         <div class="go">レポートを見る →</div>
       </a>
+      <a class="tile" href="4043_tokuyama.html" data-q="4043 トクヤマ 4043 素材・化学 中立 Q1営業−22.9%、コンセンサス−21%未達で当日−9.3%。純利益+6%は売却益と為替の見かけ。多結晶Siは在庫調整で数量減。DOE4.0%目標・4期連続増配が下支え" aria-label="トクヤマのレポートを開く">
+        <div class="tile-top"><span class="tile-name">トクヤマ</span><span class="tile-code">4043</span></div>
+        <div class="tile-px">4,215<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">素材・化学</span></div>
+        <div class="tile-sum">Q1営業−22.9%、コンセンサス−21%未達で当日−9.3%。純利益+6%は売却益と為替の見かけ。多結晶Siは在庫調整で数量減。DOE4.0%目標・4期連続増配が下支え</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="4061_denka.html" data-q="4061 デンカ 4061 素材・化学 中立 Q1営業+378%の中身は在庫影響+60億とDPE停止効果+30億が大半で実質+13億程度。純利益はDPE整理損で−43%。上方修正でも売られ、通期はQ2見直し予定" aria-label="デンカのレポートを開く">
+        <div class="tile-top"><span class="tile-name">デンカ</span><span class="tile-code">4061</span></div>
+        <div class="tile-px">3,586<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">素材・化学</span></div>
+        <div class="tile-sum">Q1営業+378%の中身は在庫影響+60億とDPE停止効果+30億が大半で実質+13億程度。純利益はDPE整理損で−43%。上方修正でも売られ、通期はQ2見直し予定</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="9020_jr_east.html" data-q="9020 JR東日本 9020 運輸・鉄道 中立 Q1営業+9.4%は運賃改定+約200億が柱。純利益−14%は前年売却益の剥落。通期計画がコンセンサス比−7%で決算翌日−6.9%。人件費・修繕費・利払いの構造増と綱引き" aria-label="JR東日本のレポートを開く">
+        <div class="tile-top"><span class="tile-name">JR東日本</span><span class="tile-code">9020</span></div>
+        <div class="tile-px">3,470<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">運輸・鉄道</span></div>
+        <div class="tile-sum">Q1営業+9.4%は運賃改定+約200億が柱。純利益−14%は前年売却益の剥落。通期計画がコンセンサス比−7%で決算翌日−6.9%。人件費・修繕費・利払いの構造増と綱引き</div>
+        <div class="go">レポートを見る →</div>
+      </a>
     </div>
     </div>
     <div class="sec-block" data-name="割高">
-    <div class="sector-h val hi" data-group>割高 <span class="cnt">16銘柄</span></div>
+    <div class="sector-h val hi" data-group>割高 <span class="cnt">19銘柄</span></div>
     <div class="bdesc">指標が過去比・同業比で高位。将来の成長期待の織り込みが進んでいる</div>
     <div class="grid">
       <a class="tile" href="7011_mhi.html" data-q="7011 三菱重工業 7011 重工・機械・自動車 割高圏 Q1事業利益+65%・純利益+97%。受注7兆円・FCF6,000億円へ上方修正。GTCC・防衛が牽引も一過性約250億円を含む" aria-label="三菱重工業のレポートを開く">
@@ -870,6 +953,27 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-px">7,480<small>円 ・ 8/13</small></div>
         <div style="margin-top:6px"><span class="secchip">素材・化学</span></div>
         <div class="tile-sum">中間営業−54%はSiC向け高採算品の数量減。ただし受注+31.8%と底打ちの兆しで減益決算でも株価は上昇。通期進捗28.7%に下方修正リスク。回復はFY2027以降と会社明言</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="4004_resonac.html" data-q="4004 レゾナック 4004 素材・化学 やや割高 中間コア営業+156%、AI向けが後工程売上の3割超。通期を+40%上方修正し会社計画がコンセンサスの上。石化は10/1スピンオフ。1年で株価4.4倍・PER28.6倍" aria-label="レゾナックのレポートを開く">
+        <div class="tile-top"><span class="tile-name">レゾナック</span><span class="tile-code">4004</span></div>
+        <div class="tile-px">17,000<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">素材・化学</span></div>
+        <div class="tile-sum">中間コア営業+156%、AI向けが後工程売上の3割超。通期を+40%上方修正し会社計画がコンセンサスの上。石化は10/1スピンオフ。1年で株価4.4倍・PER28.6倍</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="4186_tok.html" data-q="4186 東京応化 4186 半導体 やや割高 中間営業+45%はほぼ実需で一過性なし・営業CF整合。EUV+35%、WHS材料は27年までに+700%計画。3期連続最高益へ上方修正も、修正後計画がコンセンサス比−2〜3%" aria-label="東京応化のレポートを開く">
+        <div class="tile-top"><span class="tile-name">東京応化</span><span class="tile-code">4186</span></div>
+        <div class="tile-px">9,688<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">半導体</span></div>
+        <div class="tile-sum">中間営業+45%はほぼ実需で一過性なし・営業CF整合。EUV+35%、WHS材料は27年までに+700%計画。3期連続最高益へ上方修正も、修正後計画がコンセンサス比−2〜3%</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="6861_keyence.html" data-q="6861 キーエンス 6861 電機・エンタメ やや割高 Q1営業+44.7%・利益率54%、コンセンサス+20%上振れで翌日+9.4%。増益の1/3は円安。上場来高値圏・PER40倍前後に自社株買い期待込み。金融資産3兆円の使い道が論点" aria-label="キーエンスのレポートを開く">
+        <div class="tile-top"><span class="tile-name">キーエンス</span><span class="tile-code">6861</span></div>
+        <div class="tile-px">86,630<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">電機・エンタメ</span></div>
+        <div class="tile-sum">Q1営業+44.7%・利益率54%、コンセンサス+20%上振れで翌日+9.4%。増益の1/3は円安。上場来高値圏・PER40倍前後に自社株買い期待込み。金融資産3兆円の使い道が論点</div>
         <div class="go">レポートを見る →</div>
       </a>
     </div>

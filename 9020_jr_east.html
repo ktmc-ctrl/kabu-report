@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JR東日本(9020) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>JR東日本 <span class="note">[9020] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">鉄道・生活ソリューション</span> <span class="badge">3月期決算</span> <span class="badge">運賃改定 2026/3</span></div>
+  </div>
+  <div class="px">
+    <div class="v">3,470円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 4,211円(2026/1)から <b>-17.6%</b><br>(8/13終値 3,470円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は営業収益7,727億円(+8.0%、Q1として過去最高)・営業利益1,255億円(+9.4%)。<b>2026年3月の運賃改定(改定率7.1%)が運輸収入+380億円の柱</b>で、運輸セグメントは+23.7%の増益。純利益−13.6%は前年の投資有価証券売却益(221億円)の剥落という一過性で、営業段階は実質増益である。Q1経常はコンセンサスを+4.0%上回ったが、決算翌営業日は<b>−6.9%</b>——通期据え置き(コンセンサス比約−7%)で「サプライズ乏しく見切り売り」という需給だった。人件費+10%・修繕費+13%・支払利息+16%とコストの構造増が続き、有利子負債5.3兆円は金利上昇の逆風側。中期は「勇翔2034」で2031年度営業利益7,500億円・ROE10%を掲げ、配当性向は40%へ段階引き上げ中。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/31発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>営業収益</td><td class="num">7,727億円</td><td class="num up">+8.0%</td></tr>
+      <tr><td>営業利益</td><td class="num">1,255億円</td><td class="num up">+9.4%</td></tr>
+      <tr><td>経常利益</td><td class="num">1,068億円</td><td class="num up">+8.0%</td></tr>
+      <tr><td>純利益</td><td class="num">680億円</td><td class="num down">−13.6% ※</td></tr>
+    </tbody>
+  </table>
+  <div class="note-s" style="margin-top:6px">※減益は前年の投資有価証券売却益221億円→今期64億円という一過性の剥落。営業CFは四半期非開示。</div>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解(営業+108億円のブリッジ)</b><br>
+    ・収入+573億円: 運輸収入+380億円(<b>うち運賃改定が新幹線+25億・在来線+120億・定期+55億=約200億円</b>、利用増が約160億円)、流通・不動産+150億円、不動産販売の期ずれ−45億円<br>
+    ・費用−466億円: <b>人件費−160億円</b>(賃金制度変更)、<b>修繕費−75億円</b>(コロナ期抑制の解消)、その他−185億円<br><br>
+    <b>セグメント別(営業利益):</b> 運輸 838億円(<b>+23.7%</b>)/流通・サービス 153億円(+7.6%)/不動産・ホテル 190億円(<b>−32.9%</b>、不動産販売の下期偏重による期ずれ)/その他 65億円(+89%——うち<b>IT・Suicaは収益+42.6%</b>と急伸)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期予想は据え置き: 営業収益3兆2,950億円(+6.8%)・営業利益<b>4,290億円(+3.6%)</b>・純利益2,550億円。運賃改定の通期効果は+954億円の計画の柱。経常進捗率30.3%は前年並みの巡航。<br><br>
+    <b>コンセンサスとの差:</b> Q1経常はコンセンサスを<b>+4.0%上回った</b>が、通期会社計画(経常3,530億円)は<b>コンセンサス(3,810億円)を約7%下回る</b>。市場は上振れを既に織り込んでおり、据え置き決算に対して翌営業日−6.9%と売られた。インバウンドはモビリティ側がQ1計画未達(111億円/計画120億円)という細かい影も。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">15.3倍</td><td>鉄道大手の標準圏</td></tr>
+      <tr><td>PBR</td><td class="num">1.28倍</td><td>ROE目標: 2031年度10%以上</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">2.42%</td><td>年84円(+10円増配予想・性向約37%)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">3,243〜4,211円</td><td>高値(1/13)から−17.6%・安値から+7.0%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    運賃改定という確実な増収と、コスト構造増・金利負担という確実な逆風が拮抗し、PER15倍はその綱引きの真ん中の値段。目標株価コンセンサス4,042円は現値の16%上だが、会社計画がコンセンサスの下にある間は上値の重さが続きやすい。<b>評価: 中立</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ</h2>
+  <div class="body">
+    グループ経営ビジョン<b>「勇翔2034」</b>(2025/7公表、2026/4に数値目標を上方更新)——<b>2031年度に営業収益4.3兆円程度・営業利益7,500億円程度・ROE10%以上</b>、2034年度に営業収益5兆円の成長軌道へ。<br><br>
+    柱は3つ: ①<b>生活ソリューション倍増</b>(2031年度に2023年度比で収益・利益2倍+上乗せ) ②<b>Suica Renaissance</b>——Suicaを決済・生活基盤に進化させ「Suica生活圏」を構築(Q1のIT・Suica収益+42.6%、決済取扱高1.24兆円) ③<b>羽田空港アクセス線</b>(東山手ルート2031年度開業目標で工事中)。高輪ゲートウェイシティも全面開業し賃貸収入が積み上がる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    今期は年84円へ<b>+10円増配予想</b>(性向約37%)。方針は<b>配当性向を2027年度に40%へ段階的引き上げ+柔軟な自己株式取得</b>(勇翔2034)。直近の自己株取得は株式報酬・株式交換目的の小規模のみで、還元目的の大型買付は未公表。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>運賃改定:</b> 2026/3実施(改定率7.1%・増収率5.0%)。通期+954億円の計画の土台<br>
+    ・<b>金利:</b> 有利子負債5兆3,022億円(平均金利1.75%)、Q1支払利息+16%。ネット有利子負債/EBITDA 5.8倍で利上げの逆風側<br>
+    ・<b>コスト:</b> 人件費(賃上げ)・修繕費(抑制解消)・動力費(+17.5%)の構造増<br>
+    ・<b>インバウンド・都心回帰:</b> 定期は改定効果で増収も、輸送量は通期−1.0%計画と構造減が続く
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>コンセンサスとの逆ねじれ:</b> 市場予想が会社計画の7%上。上方修正が出るまで「良い決算でも売られる」が続きうる<br>
+    ・<b>金利上昇:</b> 5.3兆円の負債は借換のたびに利払いが増える。不動産価値の評価にも効く<br>
+    ・<b>運賃改定の逸走:</b> 値上げによる利用減がまだ通年で観測されていない<br>
+    ・<b>不動産販売の期ずれ:</b> 通期1,000億円計画が下期偏重。案件遅延がそのまま未達に<br>
+    ・<b>強気材料の裏返し:</b> Suica経済圏・生活ソリューション倍増は投資が先行する計画。鉄道のコスト増と同時進行で、利益率の改善は後半にしか来ない
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: JR東日本 2027年3月期Q1決算短信・決算説明資料 2026/7/31(JPX/TDnet掲載原本) / 「勇翔2034」数値目標等の更新 2026/4/30 / 株探(株価・指標、2026/8/13終値) / 株予報Pro(コンセンサス)。<br>
+    ※2024/4/1付で1:3の株式分割——過去の株価は分割調整後。Q1営業CFは四半期非開示(取得不可)。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

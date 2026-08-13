@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JR東海(9022) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>JR東海 <span class="note">[9022] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">東海道新幹線</span> <span class="badge">3月期決算</span> <span class="badge">リニア建設中</span></div>
+  </div>
+  <div class="px">
+    <div class="v">3,833円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 4,830円(2026/2)から <b>-20.6%</b><br>(8/13終値 3,833円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    Q1(2026年4-6月)は営業収益4,927億円(+3.0%)・営業利益2,191億円(−0.9%)。<b>前年の大阪・関西万博効果の剥落(新幹線収入−4%相当)を国内+3%・インバウンド+2%で吸収</b>し、トップラインは増収を確保したが、人件費・修繕費(+16%)・システム経費の増で営業は微減益。経常が増益なのは<b>リニア建設資金の運用利息増(+29億円)</b>という金利上昇の受益側の顔を持つため。Q1経常はコンセンサスを<b>+9.6%上回り</b>、通期(−16%減益の保守計画)には上方修正観測が織り込まれている。<b>PER8.1倍・PBR0.70倍</b>は鉄道でも際立って低いが、これは<b>リニア総工事費11兆円(従来比+4兆円)・開業時期未定・配当性向6.8%</b>という3点セットの値段。200億円の自社株買いを完了・消却予定と、還元にはわずかに変化の兆しがある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/31発表・2027年3月期Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>営業収益</td><td class="num">4,927億円</td><td class="num up">+3.0%</td></tr>
+      <tr><td>営業利益</td><td class="num">2,191億円</td><td class="num down">−0.9%</td></tr>
+      <tr><td>経常利益</td><td class="num">2,085億円</td><td class="num up">+0.5%</td></tr>
+      <tr><td>純利益</td><td class="num">1,426億円</td><td class="num down">−1.8%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解</b><br>
+    ・東海道新幹線収入+1%の内訳: <b>万博効果の剥落−4%</b>を国内ビジネス・観光+3%と<b>インバウンド+2%</b>(Q1推計約490億円、+7%。利用の8割が欧米豪)で吸収。災害影響を除けば+2%相当と会社推計<br>
+    ・営業減益はコスト増: 人件費+5.1%(ベア)、<b>修繕費+16.1%</b>(労務単価上昇)、業務費+7.0%(システム経費)<br>
+    ・<b>経常増益の源は営業外</b>: リニア建設資金等の運用利息増+29億円——金利上昇がプラスに働く珍しい鉄道会社<br>
+    ・純利益には<b>防衛特別法人税の適用開始</b>という制度要因の税負担増<br>
+    ・営業利益率は44.5%と、単一路線の独占が生む世界屈指の収益性は健在
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期予想は据え置き: 営業収益1兆9,930億円(−0.7%)・営業利益<b>7,020億円(−15.4%)</b>・純利益4,470億円(−19.1%)。前期が万博・インバウンドで過去最高水準(営業8,301億円)だった反動+コスト増を織り込んだ保守計画。Q1進捗は営業31.2%と高い。<br><br>
+    <b>コンセンサスとの差:</b> Q1経常2,085億円はコンセンサス(1,902億円)を<b>+9.6%上回った</b>。据え置いた通期経常6,530億円は<b>コンセンサス比−7.3%</b>で、市場は上方修正を前提に見ている。それでも決算前後は6営業日続落(発表当日−4.5%・翌営業日−2.2%)と、保守的な据え置きが重しになった。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">8.1倍</td><td>鉄道大手で最低水準(<a class="xref" href="9020_jr_east.html">JR東日本</a>は15.3倍)</td></tr>
+      <tr><td>PBR</td><td class="num">0.70倍</td><td>営業利益率44%の会社が解散価値以下</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">0.83%</td><td>年32円(性向6.8%)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">3,202〜4,830円</td><td>高値(2/19)から−20.6%・安値から+19.7%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    世界屈指の収益性を持つ独占資産がPER8倍・PBR0.7倍——このディスカウントの理由は明確で、①リニア総工事費11兆円(2025/10に+4兆円上振れ)②開業時期未定 ③利益の9割超を建設に回す還元の薄さ、の3つ。裏を返せば、リニアの不確実性が一段でも減れば(静岡着工・開業時期の提示・値上げ実施)解消余地が大きい。Q1のコンセンサス上振れと自社株買い完了はその小さな一歩。<b>評価: 割安寄り</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・今後のテーマ(リニア中央新幹線)</h2>
+  <div class="body">
+    <b>リニア品川-名古屋の総工事費は11.0兆円</b>(2025/10公表。物価高騰+2.3兆・難工事+1.2兆・仕様深度化+0.4兆で従来7.04兆円から増額)。<b>開業時期は未定</b>(2027年開業は2024/3に断念。資金試算上の「2035年」は仮置きであり見通しではない、と会社が明記)。財政投融資3兆円は借入済みで、2035年度までの営業CF約6.6兆円+追加調達約2.4兆円(金利3%前提)で賄い「健全経営と安定配当を堅持できる」と試算する。<br><br>
+    <b>静岡工区に進展:</b> 2026/7/18に静岡県と自然環境保全協定を締結し、トンネル掘削の早期着手を目指す段階へ。山梨工区は本坑が品川方へ貫通済み。<br><br>
+    <b>東海道新幹線の単価引き上げも布石:</b> 個室「Supreme Class Cabin」2026年10月導入、半個室2027年度、「サービスに見合った価格の設定」を検討と明言——実質的な値上げ余地の示唆である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    年32円(性向6.8%)の「安定配当の堅持」が基本だが、<b>自己株式取得200億円を2026/7に完了、8/31に全株消却予定</b>(発行済の0.58%)。「業績上振れで資金に余裕が出た場合は還元拡充を検討」(2025/10)と、頑なだった還元姿勢に変化の兆しがある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>インバウンド:</b> 収入の1割強へ上昇。利用の8割が欧米豪で、為替・国際情勢の影響を受けやすい<br>
+    ・<b>金利:</b> 調達コスト増と建設資金の運用益増の両面。Q1は運用益が勝った<br>
+    ・<b>コスト:</b> 労務単価(修繕費+16%)・システム経費の増加が続く<br>
+    ・<b>制度:</b> 防衛特別法人税の適用開始で税負担増
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>リニア工事費の再上振れ:</b> 7兆→11兆円と一度倍近くに膨れた実績がある。次の増額は資金計画の前提を壊す<br>
+    ・<b>開業時期の不透明:</b> 静岡協定は前進だが、着工から開業まで10年級の工期が残る。投資負担だけが先行する期間が続く<br>
+    ・<b>東海道新幹線への依存:</b> 大規模災害・長期運休が唯一のドル箱を直撃する構造は変わらない<br>
+    ・<b>万博反動の実額:</b> 通期−15%計画の妥当性はQ2以降の実績次第。上方修正観測が外れれば失望<br>
+    ・<b>強気材料の裏返し:</b> 「割安の解消」はリニアの不確実性の低下が条件。逆に不確実性が増す材料(訴訟・工期延長)が出れば、PER8倍はさらに切り下がる
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/13</b> 初版作成。<br>
+    出典: JR東海 2027年3月期Q1決算短信・補足説明資料・決算説明会資料 2026/7/31(JPX/TDnet掲載原本) / 2026年3月期中間決算説明会資料(リニア総工事費11兆円・還元方針、2025/10/30) / 自己株式取得終了・消却 2026/7/22 / 株探(株価・指標、2026/8/13終値) / 株予報Pro(コンセンサス)。<br>
+    ※2023/10/1付で1:5の株式分割——過去の株価は分割調整後。Q1営業CFは四半期非開示(取得不可)。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
