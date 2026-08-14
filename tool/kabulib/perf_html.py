@@ -109,18 +109,24 @@ def build(store: Store, on: str | None = None) -> str:
             + '<div class="note-s" style="margin-top:8px">'
               '保有中の評価損益。⑩で逆指値を上げても、この線自体は動かない——'
               '動くのは「確保できている下限」の方。</div></div>')
-        # 口座資産は水準ではなく変化を見たいので 0 起点にしない
+        # 口座資産は水準ではなく変化を見たいので 0 起点にしない。
+        # 日記から補完したスナップショットは含み益しか分からず equity が無いので外す。
+        eq = [(s["date"], s["equity"]) for s in snaps if s.get("equity") is not None]
         parts.append('<div class="card"><h2>💰 口座資産の推移</h2>'
-                     + line_chart([(s["date"], s["equity"]) for s in snaps],
-                                  "口座資産", zero_based=False)
+                     + line_chart(eq, "口座資産", zero_based=False)
                      + '<div class="note-s" style="margin-top:8px">'
                        '記録を更新した日だけ点が打たれる。'
                        '毎日つけたいなら大引け後に <code class="tag">kabu price</code> を回す。</div></div>')
 
     if closed:
+        def _cell(v, fmt="{:,.1f}"):
+            """日記に数量・単価が残っていない取引がある。推測で埋めず「—」で出す。"""
+            return fmt.format(v) if v is not None else "—"
+
         rows = "".join(
             f'<tr><td>{html.escape(t["date"])}</td><td><b>{html.escape(t["name"])}</b></td>'
-            f'<td class="num">{t["qty"]}</td><td class="num">{t["price"]:,.1f}</td>'
+            f'<td class="num">{_cell(t.get("qty"), "{:,.0f}")}</td>'
+            f'<td class="num">{_cell(t.get("price"))}</td>'
             f'<td class="num {_cls(t["pl"])}">{_yen(t["pl"], True)}</td>'
             f'<td class="note-s">{html.escape(t.get("reason", ""))}</td></tr>'
             for t in reversed(closed))
