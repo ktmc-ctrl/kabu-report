@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大成建設(1801) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>大成建設 <span class="note">[1801] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">スーパーゼネコン</span> <span class="badge">3月期決算</span> <span class="badge">還元は4社で最厚</span></div>
+  </div>
+  <div class="px">
+    <div class="v">12,900円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 20,680円(2026/3)から <b>-37.6%</b><br>(8/13終値 12,900円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    スーパーゼネコン4社の一角。前期は各段階利益とも過去最高(営業+56.4%・ROE18.7%)で、Q1(2026年4-6月)も売上5,212億円(+18.4%)・営業利益453億円(+15.3%)とQ1過去最高を更新した。ただし増益の主因は<b>上期竣工の大型工事での物価スライド(価格転嫁)獲得</b>で、会社自身が「今後は転嫁が必要な金額自体が減る」と認める追い風の縮小局面にある。株主還元は4社で最も厚く、3年で自社株買い1,500億円を完了・消却し、今期から<b>年380円を下限とする下限付き配当性向40%</b>を導入。一方この銘柄は2025年11月に「AI・DCで脚光」と報じられ上場来高値まで買われたが、<b>IR資料にデータセンターの受注・実績の定量開示は一切ない</b>。株価は3月高値から−37.6%で年初来安値圏、予想PER13.9倍・PBR約2.2倍は4社で最も高い。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/6発表・2027年3月期 Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">5,212億円</td><td class="num up">+18.4%</td></tr>
+      <tr><td>営業利益</td><td class="num">453.2億円</td><td class="num up">+15.3%</td></tr>
+      <tr><td>純利益</td><td class="num">309.1億円</td><td class="num up">+4.8%</td></tr>
+      <tr><td>連結受注高</td><td class="num">4,759億円</td><td class="num down">−24.5%</td></tr>
+      <tr><td>手持工事高(単体)</td><td class="num">3兆2,923億円</td><td class="num up">+2.8%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解</b><br>
+    ・建築セグメント営業利益+199.1%(250億円)の主因は<b>上期竣工の大型工事での物価スライド獲得</b>。単体建築の完成工事利益率は9.1%→14.3%(+5.2pt)へ急改善。ただしこの追い風は「2026年度は価格転嫁が必要な金額自体が減少」(会社説明)——反復性は案件依存<br>
+    ・土木は−37.9%(前期の大型工事収支好転の反動)<br>
+    ・<b>東洋建設の連結化</b>(TOB約1,600億円=過去最大投資)が受注・売上を押し上げる一方、のれん等償却がQ1で34億円(年136億円×7年)営業利益を圧迫<br>
+    ・特別利益に投資有価証券売却益43.9億円。支払利息は6.6→14.7億円と金利負担が増加中<br>
+    ・工事損失引当金は753→682億円へ減少も、<b>不採算工事の完全解消は「2030年頃」</b>と会社が明言<br><br>
+    <b>受注−24.5%は前年Q1の品川駅西口A地区(京急)という一件性の超大型案件の反動</b>。用途別「事務所・庁舎」が3,289→373億円に落ちたのはほぼこれ。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期計画は据え置き: 売上2兆4,200億円(+15.8%)・<b>営業利益1,880億円(横ばい)</b>・純利益1,510億円(−11.2%)。純減益の内訳は金利負担−75億円・政策保有株売却益の減少−85億円・賃上げ税制終了−64億円で、本業外の逆風を織り込んだ形。Q1進捗は営業24.1%と順調。<br><br>
+    <b>コンセンサスとの差:</b> 経常コンセンサス1,930億円は会社計画(1,870億円)を3.2%上回る。前期は期中に3回上方修正を重ねた実績があり、市場はその再現を一部織り込む。決算当日(8/6)は+4.5%と買われたが<b>翌日−5.0%で全戻し</b>——上げを維持できない地合いが続く。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">13.9倍</td><td>4社で最も高い(鹿島13.1・大林13.3・清水 実力12.7)</td></tr>
+      <tr><td>PBR</td><td class="num">約2.2倍</td><td>4社で最も高い(他3社は1.6〜1.7倍)。ROE18.7%(前期)が支え</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">2.95%</td><td>年380円「下限」・性向40%(上振れ時は増額の明文方針)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">約12,445〜20,680円</td><td>高値(2026/3)から−37.6%。8/3に年初来安値</td></tr>
+      <tr><td>時価総額</td><td class="num">約2兆1,051億円</td><td>約1年で2.6倍→高値から4割弱調整</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    ROEと還元の厚さでプレミアム(PBR2.2倍)が付いた4社の筆頭格。ただし今期は営業横ばい・純減益計画で、利益率急改善を支えた物価スライドの追い風は縮小に向かう。プレミアムの根拠が「業績の伸び」から「還元の厚さ」へ移る端境期で、同業比では割高感が残る。<b>評価: やや割高</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>データセンター施工の位置づけ</h2>
+  <div class="body">
+    <b>短信・説明会資料・補足資料・データブック(計約140ページ)に「データセンター」という語は一度も登場しない。</b>受注の用途別区分にDCの独立項目もなく、受注額・件数・完工・パイプラインの定量開示は一切ない(取得不可)。産業別で最も近い「情報通信業」向け受注はQ1でわずか48億円だが、DC発注者は不動産業・電気ガス業に分類され得るため代理指標にもならない。<br><br>
+    中計の注力分野もリニューアル(前期受注3,136億円・過去最高)・エンジニアリング(医薬品・半導体)・海外・M&Aで、DCは名指しされていない。DC隣接で唯一の開示は<b>NeoSphere(レンドリース・ジャパンのテレコム・インフラ事業を譲受、2026/4連結)</b>だが、これは通信基地局建設のPM事業でありDC建屋の施工ではない。<br><br>
+    一方で株価は2025年11月に「AIで脚光の建設株」として上場来高値を更新した経緯があり、<b>テーマ買いの期待と会社の開示粒度の間に大きなギャップがある</b>。4社比較では、清水(口頭でDC受注1,500億円程度を開示)・大林(海外M&AでDCを数字化)・鹿島(定性+個別実績)に対し、大成は「開示ゼロ」——DCを理由にこの株を買うことは、開示で裏を取れないことを意味する。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・株主還元</h2>
+  <div class="body">
+    中計(2024-2026)の最終年度目標(営業1,200億円・ROE8.5%程度)は<b>大幅超過で走行中</b>(今期予想1,880億円・ROE15.4%)。長期のTAISEI VISION 2030は純利益1,500億円・単体建築粗利率15%(2030年度まで)。<br><br>
+    還元は4社で最も踏み込んでいる: 3年累計<b>1,500億円の自社株買いを完了・消却</b>(発行済1.83億株→1.63億株)、中長期に<b>1.4億株まで縮減する方針</b>を明示。直近3年の総還元性向67.3%。配当は年380円を「下限」とする下限付き性向40%を今期導入。政策保有株は2027年3月末までに純資産比20%未満へ(現在27.3%、872億円分が売却応諾済み)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>物価スライドの縮小:</b> 利益率急改善の主因だった価格転嫁は「必要な金額自体が減少」と会社が明言。受注時採算の改善余地も「限定的」<br>
+    ・<b>DC開示ゼロ:</b> AI・DCテーマで買われた株価に対し、裏を取れる開示がない。テーマ剥落時に最も検証不能なのがこの会社<br>
+    ・<b>金利上昇:</b> 東洋建設TOBで有利子負債4,470億円。通期の金融収支は−75億円悪化見込み<br>
+    ・<b>のれん償却:</b> 東洋建設ののれん等911億円、年136億円×7年の固定負担<br>
+    ・<b>不採算工事の残り:</b> 引当金残高682億円、完全解消は2030年頃<br>
+    ・<b>法務:</b> リニア談合の排除措置命令取消訴訟は地裁・高裁とも敗訴で上告中。2025年5月には従業員への課徴金納付命令勧告も<br>
+    ・<b>強気材料の裏返し:</b> PBR2.2倍の根拠は高ROEと還元だが、ROEの一部は政策保有株売却益(除くと約15%)。売却が完了する2027年3月以降、その押し上げは消える
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/14</b> 初版作成。<br>
+    出典: 大成建設 2027年3月期Q1決算短信 2026/8/6(<span class="note">ssl4.eir-parts.net/doc/1801/tdnet/2864209/00.pdf</span>) / Q1決算説明会資料・補足資料・受注実績 / 2026年3月期決算短信・説明会資料 2026/5/14 / アナリスト向け説明会 質疑応答 2026/5/26 / データブック2026 / NeoSphere(レンドリース・ジャパン事業譲受)リリース 2026/2/6 / 株探・日経(株価・指標、2026/8/13終値) / IFIS株予報(コンセンサス)。<br>
+    ※DC施工の定量値は会社が開示していないため存在しない(全140ページ超を確認)。52週安値の正確な日付・営業利益ベースのコンセンサスは取得不可。PBRは基準期の違いで2.2倍(株探)〜2.76倍(松井)の表示差がある。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
