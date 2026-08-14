@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日立製作所(6501) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>日立製作所 <span class="note">[6501] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">総合電機</span> <span class="badge">3月期決算・IFRS</span> <span class="badge">世界の変圧器の1/6</span> <span class="badge">受注残10.3兆円</span></div>
+  </div>
+  <div class="px">
+    <div class="v">5,767円</div>
+    <div class="note-s">2026/8/14 終値</div>
+    <div class="note-s">過去5年高値 6,039円(2026/2)から <b>-4.5%</b><br>(8/14終値 5,767円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    時価総額26兆円の総合電機。牽引役は<b>日立エナジー(旧ABBパワーグリッド)</b>で、世界の変圧器の約1/6・高電圧スイッチギアの約1/4を供給する送配電機器の世界首位。Q1(2026年4-6月)は売上2兆7,096億円(+20.0%)・Adjusted EBITA 3,235億円(+36.2%)といずれもQ1として過去最高、通期も4セグメント全てを上方修正した。最大の注目点は<b>日立エナジーの受注残高636億ドル(10.3兆円)——年間売上見通しの約2.7年分</b>で、Q1のパワーグリッド受注は<b>+94%</b>と売上の伸び(+35%)を大きく上回る。会社は成長の視界を「2030年まで」から<b>「2035年頃まで」へ延長したと明言</b>。一方で連結増益860億円のうち490億円(57%)は為替と一過性であり、株価はPER28.5倍・PBR3.9倍と期待を織り込んだ水準にある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/29発表・2027年3月期 Q1、IFRS)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上収益</td><td class="num">2兆7,096億円</td><td class="num up">+20.0%</td></tr>
+      <tr><td>調整後営業利益</td><td class="num">2,943億円</td><td class="num up">+39.5%</td></tr>
+      <tr><td>Adjusted EBITA</td><td class="num">3,235億円</td><td class="num up">+36.2%</td></tr>
+      <tr><td>Adj. EBITA率</td><td class="num">11.9%</td><td class="num up">+140bps</td></tr>
+      <tr><td>親会社株主帰属利益</td><td class="num">1,895億円</td><td class="num down">−1.4%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解(Adj. EBITA +860億円の内訳、会社開示)</b><br>
+    ・事業規模増他(実質) <b>+518億円</b><br>
+    ・<b>一過性影響 +255億円</b>(大口案件の計上時期スライド等) / <b>為替影響 +235億円</b><br>
+    ・コーポレート戦略投資 −78億円 / 中東情勢影響 −70億円<br>
+    → <b>増益の57%(490億円)は為替と一過性</b>。実質は+518億円<br><br>
+    <b>純利益が−1.4%と減った理由:</b> 前期にあった空調事業再編に伴う特別配当(約500億円)の反動で受取配当金が−451億円。事業の実勢ではない。<br><br>
+    <b>セグメント別 Adj. EBITA:</b> エナジー1,290億円(<b>+505億円</b>、利益率14.2%)、CI 834億円(+201億円)、DSS 855億円(+141億円)、モビリティ304億円(+87億円)。4セグメント全て増益。
+  </div>
+</div>
+
+<div class="card">
+  <h2>日立エナジー — 受注残2.7年分という数字</h2>
+  <div class="body">
+    このレポートの核心。エナジーセグメント(パワーグリッド+原子力)の中身:<br><br>
+  </div>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>エナジー 売上</td><td class="num">9,119億円</td><td class="num up">+37%</td></tr>
+      <tr><td>うちパワーグリッド 売上</td><td class="num">8,678億円</td><td class="num up">+35%</td></tr>
+      <tr><td><b>うちパワーグリッド 受注</b></td><td class="num"><b>18,716億円</b></td><td class="num up"><b>+94%</b></td></tr>
+      <tr><td>日立エナジー 売上(ドル)</td><td class="num">54.0億ドル</td><td class="num up">+22%</td></tr>
+      <tr><td><b>日立エナジー 受注残高</b></td><td class="num"><b>636億ドル(10.3兆円)</b></td><td class="num up">+10%(FY25末比)</td></tr>
+      <tr><td>= 年間売上見通しの</td><td class="num"><b>約2.7年分</b></td><td class="num">(236.5億ドル比)</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>受注が売上の3倍近い速さで積み上がっている。</b>会社は受注残を「売上収益の2.5〜3倍で安定推移する見通し」と説明しており、FY2030には約1,000億ドルを見込む(FY2020は約110億ドル)。<br><br>
+    <b>成長の視界が延びた(決算説明会での発言):</b><br>
+    <div class="box">「昨年までは2030年まで成長を見込むと説明していたが、現在は大型システムで<b>2030年を超える納期の案件</b>もあり、<b>2035年頃まで成長が続く</b>と認識している」</div>
+    <b>受注急増の主因はデータセンターではない。</b>会社説明では「欧州における複数の<b>大型HVDCプロジェクト</b>」が牽引役で、需要の源泉は電力系統そのものの更新・再エネ連系にある。市場見通しは2020→2050年で変圧器3倍・高圧スイッチギア3〜5倍・HVDC 4倍。<br><br>
+    <b>DC向けは「伸び率は突出、絶対額は非開示」:</b> FY2025のDC受注成長率150%以上、FY2024→FY2027で5倍を計画するが金額の開示はない(取得不可)。DC向けの本命技術である800Vラックアーキテクチャの実採用は業界予測で<b>2028年度頃から</b>、ソリッドステート変圧器は会社自身が「普及には長い時間を要する」としており、DCが数字を主導する局面はこれからである。
+  </div>
+</div>
+
+<div class="card">
+  <h2>増産投資 — 供給制約を自ら解きにいっている</h2>
+  <div class="body">
+    日立エナジーの投資プログラムは2020-2023の30億ドルに対し、<b>2024-2027は60億ドル超</b>(累計90億ドル超)。<b>世界40拠点以上</b>のブラウンフィールド/グリーンフィールド工場に投資中で、「収益性の確保された案件のみに投資」としている。<br><br>
+    <b>主な個別案件:</b><br>
+    ・米バージニア州South Boston — <b>4.57億ドル・825名超</b>。米国最大の大型電力用変圧器工場、2026/6/29起工(稼働時期は非開示)<br>
+    ・カナダ・ケベック州ヴァレンヌ — 2.7億カナダドル、<b>大型変圧器の製造能力を約3倍</b>、約500名新規雇用<br>
+    ・インド・グジャラート州カルジャン — INR 2,000 crore、<b>FY28末までに完成</b>。HVDC・AIデータセンター向けを明記<br>
+    ・フィンランド・ヴァーサに約30,000㎡の新工場、独Bad Honnef等<br><br>
+    連結CAPEXは通期6,700億円(+1,721億円)で、<b>うちエナジーが3,420億円(+28%)と完成ベースの59%</b>を占める。ただし能力拡大の物理量(台数・MVA)は非開示のため、供給制約がいつ解けるかは外部から検証できない(取得不可)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    <b>2026/7/29に4セグメント全てを上方修正:</b> 売上11兆1,000億→<b>11兆7,000億円</b>、Adjusted EBITA 1兆4,200億→<b>1兆5,200億円</b>、純利益8,500億→<b>9,000億円</b>、ROIC 12%→13%。<b>上方修正幅が最大なのはエナジー</b>(売上+3,600億円、Adj. EBITA+760億円)。<br><br>
+    Q1進捗は売上23.2%・Adj. EBITA 21.3%。会社は「Q2以降の売上成長率は1Qより低く見えるが、増収額ベースではQ2〜Q4でQ1の約3倍を見込む」と説明。為替前提はQ2-Q4で1ドル160円・1ユーロ185円と円安寄りで、<b>1円円高あたりドルで売上−110億円・Adj. EBITA−12億円</b>の感応度がある。<br><br>
+    <b>コンセンサスとの差:</b> 経常利益(税引前)コンセンサス1兆3,576億円は会社予想1兆3,350億円を+1.7%上回る。修正後の純利益9,000億円は発表時のQUICKコンセンサス8,859億円を上回った。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">28.5倍</td><td><a class="xref" href="6504_fujielectric.html">富士電機</a>19.4倍・ダイヘン20倍より一段高い</td></tr>
+      <tr><td>PBR(実績)</td><td class="num">3.91倍</td><td>ROE 12.9%(FY2025)</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">約0.95%</td><td>FY2026中に支払われる年55円ベース。<b>期末配当は「未定」</b>で会社予想利回りは算出不可</td></tr>
+      <tr><td>52週レンジ</td><td class="num">3,822〜6,039円</td><td>高値(2026/2/10)から−4.5%・安値(2025年9月)から+50.9%</td></tr>
+      <tr><td>時価総額</td><td class="num">26兆1,565億円</td><td>D/Eレシオ0.16倍</td></tr>
+      <tr><td>目標株価(IFIS)</td><td class="num">6,108円</td><td>現値から<b>+5.9%</b></td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    決算翌日+6.0%(出来高は通常の約2倍)、その後2週間で+16.3%と反応し、52週高値まで4.5%の位置に戻した。受注残2.7年分と2035年までの成長視界は本物だが、PER28.5倍・PBR3.9倍・目標株価まで+5.9%という組み合わせは、その良い話を相当程度織り込んだ水準である。増益の57%が為替と一過性である点も、額面の+36%をそのまま評価できない理由になる。<b>評価: やや割高</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・株主還元</h2>
+  <div class="body">
+    「Inspire 2027」のエナジー目標は2026年6月のInvestor Dayで<b>上方修正</b>済み: 日立エナジーのFY2027売上CAGRを13-15%→<b>19%</b>、Adj. EBITA率を13-15%→<b>15%+</b>、エナジーのROIC目標を約14%→<b>20%+</b>へ。FY2030 Ambitionは日立エナジー売上360億ドル・Adj. EBITA率16-20%。オペレーション効率化(ERP・サプライチェーン・AI活用)で2030年までに累計20億ドル以上の利益改善をコミットし、製造方式を受注生産から見込生産へ転換する。<br><br>
+    <b>還元はFY2026で約8,000億円</b>(FY2025の約5,500億円から+45%)。内訳は配当約2,500億円+<b>自社株買い5,500億円</b>。自社株買いは上限5,000億円・1億6,000万株の枠でQ1に1,479億円(進捗27%)を消化済み。配当は中間28円予想(前期23円)だが<b>期末は「未定」</b>で、配当性向の数値目標も開示されていない。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>受注残の遂行が律速:</b> 受注(+94%)が売上(+35%)を大きく上回る状態が続く。会社自身が「過去最大の受注残の遂行が成功の鍵」と位置づけており、増産が立ち上がらなければ受注は収益に変わらない。米South Boston工場は稼働時期非開示、インド新工場はFY28末完成で、能力の実効化は数年先<br>
+    ・<b>為替依存:</b> Q1増益860億円のうち235億円が為替。Q2-Q4は1ドル160円・1ユーロ185円の円安前提で、円高反転は上方修正の相当部分を吐き出す<br>
+    ・<b>中東情勢:</b> FY2025の中東売上は約4,700億円・従業員約2,900名(主にサウジ・UAE)で、<b>影響セクターはエナジー中心</b>——成長ドライバーと重なる。Q2-Q4に売上−100億円・Adj. EBITA−100億円を織り込み済み<br>
+    ・<b>長期請負の見積りリスク:</b> HVDCは5〜6年に及ぶ。EPCの建設(C)を自社スコープから外しインデックス連動条項で防御しているが、受注残の平均粗利率改善という前提が崩れれば14%台の利益率の土台が変わる<br>
+    ・<b>のれん:</b> Q1末2兆6,844億円で総資産の17.8%(日立エナジー・GlobalLogic・タレスGTS由来)。無形資産等の償却は通期1,120億円<br>
+    ・<b>キャッシュフロー:</b> 通期コアFCFは9,000億円と前期比−2,702億円。会社説明は「大口前受金影響 約−3,400億円」——前受金の剥落に加えCAPEXが+1,721億円増える<br>
+    ・<b>強気材料の裏返し:</b> 世界40拠点で増産しているのは日立だけではない。国内でも<a class="xref" href="6508_meidensha.html">明電舎</a>(変圧器1.5倍)・<a class="xref" href="6622_daihen.html">ダイヘン</a>(2倍)・<a class="xref" href="6617_tktk.html">東光高岳</a>(約1.5倍)・<a class="xref" href="6504_fujielectric.html">富士電機</a>が同時に能力を増やしており、<b>2028〜2030年頃に各社の能力が出揃えば、いまの納期逼迫が作っている価格決定力は薄れる</b>。会社の「2035年まで成長」は需要が供給増を上回り続けるという前提に立った主張である
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/14</b> 初版作成。<br>
+    出典: 日立製作所 2027年3月期Q1決算短信〔IFRS〕2026/7/29(<span class="note">hitachi.com/.../2026_1Q.pdf</span>) / 同 決算説明資料(<span class="note">2026_1Qpre.pdf</span>) / 決算説明会Q&A要旨(<span class="note">0729_summary.pdf</span>) / 補足資料(<span class="note">2026_1Qsup.xlsx</span>) / Hitachi Investor Day 2026「エナジー事業戦略」2026/6/10 / 2026年3月期決算説明資料 2026/4/27 / 日立エナジー各プレスリリース(変圧器増産投資) / 株探・松井証券・日経(株価・指標、2026/8/14終値) / IFIS株予報(コンセンサス・目標株価)。<br>
+    ※依頼時に想定した「グリーンエナジー&モビリティ」セグメントは現存せず、現行はDSS/エナジー/モビリティ/CI/その他の5区分(日立エナジーはエナジーのパワーグリッド事業)。DC受注の絶対額、変圧器の能力拡大の物理量(台数・MVA)、South Boston工場の稼働時期、Adj. EBITAベースのコンセンサスはいずれも非開示のため取得不可。期末配当が「未定」のため予想配当利回りは会社予想ベースでは算出できず、年55円ベースの参考値を記載した。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

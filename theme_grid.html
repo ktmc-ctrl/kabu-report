@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>特集: 電力系統というボトルネック</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<style>
+.grd .cmp { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:12px 0; }
+@media (max-width:560px){ .grd .cmp { grid-template-columns:1fr; } }
+.grd .cmp-card { border:1px solid var(--border); border-radius:10px; padding:12px 14px; background:var(--surface-1); }
+.grd .cmp-card.hot { border-color:var(--pos); border-width:2px; }
+.grd .cmp-card.cold { border-color:var(--alt); border-width:2px; }
+.grd .cmp-card h3 { font-size:0.82rem; margin-bottom:8px; }
+.grd .cmp-card .big { font-size:1.5rem; font-weight:700; line-height:1.2; }
+.grd .cmp-card .big.pos { color:var(--pos); }
+.grd .cmp-card .big.alt { color:var(--alt); }
+.grd .cmp-card .lbl { font-size:0.68rem; color:var(--text-muted); margin-bottom:2px; }
+.grd .cmp-card p { font-size:0.73rem; color:var(--text-secondary); line-height:1.75; margin-top:8px; }
+.grd .tier { border-left:3px solid var(--border); padding:4px 0 4px 12px; margin:12px 0; }
+.grd .tier h3 { font-size:0.8rem; margin-bottom:4px; }
+.grd .tier p { font-size:0.74rem; color:var(--text-secondary); line-height:1.8; }
+.grd .tier.t1 { border-left-color:var(--pos); }
+.grd .tier.t2 { border-left-color:var(--aqua); }
+.grd .tier.t3 { border-left-color:var(--alt); }
+</style>
+
+<div class="grd">
+
+<div class="head">
+  <div>
+    <h1>⚡ 変圧器2.7年待ち <span class="note">— 電力系統というボトルネック</span></h1>
+    <div class="subtitle">データセンターが建たない理由は、土地でも金でもなく「電気を運ぶ設備」だった ・ 2026/8/14</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>この特集の視点</h2>
+  <div class="body">
+    2026年、データセンター建設の律速は<b>電力系統</b>に移った。テキサス州のERCOTには<b>約474GW</b>の接続要請が積み上がり(同州の過去最高需要の5倍超、うち約90%がDC)、州知事は2026年8月3日、接続手続き中の全DC案件の監査を指示した。BNEFの試算では<b>49.8GW——米国パイプラインの約20%</b>が遅延しうる。<br><br>
+    足りないのは発電所だけではない。変圧器・開閉装置・HVDCといった<b>電気を運ぶ設備そのもの</b>が世界的に不足している。この特集は、その供給制約が誰の収益になっているのかを受注残という一つの物差しで測る。そして<b>「変圧器メーカー」を一括りにできない</b>ことを示す。
+  </div>
+</div>
+
+<div class="card">
+  <h2>受注残で測る — 同じ「変圧器」でも桁が違う</h2>
+  <div class="cmp">
+    <div class="cmp-card hot">
+      <div class="lbl">日立エナジー(<a class="xref" href="6501_hitachi.html">日立製作所</a>)の受注残</div>
+      <div class="big pos">2.7年分</div>
+      <p>636億ドル(10.3兆円)。年間売上見通し236.5億ドルに対する倍率。Q1のパワーグリッド受注は<b>+94%</b>で、売上の伸び(+35%)を大きく上回る。会社は成長の視界を「2030年まで」から<b>「2035年頃まで」へ延長</b>したと明言。</p>
+    </div>
+    <div class="cmp-card cold">
+      <div class="lbl">愛知電機 電力機器の受注残</div>
+      <div class="big alt">約1.0か月分</div>
+      <p>32.9億円。年間売上380億円に対する比率は8.7%。受注高は<b>+0.8%</b>と横ばい。会社は納期逼迫について<b>一言も述べていない</b>。Q1の変圧器売上は<b>−4.5%の減収</b>(大型+120.9%を小型−32.2%・中型−28.0%が打ち消した)。</p>
+    </div>
+  </div>
+  <div class="body">
+    同じ「変圧器を作る会社」でこの差が出る理由ははっきりしている。<b>逼迫しているのは大型・超高圧・HVDCという電力系統側の設備であって、配電用の小型・中型変圧器ではない。</b>愛知電機は会社自身が小型・中型の「取替需要が一巡した」と説明しており、伸びているのは送配電会社向けの大型のみ。<br><br>
+    <span class="warn"><b>この特集の実用的な結論はここにある。</b></span>「変圧器が足りない」というニュースを国内の変圧器関連銘柄すべてに当てはめるのは誤りで、受注残という物差しを当てると層がはっきり分かれる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>需要の源泉はデータセンターではない</h2>
+  <div class="body">
+    ここが見落とされやすい。日立エナジーのQ1受注が+94%と伸びた主因は、会社説明では<b>「欧州における複数の大型HVDCプロジェクト」</b>——洋上風力の連系や国際連系線といった、電力系統そのものの更新投資である。<br><br>
+    DC向けは<b>伸び率は突出しているが絶対額が非開示</b>(FY2025の成長率150%以上、FY2024→FY2027で5倍計画)。DC向けの本命技術である800Vラックアーキテクチャの実採用は業界予測で<b>2028年度頃から</b>で、ソリッドステート変圧器は会社自身が「普及には長い時間を要する」としている。<br><br>
+    <div class="box">
+      <b>これは投資判断上むしろ重要な事実である。</b>この層の需要はDC投資が減速しても消えない。再エネ連系、送電網の老朽更新、電化の進展という別の柱が需要を支えている。市場見通しは2020→2050年で<b>変圧器3倍・高圧スイッチギア3〜5倍・HVDC 4倍</b>。
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>層別の整理</h2>
+
+  <div class="tier t1">
+    <h3>① 大型・超高圧・HVDC — 本物の逼迫</h3>
+    <p>電力系統の基幹設備。受注残2.7年分の世界。参入障壁が高く、認証・実績・長納期の管理能力が要る。<b><a class="xref" href="6501_hitachi.html">日立製作所</a></b>(世界の変圧器の1/6、高圧スイッチギアの1/4、HVDC連系175GW超でいずれも世界首位)が代表格。国内勢では<b><a class="xref" href="6508_meidensha.html">明電舎</a></b>(沼津に160億円投じ変圧器1.5倍)、<b><a class="xref" href="6617_tktk.html">東光高岳</a></b>(特別高圧受変電、生産能力約1.5倍へ)、<b><a class="xref" href="6504_fujielectric.html">富士電機</a></b>(受変電〜UPS一貫、DC向け売上年1,000億円を明言)が特別高圧・大型の領域にいる。</p>
+  </div>
+
+  <div class="tier t2">
+    <h3>② 電気を運ぶ導体 — 送電線・ケーブル</h3>
+    <p>変圧器だけでは電気は届かない。<b><a class="xref" href="5802_sumitomo_electric.html">住友電気工業</a></b>は電力ケーブルと日新電機(2023年に完全子会社化、受変電設備)を持つが、Q1の環境エネルギー事業の増益要因は会社説明で「銅価格上昇により」——<b>数量成長ではなく市況要因</b>である点は分解して見る必要がある(銅価は1,424→2,220千円/t、+55.9%)。同社の実力は情報通信(DC向け光)側にある。<b><a class="xref" href="5803_fujikura.html">フジクラ</a></b>・<b><a class="xref" href="5801_furukawa.html">古河電気工業</a></b>も光・電力の両面で関わる。</p>
+  </div>
+
+  <div class="tier t3">
+    <h3>③ 配電・中小型 — 逼迫していない層</h3>
+    <p>柱上変圧器や配電用の中小型。ここは電力会社の設備投資計画に完全依存し、取替需要のサイクルで動く。<b>愛知電機</b>(名証プレミア)は受注残1か月分・受注+0.8%で逼迫の痕跡がなく、株価上昇の実体はAI用パッケージ基板コア(設備投資は変圧器の約5倍を投下)。<b><a class="xref" href="6622_daihen.html">ダイヘン</a></b>は柱上変圧器で国内トップ級だが、Q1受注+46.5%の牽引役は蓄電所EMS・RF電源であり、変圧器能力2倍への増産は進行中。<b><a class="xref" href="6516_sanyo_denki.html">山洋電気</a></b>はUPS・ファンでDCサーバー側に近い。</p>
+  </div>
+</div>
+
+<div class="card">
+  <h2>全員が増産している — 2028〜2030年の論点</h2>
+  <div class="body">
+    いまの高い利益率は<b>納期が2年待ちであること</b>が作っている。だが各社は揃ってその制約を自ら解きにいっている。
+  </div>
+  <div class="scroll-x">
+  <table>
+    <thead><tr><th>会社</th><th>増産の中身</th><th>完成・稼働</th></tr></thead>
+    <tbody>
+      <tr><td><b>日立エナジー</b></td><td>累計<b>90億ドル超</b>(2024-27で60億ドル超)、<b>世界40拠点以上</b>。ケベック工場は大型変圧器の能力<b>約3倍</b>、米バージニアに4.57億ドルの米国最大工場</td><td>インド新工場はFY28末。米国は稼働時期非開示</td></tr>
+      <tr><td><a class="xref" href="6508_meidensha.html">明電舎</a></td><td>沼津に160億円、変圧器<b>1.5倍</b></td><td>—</td></tr>
+      <tr><td><a class="xref" href="6622_daihen.html">ダイヘン</a></td><td>変圧器能力<b>2倍</b>へ</td><td>進行中</td></tr>
+      <tr><td><a class="xref" href="6617_tktk.html">東光高岳</a></td><td>生産能力<b>約1.5倍</b>へ増強</td><td>—</td></tr>
+      <tr><td><a class="xref" href="6504_fujielectric.html">富士電機</a></td><td>神戸工場+マレーシア・豪州・タイ</td><td>神戸は4Qから寄与</td></tr>
+      <tr><td>愛知電機</td><td>トップランナー変圧器の新ライン(27億円)</td><td>2026年9月・10月</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="body" style="margin-top:8px">
+    <b>2028〜2030年頃に各社の能力が出揃う。</b>納期が正常化した時点で、いま価格決定力を生んでいる希少性は薄れる。日立の「2035年まで成長」という見立ては、需要の伸びが供給増を上回り続けるという前提に立った主張であり、確定した未来ではない。<br><br>
+    なおこの点は施工側(電気工事)との決定的な違いでもある。<b>変圧器は工場を建てれば増やせるが、電気工事の職人は増やせない。</b>供給制約の持続性という意味では、後者の方が構造的に固い。
+  </div>
+</div>
+
+<div class="card">
+  <h2>関連銘柄一覧</h2>
+  <div class="scroll-x">
+  <table>
+    <thead><tr><th>コード</th><th>銘柄</th><th class="num">株価</th><th class="num">5年高値から</th><th>層</th><th>この特集での位置づけ</th></tr></thead>
+    <tbody>
+      <tr><td>6501</td><td><b><a class="xref" href="6501_hitachi.html">日立製作所</a></b></td><td class="num">5,767</td><td class="num">−4.5%</td><td>①</td><td>受注残2.7年分。世界の変圧器の1/6。需要の主因はHVDC</td></tr>
+      <tr><td>6508</td><td><a class="xref" href="6508_meidensha.html">明電舎</a></td><td class="num">11,880</td><td class="num">−0.8%</td><td>①</td><td>変電機器+保守。沼津160億で1.5倍増産。ほぼ高値圏</td></tr>
+      <tr><td>6617</td><td><a class="xref" href="6617_tktk.html">東光高岳</a></td><td class="num">7,680</td><td class="num">−13.2%</td><td>①</td><td>特高受変電がDC特需。TEPCO向け49%の集中</td></tr>
+      <tr><td>6504</td><td><a class="xref" href="6504_fujielectric.html">富士電機</a></td><td class="num">14,970</td><td class="num">−15.9%</td><td>①</td><td>受変電〜UPS一貫。DC向け売上年1,000億円を明言</td></tr>
+      <tr><td>5802</td><td><a class="xref" href="5802_sumitomo_electric.html">住友電気工業</a></td><td class="num">2,161</td><td class="num">—</td><td>②</td><td>電力ケーブル+日新電機。ただしQ1増益は銅価要因</td></tr>
+      <tr><td>5803</td><td><a class="xref" href="5803_fujikura.html">フジクラ</a></td><td class="num">5,580</td><td class="num">—</td><td>②</td><td>光ファイバ・電力。DC内外の配線</td></tr>
+      <tr><td>5801</td><td><a class="xref" href="5801_furukawa.html">古河電気工業</a></td><td class="num">3,952</td><td class="num">—</td><td>②</td><td>光・電力ケーブル</td></tr>
+      <tr><td>6622</td><td><a class="xref" href="6622_daihen.html">ダイヘン</a></td><td class="num">13,980</td><td class="num">−29.4%</td><td>③</td><td>柱上変圧器で国内トップ級だが牽引役は蓄電所EMS・RF電源</td></tr>
+      <tr><td>6516</td><td><a class="xref" href="6516_sanyo_denki.html">山洋電気</a></td><td class="num">5,930</td><td class="num">−24.7%</td><td>③</td><td>UPS・ファン。DCサーバー側</td></tr>
+      <tr><td>6623</td><td>愛知電機<span class="note">(名証プレミア)</span></td><td class="num">9,340</td><td class="num">−4.1%</td><td>③</td><td>受注残1か月分。<b>実体はAI用パッケージ基板コア</b>。レポート未作成</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note-s" style="margin-top:6px">株価は2026/8/13終値(日立は8/14終値)。「—」は5年高値の集計対象外。愛知電機はレポート未作成のため参考値。</div>
+</div>
+
+<div class="card">
+  <h2>この見立てのリスク(裏返し)</h2>
+  <div class="body">
+    ・<b>株価は既に織り込んでいる:</b> ゼネコン4社が5年高値から3〜4割安に沈む一方、この層は日立−4.5%・<a class="xref" href="6508_meidensha.html">明電舎</a>−0.8%・愛知電機−4.1%と高値圏に留まる。市場のローテーションは完了している。日立の目標株価コンセンサスは現値から+5.9%しかない<br>
+    ・<b>増産の一斉立ち上がり:</b> 前掲のとおり2028〜2030年に能力が出揃う。希少性が消えた時に何が残るか<br>
+    ・<b>受注残は「遂行できて初めて収益」:</b> 日立自身が「過去最大の受注残の遂行が成功の鍵」としている。受注が積み上がっても売上化しなければ意味がない<br>
+    ・<b>利益の質:</b> 日立のQ1増益860億円のうち<b>490億円(57%)は為替と一過性</b>。円高転換は上方修正の相当部分を吐き出す<br>
+    ・<b>規制が需要側を止める可能性:</b> テキサスの監査、ニューヨーク州の50MW超許可停止、12州以上のモラトリアム提案。接続キューの膨張が規制を招いており、需要過剰と供給停止は同じ事実の裏表<br>
+    ・<b>地政学:</b> 日立エナジーの中東エクスポージャーは売上約4,700億円・従業員約2,900名で、影響セクターは成長ドライバーと重なる
+  </div>
+</div>
+
+<div class="card">
+  <h2>出典・更新履歴</h2>
+  <div class="body">
+    <b>2026/8/14</b> 初版作成。<br>
+    出典: <a class="xref" href="6501_hitachi.html">日立製作所</a> 2027年3月期Q1決算短信・決算説明資料・質疑応答要旨(2026/7/29)、Hitachi Investor Day 2026「エナジー事業戦略」(2026/6/10)、日立エナジー各プレスリリース / 愛知電機 2027年3月期Q1決算短信(2026/7/31)・第117期有価証券報告書・中期経営計画2028 / <a class="xref" href="5802_sumitomo_electric.html">住友電気工業</a> 2027年3月期Q1決算短信・決算説明補足資料(2026/7) / テキサス州知事のDC監査指示(2026/8/3、Holland & Knight・Texas Tribune)、BNEF試算(POWER Magazine) / 各社決算資料は個別レポートの更新履歴に記載。<br>
+    ※日立エナジーのDC受注の絶対額、変圧器の能力拡大の物理量(台数・MVA)、米South Boston工場の稼働時期はいずれも非開示のため取得不可。日新電機(旧6641)は2023年4月に上場廃止し<a class="xref" href="5802_sumitomo_electric.html">住友電工</a>の完全子会社となっており、単独の四半期開示は存在しない。
+  </div>
+</div>
+
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
