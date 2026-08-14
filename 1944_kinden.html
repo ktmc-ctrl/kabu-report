@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>きんでん(1944) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>きんでん <span class="note">[1944] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">電気設備工事(関電系)</span> <span class="badge">3月期決算</span> <span class="badge">発行済16.9%を消却</span></div>
+  </div>
+  <div class="px">
+    <div class="v">6,920円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 8,580円(2026/3)から <b>-19.3%</b><br>(8/13終値 6,920円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    <a class="xref" href="9503_kansai_electric.html">関西電力</a>系の電気設備工事最大手。Q1(2026年4-6月)は完成工事高1,624億円(+14.8%)・<b>営業利益136億円(+89.0%)</b>と急伸し、粗利率は19.7%→22.7%へ3.0pt改善した。増益に資産売却などの一過性はなく、ほぼ全てが工事採算の改善。単体の手持工事高は<b>7,597億円(+22.3%)</b>と年間売上を上回る水準まで積み上がっている。資本政策も大きく動き、4-6月に<b>発行済の16.9%・2,237億円の自社株TOBを実施して全量消却</b>、さらに今期は特別配当100円を含む年240円配当(利回り3.5%)を予想する。株価は3月高値から−19.3%、予想PER16.2倍。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/29発表・2027年3月期 Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>完成工事高</td><td class="num">1,623.7億円</td><td class="num up">+14.8%</td></tr>
+      <tr><td>営業利益</td><td class="num">136.0億円</td><td class="num up">+89.0%</td></tr>
+      <tr><td>純利益</td><td class="num">98.9億円</td><td class="num up">+127.6%</td></tr>
+      <tr><td>受注工事高(単体)</td><td class="num">3,101.8億円</td><td class="num up">+16.3%</td></tr>
+      <tr><td>手持工事高(単体)</td><td class="num">7,597.2億円</td><td class="num up">+22.3%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解</b><br>
+    ・営業増益+64.1億円は<b>ほぼ全て完成工事総利益の増加(+90.0億円、粗利率19.7%→22.7%)</b>。特別利益はQ1で0.1億円のみで、投資有価証券や不動産の売却益は入っていない<br>
+    ・粗利率は通期でも2024年度18.8% → 2025年度23.6%と段階的に改善しており、Q1の22.7%はその延長線上。ただし改善の内訳(価格転嫁か案件ミックスか)の定量開示はない(取得不可)<br><br>
+    <b>工事種別(単体受注):</b> 一般電気工事2,226億円(+26.5%、事務所ビル・商業施設)、環境関連(空調衛生)368億円(+60.9%)、配電工事238億円(+9.2%、<a class="xref" href="9503_kansai_electric.html">関西電力</a>送配電の工事量増)。一方<b>電力その他は−62.1%</b>——前年Q1に発・変電所の大型受注281億円の山があった反動。海外受注は144億円へ半減。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期計画は据え置き: 売上8,100億円(+7.9%)・<b>営業利益970億円(+7.5%)</b>・純利益700億円(+0.8%)。Q1進捗率は営業14.0%と低く見えるが、完工が下期に偏る建設業の季節性による。<br><br>
+    <b>コンセンサスとの差:</b> IFISコンセンサスは営業利益<b>1,043億円で会社計画を約7.6%上回る</b>。据え置きのままだと期待比では未達方向になる構図。単体の通期受注計画6,800億円は前期実績7,222億円より低く置かれている点も、期待側が先行しているサイン。<br><br>
+    <b>弘電社(1948)のTOB</b>が7月に成立し関連会社化済み(連結子会社化予定)。連結業績への影響は「精査中」で未織り込み。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">16.2倍</td><td>会社予想EPS 406.46円ベースの機械計算では17.0倍</td></tr>
+      <tr><td>PBR</td><td class="num">2.63倍</td><td>16.9%消却でBPSが3,340→2,632円に低下した後の値</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">3.47%</td><td>年240円。うち<b>100円は中計達成の特別配当</b>——来期は剥落し得る</td></tr>
+      <tr><td>52週レンジ</td><td class="num">6,451〜8,580円</td><td>高値(2026/3)から−19.3%・安値(6/4)から+7.3%</td></tr>
+      <tr><td>時価総額</td><td class="num">1兆1,521億円</td><td></td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    利回り3.5%は特別配当込みで、普通配当ベースでは約2.0%。PER16倍は<a class="xref" href="1942_kandenko.html">関電工</a>(16.9倍)と同水準で、電工セクターの再評価が進んだ後の値段。手持工事7,600億円と粗利率改善は実力だが、コンセンサスが会社計画の8%上に置かれており、上方修正が出ないと期待剥落が起きやすい。<b>評価: 中立</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>データセンター・保守の位置づけ</h2>
+  <div class="body">
+    <b>DC:</b> 会社の開示区分に「データセンター」は存在せず、<b>DC専業の受注・売上は開示がない(取得不可)</b>。DCを含みうる区分では、一般電気工事の「事務所ビル」受注が972億円(+24.5%)、施主業種別で不動産業+98.1%・サービス業+57.1%、環境関連工事の事務所ビル受注が前年の約12倍(254億円)と急増しているが、これをDCと結びつける会社説明はない。<br><br>
+    <b>ストック収益:</b> こちらは太い。<b>配電工事(ほぼ全て<a class="xref" href="9503_kansai_electric.html">関西電力</a>送配電向け)は年703億→739億→771億→808億円と毎年安定成長</b>し、今期840億円を計画。<a class="xref" href="9503_kansai_electric.html">関西電力</a>+グループ向けは単体完工の約22%を占める。加えて<b>リニューアル(更新)工事は2025年度完工2,436億円(個別完工の約40%)</b>、今期予想2,690億円と拡大中。Q1のRN完工は+33.4%。電力インフラの保守・更新という「切れない仕事」が業績の土台にある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・資本政策</h2>
+  <div class="body">
+    中計「Sustainable Growth 2026」(2021〜2026年度、今期が最終年度)。成長Visionの売上7,000億円・営業利益500億円は<b>2024年度に2年前倒しで達成</b>済み。ROE目標7%以上に対し、2024年度8.1% → 2025年度11.0% → 今期予想<b>12.3%</b>。<br><br>
+    資本政策が今期の主役: 発行済16.9%の自社株TOB(2,237億円、1株6,677円)+全量消却で発行済株式数は2.0億株→1.66億株へ。取得資金は短期借入2,454億円で賄い、<b>自己資本比率は72.4%→49.9%へ低下</b>。政策保有株式は純資産比10%目安へ縮減継続中。株主還元は2023〜2026年度総額で配当性向40%・総還元性向50〜60%目安。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>関電依存:</b> 個別完工の約22%が<a class="xref" href="9503_kansai_electric.html">関西電力</a>(送配電含む)+グループ向け。配電のストックは単一顧客に依存する<br>
+    ・<b>大型電力工事の反動:</b> 電力その他受注−62.1%。通期受注計画自体が前期比減で、フローの伸びは今期鈍る計画<br>
+    ・<b>特別配当の剥落:</b> 年240円のうち100円は中計達成記念。来期に普通配当(140円)へ戻れば利回りは2.0%に低下する<br>
+    ・<b>財務レバレッジ:</b> 自社株TOBで短期借入2,454億円・自己資本比率49.9%。金利上昇局面では調達コストが効いてくる<br>
+    ・<b>期待先行:</b> コンセンサスが会社計画の+7.6%上。上方修正が出ない四半期は失望が出やすい<br>
+    ・<b>強気材料の裏返し:</b> 粗利率22.7%は建設需給の逼迫(受注採算の改善)が前提。都市再開発・工場投資が冷えれば採算から先に剥がれる
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/14</b> 初版作成。<br>
+    出典: きんでん 2027年3月期Q1決算短信 2026/7/29(<span class="note">kinden.co.jp/pdf/2026-07-29_2.pdf</span>) / 決算補足説明資料「業績ご参考」(<span class="note">kinden.co.jp/pdf/2026-07-29_1.pdf</span>) / 中期経営計画における資本政策について 2026/1/29(<span class="note">kinden.co.jp/pdf/2026-01-29_2.pdf</span>) / 株探・松井証券(株価・指標、2026/8/13終値) / 株予報Pro(IFISコンセンサス)。<br>
+    ※きんでんは決算説明会を開催しておらず質疑応答要旨は存在しない。粗利率改善の要因分解・DC向け受注は開示がなく取得不可。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

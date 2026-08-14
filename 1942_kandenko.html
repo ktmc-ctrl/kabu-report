@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>関電工(1942) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>関電工 <span class="note">[1942] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">電気設備工事(東電系)</span> <span class="badge">3月期決算</span> <span class="badge">DC受注が受注の1割超</span></div>
+  </div>
+  <div class="px">
+    <div class="v">5,504円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 7,460円(2026/5)から <b>-26.2%</b><br>(8/13終値 5,504円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    東京電力系の電気設備工事大手。Q1(2026年4-6月)は完成工事高1,580億円(−4.5%)と減収ながら、工事採算の改善(粗利率15.2%→18.1%)で<b>営業利益197億円(+12.8%)</b>を確保した。単体の新規受注は2,462億円(+11.2%)で、うち<b>データセンター向けが273億円(+30.6%)</b>——屋内線受注の16.9%を占めるまで拡大しており、電工セクターの中でDC寄与を数字で開示している数少ない会社である。通期営業利益900億円(+8.3%)に対しQ1進捗21.9%と順調で、コンセンサス(経常979億円)は会社計画をさらに8%上回る。株価は5月高値から−26.2%、予想PER16.9倍。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/31発表・2027年3月期 Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>完成工事高</td><td class="num">1,580.4億円</td><td class="num down">−4.5%</td></tr>
+      <tr><td>営業利益</td><td class="num">197.2億円</td><td class="num up">+12.8%</td></tr>
+      <tr><td>純利益</td><td class="num">131.9億円</td><td class="num up">+4.2%</td></tr>
+      <tr><td>新規受注高(単体)</td><td class="num">2,462.5億円</td><td class="num up">+11.2%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解</b><br>
+    ・営業増益+22.4億円の源泉は<b>減収下での工事採算改善(粗利率+2.9pt、完成工事総利益+34.8億円)</b>。特別利益は今期0.2億円のみで、前年同期には固定資産売却益4.8億円があった——つまり一過性はむしろ前年側にあり、実質増益率は見かけより高い<br>
+    ・純利益が+4.2%と伸びが鈍いのは特別利益の剥落と税金増のため<br><br>
+    <b>部門別(単体):</b> 受注は屋内線・環境設備が1,615億円(+22.9%)と急伸し、事務所・庁舎+51.1%、工場+76.6%、DC+30.6%。完工は屋内線が−16.6%(施工能力の律速)で、配電線+8.4%、工務関係(送電・発変電)+32.7%が下支え。東京電力グループ向けは完工の30.6%へ上昇(前年26.8%)。過去5年のQ1営業利益は58.5億→67.7億→103.5億→174.8億→197.2億円と一本調子で切り上がっている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期計画は据え置き: 売上7,800億円(+5.1%)・<b>営業利益900億円(+8.3%)</b>・純利益650億円(+2.3%)。Q1進捗率は営業21.9%(上期計画比では45.6%)と順調。単体の通期受注計画は8,090億円(+10.6%)で、Q1で既に30.4%を消化した。<br><br>
+    <b>コンセンサスとの差:</b> IFISコンセンサスは経常利益<b>979億円で会社計画(905億円)を約8%上回る</b>(営業利益ベースのコンセンサスは取得不可)。決算当日(7/31)は場中発表に出来高4倍で−2.2%と売りが先行したが、その後は値を戻している。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">16.9倍</td><td><a class="xref" href="1944_kinden.html">きんでん</a>(16.2倍)と同水準</td></tr>
+      <tr><td>PBR</td><td class="num">2.86倍</td><td>ROE 16.8%(2025年度)が支える</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">2.35%</td><td>年130円予想(性向40%程度)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">3,735〜7,460円</td><td>高値(2026/5)から−26.2%・安値から+47.4%</td></tr>
+      <tr><td>時価総額</td><td class="num">1兆1,368億円</td><td>3年で株価約6倍</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    3年で6倍まで買われた後、高値から4分の1強の調整。PER17倍・ROE16%・進捗順調という現在地は過熱でも割安でもない。1月末に東電PGによる最大1,500億円の売出しが実施済みで、需給の重石は一巡した形。<b>評価: 中立</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>データセンター・保守の位置づけ</h2>
+  <div class="body">
+    <b>DC(数字で開示している):</b> 単体屋内線のDC新規受注はQ1で52.5億→83.3億→67.6億→209.1億→<b>273.0億円</b>と5年で5倍。DC完成工事高も135.0億円(+41.0%)。中計では情報通信部門の「データセンター工事の重点展開」、DC・半導体向けエンジニアリング機能強化、さらに<b>「小規模データセンター向けO&Mサービスの検討」</b>を明記しており、施工だけでなく運用・保守への展開を模索している。<br><br>
+    <b>ストック収益:</b> 保守・メンテナンス単独の開示はない(取得不可)が、代理指標は太い。<b>配電線工事(実質的に東電PGの保守・更新)はQ1完工366億円(+8.4%)、通期1,340億円計画で単体完工の27%</b>。東電PGのレベニューキャップ制度に基づく設備投資計画が中期の需要を下支えする。屋内線でも<b>リニューアル工事が完工の53.5%</b>を占め、新築一本足ではない。再エネO&M・遠隔設備保全サービスの拡大も中計の柱。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・株主還元</h2>
+  <div class="body">
+    中計(2024〜2026年度)は前倒し達成により<b>最終年度目標を引き上げ済み</b>: 売上7,160→7,800億円、営業利益670→900億円、ROE 10%超→<b>16%程度</b>。2025年度実績はROE 16.8%と既に到達している。政策保有株式は3年で300億円縮減。<br><br>
+    還元は<b>配当性向40%程度</b>で年130円予想(前期124円)。自社株買いは2026年2月に東電PG売出しに伴い約300億円(539万株)を実施済み。中計のキャッシュアロケーションは配当590億円+自己株取得300億円。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>東電依存:</b> 連結完工の30.6%が東電グループ向けで、比率は上昇中。東電の投資計画・財務事情の影響を受ける<br>
+    ・<b>施工能力の律速:</b> Q1は屋内線完工−16.6%。受注が積めても人手が完工を制約する構造で、労務費高騰も続く<br>
+    ・<b>DC投資の反動:</b> DC受注はQ1受注の11%まで育った。裏返せば、AI・DC投資が減速したときの受注インパクトはもう小さくない<br>
+    ・<b>需給:</b> 東電PGは売出し後も33.4%以上を保有。追加売却の可能性は否定されていない<br>
+    ・<b>期待先行:</b> コンセンサスが会社計画の8%上。修正が出ない場合の失望リスク
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/14</b> 初版作成。<br>
+    出典: 関電工 2027年3月期Q1決算短信 2026/7/31(<span class="note">kandenko.co.jp/ir/settled-account/</span>) / Q1決算参考資料(部門別・建物用途別内訳) / 2024-2026年度中期経営計画 2026/4/28改訂版 / 株主・投資家との対話の実施状況 2026/7/1 / 株探・松井証券(株価・指標、2026/8/13終値) / IFIS株予報(コンセンサス) / 日経(東電PG売出し・自社株買い報道)。<br>
+    ※Q1は決算説明会非開催のため質疑応答要旨なし。保守・メンテナンス収益の独立開示はなく、配電線工事・リニューアル比率を代理指標として記載。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

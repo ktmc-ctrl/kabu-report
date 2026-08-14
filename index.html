@@ -164,7 +164,7 @@
 <body class="viz-root">
 <script>
 /* 旧形式の共有リンク(全レポート内包時代の #ハッシュ)を個別ページへ流す */
-var FILES = {"7011": "7011_mhi.html", "7203": "7203_toyota.html", "6758": "6758_sony.html", "6367": "6367_daikin.html", "7974": "7974_nintendo.html", "9684": "9684_squareenix.html", "3402": "3402_toray.html", "4063": "4063_shinetsu.html", "4182": "4182_mgc.html", "5802": "5802_sumitomo_electric.html", "5803": "5803_fujikura.html", "5801": "5801_furukawa.html", "5706": "5706_mitsui_kinzoku.html", "5016": "5016_jx_metals.html", "6920": "6920_lasertec.html", "6857": "6857_advantest.html", "285A": "285A_kioxia.html", "9984": "9984_softbankg.html", "8058": "8058_mitsubishi_corp.html", "8031": "8031_mitsui.html", "8267": "8267_aeon.html", "9301": "9301_mitsubishi_logistics.html", "8306": "8306_mufg.html", "8316": "8316_smfg.html", "8411": "8411_mizuho.html", "9432": "9432_ntt.html", "4755": "4755_rakuten.html", "9503": "9503_kansai_electric.html", "9508": "9508_kyushu_electric.html", "9502": "9502_chubu_electric.html", "9506": "9506_tohoku_electric.html", "9509": "9509_hokkaido_electric.html", "6508": "6508_meidensha.html", "6617": "6617_tktk.html", "5838": "5838_rakuten_bank.html", "7182": "7182_yucho_bank.html", "4689": "4689_lineyahoo.html", "9434": "9434_softbank_kk.html", "6866": "6866_hioki.html", "6516": "6516_sanyo_denki.html", "6905": "6905_cosel.html", "5344": "5344_maruwa.html", "5310": "5310_toyotanso.html", "6622": "6622_daihen.html", "6890": "6890_ferrotec.html", "4043": "4043_tokuyama.html", "4004": "4004_resonac.html", "4061": "4061_denka.html", "4186": "4186_tok.html", "6861": "6861_keyence.html", "9020": "9020_jr_east.html", "9022": "9022_jr_central.html", "7832": "7832_bandainamco.html", "8136": "8136_sanrio.html", "9697": "9697_capcom.html", "9602": "9602_toho.html", "9468": "9468_kadokawa.html", "4816": "4816_toei_animation.html", "7267": "7267_honda.html", "7201": "7201_nissan.html", "7269": "7269_suzuki.html", "7270": "7270_subaru.html", "7261": "7261_mazda.html", "7202": "7202_isuzu.html", "6902": "6902_denso.html", "7259": "7259_aisin.html", "theme-dc": "theme_datacenter.html", "theme-power": "theme_power.html", "theme-fintech": "theme_fintech.html", "theme-semi": "theme_semi_materials.html", "theme-chem": "theme_chemicals.html", "theme-eff": "theme_efficiency.html", "theme-ip": "theme_ip.html", "theme-auto": "theme_auto.html"};
+var FILES = {"7011": "7011_mhi.html", "7203": "7203_toyota.html", "6758": "6758_sony.html", "6367": "6367_daikin.html", "7974": "7974_nintendo.html", "9684": "9684_squareenix.html", "3402": "3402_toray.html", "4063": "4063_shinetsu.html", "4182": "4182_mgc.html", "5802": "5802_sumitomo_electric.html", "5803": "5803_fujikura.html", "5801": "5801_furukawa.html", "5706": "5706_mitsui_kinzoku.html", "5016": "5016_jx_metals.html", "6920": "6920_lasertec.html", "6857": "6857_advantest.html", "285A": "285A_kioxia.html", "9984": "9984_softbankg.html", "8058": "8058_mitsubishi_corp.html", "8031": "8031_mitsui.html", "8267": "8267_aeon.html", "9301": "9301_mitsubishi_logistics.html", "8306": "8306_mufg.html", "8316": "8316_smfg.html", "8411": "8411_mizuho.html", "9432": "9432_ntt.html", "4755": "4755_rakuten.html", "9503": "9503_kansai_electric.html", "9508": "9508_kyushu_electric.html", "9502": "9502_chubu_electric.html", "9506": "9506_tohoku_electric.html", "9509": "9509_hokkaido_electric.html", "6508": "6508_meidensha.html", "6617": "6617_tktk.html", "5838": "5838_rakuten_bank.html", "7182": "7182_yucho_bank.html", "4689": "4689_lineyahoo.html", "9434": "9434_softbank_kk.html", "6866": "6866_hioki.html", "6516": "6516_sanyo_denki.html", "6905": "6905_cosel.html", "5344": "5344_maruwa.html", "5310": "5310_toyotanso.html", "6622": "6622_daihen.html", "6890": "6890_ferrotec.html", "4043": "4043_tokuyama.html", "4004": "4004_resonac.html", "4061": "4061_denka.html", "4186": "4186_tok.html", "6861": "6861_keyence.html", "9020": "9020_jr_east.html", "9022": "9022_jr_central.html", "7832": "7832_bandainamco.html", "8136": "8136_sanrio.html", "9697": "9697_capcom.html", "9602": "9602_toho.html", "9468": "9468_kadokawa.html", "4816": "4816_toei_animation.html", "7267": "7267_honda.html", "7201": "7201_nissan.html", "7269": "7269_suzuki.html", "7270": "7270_subaru.html", "7261": "7261_mazda.html", "7202": "7202_isuzu.html", "6902": "6902_denso.html", "7259": "7259_aisin.html", "1969": "1969_takasago.html", "1944": "1944_kinden.html", "1942": "1942_kandenko.html", "1959": "1959_kraftia.html", "6744": "6744_nohmi.html", "6504": "6504_fujielectric.html", "6674": "6674_gsyuasa.html", "6845": "6845_azbil.html", "theme-dc": "theme_datacenter.html", "theme-power": "theme_power.html", "theme-fintech": "theme_fintech.html", "theme-semi": "theme_semi_materials.html", "theme-chem": "theme_chemicals.html", "theme-eff": "theme_efficiency.html", "theme-ip": "theme_ip.html", "theme-auto": "theme_auto.html", "theme-dcops": "theme_dcops.html"};
 function goLegacy() {
   var id = location.hash.slice(1);
   if (id && FILES[id]) location.replace(FILES[id]);
@@ -177,7 +177,7 @@ window.addEventListener('hashchange', goLegacy);
   <div class="brand">📚 銘柄レポート ライブラリ</div>
 </div>
 
-<div class="subtitle">決算説明資料・中期経営計画・バリュエーションを1銘柄1ページに整理 ・ 全66銘柄 ・ 2026/8/13時点</div>
+<div class="subtitle">決算説明資料・中期経営計画・バリュエーションを1銘柄1ページに整理 ・ 全74銘柄 ・ 2026/8/14時点</div>
 
   <label class="theme-lead" for="q" style="margin-top:2px">さがす</label>
   <input class="search" id="q" type="search" placeholder="銘柄名・コード・セクター・キーワード" oninput="filter(this.value)" autocomplete="off">
@@ -185,14 +185,15 @@ window.addEventListener('hashchange', goLegacy);
   <div class="seg" role="tablist" aria-label="表示の切り替え">
     <button id="tab-sector" class="on" role="tab" aria-selected="true" onclick="setGroup('sector')">セクター別</button>
     <button id="tab-val" role="tab" aria-selected="false" onclick="setGroup('val')">割安・割高別</button>
-    <button id="tab-themes" role="tab" aria-selected="false" onclick="setGroup('themes')">特集 <small>8</small></button>
+    <button id="tab-themes" role="tab" aria-selected="false" onclick="setGroup('themes')">特集 <small>9</small></button>
   </div>
 
   <div id="grp-sector">
     <div class="chips" id="chips-sector">
-<button data-pick="電力・重電" onclick="pick('sector', this.dataset.pick)">電力・重電 <small>8</small></button>
+<button data-pick="電力・重電" onclick="pick('sector', this.dataset.pick)">電力・重電 <small>9</small></button>
+<button data-pick="建設・設備工事" onclick="pick('sector', this.dataset.pick)">建設・設備工事 <small>5</small></button>
 <button data-pick="重工・機械・自動車" onclick="pick('sector', this.dataset.pick)">重工・機械・自動車 <small>11</small></button>
-<button data-pick="電機・エンタメ" onclick="pick('sector', this.dataset.pick)">電機・エンタメ <small>13</small></button>
+<button data-pick="電機・エンタメ" onclick="pick('sector', this.dataset.pick)">電機・エンタメ <small>15</small></button>
 <button data-pick="素材・化学" onclick="pick('sector', this.dataset.pick)">素材・化学 <small>8</small></button>
 <button data-pick="電線・非鉄" onclick="pick('sector', this.dataset.pick)">電線・非鉄 <small>5</small></button>
 <button data-pick="半導体" onclick="pick('sector', this.dataset.pick)">半導体 <small>5</small></button>
@@ -258,6 +259,53 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-px">13,980<small>円 ・ 8/13</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
         <div class="tile-sum">Q1受注+46.5%(蓄電所EMS・RF電源過去最高)で過去最高の実質増益。柱上変圧器61%とRF電源40%の二枚看板、変圧器能力2倍へ増産中。PER20倍は穏当だが値動き荒い。10/1に1:5分割</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="6504_fujielectric.html" data-q="6504 富士電機 6504 電力・重電 中立 Q1営業+38.3%・受注+27%。DC向け売上年1,000億円を会社が明言。通期1,565億円へ上方修正しコンセンサス超え、翌日+12.5%。公取委立入検査が注視点" aria-label="富士電機のレポートを開く">
+        <div class="tile-top"><span class="tile-name">富士電機</span><span class="tile-code">6504</span></div>
+        <div class="tile-px">14,970<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">Q1営業+38.3%・受注+27%。DC向け売上年1,000億円を会社が明言。通期1,565億円へ上方修正しコンセンサス超え、翌日+12.5%。公取委立入検査が注視点</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+    </div>
+    </div>
+    <div class="sec-block" data-name="建設・設備工事">
+    <div class="sector-h" data-group>建設・設備工事</div>
+    <div class="grid">
+      <a class="tile" href="1969_takasago.html" data-q="1969 高砂熱学工業 1969 建設・設備工事 中立 Q1営業−16.2%は前年大型案件の反動で、粗利率22.5%はQ1過去最高。繰越4,332億(+12.2%)、リニューアル受注比率82.6%。通期最高益計画にコンセンサスはさらに+7%" aria-label="高砂熱学工業のレポートを開く">
+        <div class="tile-top"><span class="tile-name">高砂熱学工業</span><span class="tile-code">1969</span></div>
+        <div class="tile-px">4,270<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">Q1営業−16.2%は前年大型案件の反動で、粗利率22.5%はQ1過去最高。繰越4,332億(+12.2%)、リニューアル受注比率82.6%。通期最高益計画にコンセンサスはさらに+7%</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="1944_kinden.html" data-q="1944 きんでん 1944 建設・設備工事 中立 Q1営業+89.0%(粗利率+3.0pt、一過性なし)。手持工事7,597億(+22.3%)。発行済16.9%の自社株TOB+消却、特別配当込み年240円。コンセンサスは計画の+7.6%上" aria-label="きんでんのレポートを開く">
+        <div class="tile-top"><span class="tile-name">きんでん</span><span class="tile-code">1944</span></div>
+        <div class="tile-px">6,920<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">Q1営業+89.0%(粗利率+3.0pt、一過性なし)。手持工事7,597億(+22.3%)。発行済16.9%の自社株TOB+消却、特別配当込み年240円。コンセンサスは計画の+7.6%上</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="1942_kandenko.html" data-q="1942 関電工 1942 建設・設備工事 中立 Q1営業+12.8%(減収下で工事採算改善)。DC受注273億(+30.6%)が屋内線受注の17%。配電線=東電PG保守が完工の27%を占める土台。進捗21.9%と順調" aria-label="関電工のレポートを開く">
+        <div class="tile-top"><span class="tile-name">関電工</span><span class="tile-code">1942</span></div>
+        <div class="tile-px">5,504<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">Q1営業+12.8%(減収下で工事採算改善)。DC受注273億(+30.6%)が屋内線受注の17%。配電線=東電PG保守が完工の27%を占める土台。進捗21.9%と順調</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="1959_kraftia.html" data-q="1959 クラフティア(旧九電工) 1959 建設・設備工事 中立 Q1営業−3.3%は空調大型案件の期ズレ。受注+16.1%・手持5,280億。電工大手で最も低いPER14.6倍だが、宇久島メガソーラー遅延の採算懸念を会社自身が明記" aria-label="クラフティア(旧九電工)のレポートを開く">
+        <div class="tile-top"><span class="tile-name">クラフティア(旧九電工)</span><span class="tile-code">1959</span></div>
+        <div class="tile-px">8,272<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">Q1営業−3.3%は空調大型案件の期ズレ。受注+16.1%・手持5,280億。電工大手で最も低いPER14.6倍だが、宇久島メガソーラー遅延の採算懸念を会社自身が明記</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="6744_nohmi.html" data-q="6744 能美防災 6744 建設・設備工事 中立 Q1黒字転換(前年は低採算物件で赤字)。受注残1,131億(+20.3%)。消防法の年2回点検による保守ストックが売上26%・利益率21.7%。セコムが議決権52%を保有" aria-label="能美防災のレポートを開く">
+        <div class="tile-top"><span class="tile-name">能美防災</span><span class="tile-code">6744</span></div>
+        <div class="tile-px">4,485<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">Q1黒字転換(前年は低採算物件で赤字)。受注残1,131億(+20.3%)。消防法の年2回点検による保守ストックが売上26%・利益率21.7%。セコムが議決権52%を保有</div>
         <div class="go">レポートを見る →</div>
       </a>
     </div>
@@ -436,6 +484,20 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-px">2,822<small>円 ・ 8/13</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
         <div class="tile-sum">Q1営業はQ1として過去最高だが増益はほぼDB海外配信と円安。中国は契約金額減少。通期−19%の保守計画に対しコンセンサスは+33%上。VISION2030でIP投資2,000億円</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="6674_gsyuasa.html" data-q="6674 GSユアサ 6674 電機・エンタメ 中立 Q1営業+39.3%で上方修正も、計画はなおコンセンサス−9%で翌日−10.1%。産業電池電源はQ1減益。北米AIDC向けUPS電池は受注40〜50億円規模で立ち上がり" aria-label="GSユアサのレポートを開く">
+        <div class="tile-top"><span class="tile-name">GSユアサ</span><span class="tile-code">6674</span></div>
+        <div class="tile-px">5,612<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">Q1営業+39.3%で上方修正も、計画はなおコンセンサス−9%で翌日−10.1%。産業電池電源はQ1減益。北米AIDC向けUPS電池は受注40〜50億円規模で立ち上がり</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="6845_azbil.html" data-q="6845 アズビル 6845 電機・エンタメ やや割高 Q1受注+28.5%も事業利益−30.1%(投資先行)。既設・サービスがBA受注の35%というストック型。上場来高値の翌日−9.9%。PER22.2倍" aria-label="アズビルのレポートを開く">
+        <div class="tile-top"><span class="tile-name">アズビル</span><span class="tile-code">6845</span></div>
+        <div class="tile-px">1,572.5<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="vb hi">やや割高</span></div>
+        <div class="tile-sum">Q1受注+28.5%も事業利益−30.1%(投資先行)。既設・サービスがBA受注の35%というストック型。上場来高値の翌日−9.9%。PER22.2倍</div>
         <div class="go">レポートを見る →</div>
       </a>
     </div>
@@ -718,8 +780,8 @@ window.addEventListener('hashchange', goLegacy);
   <div id="grp-val" style="display:none">
     <div class="chips" id="chips-val">
 <button data-pick="割安" onclick="pick('val', this.dataset.pick)">割安 <small>8</small></button>
-<button data-pick="中立" onclick="pick('val', this.dataset.pick)">中立 <small>31</small></button>
-<button data-pick="割高" onclick="pick('val', this.dataset.pick)">割高 <small>21</small></button>
+<button data-pick="中立" onclick="pick('val', this.dataset.pick)">中立 <small>38</small></button>
+<button data-pick="割高" onclick="pick('val', this.dataset.pick)">割高 <small>22</small></button>
 <button data-pick="評価難" onclick="pick('val', this.dataset.pick)">評価難 <small>6</small></button>
     </div>
     <div class="sec-block" data-name="割安">
@@ -785,7 +847,7 @@ window.addEventListener('hashchange', goLegacy);
     </div>
     </div>
     <div class="sec-block" data-name="中立">
-    <div class="sector-h val mid" data-group>中立 <span class="cnt">31銘柄</span></div>
+    <div class="sector-h val mid" data-group>中立 <span class="cnt">38銘柄</span></div>
     <div class="bdesc">指標面に大きな歪みはなく、業績見通しとおおむね整合的な水準</div>
     <div class="grid">
       <a class="tile" href="6758_sony.html" data-q="6758 ソニーグループ 6758 電機・エンタメ 中立 Q1営業利益+40%で過去最高、通期1.72兆円へ上方修正。熊本地震の影響は通期予想に未反映。タムロン買収提案" aria-label="ソニーグループのレポートを開く">
@@ -1005,10 +1067,59 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-sum">Q1営業−23.6%(中国−49%・中東−109億)で当日−11.7%。電動ユニット+35.4%と転換は進行。発行済9%の自社株買い+消却+政策保有ゼロ方針という踏み込んだ資本改革</div>
         <div class="go">レポートを見る →</div>
       </a>
+      <a class="tile" href="1969_takasago.html" data-q="1969 高砂熱学工業 1969 建設・設備工事 中立 Q1営業−16.2%は前年大型案件の反動で、粗利率22.5%はQ1過去最高。繰越4,332億(+12.2%)、リニューアル受注比率82.6%。通期最高益計画にコンセンサスはさらに+7%" aria-label="高砂熱学工業のレポートを開く">
+        <div class="tile-top"><span class="tile-name">高砂熱学工業</span><span class="tile-code">1969</span></div>
+        <div class="tile-px">4,270<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">建設・設備工事</span></div>
+        <div class="tile-sum">Q1営業−16.2%は前年大型案件の反動で、粗利率22.5%はQ1過去最高。繰越4,332億(+12.2%)、リニューアル受注比率82.6%。通期最高益計画にコンセンサスはさらに+7%</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="1944_kinden.html" data-q="1944 きんでん 1944 建設・設備工事 中立 Q1営業+89.0%(粗利率+3.0pt、一過性なし)。手持工事7,597億(+22.3%)。発行済16.9%の自社株TOB+消却、特別配当込み年240円。コンセンサスは計画の+7.6%上" aria-label="きんでんのレポートを開く">
+        <div class="tile-top"><span class="tile-name">きんでん</span><span class="tile-code">1944</span></div>
+        <div class="tile-px">6,920<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">建設・設備工事</span></div>
+        <div class="tile-sum">Q1営業+89.0%(粗利率+3.0pt、一過性なし)。手持工事7,597億(+22.3%)。発行済16.9%の自社株TOB+消却、特別配当込み年240円。コンセンサスは計画の+7.6%上</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="1942_kandenko.html" data-q="1942 関電工 1942 建設・設備工事 中立 Q1営業+12.8%(減収下で工事採算改善)。DC受注273億(+30.6%)が屋内線受注の17%。配電線=東電PG保守が完工の27%を占める土台。進捗21.9%と順調" aria-label="関電工のレポートを開く">
+        <div class="tile-top"><span class="tile-name">関電工</span><span class="tile-code">1942</span></div>
+        <div class="tile-px">5,504<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">建設・設備工事</span></div>
+        <div class="tile-sum">Q1営業+12.8%(減収下で工事採算改善)。DC受注273億(+30.6%)が屋内線受注の17%。配電線=東電PG保守が完工の27%を占める土台。進捗21.9%と順調</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="1959_kraftia.html" data-q="1959 クラフティア(旧九電工) 1959 建設・設備工事 中立 Q1営業−3.3%は空調大型案件の期ズレ。受注+16.1%・手持5,280億。電工大手で最も低いPER14.6倍だが、宇久島メガソーラー遅延の採算懸念を会社自身が明記" aria-label="クラフティア(旧九電工)のレポートを開く">
+        <div class="tile-top"><span class="tile-name">クラフティア(旧九電工)</span><span class="tile-code">1959</span></div>
+        <div class="tile-px">8,272<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">建設・設備工事</span></div>
+        <div class="tile-sum">Q1営業−3.3%は空調大型案件の期ズレ。受注+16.1%・手持5,280億。電工大手で最も低いPER14.6倍だが、宇久島メガソーラー遅延の採算懸念を会社自身が明記</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="6744_nohmi.html" data-q="6744 能美防災 6744 建設・設備工事 中立 Q1黒字転換(前年は低採算物件で赤字)。受注残1,131億(+20.3%)。消防法の年2回点検による保守ストックが売上26%・利益率21.7%。セコムが議決権52%を保有" aria-label="能美防災のレポートを開く">
+        <div class="tile-top"><span class="tile-name">能美防災</span><span class="tile-code">6744</span></div>
+        <div class="tile-px">4,485<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">建設・設備工事</span></div>
+        <div class="tile-sum">Q1黒字転換(前年は低採算物件で赤字)。受注残1,131億(+20.3%)。消防法の年2回点検による保守ストックが売上26%・利益率21.7%。セコムが議決権52%を保有</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="6504_fujielectric.html" data-q="6504 富士電機 6504 電力・重電 中立 Q1営業+38.3%・受注+27%。DC向け売上年1,000億円を会社が明言。通期1,565億円へ上方修正しコンセンサス超え、翌日+12.5%。公取委立入検査が注視点" aria-label="富士電機のレポートを開く">
+        <div class="tile-top"><span class="tile-name">富士電機</span><span class="tile-code">6504</span></div>
+        <div class="tile-px">14,970<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">電力・重電</span></div>
+        <div class="tile-sum">Q1営業+38.3%・受注+27%。DC向け売上年1,000億円を会社が明言。通期1,565億円へ上方修正しコンセンサス超え、翌日+12.5%。公取委立入検査が注視点</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="6674_gsyuasa.html" data-q="6674 GSユアサ 6674 電機・エンタメ 中立 Q1営業+39.3%で上方修正も、計画はなおコンセンサス−9%で翌日−10.1%。産業電池電源はQ1減益。北米AIDC向けUPS電池は受注40〜50億円規模で立ち上がり" aria-label="GSユアサのレポートを開く">
+        <div class="tile-top"><span class="tile-name">GSユアサ</span><span class="tile-code">6674</span></div>
+        <div class="tile-px">5,612<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">電機・エンタメ</span></div>
+        <div class="tile-sum">Q1営業+39.3%で上方修正も、計画はなおコンセンサス−9%で翌日−10.1%。産業電池電源はQ1減益。北米AIDC向けUPS電池は受注40〜50億円規模で立ち上がり</div>
+        <div class="go">レポートを見る →</div>
+      </a>
     </div>
     </div>
     <div class="sec-block" data-name="割高">
-    <div class="sector-h val hi" data-group>割高 <span class="cnt">21銘柄</span></div>
+    <div class="sector-h val hi" data-group>割高 <span class="cnt">22銘柄</span></div>
     <div class="bdesc">指標が過去比・同業比で高位。将来の成長期待の織り込みが進んでいる</div>
     <div class="grid">
       <a class="tile" href="7011_mhi.html" data-q="7011 三菱重工業 7011 重工・機械・自動車 割高圏 Q1事業利益+65%・純利益+97%。受注7兆円・FCF6,000億円へ上方修正。GTCC・防衛が牽引も一過性約250億円を含む" aria-label="三菱重工業のレポートを開く">
@@ -1158,6 +1269,13 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-sum">Q1営業+67%・コンセンサス+40%上振れで翌日+19.8%。販売の89%がカタログのストック型で進捗49.5%。為替前提140円は保守的だが期待も先行</div>
         <div class="go">レポートを見る →</div>
       </a>
+      <a class="tile" href="6845_azbil.html" data-q="6845 アズビル 6845 電機・エンタメ やや割高 Q1受注+28.5%も事業利益−30.1%(投資先行)。既設・サービスがBA受注の35%というストック型。上場来高値の翌日−9.9%。PER22.2倍" aria-label="アズビルのレポートを開く">
+        <div class="tile-top"><span class="tile-name">アズビル</span><span class="tile-code">6845</span></div>
+        <div class="tile-px">1,572.5<small>円 ・ 8/13</small></div>
+        <div style="margin-top:6px"><span class="secchip">電機・エンタメ</span></div>
+        <div class="tile-sum">Q1受注+28.5%も事業利益−30.1%(投資先行)。既設・サービスがBA受注の35%というストック型。上場来高値の翌日−9.9%。PER22.2倍</div>
+        <div class="go">レポートを見る →</div>
+      </a>
     </div>
     </div>
     <div class="sec-block" data-name="評価難">
@@ -1249,6 +1367,11 @@ window.addEventListener('hashchange', goLegacy);
   <a class="theme-btn" href="theme_auto.html">
     <div class="tt">🚗 自動車 全体マップ — 完成車・部品と関税の序列</div>
     <div class="td">Q1決算で見えた構図: 増益の大半は為替と関税緩和で、実力の改善は1〜2割。関税はスズキ無風〜いすゞ29%まで序列があり、稼ぎ頭は二輪・金融・HEV部品という「クルマ以外」。豊田自動織機非公開化を軸にしたトヨタ系資本再編まで、関連9銘柄で整理</div>
+    <div class="tg">マップを開く →</div>
+  </a>
+  <a class="theme-btn" href="theme_dcops.html">
+    <div class="tt">🔧 データセンターは「建てた後」が長い — 保守・運用の銘柄マップ</div>
+    <div class="td">建設は1回、運用は20〜30年。消防法・電気事業法・フロン法の法定点検とUPS電池5〜9年交換という「AIが儲かるかに依存しない需要」を、電気・冷却・電源・防災・監視の5層で整理。関連19銘柄</div>
     <div class="tg">マップを開く →</div>
   </a>
   </div>

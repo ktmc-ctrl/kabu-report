@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アズビル(6845) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>アズビル <span class="note">[6845] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">ビルオートメーション国内首位級</span> <span class="badge">3月期決算</span> <span class="badge">今期からIFRS</span></div>
+  </div>
+  <div class="px">
+    <div class="v">1,572.5円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 1,760円(2026/8/6)から <b>-10.7%</b><br>(8/13終値 1,572.5円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    ビルの空調制御・中央監視(ビルオートメーション)で国内首位級。建物に一度入れば改修・保守で長く稼ぐ「既設・サービス」型のビジネスが強み。Q1(2026年4-6月)は<b>受注高1,153億円(+28.5%)</b>と絶好調な一方、<b>事業利益は49.6億円(−30.1%)</b>と大幅減益——前年の好採算案件の反動と研究開発・人件費などの先行投資増が重なった。営業利益−4.8%に見えるのは固定資産売却益19.8億円が入っているためで、実態は事業利益の方。通期計画(事業利益482億円、+3.8%)は据え置き、会社は「期初想定の範囲内」とする。決算発表当日に上場来高値1,760円を付けた直後、<b>翌日−9.9%の急落</b>。受注の強さより利益の弱さに市場が反応した。予想PER22.2倍。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/6発表・2027年3月期 Q1、IFRS初適用)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>受注高</td><td class="num">1,153.4億円</td><td class="num up">+28.5%</td></tr>
+      <tr><td>売上収益</td><td class="num">636.8億円</td><td class="num up">+2.0%</td></tr>
+      <tr><td>事業利益</td><td class="num">49.6億円</td><td class="num down">−30.1%</td></tr>
+      <tr><td>営業利益</td><td class="num">67.4億円</td><td class="num down">−4.8%</td></tr>
+      <tr><td>純利益</td><td class="num">50.9億円</td><td class="num up">+1.5%</td></tr>
+      <tr><td>受注残高</td><td class="num">1,998億円</td><td class="num up">+17.8%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解</b><br>
+    ・<b>営業利益には有形固定資産売却益19.8億円が入っている</b>(前年同期は0.5億円)。これを除くと営業ベースでも事業利益並みの実質減益。純利益+1.5%も為替差益など投資収益の増加による<br>
+    ・事業利益−21億円の要因(会社説明・定性): 前年の好採算案件の反動、研究開発・DX・海外への成長投資、半導体向け設備の減価償却増、人件費・外注費増。金額内訳は開示なし(取得不可)。為替の寄与は事業利益+2億円と軽微<br><br>
+    <b>セグメント別:</b> BA(ビル)は受注+31.4%——大型案件に加え<b>既設分野が+65%強</b>と急伸(受注増加額の約4割)。利益は17.1億円(−33.8%)。AA(工場向け計装)は半導体製造装置向けが回復し受注+32.8%、利益32.5億円(−25.0%)。LA(ライフライン)は銅高・人件費でセグメント利益がほぼ消失(0.2億円)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <div class="body">
+    通期計画は据え置き: 売上収益3,150億円(+5.4%)・<b>事業利益482億円(+3.8%)</b>・純利益353億円(−3.3%、前期の高利益率の反動)。Q1進捗率は事業利益10.3%と低いが、<b>Q1が構造的に最も軽くQ4が最も重い</b>季節性(BA利益率はQ1 5.7% ⇔ Q4 24.3%)で、会社は「期初に見込んだ範囲内で推移」と明記。<br><br>
+    <b>コンセンサスとの差:</b> 営業利益コンセンサス515億円は会社計画(497億円)を約4%上回る。IFRS移行初年度で集計基準が混在しやすい点には注意。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">22.2倍</td><td>電工・空調各社(14〜17倍)より一段高い</td></tr>
+      <tr><td>PBR</td><td class="num">3.36倍</td><td>ROE 15.2%(2025年度)</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">3.19%</td><td>年50円。<b>うち12円は創業120周年記念配当</b></td></tr>
+      <tr><td>52週レンジ</td><td class="num">1,241.5〜1,760円</td><td>上場来高値(8/6)から−10.7%・年初来安値から+26.7%</td></tr>
+      <tr><td>時価総額</td><td class="num">8,494億円</td><td></td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    ストック性の高さと12期連続増配計画が評価されてPER22倍と、設備工事各社より明確なプレミアムが付いている。ただ足元は投資先行で事業利益が−30%、通期も+3.8%の低成長計画。受注残1,998億円が来期以降に化けるかが問われる局面で、高値圏の急落はその織り込み直し。<b>評価: やや割高</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>データセンター・保守の位置づけ</h2>
+  <div class="body">
+    <b>DC:</b> 会社は「データセンター案件も国内外で受注が拡大」「投資の増加が続くDC市場への対応強化」と明記するが、<b>DC向けの受注・売上額の定量開示はない(取得不可)</b>。BA受注+31.4%の要因は「大型案件、新設・既設・海外の伸長」で、DC単独の寄与は非開示。DC向けには空調最適化(AdaptivCOOL等)と監視・制御システムを持つ。<br><br>
+    <b>ストック収益(この会社の本丸):</b> <b>既設建物向け分野がBA受注の約35%</b>を占め、Q1は前年比+65%強と受注増加額の約4割を稼いだ。ビルに一度BAシステムを納めると、その後の改修・省エネ運用・保守サービスを「基盤事業」として長期に受注し続けるサイクルを事業モデルに明記している。会社は「収益性の良い既設・サービス分野を主体とした増収」で通期のBA増益を計画。建物が建ち続ける限り——そしてDCのように24時間止められない建物ほど——この保守・改修の輪は太くなる構造。ただしストック収益比率そのものの開示はない(取得不可)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・株主還元</h2>
+  <div class="body">
+    中計(2025〜2027年度)最終年度目標は<b>売上3,400億円・営業利益510億円・ROE14%</b>。長期は2030年度に売上4,200億円・営業利益650億円・ROE15%。2025年度は計画超過(ROE15.2%)で進んでいる。<br><br>
+    還元は厚い: <b>普通配当は12期連続増配計画</b>で年50円(普通38円+記念12円、DOE10.7%)。自社株買いは2023年度99億→2024年度149億→2025年度149億→<b>今期200億円(発行済比6.2%、実施中でQ1に99億円取得済み)</b>と毎年継続。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>投資先行の減益局面:</b> 研究開発・DX・海外・減価償却の増加は当面続く。通期+3.8%の低成長計画にPER22倍を払っている状態<br>
+    ・<b>期待剥落の実例:</b> 8/6高値→翌日−9.9%。受注がいくら強くても、利益が付いてこない四半期は同じ反応が繰り返されやすい<br>
+    ・<b>半導体サイクル:</b> AA受注+32.8%は半導体製造装置の回復局面の数字。反転すれば受注の柱が一本折れる<br>
+    ・<b>コスト:</b> 銅を含む部材高騰・人件費増が全セグメントを圧迫、LAは利益がほぼゼロ<br>
+    ・<b>IFRS移行:</b> 営業利益(売却益込み)と事業利益の混同に注意。見かけの営業減益率(−4.8%)は実態(−30.1%)より軽く見える<br>
+    ・<b>強気材料の裏返し:</b> 既設・サービスの伸びは新築時にBAを納めた建物ストックの上に立つ。新築(都市再開発・DC)が細れば、10年後の既設ストックも細る
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/14</b> 初版作成。<br>
+    出典: アズビル 2027年3月期Q1決算短信 2026/8/6(<span class="note">azbil.com/jp/ir/ 決算短信PDF</span>) / Q1決算説明資料 2026/8/6 / 2025年度通期決算説明資料 2026/5 / 株探・日経(株価・指標、2026/8/13終値) / IFIS株予報(コンセンサス)。<br>
+    ※Q1は決算説明会非開催のため質疑応答要旨なし。DC向け受注額・ストック収益比率・事業利益減益の金額内訳は開示がなく取得不可。松井証券のPBR表示(2.79倍)は同ページのBPSと自己矛盾しており不採用。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

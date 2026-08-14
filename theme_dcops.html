@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>特集: データセンター保守・運用</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<style>
+.dco .lifecycle { display:grid; grid-template-columns: 1fr 3fr; gap:8px; margin:12px 0; }
+.dco .lc-label { font-size:0.72rem; font-weight:700; padding:10px 8px; border-radius:8px;
+  background:var(--surface-2); display:flex; align-items:center; }
+.dco .lc-bar { border-radius:8px; padding:10px 12px; font-size:0.72rem; line-height:1.7;
+  color:var(--text-secondary); border:1px solid var(--border); }
+.dco .lc-build { background:color-mix(in srgb, var(--alt) 12%, var(--surface-1)); }
+.dco .lc-run { background:color-mix(in srgb, var(--pos) 10%, var(--surface-1)); }
+.dco .layer { border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin:10px 0;
+  background:var(--surface-1); }
+.dco .layer h3 { font-size:0.82rem; margin-bottom:6px; }
+.dco .layer .l-cycle { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 7px;
+  background:var(--surface-2); border:1px solid var(--border); color:var(--warn); margin-left:6px; }
+.dco .layer p { font-size:0.75rem; color:var(--text-secondary); line-height:1.8; }
+.dco .layer p b { color:var(--text-primary); }
+</style>
+
+<div class="dco">
+
+<div class="head">
+  <div>
+    <h1>🔧 データセンターは「建てた後」が長い <span class="note">— 保守・運用で稼ぎ続ける銘柄マップ</span></h1>
+    <div class="subtitle">建設は1回、運用は20〜30年。法定点検と部品寿命がつくる「切れない需要」の整理 ・ 2026/8/14</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>この特集の視点</h2>
+  <div class="body">
+    データセンターの建設ラッシュで「建てるときに必要な部材」の銘柄は既に大きく買われた。この特集が整理するのはその次——<b>建った後、稼働している限り発生し続ける保守・点検・交換の金の流れ</b>である。国内DCサービス市場は2023年2.7兆円→2028年5.1兆円へ拡大が見込まれ(総務省・情報通信白書/IDC Japan)、新設の建設投資は2028年に1兆円超・新設ピークは2026〜28年頃と予測される(IDC Japan/富士キメラ総研)。<b>ピークで竣工した設備の山は、その後20〜30年分の保守ストックに転化する。</b>そしてこの需要の根っこは消防法・電気事業法・フロン排出抑制法という法令と、電池・圧縮機の物理的な寿命であり、<b>AIが儲かるかどうかとは独立に発生する</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>建設1回 vs 運用30年</h2>
+  <div class="lifecycle">
+    <div class="lc-label">建設フェーズ<br>(1〜2年)</div>
+    <div class="lc-bar lc-build">設計 → 躯体 → 受変電・発電機 → 空調・冷却 → 消火・防災 → サーバー搬入。投資は巨額だが<b>1回きり</b>。ここを獲るのはゼネコン・サブコン・重電メーカー。</div>
+    <div class="lc-label">運用フェーズ<br>(20〜30年)</div>
+    <div class="lc-bar lc-run">電気代(運用費の約65%)+<b>保守・点検・交換が毎年発生</b>: 受変電の年次点検 / チラーの法定点検とオーバーホール / UPS電池の定期交換 / 消防設備の年2回点検 / 非常用発電機の負荷試験 / 監視・警備。1GW級DCの試算では保守費だけで年1.2億ドル規模(Epoch AI)。</div>
+  </div>
+  <div class="note-s">運用費の最大項目は電力代で、これは電力会社へ流れる(→ 特集「電力」参照)。残りの保守・点検・交換が、この特集の対象。</div>
+</div>
+
+<div class="card">
+  <h2>法律と寿命が需要をつくる — 主要設備の点検・交換周期</h2>
+  <div class="scroll-x">
+  <table>
+    <thead><tr><th>設備</th><th>周期</th><th>根拠</th><th>主な担い手</th></tr></thead>
+    <tbody>
+      <tr><td><b>消火設備・火災報知</b></td><td>機器点検 年2回・総合点検 年1回(報告義務あり)</td><td class="warn">消防法(法定)</td><td><a class="xref" href="6744_nohmi.html">能美防災</a>、ホーチキ</td></tr>
+      <tr><td><b>非常用発電機</b></td><td>機器点検 半年ごと+総合点検 年1回(負荷運転等)</td><td class="warn">消防法・電気事業法(法定)</td><td>設備工事各社、デンヨー</td></tr>
+      <tr><td><b>受変電設備</b></td><td>月次点検+年次点検(原則年1回・停電を伴う)</td><td class="warn">電気事業法・保安規程(法定)</td><td><a class="xref" href="6508_meidensha.html">明電舎</a>、<a class="xref" href="6617_tktk.html">東光高岳</a>、<a class="xref" href="6504_fujielectric.html">富士電機</a>、電気保安法人</td></tr>
+      <tr><td><b>業務用空調・チラー</b></td><td>簡易点検 3ヶ月ごと+定期点検 年1回(50kW以上)。圧縮機オーバーホールは約10年ごと(メーカー推奨)</td><td class="warn">フロン排出抑制法(点検は法定)</td><td>高砂熱学、ダイキン、大気社、新日本空調</td></tr>
+      <tr><td><b>UPS用蓄電池</b></td><td>期待寿命5〜9年(制御弁式鉛、長寿命型で9〜12年)。寿命末期は突然死するため予防交換が前提</td><td>物理寿命(メーカー推奨)</td><td><a class="xref" href="6674_gsyuasa.html">GSユアサ</a>、<a class="xref" href="6504_fujielectric.html">富士電機</a></td></tr>
+      <tr><td><b>監視・ビル管理(BAS)</b></td><td>常時監視+改修・省エネ改修の反復</td><td>契約(ストック)</td><td><a class="xref" href="6845_azbil.html">アズビル</a>、日本電技</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note-s" style="margin-top:6px">周期の出典は消防庁・各メーカーの公開資料(末尾)。チラーのオーバーホールに法定根拠はなく点検のみ法定。</div>
+</div>
+
+<div class="card">
+  <h2>層別の解説と関連銘柄</h2>
+
+  <div class="layer">
+    <h3>① 電気の道 — 受変電・配電の施工と保守<span class="l-cycle">年次点検・更新30年</span></h3>
+    <p>特別高圧で受けた電気を降圧してサーバーへ届ける「電気室」。<b><a class="xref" href="6504_fujielectric.html">富士電機</a>はDC向け売上が年約1,000億円規模</b>と明言し、変圧器から無停電電源までを一貫供給する。<a class="xref" href="6508_meidensha.html">明電舎</a>・<a class="xref" href="6617_tktk.html">東光高岳</a>は変電機器で特需を受けつつ、納入後の保守・更新(フィールドエンジニアリング)がストック収益になる。施工側は<a class="xref" href="1942_kandenko.html">関電工</a>(DC受注がQ1で273億円、屋内線受注の17%)・<a class="xref" href="1944_kinden.html">きんでん</a>・クラフティアの電工大手が担い、彼らは同時に<b>電力会社の配電網保守という「絶対に切れない仕事」</b>を土台に持つ。</p>
+  </div>
+
+  <div class="layer">
+    <h3>② 熱の道 — 冷却・空調の施工と保守<span class="l-cycle">法定点検+OH10年</span></h3>
+    <p>DCの電力の約半分は冷却が消費する。<b>高砂熱学はDC空調の設計施工から省エネチューニング・更新までのライフサイクルサービスを展開</b>し、リニューアル受注比率が8割超まで上昇。ダイキンはアプライド(大型空調)でDC向けチラーと24時間保守網を持ち、北米DC冷却事業を5年で3倍にする方針。大気社・新日本空調もDC・半導体クリーンルームで受注を伸ばす。<b>空冷→液冷への転換は既存保守業者の手順転換リスクであると同時に、CDU設置・配管・ハイブリッド化というレトロフィット工事需要でもある</b>(高砂・ダイキンは液冷対応を明示済み)。</p>
+  </div>
+
+  <div class="layer">
+    <h3>③ 止めない仕組み — UPS・電池・非常用電源<span class="l-cycle">電池交換5〜9年</span></h3>
+    <p>停電の瞬間を電池が繋ぎ、非常用発電機が引き継ぐ。<b>UPS用電池は5〜9年で必ず交換が来る消耗品</b>で、<a class="xref" href="6674_gsyuasa.html">GSユアサ</a>は北米AIDC向けに受注40〜50億円規模で参入し、全国100カ所超のサービス網で交換・保守収益の拡大を掲げる。DC向けリチウム電池も開発中(来年以降供給予定)。<a class="xref" href="6516_sanyo_denki.html">山洋電気</a>はUPS・ファンでDC向けを伸ばす。非常用発電機は消防法の負荷試験が毎年義務で、点検業者の仕事が切れない。</p>
+  </div>
+
+  <div class="layer">
+    <h3>④ 燃やさない仕組み — 消火・防災<span class="l-cycle">消防法 年2回</span></h3>
+    <p>サーバー室は水を撒けないため窒素などのガス系消火が標準。<b><a class="xref" href="6744_nohmi.html">能美防災</a>は火災予兆検知(超高感度煙監視)+窒素消火をDC向けパッケージ化</b>し、売上の26%を占める保守点検セグメント(利益率21.7%)が消防法の年2回点検で回り続ける。ホーチキも超高感度煙監視で追う。警備・入退室管理はセコム(<a class="xref" href="6744_nohmi.html">能美防災</a>の親会社、議決権52%)・ALSOKが常駐+機械警備で担う。</p>
+  </div>
+
+  <div class="layer">
+    <h3>⑤ 見張る仕組み — 監視・制御・計測<span class="l-cycle">契約ストック</span></h3>
+    <p>空調制御・中央監視(BAS)は<b><a class="xref" href="6845_azbil.html">アズビル</a>が国内首位級で、既設分野がBA受注の35%・Q1受注は+65%増</b>。一度納めた建物の改修・省エネ運用を数十年受注し続ける「基盤事業」モデルはこの特集の思想そのもの。<a class="xref" href="6845_azbil.html">アズビル</a>特約店最大手の日本電技は空調計装の既設工事が高収益源。計測側では<a class="xref" href="6866_hioki.html">日置電機</a>がDCの電源竣工試験・受動部品検査で伸びている。</p>
+  </div>
+</div>
+
+<div class="card">
+  <h2>関連銘柄一覧</h2>
+  <div class="scroll-x">
+  <table>
+    <thead><tr><th>コード</th><th>銘柄</th><th class="num">株価(8/13)</th><th>立ち位置</th><th>個別レポート</th></tr></thead>
+    <tbody>
+      <tr><td>6504</td><td><a class="xref" href="6504_fujielectric.html">富士電機</a></td><td class="num">14,970</td><td>受変電〜UPS一貫。DC向け年1,000億円</td><td>あり</td></tr>
+      <tr><td>1969</td><td><a class="xref" href="1969_takasago.html">高砂熱学工業</a></td><td class="num">4,270</td><td>DC空調施工・ライフサイクルサービス</td><td>あり</td></tr>
+      <tr><td>6845</td><td><a class="xref" href="6845_azbil.html">アズビル</a></td><td class="num">1,572.5</td><td>BAS首位級。既設・サービスのストック</td><td>あり</td></tr>
+      <tr><td>1942</td><td><a class="xref" href="1942_kandenko.html">関電工</a></td><td class="num">5,504</td><td>DC電気工事(受注の1割超)+東電配電保守</td><td>あり</td></tr>
+      <tr><td>1944</td><td><a class="xref" href="1944_kinden.html">きんでん</a></td><td class="num">6,920</td><td>電気工事+関電配電保守。RN工事4割</td><td>あり</td></tr>
+      <tr><td>1959</td><td><a class="xref" href="1959_kraftia.html">クラフティア(旧九電工)</a></td><td class="num">8,272</td><td>電気+空調の両輪。九電配電保守</td><td>あり</td></tr>
+      <tr><td>6674</td><td><a class="xref" href="6674_gsyuasa.html">GSユアサ</a></td><td class="num">5,612</td><td>UPS電池=交換消耗品。北米AIDC参入</td><td>あり</td></tr>
+      <tr><td>6744</td><td><a class="xref" href="6744_nohmi.html">能美防災</a></td><td class="num">4,485</td><td>DC消火+法定点検ストック(売上26%)</td><td>あり</td></tr>
+      <tr><td>6367</td><td><a class="xref" href="6367_daikin.html">ダイキン工業</a></td><td class="num">21,390</td><td>チラー+24時間保守網。液冷に投資</td><td>あり</td></tr>
+      <tr><td>6508</td><td><a class="xref" href="6508_meidensha.html">明電舎</a></td><td class="num">11,880</td><td>変電機器+フィールドエンジニアリング</td><td>あり</td></tr>
+      <tr><td>6617</td><td><a class="xref" href="6617_tktk.html">東光高岳</a></td><td class="num">7,680</td><td>特高受変電。保守契約が高採算ストック</td><td>あり</td></tr>
+      <tr><td>6516</td><td><a class="xref" href="6516_sanyo_denki.html">山洋電気</a></td><td class="num">5,930</td><td>UPS・ファン。DCサーバー冷却</td><td>あり</td></tr>
+      <tr><td>6866</td><td><a class="xref" href="6866_hioki.html">日置電機</a></td><td class="num">12,030</td><td>電源竣工試験・受動部品の量産検査</td><td>あり</td></tr>
+      <tr><td>1979</td><td>大気社</td><td class="num">—</td><td>ビル空調。DC案件が受注牽引</td><td>—</td></tr>
+      <tr><td>1952</td><td>新日本空調</td><td class="num">—</td><td>特殊空調(クリーンルーム・原子力)</td><td>—</td></tr>
+      <tr><td>1723</td><td>日本電技</td><td class="num">—</td><td>空調計装。既設ストックが高収益</td><td>—</td></tr>
+      <tr><td>6745</td><td>ホーチキ</td><td class="num">—</td><td>超高感度煙監視・防災</td><td>—</td></tr>
+      <tr><td>9735</td><td>セコム</td><td class="num">—</td><td>DC常駐警備・監視。<a class="xref" href="6744_nohmi.html">能美防災</a>の親会社</td><td>—</td></tr>
+      <tr><td>2331</td><td>ALSOK</td><td class="num">—</td><td>機械警備・警備ロボット</td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note-s" style="margin-top:6px">株価「—」はレポート未作成のため未検証(推測で埋めない)。</div>
+</div>
+
+<div class="card">
+  <h2>この見立てのリスク(裏返し)</h2>
+  <div class="body">
+    ・<b>「後ろ倒し」は現実に起きている:</b> 電力広域機関(OCCTO)の2026年度需要想定は、DCの「工事延期・遅延や設計変更等に伴う計画変更」で需要到達時期が後ろ倒しになっていると明記。DC電力需要の想定自体は2035年度661万kWへ拡大が続くが、時間軸は伸びる<br>
+    ・<b>海外では契約キャンセルの実例:</b> 2025年にMicrosoftが数百MW規模のDCリースをキャンセルしたとの報道。国内DCの減損・キャンセル事例は現時点で確認できない(取得不可)が、ゼロという保証はない<br>
+    ・<b>保守は「建った分」しか生まれない:</b> 新設が細れば、10〜20年後の保守ストックの伸びもその分細る。保守銘柄はDC投資の遅行指標であって独立ではない<br>
+    ・<b>液冷転換:</b> 空冷前提のフィルタ・チラー保守の型が変わる。対応投資ができる大手(高砂・ダイキン)と、できない中小の差が開く可能性<br>
+    ・<b>施工能力と人件費:</b> どの層でも共通の制約は人。労務費の上昇は保守契約の採算を直撃する(<a class="xref" href="6744_nohmi.html">能美防災</a>の保守点検利益率は低下中)
+  </div>
+</div>
+
+<div class="card">
+  <h2>出典・更新履歴</h2>
+  <div class="body">
+    <b>2026/8/14</b> 初版作成。<br>
+    出典: 総務省 令和7年版情報通信白書(DC市場規模、IDC Japan予測の引用) / OCCTO「全国及び供給区域ごとの需要想定(2026年度)」2026/1(DC電力需要・後ろ倒しの記述) / IDC Japan(建設投資2028年1兆円超、報道経由) / 富士キメラ総研(新設ピーク2026-28年) / Epoch AI(1GW級DCの運用費内訳) / 東京消防庁(消防用設備点検・自家発電設備点検) / ダイキン(フロン排出抑制法の点検周期) / トレイン・荏原冷熱(チラーオーバーホール) / <a class="xref" href="6504_fujielectric.html">富士電機</a>(UPS電池の期待寿命) / 各社決算資料(個別レポートの更新履歴に記載)。<br>
+    ※国内DCのO&M費用対建設費比率の公的数値、国内コロケーション空室率、国内DCの減損事例は取得不可。
+  </div>
+</div>
+
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
