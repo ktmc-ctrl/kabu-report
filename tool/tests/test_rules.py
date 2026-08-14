@@ -73,6 +73,19 @@ class TestLadder(unittest.TestCase):
             self.assertAlmostEqual(rules.ladder_for(h).ladder_stop,
                                    rules.tick_floor(cost + (price - cost) * fraction))
 
+    def test_第6段と第7段の分数(self):
+        # 2026-08-14 改訂: 3/4 で打ち止めだと含み益が伸びるほど距離が開き、
+        # +67% あたりで 4〜10% の帯から外れる。+40%→4/5、+60%→5/6 を追加した
+        cost = 1000.0
+        lad = rules.ladder_for(holding("x", "x", 100, cost, 1450.0))   # +45%
+        self.assertEqual(lad.step, "第6段 +40%(4/5)")
+        self.assertEqual(lad.ladder_stop, rules.tick_floor(cost + 450 * 0.8))
+        lad = rules.ladder_for(holding("x", "x", 100, cost, 1700.0))   # +70%
+        self.assertEqual(lad.step, "第7段 +60%(5/6)")
+        self.assertEqual(lad.ladder_stop, rules.tick_floor(cost + 700 * 5 / 6))
+        # 第7段でも距離は帯の中に収まる(10%を超えない)
+        self.assertLessEqual(lad.distance, 0.10)
+
     def test_第2段は建値ちょうど(self):
         lad = rules.ladder_for(holding("x", "x", 100, 1000, 1060))   # +6%
         self.assertEqual(lad.step, "第2段 +5%(建値)")
