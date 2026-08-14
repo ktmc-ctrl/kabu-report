@@ -12,12 +12,21 @@ W, H = 700, 240
 PAD_L, PAD_R, PAD_T, PAD_B = 56, 12, 14, 28
 
 
-def _nice_bounds(values: list) -> tuple:
-    """0 を含む、キリのいい上下限とステップ。"""
-    lo = min(list(values) + [0])
-    hi = max(list(values) + [0])
+def _nice_bounds(values: list, zero_based: bool = True) -> tuple:
+    """キリのいい上下限とステップ。
+
+    zero_based=True は 0 を必ず含める(損益グラフ用。0 からの距離が意味を持つ)。
+    False はデータの範囲に合わせる——口座資産のように「水準」ではなく「変化」を
+    見たい系列で、0 起点にすると線が真横に潰れて何も読めなくなるため。
+    """
+    vals = list(values)
+    lo = min(vals + [0]) if zero_based else min(vals)
+    hi = max(vals + [0]) if zero_based else max(vals)
     if lo == hi:
-        return -1, 1, 1
+        return (lo - 1, hi + 1, 1) if not zero_based else (-1, 1, 1)
+    if not zero_based:                    # 上下に1割の余白を取って線を潰さない
+        pad = (hi - lo) * 0.1
+        lo, hi = lo - pad, hi + pad
     span = hi - lo
     raw = span / 4
     mag = 10 ** (len(str(int(abs(raw)))) - 1) if abs(raw) >= 1 else 1
@@ -49,23 +58,27 @@ def _frame(lo: float, hi: float, step: float) -> tuple:
     return y, "".join(grid)
 
 
-def line_chart(points: list, label: str = "累計") -> str:
-    """[(ラベル, 値), ...] の折れ線。値は累計を想定。"""
+def line_chart(points: list, label: str = "累計", zero_based: bool = True) -> str:
+    """[(ラベル, 値), ...] の折れ線。値は累計を想定。
+
+    zero_based=False にすると、0 ではなくデータの範囲に軸を合わせる。
+    """
     if len(points) < 2:
         return '<div class="note-s">データが2点未満。まだ描けない。</div>'
     values = [v for _, v in points]
-    lo, hi, step = _nice_bounds(values)
+    lo, hi, step = _nice_bounds(values, zero_based)
     y, grid = _frame(lo, hi, step)
     n = len(points)
+    base = y(0) if zero_based else y(lo)   # 面の下辺
 
     def x(i: int) -> float:
         return PAD_L + i / (n - 1) * (W - PAD_L - PAD_R)
 
     path = " ".join(f"{'M' if i == 0 else 'L'}{x(i):.1f},{y(v):.1f}"
                     for i, (_, v) in enumerate(points))
-    area = (f"M{x(0):.1f},{y(0):.1f} "
+    area = (f"M{x(0):.1f},{base:.1f} "
             + " ".join(f"L{x(i):.1f},{y(v):.1f}" for i, (_, v) in enumerate(points))
-            + f" L{x(n-1):.1f},{y(0):.1f} Z")
+            + f" L{x(n-1):.1f},{base:.1f} Z")
     dots = "".join(
         f'<circle cx="{x(i):.1f}" cy="{y(v):.1f}" r="2.5" fill="var(--pos)">'
         f'<title>{html.escape(str(d))} ・ {v:+,.0f}円</title></circle>'

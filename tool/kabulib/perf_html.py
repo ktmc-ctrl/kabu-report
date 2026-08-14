@@ -94,8 +94,25 @@ def build(store: Store, on: str | None = None) -> str:
 
     snaps = store.data["account"]["snapshots"]
     if len(snaps) >= 2:
+        # 通算(確定+含み)——0 起点が意味を持つので zero_based のまま
+        parts.append(
+            '<div class="card"><h2>📈 通算損益の推移(確定 + 含み)</h2>'
+            + line_chart([(s["date"], s.get("unrealized", 0) + s.get("realized_cum", 0))
+                          for s in snaps], "通算損益")
+            + '<div class="note-s" style="margin-top:8px">'
+              '確定損益と含み損益を足した、実際に増えた金額。'
+              '0 の線からの距離がそのまま成果。</div></div>')
+        # 含みだけの推移——日々の値動きがどう効いているか
+        parts.append(
+            '<div class="card"><h2>📊 含み損益の推移</h2>'
+            + line_chart([(s["date"], s.get("unrealized", 0)) for s in snaps], "含み損益")
+            + '<div class="note-s" style="margin-top:8px">'
+              '保有中の評価損益。⑩で逆指値を上げても、この線自体は動かない——'
+              '動くのは「確保できている下限」の方。</div></div>')
+        # 口座資産は水準ではなく変化を見たいので 0 起点にしない
         parts.append('<div class="card"><h2>💰 口座資産の推移</h2>'
-                     + line_chart([(s["date"], s["equity"]) for s in snaps], "口座資産")
+                     + line_chart([(s["date"], s["equity"]) for s in snaps],
+                                  "口座資産", zero_based=False)
                      + '<div class="note-s" style="margin-top:8px">'
                        '記録を更新した日だけ点が打たれる。'
                        '毎日つけたいなら大引け後に <code class="tag">kabu price</code> を回す。</div></div>')
