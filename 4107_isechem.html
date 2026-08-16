@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>伊勢化学工業(4107) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>伊勢化学工業 <span class="note">[4107] 東証スタンダード</span></h1>
+    <div class="subtitle"><span class="badge">ヨウ素 国内トップシェア</span> <span class="badge">12月期決算</span> <span class="badge">AGC子会社(53.5%)</span></div>
+  </div>
+  <div class="px">
+    <div class="v">3,760円</div>
+    <div class="note-s">2026/8/13 終値</div>
+    <div class="note-s">過去5年高値 8,450円(2026/2)から <b>-55.5%</b><br>(8/13終値 3,760円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    千葉県外房と宮崎県で地下かん水からヨウ素と天然ガスを採取する、国内ヨウ素生産トップシェアの企業(AGCの連結子会社)。2026年12月期は<b>2020年以降で初めての減収減益計画</b>(営業利益8,000百万円、−15.7%)で、中間期実績も営業−14.4%。<b>特別利益ゼロの実質減益</b>であり、減益695百万円のうち約35%は減価償却費の増加という投資の先行負担が占める。より重い事実は<b>ヨウ素生産量が中間期で−11.7%、通期計画でも−6.7%と頭打ちになっている</b>点で、直近2期の増益はいずれも数量ではなく市況と為替に由来する。株価は2026年2月に本決算とペロブスカイト太陽電池のMOUを同時開示して上場来高値8,450円を付けた後、<b>そこから−55.5%</b>。それでも予想PER35.5倍・PBR4.53倍と、減益計画に対しては相応の期待が残っている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/30発表・2026年12月期 中間)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">中間実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">192.4億円</td><td class="num down">−0.2%</td></tr>
+      <tr><td>営業利益</td><td class="num">41.4億円</td><td class="num down">−14.4%</td></tr>
+      <tr><td>純利益</td><td class="num">28.2億円</td><td class="num down">−14.9%</td></tr>
+      <tr><td>営業利益率</td><td class="num">21.5%</td><td class="num down">−3.6pt</td></tr>
+      <tr><td>EBITDA</td><td class="num">53.6億円</td><td class="num down">−7.8%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <table>
+    <thead><tr><th>セグメント</th><th class="num">売上高</th><th class="num">前年比</th><th class="num">営業利益</th><th class="num">前年比</th></tr></thead>
+    <tbody>
+      <tr><td>ヨウ素及び天然ガス</td><td class="num">167.4億円</td><td class="num down">−0.8%</td><td class="num">41.8億円</td><td class="num down">−6.3億円</td></tr>
+      <tr><td>金属化合物(塩化ニッケル等)</td><td class="num">25.0億円</td><td class="num up">+3.9%</td><td class="num down">−0.4億円</td><td class="num down">営業損失に転落</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解</b><br>
+    ・<b>一過性要因は無い。</b>特別利益の計上はゼロ、特別損失は固定資産除却損等28百万円のみ。営業減益は全額が実質要因<br>
+    ・段階別では売上総利益 −325百万円(原価率67.34%→<b>68.96%</b>)、販管費 −370百万円(+25.3%)<br>
+    ・<b>減益695百万円のうち約35%(242百万円)は減価償却費の増加</b>。設備投資の先行負担が出始めている<br>
+    ・会社の増減要因図では<b>販売単価と為替がプラス、販売数量と売上原価がマイナス</b>——つまり市況は追い風、数量とコストが逆風。ただし各要因の金額ラベルは図に付されておらず取得不可<br><br>
+    <b>四半期で見ると減速はQ2に集中している。</b>Q1は営業−2.0%だったが、Q2単独(上記2資料からの算出値)は売上−5.6%・営業<b>−23.1%</b>。地域別では国内が−15.6%と落ち、アジア・北米が伸びた。
+  </div>
+</div>
+
+<div class="card">
+  <h2>ヨウ素事業の実態 — 数量が頭打ち</h2>
+  <div class="body">
+    このレポートで最も重要な数字。会社が開示する唯一の数量データである生産量が、明確に減っている。
+  </div>
+  <table>
+    <thead><tr><th>ヨウ素生産量(MT)</th><th class="num">2025中間</th><th class="num">2026中間</th><th class="num">増減</th></tr></thead>
+    <tbody>
+      <tr><td>合計</td><td class="num">2,122</td><td class="num">1,872</td><td class="num down">−11.7%</td></tr>
+      <tr><td>日本</td><td class="num">1,952</td><td class="num">1,731</td><td class="num down">−11.4%</td></tr>
+      <tr><td>米国</td><td class="num">169</td><td class="num">142</td><td class="num down">−16.0%</td></tr>
+    </tbody>
+  </table>
+  <table style="margin-top:8px">
+    <thead><tr><th>年次(MT)</th><th class="num">2024実績</th><th class="num">2025実績</th><th class="num">2026計画</th><th class="num">2030イメージ</th></tr></thead>
+    <tbody>
+      <tr><td>合計</td><td class="num">4,111</td><td class="num">4,291</td><td class="num down">4,005</td><td class="num">約7,500</td></tr>
+      <tr><td>日本</td><td class="num">3,797</td><td class="num">3,960</td><td class="num">3,675</td><td class="num">3,800</td></tr>
+      <tr><td>米国(既存)</td><td class="num">314</td><td class="num">331</td><td class="num">330</td><td class="num">700</td></tr>
+      <tr><td>米Select社協業の増分</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">約3,000</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>直近2期の増益はいずれも数量ではなく市況・為替に由来する。</b>2025年10月の上方修正の理由を会社はこう書いている——「ヨウ素製品の販売数量が前回予想時の想定を下回るものの、<b>ヨウ素の国際市況が想定を上回る水準</b>で推移し、加えて<b>為替が想定よりも円安</b>」。<br><br>
+    中間期はヨウ素セグメント売上が−0.8%に対し生産量−11.7%。<b>価格が数量減をほぼ相殺している状態</b>で、市況が反転すれば数量減がそのまま利益に出る。なお会社はヨウ素の販売価格・市況価格の数値を一切開示していない(取得不可)。第三者データでは米国地質調査所がスポット価格を2025年1〜10月平均で約73ドル/kg(2024年通年70.24ドル/kg)としており、価格は上昇基調にある。<br><br>
+    <b>国内の数量が伸びない構造的な理由。</b>ヨウ素は地下900〜2000mのかん水(ヨウ素濃度約0.1g/L)から天然ガスと同時に採取される。会社サイトには「関係自治体との協定に則り、GNSSを用いた常時観測や定期的な水準測量によるモニタリング」「ヨウ素を抽出した後のかん水の一部を地下還元し、地盤変動の抑制に努めています」と記載があり、<b>採取量は事実上の制約下にある</b>(協定の具体的な上限値は非開示)。会社が2030年でも国内3,800MTと横ばいに置き、増産分をすべて米国に置いていることは、この制約と整合的である。有価証券報告書も「新規坑井の開発を継続して行い、<b>既存坑井の生産減退を補う</b>」と、減退の存在を明記している。
+  </div>
+</div>
+
+<div class="card">
+  <h2>ペロブスカイト太陽電池向けの期待 — 桁を確かめる</h2>
+  <div class="body">
+    2026年2月5日、稀産金属とヨウ素系ペロブスカイト太陽電池材料に関する<b>基本合意書(MOU)を締結</b>したと開示。翌営業日の株価は<b>+11.49%</b>、その2営業日後に上場来高値8,450円を付けた。開示の要点は以下のとおり。<br><br>
+    ・ヨウ化鉛をはじめとしたペロブスカイト向け原料の確保から製造・販売まで一貫体制を確立する<br>
+    ・稀産金属の子会社KI Chemicalが秋田県に工場を新設し、<b>2027年までにペロブスカイト太陽電池1GW相当のヨウ化鉛生産工場</b>を設立予定<br>
+    ・経産省「次世代型太陽電池戦略」の2030年目標1GW/年を充足する規模。2040年目標「数GW/年」に対しても<b>既にヨウ素原料及び工場用地を確保</b>済み<br><br>
+    <b>注意すべき点が3つある。</b>①1GWという規模は<b>提携先KI Chemicalの工場の生産能力</b>であって伊勢化学のヨウ化鉛生産能力ではない。②需要のトン数・売上や利益へのインパクト・投資額・時期別の数量計画は<b>一切開示されていない</b>(取得不可)。③<b>2026年のQ1決算短信・中間決算短信・決算補足説明資料のいずれにも、ペロブスカイトへの言及が無い</b>。2026年6月の米国増産計画の需要前提にも挙げられていない。
+  </div>
+  <div class="box">
+    <b>参考: 必要ヨウ素量の試算(会社開示ではなく、公知の物性値からの本レポートの計算)</b><br>
+    ヨウ化鉛メチルアンモニウム(CH₃NH₃PbI₃、分子量619.98、密度4.16g/cm³)に含まれるヨウ素の重量比は<b>61.4%</b>。標準試験条件(日射1,000W/m²)・変換効率20%・ペロブスカイト層の厚さ500nm・歩留まり50%と置くと、<b>1GW分に必要なヨウ素は約13トン</b>。効率25%・厚さ800nmなど前提を振っても10〜20トンの範囲に収まる。<br><br>
+    伊勢化学の2026年生産計画は<b>4,005トン</b>。つまり——<br>
+    ・経産省の2030年目標 1GW/年 → 年産の<b>約0.32%</b><br>
+    ・2040年の「数GW/年」を5GWと仮定 → 年産の<b>約1.59%</b><br><br>
+    太陽電池は面積で語られるが、ペロブスカイト層の厚さは500ナノメートル(5km²敷き詰めても体積は約2.5m³)である。<b>数量ベースでは、会社が増産計画や業績予想に織り込む規模に達しない。</b>MOUが「既に原料を確保済み」と述べていることも、この桁感と整合する。<br><br>
+    <span class="warn"><b>ただしこれは数量の話であって、収益性の話ではない。</b></span>高純度のヨウ化鉛は付加価値が高い可能性があるが、<b>その価格・利益率を会社は一切開示していない</b>ため、現時点で業績評価に織り込める材料は存在しない。上記の試算も前提の置き方で2〜3倍動く。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと成長ストーリー</h2>
+  <div class="body">
+    <b>通期計画は据え置き</b>(2026/2/5公表値をQ1・中間とも変更なし): 売上380億円(−3.2%)・<b>営業利益80億円(−15.7%)</b>・純利益54億円(−16.9%)。中間の進捗率は営業51.7%で、前期の中間進捗51.0%をやや上回る。減益の理由として会社は①国際市況は堅調継続 ②<b>一部の顧客向け販売減少でヨウ素製品の販売数量が前期を下回る</b> ③原燃材料価格の上昇、減価償却費・人件費の増加、を挙げる。為替前提は150円/ドル。<br><br>
+    <b>成長は米国1本に依存している。</b>2026年6月26日、米Select Water Solutions(NYSE上場)と<b>油田かん水からのヨウ素抽出権</b>を取得する契約(初期10年、最大20年まで延長可)を締結。2030年に<b>年約3,000MT</b>——現在の全社生産量4,291MTに対して約70%の上乗せを目指す。自社で坑井を開発する従来方式に対し、既存の水リサイクル施設に集積された油田かん水にサテライトBO塔を建てることで、<b>坑井開発の期間短縮とリスク低減</b>を図る狙い。2026年7月にテキサス州で第1プラントの建設を決定し2027年中の稼働目標。<br><br>
+    ただし<b>設備投資は全額当社負担</b>で、会社は現時点の業績への影響を<b>「軽微」と明言</b>している。国内が2030年でも横ばい計画である以上、中期の増益余地はこの案件の立ち上がりに集約される。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">35.5倍</td><td>会社予想EPS 105.97円。<b>減益計画に対する水準</b></td></tr>
+      <tr><td>PBR(実績)</td><td class="num">4.53倍</td><td>株探ベース。松井の0.60倍表示は同ページのBPSと整合せず不採用</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">1.06%</td><td>年40円(2026/1に1:10分割済み)</td></tr>
+      <tr><td>52週レンジ</td><td class="num">2,626〜8,450円</td><td>上場来高値(2026/2/9)から−55.5%・年初来安値3,225円(7/31)から+16.6%</td></tr>
+      <tr><td>時価総額</td><td class="num">1,931億円</td><td>自己資本比率81.2%・実質無借金</td></tr>
+      <tr><td>市場コンセンサス</td><td class="num">—</td><td><b>アナリストカバレッジなし</b>(取得不可)</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    2026年の月次騰落は1月+26.4% → 2月+13.2% → 3月−22.1% → 5月−19.6% → 7月−24.1%と、高値形成後は下落が続いた。中間決算翌日(7/31)は−1.17%だが、同日に年初来安値3,225円を付けている。<br><br>
+    高値から半値以下になってなお予想PER35.5倍・PBR4.53倍という水準は、今期が減収減益計画であり、数量が頭打ちで、成長が米国案件の立ち上がり待ちであるという開示された事実に対しては高い。加えて<b>アナリストのカバレッジが存在しないため「コンセンサス比で未達」という評価軸自体が使えない</b>点は、この銘柄固有の注意点である。<b>評価: やや割高</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主構成・株主還元</h2>
+  <div class="body">
+    <b>AGCの連結子会社</b>で議決権53.5%。<a class="xref" href="8058_mitsubishi_corp.html">三菱商事</a>7.31%が続き、上位10名で67.50%を占める。所有者別ではその他の法人65.07%・個人その他26.70%で、機関投資家の保有は薄い。<br><br>
+    <b>販売先の集中度が高い:</b> AGC 28.0%、<a class="xref" href="8058_mitsubishi_corp.html">三菱商事</a> 18.4%、丸善薬品産業 11.5%、JFEミネラル 10.2%——<b>上位4社で68.1%</b>。中間決算で減益要因に挙がった「一部のお客様向けのヨウ素製品の販売数量減少」の相手先は特定されていない(取得不可)が、この集中度は背景として押さえておくべきである。なおAGCへはヨウ素・天然ガスを販売する一方、AGCから原料かん水等を仕入れる相互取引の関係にある。<br><br>
+    <b>還元は配当のみ。</b>方針は「安定的な配当を維持することを基本」で、配当性向やDOEの数値目標は設定していない。2026年12月期は年40円予想(分割後、分割前換算で400円=前期比+10円)、配当性向37.7%。<b>自己株式の取得は取締役会・株主総会いずれの決議によるものも「該当事項なし」</b>で、2025年度の取得は単元未満株の買取280株のみ、消却も実施していない。2026〜2028年のキャピタルアロケーションでも株主還元枠は64億円(営業CF累計290億円の22%)にとどまる。<br><br>
+    財務目標は2026年以降<b>EBITDA 110億円以上・ROE安定的に10%以上</b>(2025年実績はEBITDA 115億円・ROE 17.2%)。ただし2026年計画のEBITDAは106億円で、新目標をやや下回る水準にある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>数量の頭打ち:</b> 生産量は2024年4,111 → 2025年4,291 → 2026計画4,005MT。中間期は−11.7%。増益を市況と為替に依存する構造が続く<br>
+    ・<b>市況反転の直撃:</b> 中間期は価格上昇が数量減をほぼ相殺した。ヨウ素市況が下落局面に入れば、数量減がそのまま利益減に出る。会社は価格を開示しないため、外部からの検証は第三者統計に頼るほかない<br>
+    ・<b>採取量の制約:</b> 自治体との協定に基づくモニタリングと地下還元により、国内の採取は事実上の上限下にある。会社が国内を2030年まで横ばいに置いているのはこの制約と整合的<br>
+    ・<b>成長が米国1本:</b> Select社協業は設備投資が全額当社負担で、会社自身が業績影響を「軽微」とする段階。2027年稼働目標の第1プラントの立ち上がりが計画どおりに進まなければ、中期の増益シナリオが成立しない<br>
+    ・<b>販売先の集中:</b> 上位4社で68.1%、うち親会社AGCが28.0%。親子上場に伴う利益相反の可能性も含め、少数株主の立場からは構造的な論点<br>
+    ・<b>アナリスト不在と需給の薄さ:</b> 継続カバーが確認できず期待値の物差しがない。浮動株が薄く(上位10名で67.5%)、信用買残は発行済の約2.8%<br>
+    ・<b>金属化合物事業:</b> 塩化ニッケル(MLCC向け)は金属相場上昇による原料高で中間期に営業損失へ転落<br>
+    ・<b>拠点の集中:</b> 生産拠点は千葉県外房(九十九里海岸隣接)と宮崎県(日向灘隣接)に集中しており、地震・津波リスクを抱える<br>
+    ・<b>強気材料の裏返し:</b> ペロブスカイト期待は、数量ベースでは年産の1%未満の規模にとどまる可能性が高い(本レポートの試算)。会社が決算資料で言及していない以上、株価がこの期待で動くほど、実績との乖離は開く
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/14</b> 初版作成。<br>
+    出典: 伊勢化学工業 2026年12月期中間決算短信・第2四半期決算補足説明資料 2026/7/30(<span class="note">ssl4.eir-parts.net/doc/4107/tdnet/2858320/00.pdf ほか</span>) / 2026年12月期第1四半期決算短信 2026/5/1 / 2025年12月期決算短信・決算補足説明資料 2026/2/5 / 有価証券報告書(第105期) / ペロブスカイト太陽電池材料に関する基本合意書締結について 2026/2/5 / 米国におけるヨウ素抽出権取得に関する契約締結のお知らせ 2026/6/26 / 通期業績予想の修正 2025/10/31 / 株式分割のお知らせ 2025/10/31 / 支配株主等に関する事項 2026/3/27 / 会社サイト(ヨウ素事業・天然ガス事業・CSR) / 株探(株価・指標、2026/8/13終値) / 米国地質調査所 Mineral Commodity Summaries 2026 - Iodine(ヨウ素価格・世界生産)。<br>
+    ※決算説明会は開催されておらず質疑応答要旨は存在しない。ヨウ素の販売価格、営業利益増減要因の金額内訳、自社の世界シェア、自社売上の用途別内訳、ヨウ素と天然ガスの売上内訳、ペロブスカイト関連の数量・金額計画、市場コンセンサス、採取協定の具体的な数値制約はいずれも非開示のため取得不可。<br>
+    ※本文中のペロブスカイト必要ヨウ素量の試算は<b>会社開示ではなく本レポートによる計算</b>であり、変換効率・膜厚・歩留まりの前提により結果は2〜3倍程度変動する。株価・EPS・配当は2026年1月1日付の1:10株式分割後ベース。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
