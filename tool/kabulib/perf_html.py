@@ -9,7 +9,7 @@ from __future__ import annotations
 import html
 from datetime import date
 
-from . import rules
+from . import perf_stats, rules
 from .charts import bar_chart, line_chart
 from .store import Store
 from .theme import DIARY_CSS, document
@@ -117,6 +117,110 @@ def build(store: Store, on: str | None = None) -> str:
                      + '<div class="note-s" style="margin-top:8px">'
                        '記録を更新した日だけ点が打たれる。'
                        '毎日つけたいなら大引け後に <code class="tag">kabu price</code> を回す。</div></div>')
+
+    # ── ⑩の達成度 ────────────────────────────────────
+    # 含み益のうち逆指値でいくら確保できているか。⑩を上げる目的そのもの。
+    p = perf_stats.protection(store)
+    if p["unrealized"] > 0:
+        lw = max(1.5, min(98.0, p["locked"] / p["unrealized"] * 100)) if p["locked"] > 0 else 0.0
+        # 帯が細いと数字が入らないので、10%未満のときはラベルを出さない(額は下の文に書く)
+        bars = ""
+        if lw:
+            bars += (f'<div class="locked" style="width:{lw:.1f}%">'
+                     + (f'確保 {p["locked"]:,.0f}' if lw >= 10 else "") + "</div>")
+        bars += f'<div class="open" style="width:{100-lw:.1f}%">まだ守れていない {p["open"]:,.0f}</div>'
+
+        def _prot_cells(l):
+            """発動時の損益と、含み益に対する達成度。
+
+            逆指値が取得単価より下にある銘柄は発動時がマイナス=まだ1円も
+            確保できていない。ここを「確保」と呼ぶと嘘になるので言葉を分ける。
+            """
+            if l["locked"] is None:
+                return '<td class="num">—</td><td class="note-s">触らない枠(逆指値なし)</td>'
+            cell = f'<td class="num {_cls(l["locked"])}">{_yen(l["locked"], True)}</td>'
+            if l["locked"] > 0 and l["unreal"] > 0:
+                w = max(0, min(100, l["locked"] / l["unreal"] * 100))
+                return cell + (f'<td><div class="hb"><div class="track">'
+                               f'<div class="fill" style="width:{w:.0f}%"></div></div>'
+                               f'<span class="note-s">{w:.0f}%</span></div></td>')
+            return cell + '<td class="note-s">まだ確保ゼロ</td>'
+
+        rows = "".join(
+            f'<tr><td>{html.escape(l["name"])}</td>'
+            f'<td class="num {_cls(l["unreal"])}">{_yen(l["unreal"], True)}</td>'
+            + _prot_cells(l) + "</tr>"
+            for l in p["lines"])
+        parts.append(f'''<div class="card"><h2>🔒 含み益のうち、確保できている額</h2>
+  <div class="legend"><span><i style="background:var(--pos)"></i>逆指値で確保 {_yen(p["locked"], True)}</span>
+    <span><i style="background:var(--baseline)"></i>まだ守れていない {_yen(p["open"], True)}</span></div>
+  <div class="stack">{bars}</div>
+  <div class="note-s">含み益 {_yen(p["unrealized"], True)} のうち <b>{p["pct"]:.1f}%</b>。
+  逆指値を引き上げると、この青が右へ伸びる。<br>
+  「発動時」は<b>その逆指値で切られたときの損益</b>。マイナスの銘柄は逆指値がまだ取得単価より下にあり、
+  1円も確保できていない状態(⑩の第1段)。触らない枠(ソフトバンクG)は逆指値を置かない設計なので対象外。</div>
+  <div class="scroll-x" style="margin-top:10px"><table>
+    <thead><tr><th>銘柄</th><th class="num">含み益</th><th class="num">発動時</th><th>達成度</th></tr></thead>
+    <tbody>{rows}</tbody></table></div>
+</div>''')
+
+    # ── 保有期間別 ────────────────────────────────────
+    hp = perf_stats.holding_periods()
+    if hp:
+        best = max(hp["bands"], key=lambda b: b["total"])
+        mx = max(abs(b["total"]) for b in hp["bands"]) or 1
+        hi = ' class="ok-row"'          # f-string の中に引用符を入れられないので外に出す
+        rows = "".join(
+            f'<tr{hi if b is best else ""}><td>{html.escape(b["label"])}</td>'
+            f'<td class="num">{b["n"]}</td>'
+            f'<td class="num note-s">{b["win"]}勝{b["lose"]}敗</td>'
+            f'<td class="num {_cls(b["total"])}">{_yen(b["total"], True)}</td>'
+            f'<td class="num {_cls(b["avg"])}">{_yen(b["avg"], True)}</td>'
+            f'<td><div class="hb"><div class="track"><div class="fill'
+            f'{"" if b["total"] >= 0 else " neg"}" '
+            f'style="width:{abs(b["total"]) / mx * 100:.0f}%"></div></div></div></td></tr>'
+            for b in hp["bands"])
+        parts.append(f'''<div class="card"><h2>⏱ 保有期間ごとの成績</h2>
+  <div class="scroll-x"><table>
+    <thead><tr><th>持った期間</th><th class="num">件数</th><th class="num">勝敗</th>
+      <th class="num">合計</th><th class="num">平均</th><th>大きさ</th></tr></thead>
+    <tbody>{rows}</tbody></table></div>
+  <div class="note-s" style="margin-top:8px">
+    平均保有 <b>{hp["avg_days"]:.1f}日</b> ・ 中央値 <b>{hp["median_days"]:.1f}日</b>
+    ({hp["n"]}件の決済、損益は移動平均法・日数はFIFOで算出)。<br>
+    いちばん稼いだ帯は <b>{html.escape(best["label"])}</b> で {_yen(best["total"], True)}。
+    <b>同日(デイトレ)の成績</b>は、⑩のラダーが翌日以降を前提にしていることと合わせて読む。
+    出典は <code class="tag">{html.escape(hp["source"])}</code>(証券口座の約定履歴)。
+  </div>
+</div>''')
+
+    # ── 銘柄別 ────────────────────────────────────────
+    sym = perf_stats.by_symbol(store)
+    if sym:
+        mx = max(abs(a["pl"]) for a in sym) or 1
+        rows = "".join(
+            f'<tr><td><b>{html.escape(a["name"])}</b> <span class="note-s">{a["code"]}</span></td>'
+            f'<td class="num note-s">{a["n"]}回 {a["win"]}勝</td>'
+            f'<td class="num {_cls(a["pl"])}">{_yen(a["pl"], True)}</td>'
+            f'<td><div class="hb"><div class="track"><div class="fill'
+            f'{"" if a["pl"] >= 0 else " neg"}" '
+            f'style="width:{abs(a["pl"]) / mx * 100:.0f}%"></div></div></div></td></tr>'
+            for a in sym)
+        parts.append(f'''<div class="card"><h2>🏷 銘柄ごとの確定損益</h2>
+  <div class="scroll-x"><table>
+    <thead><tr><th>銘柄</th><th class="num">決済</th><th class="num">損益</th><th>大きさ</th></tr></thead>
+    <tbody>{rows}</tbody></table></div>
+  <div class="note-s" style="margin-top:8px">決済済みのみ。いま保有している分は含まない。</div>
+</div>''')
+
+    # ── 月別 ──────────────────────────────────────────
+    mon = perf_stats.monthly(store)
+    if len(mon) >= 2:
+        parts.append('<div class="card"><h2>📅 月ごとの確定損益</h2>'
+                     + bar_chart([(m, v) for m, v, _ in mon], "月別")
+                     + '<div class="note-s" style="margin-top:8px">'
+                     + " ・ ".join(f'{m}: {_yen(v, True)}({n}件)' for m, v, n in mon)
+                     + "</div></div>")
 
     if closed:
         def _cell(v, fmt="{:,.1f}"):

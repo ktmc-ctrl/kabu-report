@@ -191,6 +191,22 @@ DIARY_CSS = """
   .private-banner { border: 2px solid var(--accent-pink); border-radius: 12px; padding: 10px 14px;
                     margin-bottom: 14px; font-size: 0.76rem; color: var(--text-secondary); }
   .private-banner b { color: var(--accent-pink); }
+  /* 横バー。表のセルの中に置いて「量」を目で見えるようにする */
+  .hb { display:flex; align-items:center; gap:6px; }
+  .hb .track { flex:1; height:8px; background:var(--surface-2); border-radius:4px; overflow:hidden;
+               min-width:60px; }
+  .hb .fill { height:100%; border-radius:4px; background:var(--pos); }
+  .hb .fill.neg { background:var(--neg); }
+  .hb .fill.mut { background:var(--baseline); }
+  /* 確保できている額と、まだ守れていない額の対比 */
+  .stack { display:flex; height:26px; border-radius:6px; overflow:hidden; margin:8px 0 4px;
+           border:1px solid var(--border); }
+  .stack div { display:flex; align-items:center; justify-content:center;
+               font-size:0.64rem; font-weight:700; color:#fff; white-space:nowrap; }
+  .stack .locked { background:var(--pos); }
+  .stack .open { background:var(--baseline); }
+  .legend { display:flex; gap:14px; font-size:0.68rem; color:var(--text-muted); margin-bottom:6px; }
+  .legend i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; }
 """
 
 
