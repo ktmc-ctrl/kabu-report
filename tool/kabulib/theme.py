@@ -207,7 +207,35 @@ DIARY_CSS = """
   .stack .open { background:var(--baseline); }
   .legend { display:flex; gap:14px; font-size:0.68rem; color:var(--text-muted); margin-bottom:6px; }
   .legend i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; }
+  /* 私的2ページ(日記・損益)の行き来。いま見ているページは押せない見た目にする */
+  .pagenav { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .pagenav a, .pagenav span {
+    display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+    border-radius:999px; padding:7px 14px; text-decoration:none; border:1px solid var(--border);
+  }
+  .pagenav a { background:var(--surface-1); color:var(--text-primary); box-shadow:var(--shadow); }
+  .pagenav a:hover { background:var(--surface-2); }
+  .pagenav a:focus-visible { outline:2px solid var(--pos); outline-offset:2px; }
+  .pagenav span.here { background:var(--pos); border-color:var(--pos); color:#fff; cursor:default; }
 """
+
+
+# 私的HTMLは private/ の中に並ぶので、相対パスはファイル名だけでよい
+PRIVATE_PAGES = [
+    ("trade_diary.html", "📓 トレード日記"),
+    ("performance.html", "📈 損益推移"),
+]
+
+
+def private_nav(current: str) -> str:
+    """日記と損益レポートを行き来するナビ。current は今開いているファイル名。"""
+    out = []
+    for file, label in PRIVATE_PAGES:
+        if file == current:
+            out.append(f'<span class="here">{label}</span>')
+        else:
+            out.append(f'<a href="{file}">{label}</a>')
+    return '<div class="pagenav">' + "".join(out) + "</div>"
 
 
 def document(title: str, body: str, extra_css: str = "", lang: str = "ja",

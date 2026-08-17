@@ -15,7 +15,7 @@ from . import config, rules
 from .charts import bar_chart, line_chart
 from .md import render as md_render
 from .store import Store
-from .theme import DIARY_CSS, document
+from .theme import DIARY_CSS, document, private_nav
 
 LEVEL_CLASS = {"red": "red", "yellow": "yellow", "green": "green"}
 LEVEL_LABEL = {"red": "直す", "yellow": "見る", "green": "OK"}
@@ -161,7 +161,8 @@ def build(store: Store, rulebook: str = "", on: str | None = None) -> str:
                      '<code class="tag">private/rulebook.md</code>。'
                      'ここはそれを描いているだけなので、直すなら向こうを直す。</div></div>')
 
-    return document("トレード日記(私的)", "\n\n".join(parts), DIARY_CSS)
+    body = private_nav("trade_diary.html") + "\n\n" + "\n\n".join(parts)
+    return document("トレード日記(私的)", body, DIARY_CSS)
 
 
 def _holdings_card(store: Store, risk) -> str:

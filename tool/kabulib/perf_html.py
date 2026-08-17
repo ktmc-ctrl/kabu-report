@@ -12,7 +12,7 @@ from datetime import date
 from . import perf_stats, rules
 from .charts import bar_chart, line_chart
 from .store import Store
-from .theme import DIARY_CSS, document
+from .theme import DIARY_CSS, document, private_nav
 
 
 def _yen(v, signed=False):
@@ -252,4 +252,5 @@ def build(store: Store, on: str | None = None) -> str:
                      '<th class="num">現在値</th><th class="num">損益</th><th class="num">率</th>'
                      "</tr></thead>" f"<tbody>{rows}</tbody></table></div>")
 
-    return document("損益推移(私的)", "\n\n".join(p for p in parts if p), DIARY_CSS)
+    body = private_nav("performance.html") + "\n\n" + "\n\n".join(p for p in parts if p)
+    return document("損益推移(私的)", body, DIARY_CSS)
