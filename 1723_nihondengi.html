@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日本電技(1723) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>日本電技 <span class="note">[1723] 東証スタンダード</span></h1>
+    <div class="subtitle"><span class="badge">空調計装専業</span> <span class="badge">3月期決算</span> <span class="badge"><a class="xref" href="6845_azbil.html">アズビル</a>販売店</span> <span class="badge">実質無借金</span></div>
+  </div>
+  <div class="px">
+    <div class="v">2,117円</div>
+    <div class="note-s">2026/8/18 終値</div>
+    <div class="note-s">過去5年高値 3,147円(2026/3)から <b>-32.7%</b><br>(8/18終値 2,117円)</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    ビル空調の計装(制御・監視)工事の専業。<a class="xref" href="6845_azbil.html">アズビル</a>の販売店として同社製品を軸に、新設で入ったビルの改修・更新を「既設工事」として取り込み続けるストック型のモデルを持つ。Q1(2026年4-6月)は<b>受注高160億円(+30.8%)・営業利益17.6億円(+39.4%)</b>、繰越工事高は408億円(+37.5%)と積み上がり、<b>粗利率47.0%・営業利益率20.2%という建設業として突出した水準</b>にある。売上の58%が既設工事で、会社は「持続的な収益を創出する既設ストック案件」を中計の柱に据える。還元も強化中で、今期から<b>配当性向40%以上またはDOE7%以上の累進配当</b>へ移行し年56円(+16円)を予想。一方で<b>仕入の65.5%をアズビル1社に依存</b>し、特約店契約は1年更新。株価は3月の上場来高値から−32.7%、決算(7/24)に+14.5%で反応した後1週間で全戻しした。予想PER15.5倍。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/24発表・2027年3月期 Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>受注高</td><td class="num">159.7億円</td><td class="num up">+30.8%</td></tr>
+      <tr><td>売上高</td><td class="num">87.0億円</td><td class="num up">+3.2%</td></tr>
+      <tr><td>営業利益</td><td class="num">17.6億円</td><td class="num up">+39.4%</td></tr>
+      <tr><td>純利益</td><td class="num">13.0億円</td><td class="num up">+39.3%</td></tr>
+      <tr><td>繰越工事高</td><td class="num">407.5億円</td><td class="num up">+37.5%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <div class="body">
+    <b>利益の中身の分解:</b> 増益の源泉は<b>粗利率の改善(42.2%→47.0%、+4.8pt)</b>。資産売却益・為替などの一過性はなく、特別損益もなし。前期通期でも営業CF 110億円が純利益84億円を上回っており、<b>利益とキャッシュは整合している</b>。ただし粗利率+4.8ptの持続性は開示からは検証できず、通期計画の営業利益率24.3%は前期実績25.5%より保守的に置かれている(中東情勢・取適法対応を織り込み)。<br><br>
+    <b>新設/既設の内訳(空調計装):</b> 受注は新設39.8億円(+46.3%)・<b>既設108.0億円(+25.7%)</b>。売上は新設26.1億円(−29.1%)・<b>既設50.6億円(+30.9%)</b>——売上構成の58.1%が既設。新設は「既設に繋がる物件」の入口と会社が明確に位置づける。なお新設/既設別の利益率は非開示(取得不可)。<br><br>
+    <b>季節性:</b> 完成引渡しがQ4に集中する構造で、前期はQ1が通期営業利益の11%だった。Q1進捗14.0%は見かけより悪くない。前々期・前期とも期中の上方修正が2回ずつあり、保守的に出して期中に上げるパターンが続いている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>ストックモデルとデータセンター</h2>
+  <div class="body">
+    <b>このレポートの主題。</b>空調計装は、ビルが建つとき(新設)に制御システムを納め、その後20〜30年の改修・省エネ更新・機器入替(既設)を同じ会社が受注し続ける構造を持つ。日本電技の前期実績は新設139億円(−15.2%)に対し<b>既設272億円(+21.0%)</b>で、仕事の主戦場は明確に既設側。建物のオーナーから直接受注するため元請比率が高く、粗利率47%という水準の背景にある。<br><br>
+    <b>データセンターへの言及:</b> Q1短信に「工場及び<b>データセンター向け物件等の既設工事が増加</b>」、通期見通しに「首都圏の再開発案件や工場、データセンターなど、新設を中心とした大規模案件が完成及び出件される見通し」。ただし<b>DC単独の受注・売上額は非開示(取得不可)</b>。DCは24時間止められない建物であり、空調制御の更新・保守が新設後に長く続く用途として、既設ストックの積み増しに寄与する構図。<br><br>
+    <b>制約は人:</b> 単体従業員954名のうち施工技術者509名。会社自身が人材確保を「成長のボトルネック」と明言し、施工余力を勘案して受注を選別している。2030年度末1,100名への増員と、研修拠点「電技アカデミー」(2029年度運営開始目標)が中計の柱。
+  </div>
+</div>
+
+<div class="card">
+  <h2><a class="xref" href="6845_azbil.html">アズビル</a>依存という構造</h2>
+  <div class="body">
+    仕入の<b>65.5%(48.4億円)をアズビル1社</b>から行い、比率は前期の61.4%から上昇。特約店契約(1959年から)は<b>1年ごとの更新</b>で、有価証券報告書が自ら「この仕入れが滞る事態となった場合は業績に多大な影響」とリスクに明記する。<a class="xref" href="6845_azbil.html">アズビル</a>は日本電技の株式4.07%を保有する大株主でもあり、関係は長期・安定的だが、<b>事業の根幹が他社との契約1本の上に載っている</b>構造は変わらない。<a class="xref" href="6845_azbil.html">アズビル</a>側(6845)は既設・サービス分野を自社の成長戦略に据えており、販売店との領域の線引きは長期の注視点になる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">15.5倍</td><td>会社予想EPS 136.51円</td></tr>
+      <tr><td>PBR(実績)</td><td class="num">2.87倍</td><td>ROE 19.6%(前期)が支える。会社自身が資本コスト7〜10%と開示</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">2.65%</td><td>年56円(+16円増配、性向41.0%)。累進配当</td></tr>
+      <tr><td>52週レンジ</td><td class="num">1,213〜3,147円</td><td>上場来高値(2026/3)から−32.7%・安値から+74.5%</td></tr>
+      <tr><td>時価総額</td><td class="num">1,388億円</td><td>売買代金 約4.6億円/日と流動性は小型株並み</td></tr>
+      <tr><td>コンセンサス</td><td class="num">—</td><td>セルサイドのカバレッジなし(取得不可)</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    2021年から2026年3月まで約6倍に買われた後の−33%調整。決算当日(7/24)は+14.5%と急騰したが<b>1週間で全戻し</b>し、以後2,000〜2,300円台でもみ合う。受注+30.8%・繰越+37.5%という中身に対しPER15.5倍は重くないが、粗利率47%の持続性と、アナリスト不在ゆえに期待値の物差しがないことは織り込んで見る必要がある。<b>評価: 中立</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>中期経営計画・株主還元</h2>
+  <div class="body">
+    中計第2フェーズ(2024〜2027年度)は前倒し達成を受けて<b>2026年5月に再上方修正</b>: 2027年度に売上520億・営業利益130億(利益率25%)・ROE15%以上。長期は2030年度に売上600億・営業利益150億。2024年11月の当初目標(営業80億)を前期実績(90億)が即座に超えた経緯があり、目標の置き方は保守的。<br><br>
+    還元は今期から一段強化: <b>配当性向40%以上またはDOE7%以上を基準とする累進配当</b>+機動的な自己株取得(ただし直近の取得実績はなし)。配当は30.5円→40円→<b>56円予想</b>。政策保有株式(純資産比約43%)は2030年度までに10%未満へ縮減し、売却資金を成長投資と還元に回す方針を2026年7月に決議。財務は自己資本比率84.4%・借入ゼロ・現金と有価証券で約160億円と厚い。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b><a class="xref" href="6845_azbil.html">アズビル</a>依存:</b> 仕入の65.5%が単一先、契約は1年更新。この構造が崩れる事態は想定しにくいが、起きれば致命的<br>
+    ・<b>人材の制約:</b> 施工技術者の確保が受注の上限を決める。増員計画(954→1,100名)が未達なら中計の前提が崩れる<br>
+    ・<b>粗利率の持続性:</b> 47%は建設業として突出しており、通期計画自体が低下(25.5%→24.3%)を見込む。取適法(2026年1月施行)対応のコストも織り込み中<br>
+    ・<b>季節性と流動性:</b> Q4偏重で四半期の振れが大きく、売買代金4.6億円/日は値が飛びやすい<br>
+    ・<b>アナリスト不在:</b> コンセンサスがなく、決算の良し悪しに対する市場の期待値が読めない。7/24の+14.5%→全戻しはその表れ<br>
+    ・<b>強気材料の裏返し:</b> 既設ストックの伸び(+25.7%)は、過去に新設で納めた建物の蓄積の上にある。新設受注(前期−15.2%)が細り続ければ、数年後の既設の種も細る
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/18</b> 初版作成。<br>
+    出典: 日本電技 2027年3月期Q1決算短信・決算補足資料 2026/7/24(<span class="note">f.irbank.net/pdf/20260724/140120260723598582.pdf ほか</span>) / 2026年3月期決算短信・決算説明会資料 2026/5 / 資本政策の基本方針の変更 2026/5/7 / 政策保有株式の縮減方針 2026/7/24 / 有価証券報告書(2026/6/25提出、EDINET) / 株探(株価・指標、2026/8/18終値)。<br>
+    ※新設/既設別の利益率、データセンター関連の受注・売上金額、アナリストコンセンサスは非開示・カバレッジ対象外のため取得不可。「<a class="xref" href="6845_azbil.html">アズビル</a>特約店最大手」という通称は一次資料に順位の記載がなく検証できなかったため本文では用いていない。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
