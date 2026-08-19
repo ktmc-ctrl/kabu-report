@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>特集: 商社とインフレ耐性</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<style>
+.sho .day { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:12px 0; }
+@media (max-width:560px){ .sho .day { grid-template-columns:1fr; } }
+.sho .day-card { border:1px solid var(--border); border-radius:10px; padding:12px 14px; background:var(--surface-1); }
+.sho .day-card.d1 { border-color:var(--pos); border-width:2px; }
+.sho .day-card.d2 { border-color:var(--neg); border-width:2px; }
+.sho .day-card h3 { font-size:0.82rem; margin-bottom:6px; }
+.sho .day-card .big { font-size:1.35rem; font-weight:700; }
+.sho .day-card .big.pos { color:var(--pos); }
+.sho .day-card .big.neg { color:var(--neg); }
+.sho .day-card p { font-size:0.73rem; color:var(--text-secondary); line-height:1.75; margin-top:6px; }
+.sho .rank { display:flex; align-items:center; gap:8px; margin:4px 0; font-size:0.74rem; }
+.sho .rank .nm { width:6.5em; }
+.sho .rank .track { flex:1; height:9px; background:var(--surface-2); border-radius:5px; overflow:hidden; }
+.sho .rank .fill { height:100%; background:var(--alt); border-radius:5px; }
+.sho .rank .val { width:4em; text-align:right; font-weight:600; }
+</style>
+
+<div class="sho">
+
+<div class="head">
+  <div>
+    <h1>🏛 商社とインフレ — 耐性は1日しか持たなかった <span class="note">— 5大商社+2社の検証</span></h1>
+    <div class="subtitle">金利ショック2日間(8/18-19)の実測で「商社=インフレ耐性」仮説を検証する ・ 2026/8/19</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>この特集の視点</h2>
+  <div class="body">
+    2026年8月、長期金利が一時<b>2.945%(29年10カ月ぶり高水準)</b>まで上昇し、債券・円・株のトリプル安が起きた。この局面でよく言われるのが<b>「商社はコモディティを扱うのでインフレ耐性がある」</b>という仮説である。都合よく、検証材料が目の前にある——金利ショックの8/18と8/19、商社株は実際どう動いたか。結論を先に言えば、<b>仮説は初日だけ成立し、2日目に崩れた</b>。そしてその崩れ方が、この仮説の正確な適用範囲を教えてくれる。
+  </div>
+</div>
+
+<div class="card">
+  <h2>実測 — 1日目は買われ、2日目は売られた</h2>
+  <div class="day">
+    <div class="day-card d1">
+      <h3>8/18(火)— トリプル安の初日</h3>
+      <div class="big pos">卸売業 +0.74%</div>
+      <p>日経平均<b>−2.54%(−1,760円)</b>の全面安の中、業種別で卸売業(商社)は<b>33業種中8位で上昇</b>。上位は海運+3.64%・鉱業+3.20%・石油石炭+2.13%と「インフレで儲かる業種」が並んだ。日経比<b>+3.3ptのアウトパフォーム</b>——インフレ・原油高の初動では、商社は確かに逃避先として買われた。</p>
+    </div>
+    <div class="day-card d2">
+      <h3>8/19(水)— 2日目</h3>
+      <div class="big neg">7社すべて下落</div>
+      <p>日経平均は前場に下げ幅2,000円超。商社は<b>伊藤忠−1.5% / 三井−2.1% / 三菱−2.7% / 丸紅−3.2% / 双日−3.5% / 住商−4.1% / 豊通−4.6%</b>(前場10時頃)と全滅。しかも<b>下げが最も小さいのは非資源の伊藤忠</b>で、「資源商社ほど耐性がある」という図式は2日目には成立していない。</p>
+    </div>
+  </div>
+  <div class="body">
+    この2日間が教えるのは、仮説の分解が必要だということ。<b>「商品市況の上昇」は商社の利益に効く(1日目の買い)。しかし「金利上昇そのもの」は商社にも売り材料</b>(2日目)——商社は買収と資源権益を有利子負債で賄うレバレッジ業態であり、金利は自らの調達コストに跳ね返る。インフレの結果(市況高)は追い風、インフレへの処方箋(利上げ)は逆風。同じ「インフレ局面」の中に、商社にとって正反対の2つの力が同居している。
+  </div>
+</div>
+
+<div class="card">
+  <h2>Q1決算 — 7社中6社が二桁増益、その中身は市況</h2>
+  <div class="scroll-x">
+  <table>
+    <thead><tr><th>社名</th><th class="num">Q1純利益</th><th class="num">前年比</th><th>増益の主因(会社説明ベース)</th></tr></thead>
+    <tbody>
+      <tr><td><b>三菱商事</b></td><td class="num">2,985億円</td><td class="num up">+47.0%</td><td>銅・原料炭市況、LNGカナダ黒字化。金属資源セグメント+215%</td></tr>
+      <tr><td>三井物産</td><td class="num">2,941億円</td><td class="num up">+53.4%</td><td>Q1として4年ぶり最高益。ただしイノベーション系+549億の押し上げ込み</td></tr>
+      <tr><td>伊藤忠商事</td><td class="num">2,938億円</td><td class="num up">+3.5%</td><td>非資源(機械等)が牽引。増益率は最低だが元の水準が高い</td></tr>
+      <tr><td>住友商事</td><td class="num">1,901億円</td><td class="num up">+11.2%</td><td><span class="warn">税引前は−27.6%</span>。最終増益はニッケル事業売却に伴う税効果(一過性)</td></tr>
+      <tr><td>丸紅</td><td class="num">1,864億円</td><td class="num up">+20.7%</td><td>銅・原料炭高、北米ガストレード</td></tr>
+      <tr><td>豊田通商</td><td class="num">1,352億円</td><td class="num up">+37.5%</td><td>四半期最高益。通期を4,300億へ8%上方修正</td></tr>
+      <tr><td>双日</td><td class="num">302億円</td><td class="num up">+43%</td><td>進捗23.2%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="body" style="margin-top:8px">
+    7社合計で約1.23兆円。<b>増益の説明変数はほぼ市況</b>——銅はLME最高値圏(8/6に一時14,369ドル/トン、コンゴの輸出禁止報道)、原油はWTI 84.50ドル(米イラン覚書が8/18に成果なく期限到来、ドバイ原油91.8ドル)、原料炭は底から回復(185ドル/トン)。裏を返せば、<b>この決算の強さは市況が反転すれば同じ幅で逆回転する</b>。実例は三菱商事自身で、前期(2026年3月期)は原料炭・LNG軟化で減益だった。今期+47%のV字は市況反転の裏返しにすぎない。⑰の言葉で言えば「実質」ではなく「市況」である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>資源依存度の序列 — Q1実測</h2>
+  <div class="body">Q1のセグメント利益から算出した「資源(金属+エネルギー)÷純利益」:</div>
+  <div style="margin:10px 0">
+    <div class="rank"><span class="nm">三菱商事</span><div class="track"><div class="fill" style="width:53%"></div></div><span class="val">約53%</span></div>
+    <div class="rank"><span class="nm">丸紅</span><div class="track"><div class="fill" style="width:36%"></div></div><span class="val">約36%</span></div>
+    <div class="rank"><span class="nm">三井物産</span><div class="track"><div class="fill" style="width:33%"></div></div><span class="val">約33%※</span></div>
+    <div class="rank"><span class="nm">伊藤忠商事</span><div class="track"><div class="fill" style="width:28%"></div></div><span class="val">3割弱</span></div>
+    <div class="rank"><span class="nm">住友商事</span><div class="track"><div class="fill mut" style="width:0%"></div></div><span class="val">取得不可</span></div>
+  </div>
+  <div class="body">
+    ※三井物産は当四半期に非資源系の一過性(+549億)があり、Q1実測では資源比率が薄まって見える。通期ベースの比較では三井の資源依存度は約50%とされ、通説の序列は「三井・三菱が資源寄り、伊藤忠が非資源寄り」。<b>四半期の実測は市況と一過性で振れる</b>ため、依存度は通期で見るのが正確。住友商事はQ1セグメント内訳を確認できる資料が取得できなかった(短信原本の直読が必要)。<br><br>
+    インフレ仮説をこの序列に当てるなら、市況の追い風を最も受けるのは三菱・三井、最も受けないのが伊藤忠。<b>ただし8/19に最も下げなかったのは伊藤忠</b>——市況の追い風とバリュエーションの安定は別物ということも、この2日間は教えている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション横比較(8/18終値ベース)</h2>
+  <div class="scroll-x">
+  <table>
+    <thead><tr><th>社名</th><th class="num">株価</th><th class="num">予想PER</th><th class="num">PBR</th><th class="num">利回り</th><th class="num">時価総額</th><th class="num">52週高値から</th></tr></thead>
+    <tbody>
+      <tr><td><b>三菱商事</b></td><td class="num">4,778</td><td class="num">15.4倍</td><td class="num">1.77倍</td><td class="num">2.69%</td><td class="num">17.3兆円</td><td class="num">−20.5%</td></tr>
+      <tr><td>三井物産</td><td class="num">4,873</td><td class="num">14.7倍</td><td class="num">1.51倍</td><td class="num">2.93%</td><td class="num">13.7兆円</td><td class="num">−27.0%</td></tr>
+      <tr><td>伊藤忠商事</td><td class="num">2,000.5</td><td class="num">14.5倍</td><td class="num">2.04倍</td><td class="num">2.23%</td><td class="num">15.6兆円</td><td class="num">−12.5%</td></tr>
+      <tr><td>住友商事</td><td class="num">1,757.5</td><td class="num">12.6倍</td><td class="num">1.68倍</td><td class="num">2.37%</td><td class="num">8.1兆円</td><td class="num">−9.6%</td></tr>
+      <tr><td>丸紅</td><td class="num">4,938</td><td class="num">13.4倍</td><td class="num">1.74倍</td><td class="num">2.40%</td><td class="num">7.9兆円</td><td class="num">−22.0%</td></tr>
+      <tr><td>豊田通商</td><td class="num">7,373</td><td class="num">15.3倍</td><td class="num">2.55倍</td><td class="num">1.78%</td><td class="num">6.6兆円</td><td class="num">−3.2%</td></tr>
+      <tr><td>双日</td><td class="num">5,655</td><td class="num">8.7倍</td><td class="num">0.99倍</td><td class="num">3.30%</td><td class="num">1.2兆円</td><td class="num">−22.1%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="body" style="margin-top:8px">
+    PER・PBR・利回り・時価総額は8/19前場の株価に基づく表示値で、8/18終値比2〜4%の誤差を含む。目に付くのは3点。①<b>豊田通商だけ52週高値が直近(8/7)</b>——上方修正が効いており、他社と位相が違う。②<b>双日だけPBR1倍割れ・PER一桁</b>で、5大商社とは評価の階層が別。③5大商社は52週高値から−10〜−27%と、市況ピーク警戒を市場は既に一定織り込んでいる。PBR1.5〜2.5倍という水準は、バフェットが買い始めた頃の「万年割安株」ではもうない。住友商事は2026年7月に1:4分割済みのため価格水準の比較には注意。
+  </div>
+</div>
+
+<div class="card">
+  <h2>下値を支える2つの構造 — 還元とバークシャー</h2>
+  <div class="body">
+    <b>① 5大商社すべてが累進配当を明示している。</b>そしてQ1決算と同時に、三井物産<b>最大2,000億円</b>・伊藤忠<b>最大3,000億円</b>・丸紅<b>最大1,000億円</b>の自社株買いが発表された。三菱商事は前期からの<b>1兆円(発行済約17%相当)</b>を実行し2026年4月に消却済み。丸紅は中計の還元総額を7,000億→9,000億円へ増額。金利上昇局面でも下値を還元が支えるという議論には、この規模の裏付けがある。<br><br>
+    <b>② バークシャー・ハサウェイは5社全部で保有比率を引き上げ続けている。</b>2026年3月時点で三菱10.8%・三井10.4%・伊藤忠10.1%・丸紅9.8%・住商9.7%。6〜7月には三井10.83%・丸紅10.32%へ買い増し。アベル新CEOの初書簡は5大商社を「米国企業と同等に重要」とし恒久保有方針を再確認した。売却報道はない。
+  </div>
+</div>
+
+<div class="card">
+  <h2>この仮説のリスク(裏返し)</h2>
+  <div class="body">
+    ・<b>金利は商社自身のコスト:</b> レバレッジ業態ゆえ、利上げは調達コスト増に直結する。8/19の全面安がその実演。「インフレ耐性」は「利上げ耐性」を意味しない<br>
+    ・<b>市況の逆回転:</b> Q1の+47%(三菱)は銅・原料炭・LNGの市況高の産物で、前期は同じ理由で減益だった。市況が説明変数である以上、逆向きにも同じ幅で動く<br>
+    ・<b>増益の質のばらつき:</b> 住友商事の最終増益は税効果(税引前−27.6%)、三井物産には非資源系の一過性+549億。⑰の分解を通すと「実質」は見出しより小さい<br>
+    ・<b>中国需要:</b> 鉄鉱石は100ドル前後で戻りが鈍い。中国の鉄鋼需要減速は資源商社の上値を抑え続けている<br>
+    ・<b>円高転換:</b> いまは円安(159円台)が外貨建て資源収益の追い風だが、日銀利上げが円高を招けば逆向きに働く。「インフレ→利上げ→円高」は商社にとって二重の逆風になり得る<br>
+    ・<b>2015年型の記憶:</b> 市況ピーク+PBR上限圏の組み合わせは、資源安で減損が連鎖した2015〜16年の逆回転と同じ入口の形をしている。当時と違うのは財務規律と還元だが、市況依存の骨格は変わっていない
+  </div>
+</div>
+
+<div class="card">
+  <h2>関連銘柄一覧</h2>
+  <div class="scroll-x">
+  <table>
+    <thead><tr><th>コード</th><th>銘柄</th><th class="num">株価(8/18)</th><th>位置づけ</th><th>個別レポート</th></tr></thead>
+    <tbody>
+      <tr><td>8058</td><td><b>三菱商事</b></td><td class="num">4,778</td><td>資源比率約53%(Q1)。銅・原料炭・LNG。1兆円自社株買い消却済み</td><td>あり</td></tr>
+      <tr><td>8031</td><td>三井物産</td><td class="num">4,873</td><td>通期ベースで資源約50%。Q1と同時に2,000億自社株買い</td><td>あり</td></tr>
+      <tr><td>8001</td><td>伊藤忠商事</td><td class="num">2,000.5</td><td>非資源約7割。金利ショック2日目に最も下げなかった</td><td>—</td></tr>
+      <tr><td>8053</td><td>住友商事</td><td class="num">1,757.5</td><td>ニッケル撤退で資源縮小方向。Q1最終増益は税効果</td><td>—</td></tr>
+      <tr><td>8002</td><td>丸紅</td><td class="num">4,938</td><td>資源約36%。還元総額を9,000億へ増額</td><td>—</td></tr>
+      <tr><td>8015</td><td>豊田通商</td><td class="num">7,373</td><td>52週高値が直近(8/7)。上方修正で他社と位相が違う</td><td>—</td></tr>
+      <tr><td>2768</td><td>双日</td><td class="num">5,655</td><td>PBR0.99倍・PER8.7倍。評価の階層が別</td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="card">
+  <h2>出典・更新履歴</h2>
+  <div class="body">
+    <b>2026/8/19</b> 初版作成。<br>
+    出典: 各社2027年3月期Q1決算短信・決算発表(2026/7/31〜8/4、TDnet) / 財経新聞 業種別騰落ランキング(2026/8/18) / 日経(長期金利2.945%・8/18東証大引け・8/19前場) / 株探・Yahoo!ファイナンス(株価・指標・52週レンジ) / 日経・時事・Business Insider(バークシャー保有比率) / みんかぶFX・OANDA・日刊鉄鋼新聞(原油・銅・原料炭市況) / 各社株主還元ページ。<br>
+    ※8/19の騰落率は前場10時頃の値であり大引けで変わり得る。8/18の個別7社の騰落率は取得できず業種指数(卸売業+0.74%)で代替した。住友商事のQ1セグメント別内訳、セグメント利益の一部は二次資料(決算解説)経由であり、一次資料との突き合わせは個別レポート作成時に行う。資源比率は本レポートの算出値で会社開示ではない。
+  </div>
+</div>
+
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
