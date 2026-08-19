@@ -164,7 +164,7 @@
 <body class="viz-root">
 <script>
 /* 旧形式の共有リンク(全レポート内包時代の #ハッシュ)を個別ページへ流す */
-var FILES = {"7011": "7011_mhi.html", "7203": "7203_toyota.html", "6758": "6758_sony.html", "6367": "6367_daikin.html", "7974": "7974_nintendo.html", "9684": "9684_squareenix.html", "3402": "3402_toray.html", "4063": "4063_shinetsu.html", "4182": "4182_mgc.html", "5802": "5802_sumitomo_electric.html", "5803": "5803_fujikura.html", "5801": "5801_furukawa.html", "5706": "5706_mitsui_kinzoku.html", "5016": "5016_jx_metals.html", "6920": "6920_lasertec.html", "6857": "6857_advantest.html", "285A": "285A_kioxia.html", "9984": "9984_softbankg.html", "8058": "8058_mitsubishi_corp.html", "8031": "8031_mitsui.html", "8267": "8267_aeon.html", "9301": "9301_mitsubishi_logistics.html", "8306": "8306_mufg.html", "8316": "8316_smfg.html", "8411": "8411_mizuho.html", "9432": "9432_ntt.html", "4755": "4755_rakuten.html", "9503": "9503_kansai_electric.html", "9508": "9508_kyushu_electric.html", "9502": "9502_chubu_electric.html", "9506": "9506_tohoku_electric.html", "9509": "9509_hokkaido_electric.html", "6508": "6508_meidensha.html", "6617": "6617_tktk.html", "5838": "5838_rakuten_bank.html", "7182": "7182_yucho_bank.html", "4689": "4689_lineyahoo.html", "9434": "9434_softbank_kk.html", "6866": "6866_hioki.html", "6516": "6516_sanyo_denki.html", "6905": "6905_cosel.html", "5344": "5344_maruwa.html", "5310": "5310_toyotanso.html", "6622": "6622_daihen.html", "6890": "6890_ferrotec.html", "4043": "4043_tokuyama.html", "4004": "4004_resonac.html", "4061": "4061_denka.html", "4186": "4186_tok.html", "6861": "6861_keyence.html", "9020": "9020_jr_east.html", "9022": "9022_jr_central.html", "7832": "7832_bandainamco.html", "8136": "8136_sanrio.html", "9697": "9697_capcom.html", "9602": "9602_toho.html", "9468": "9468_kadokawa.html", "4816": "4816_toei_animation.html", "7267": "7267_honda.html", "7201": "7201_nissan.html", "7269": "7269_suzuki.html", "7270": "7270_subaru.html", "7261": "7261_mazda.html", "7202": "7202_isuzu.html", "6902": "6902_denso.html", "7259": "7259_aisin.html", "1969": "1969_takasago.html", "1944": "1944_kinden.html", "1942": "1942_kandenko.html", "1959": "1959_kraftia.html", "6744": "6744_nohmi.html", "6504": "6504_fujielectric.html", "6674": "6674_gsyuasa.html", "6845": "6845_azbil.html", "1812": "1812_kajima.html", "1802": "1802_obayashi.html", "1803": "1803_shimizu.html", "1801": "1801_taisei.html", "6501": "6501_hitachi.html", "4107": "4107_isechem.html", "1723": "1723_nihondengi.html", "theme-dc": "theme_datacenter.html", "theme-power": "theme_power.html", "theme-fintech": "theme_fintech.html", "theme-semi": "theme_semi_materials.html", "theme-chem": "theme_chemicals.html", "theme-eff": "theme_efficiency.html", "theme-ip": "theme_ip.html", "theme-auto": "theme_auto.html", "theme-dcops": "theme_dcops.html", "theme-grid": "theme_grid.html"};
+var FILES = {"7011": "7011_mhi.html", "7203": "7203_toyota.html", "6758": "6758_sony.html", "6367": "6367_daikin.html", "7974": "7974_nintendo.html", "9684": "9684_squareenix.html", "3402": "3402_toray.html", "4063": "4063_shinetsu.html", "4182": "4182_mgc.html", "5802": "5802_sumitomo_electric.html", "5803": "5803_fujikura.html", "5801": "5801_furukawa.html", "5706": "5706_mitsui_kinzoku.html", "5016": "5016_jx_metals.html", "6920": "6920_lasertec.html", "6857": "6857_advantest.html", "285A": "285A_kioxia.html", "9984": "9984_softbankg.html", "8058": "8058_mitsubishi_corp.html", "8031": "8031_mitsui.html", "8267": "8267_aeon.html", "9301": "9301_mitsubishi_logistics.html", "8306": "8306_mufg.html", "8316": "8316_smfg.html", "8411": "8411_mizuho.html", "9432": "9432_ntt.html", "4755": "4755_rakuten.html", "9503": "9503_kansai_electric.html", "9508": "9508_kyushu_electric.html", "9502": "9502_chubu_electric.html", "9506": "9506_tohoku_electric.html", "9509": "9509_hokkaido_electric.html", "6508": "6508_meidensha.html", "6617": "6617_tktk.html", "5838": "5838_rakuten_bank.html", "7182": "7182_yucho_bank.html", "4689": "4689_lineyahoo.html", "9434": "9434_softbank_kk.html", "6866": "6866_hioki.html", "6516": "6516_sanyo_denki.html", "6905": "6905_cosel.html", "5344": "5344_maruwa.html", "5310": "5310_toyotanso.html", "6622": "6622_daihen.html", "6890": "6890_ferrotec.html", "4043": "4043_tokuyama.html", "4004": "4004_resonac.html", "4061": "4061_denka.html", "4186": "4186_tok.html", "6861": "6861_keyence.html", "9020": "9020_jr_east.html", "9022": "9022_jr_central.html", "7832": "7832_bandainamco.html", "8136": "8136_sanrio.html", "9697": "9697_capcom.html", "9602": "9602_toho.html", "9468": "9468_kadokawa.html", "4816": "4816_toei_animation.html", "7267": "7267_honda.html", "7201": "7201_nissan.html", "7269": "7269_suzuki.html", "7270": "7270_subaru.html", "7261": "7261_mazda.html", "7202": "7202_isuzu.html", "6902": "6902_denso.html", "7259": "7259_aisin.html", "1969": "1969_takasago.html", "1944": "1944_kinden.html", "1942": "1942_kandenko.html", "1959": "1959_kraftia.html", "6744": "6744_nohmi.html", "6504": "6504_fujielectric.html", "6674": "6674_gsyuasa.html", "6845": "6845_azbil.html", "1812": "1812_kajima.html", "1802": "1802_obayashi.html", "1803": "1803_shimizu.html", "1801": "1801_taisei.html", "6501": "6501_hitachi.html", "4107": "4107_isechem.html", "1723": "1723_nihondengi.html", "theme-dc": "theme_datacenter.html", "theme-power": "theme_power.html", "theme-fintech": "theme_fintech.html", "theme-semi": "theme_semi_materials.html", "theme-chem": "theme_chemicals.html", "theme-eff": "theme_efficiency.html", "theme-ip": "theme_ip.html", "theme-auto": "theme_auto.html", "theme-dcops": "theme_dcops.html", "theme-grid": "theme_grid.html", "theme-shosha": "theme_shosha.html"};
 function goLegacy() {
   var id = location.hash.slice(1);
   if (id && FILES[id]) location.replace(FILES[id]);
@@ -185,7 +185,7 @@ window.addEventListener('hashchange', goLegacy);
   <div class="seg" role="tablist" aria-label="表示の切り替え">
     <button id="tab-sector" class="on" role="tab" aria-selected="true" onclick="setGroup('sector')">セクター別</button>
     <button id="tab-val" role="tab" aria-selected="false" onclick="setGroup('val')">割安・割高別</button>
-    <button id="tab-themes" role="tab" aria-selected="false" onclick="setGroup('themes')">特集 <small>10</small></button>
+    <button id="tab-themes" role="tab" aria-selected="false" onclick="setGroup('themes')">特集 <small>11</small></button>
   </div>
 
   <div id="grp-sector">
@@ -702,11 +702,11 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-sum">Q1純利益3,473億円(−17.7%)もNAV72.3兆円と過去最高。OpenAI評価が寄与、LTV13%。NAV比5割前後のディスカウント</div>
         <div class="go">レポートを見る →</div>
       </a>
-      <a class="tile" href="8058_mitsubishi_corp.html" data-q="8058 三菱商事 8058 投資・商社・小売 中立 Q1純利益+47%も、増益954億の65%は金属資源(市況)。前期は3期連続減益−26%で分母が低い。1兆円・発行済17%の自社株買いは消却完了、エーソン1.2兆円買収が今期寄与" aria-label="三菱商事のレポートを開く">
+      <a class="tile" href="8058_mitsubishi_corp.html" data-q="8058 三菱商事 8058 投資・商社・小売 市況次第 Q1純利益+47%でコンセンサス14%上振れ。ただし増益の6割超が金属資源(3.1倍)、一過性が3〜4割で、前期は3期連続減益。1兆円自社株買い消却済み・累進配当・バークシャー10.8%" aria-label="三菱商事のレポートを開く">
         <div class="tile-top"><span class="tile-name">三菱商事</span><span class="tile-code">8058</span></div>
-        <div class="tile-px">4,822<small>円 ・ 8/13</small></div>
-        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
-        <div class="tile-sum">Q1純利益+47%も、増益954億の65%は金属資源(市況)。前期は3期連続減益−26%で分母が低い。1兆円・発行済17%の自社株買いは消却完了、エーソン1.2兆円買収が今期寄与</div>
+        <div class="tile-px">4,778<small>円 ・ 8/18</small></div>
+        <div style="margin-top:6px"><span class="vb mid">市況次第</span></div>
+        <div class="tile-sum">Q1純利益+47%でコンセンサス14%上振れ。ただし増益の6割超が金属資源(3.1倍)、一過性が3〜4割で、前期は3期連続減益。1兆円自社株買い消却済み・累進配当・バークシャー10.8%</div>
         <div class="go">レポートを見る →</div>
       </a>
       <a class="tile" href="8031_mitsui.html" data-q="8031 三井物産 8031 投資・商社・小売 割安寄り Q1純利益2,941億円(+53.5%)で過去最高。自社株買い2,000億円。中経2029は累進配当140円下限・ROE12%目標" aria-label="三井物産のレポートを開く">
@@ -829,9 +829,9 @@ window.addEventListener('hashchange', goLegacy);
   <div id="grp-val" style="display:none">
     <div class="chips" id="chips-val">
 <button data-pick="割安" onclick="pick('val', this.dataset.pick)">割安 <small>8</small></button>
-<button data-pick="中立" onclick="pick('val', this.dataset.pick)">中立 <small>42</small></button>
+<button data-pick="中立" onclick="pick('val', this.dataset.pick)">中立 <small>41</small></button>
 <button data-pick="割高" onclick="pick('val', this.dataset.pick)">割高 <small>25</small></button>
-<button data-pick="評価難" onclick="pick('val', this.dataset.pick)">評価難 <small>6</small></button>
+<button data-pick="評価難" onclick="pick('val', this.dataset.pick)">評価難 <small>7</small></button>
     </div>
     <div class="sec-block" data-name="割安">
     <div class="sector-h val lo" data-group>割安 <span class="cnt">8銘柄</span></div>
@@ -896,7 +896,7 @@ window.addEventListener('hashchange', goLegacy);
     </div>
     </div>
     <div class="sec-block" data-name="中立">
-    <div class="sector-h val mid" data-group>中立 <span class="cnt">42銘柄</span></div>
+    <div class="sector-h val mid" data-group>中立 <span class="cnt">41銘柄</span></div>
     <div class="bdesc">指標面に大きな歪みはなく、業績見通しとおおむね整合的な水準</div>
     <div class="grid">
       <a class="tile" href="6758_sony.html" data-q="6758 ソニーグループ 6758 電機・エンタメ 中立 Q1営業利益+40%で過去最高、通期1.72兆円へ上方修正。熊本地震の影響は通期予想に未反映。タムロン買収提案" aria-label="ソニーグループのレポートを開く">
@@ -960,13 +960,6 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-px">27,855<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">電線・非鉄</span></div>
         <div class="tile-sum">MicroThin/VSP数量増でQ1営業益84%増も、通期減益計画が市場予想に届かず8/10に13.6%急落</div>
-        <div class="go">レポートを見る →</div>
-      </a>
-      <a class="tile" href="8058_mitsubishi_corp.html" data-q="8058 三菱商事 8058 投資・商社・小売 中立 Q1純利益+47%も、増益954億の65%は金属資源(市況)。前期は3期連続減益−26%で分母が低い。1兆円・発行済17%の自社株買いは消却完了、エーソン1.2兆円買収が今期寄与" aria-label="三菱商事のレポートを開く">
-        <div class="tile-top"><span class="tile-name">三菱商事</span><span class="tile-code">8058</span></div>
-        <div class="tile-px">4,822<small>円 ・ 8/13</small></div>
-        <div style="margin-top:6px"><span class="secchip">投資・商社・小売</span></div>
-        <div class="tile-sum">Q1純利益+47%も、増益954億の65%は金属資源(市況)。前期は3期連続減益−26%で分母が低い。1兆円・発行済17%の自社株買いは消却完了、エーソン1.2兆円買収が今期寄与</div>
         <div class="go">レポートを見る →</div>
       </a>
       <a class="tile" href="9301_mitsubishi_logistics.html" data-q="9301 三菱倉庫 9301 投資・商社・小売 中立 Q1営業益−2.6%と減益スタート。通期は営業+9.9%増益だが純利益は−58%——政策保有株の売却益が剥落。経営計画は2030年に事業利益2.8倍を掲げる" aria-label="三菱倉庫のレポートを開く">
@@ -1377,7 +1370,7 @@ window.addEventListener('hashchange', goLegacy);
     </div>
     </div>
     <div class="sec-block" data-name="評価難">
-    <div class="sector-h val mid" data-group>評価難 <span class="cnt">6銘柄</span></div>
+    <div class="sector-h val mid" data-group>評価難 <span class="cnt">7銘柄</span></div>
     <div class="bdesc">利益が市況変動や黒字化途上にあり、PERによる評価が機能しにくい</div>
     <div class="grid">
       <a class="tile" href="285A_kioxia.html" data-q="285A キオクシアHD 285A 半導体 市況次第 NAND急騰でQ1営業益1.27兆円・純利益46倍。8千億円自社株買い・1対3分割発表も高値から57%調整" aria-label="キオクシアHDのレポートを開く">
@@ -1385,6 +1378,13 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-px">48,010<small>円 ・ 8/10</small></div>
         <div style="margin-top:6px"><span class="secchip">半導体</span></div>
         <div class="tile-sum">NAND急騰でQ1営業益1.27兆円・純利益46倍。8千億円自社株買い・1対3分割発表も高値から57%調整</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="8058_mitsubishi_corp.html" data-q="8058 三菱商事 8058 投資・商社・小売 市況次第 Q1純利益+47%でコンセンサス14%上振れ。ただし増益の6割超が金属資源(3.1倍)、一過性が3〜4割で、前期は3期連続減益。1兆円自社株買い消却済み・累進配当・バークシャー10.8%" aria-label="三菱商事のレポートを開く">
+        <div class="tile-top"><span class="tile-name">三菱商事</span><span class="tile-code">8058</span></div>
+        <div class="tile-px">4,778<small>円 ・ 8/18</small></div>
+        <div style="margin-top:6px"><span class="secchip">投資・商社・小売</span></div>
+        <div class="tile-sum">Q1純利益+47%でコンセンサス14%上振れ。ただし増益の6割超が金属資源(3.1倍)、一過性が3〜4割で、前期は3期連続減益。1兆円自社株買い消却済み・累進配当・バークシャー10.8%</div>
         <div class="go">レポートを見る →</div>
       </a>
       <a class="tile" href="4755_rakuten.html" data-q="4755 楽天グループ 4755 ネット・通信 PER非適用 7年ぶり上期営業黒字も、上期営業益504億はコンセンサス708億に28.8%未達。決算後初日の8/12に−13.43%・安値引け" aria-label="楽天グループのレポートを開く">
@@ -1475,6 +1475,11 @@ window.addEventListener('hashchange', goLegacy);
   <a class="theme-btn" href="theme_grid.html">
     <div class="tt">⚡ 変圧器2.7年待ち — 電力系統というボトルネック</div>
     <div class="td">DCが建たない律速は土地でも金でもなく「電気を運ぶ設備」。受注残という物差しで測ると、日立エナジー2.7年分に対し愛知電機は1か月分——同じ変圧器でも逼迫しているのは大型・超高圧だけ。しかも需要の主因はDCではなくHVDC。関連10銘柄</div>
+    <div class="tg">マップを開く →</div>
+  </a>
+  <a class="theme-btn" href="theme_shosha.html">
+    <div class="tt">🏛 商社とインフレ — 耐性は1日しか持たなかった</div>
+    <div class="td">金利ショック2日間(8/18-19)の実測で「商社=インフレ耐性」を検証。初日は卸売業+0.74%と買われ、2日目は7社全滅——市況高は追い風、利上げは逆風という2つの力の分解。5大商社+2社のQ1・資源依存度・還元・バフェット保有を横断</div>
     <div class="tg">マップを開く →</div>
   </a>
   </div>
