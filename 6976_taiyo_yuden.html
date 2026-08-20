@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>太陽誘電(6976) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>太陽誘電 <span class="note">[6976] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">電子部品(MLCC)</span> <span class="badge">3月期決算</span> <span class="badge">売上の73%がコンデンサ</span> <span class="badge">通期56%上方修正(8/5)</span></div>
+  </div>
+  <div class="px">
+    <div class="v">9,527円</div>
+    <div class="note-s">2026/8/20 14時台</div>
+    <div class="note-s">年初来高値 24,065円(7/1)から <b>-60.4%</b><br>年初来安値 3,167円(1/29)から <b>+200.8%</b></div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    積層セラミックコンデンサ(MLCC)の世界大手。売上の約73%がコンデンサに集中しており、AIサーバー向けMLCC需要の恩恵がほぼ直撃する構造を持つ。Q1(2026年4-6月)は営業利益<b>48.2億円(+53.3%)</b>と増益し、8/5に通期経常利益を<b>270億円→420億円へ55.6%上方修正</b>した。ただし利益の中身を見ると、<b>Q1の増益は会社開示の為替寄与(+26億円)だけで説明でき、為替を除くと計算上は前年割れ</b>。通期営業利益450億円に対するQ1進捗率は10.7%にとどまり、<b>計画は「値下がりペースの大幅改善+数量増」が下期に実現する前提の、極端な下期偏重型</b>である。株価は1月安値3,167円から7月高値24,065円まで約7.6倍に急騰した後、−60%の水準まで調整しており、上方修正の翌日ですら−11.0%と売られた——<b>市場の期待は会社計画のさらに上にある</b>。予想PER42.7倍は、この下期の急拡大が実現するか否かで評価が全く変わる水準——<b>評価: 市況次第</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/5発表・2027年3月期 Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">938.97億円</td><td class="num up">+10.7%</td></tr>
+      <tr><td>営業利益</td><td class="num">48.18億円</td><td class="num up">+53.3%</td></tr>
+      <tr><td>経常利益</td><td class="num">42.63億円</td><td class="num up">+1,560%</td></tr>
+      <tr><td>親会社株主帰属純利益</td><td class="num">25.04億円</td><td class="num up">黒字転換(前年▲8.76億円)</td></tr>
+      <tr><td>営業利益率</td><td class="num">5.1%</td><td class="num up">前四半期比+1.2pt</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <table>
+    <thead><tr><th>製品別売上</th><th class="num">Q1</th><th class="num">前年同期比</th><th class="num">前四半期比</th></tr></thead>
+    <tbody>
+      <tr><td><b>コンデンサ(MLCC)</b></td><td class="num"><b>690.22億円</b></td><td class="num up">+14.7%</td><td class="num up">+7.9%</td></tr>
+      <tr><td>インダクタ</td><td class="num">159.34億円</td><td class="num up">+7.4%</td><td class="num up">+1.5%</td></tr>
+      <tr><td>その他(複合デバイス等)</td><td class="num">89.41億円</td><td class="num down">-8.5%</td><td class="num down">-6.3%</td></tr>
+    </tbody>
+  </table>
+  <div class="box" style="margin-top:10px">
+    <b>利益の中身の分解(重要)。</b>営業増益は前年同期31.4億円→48.2億円の<b>+16.8億円</b>。一方、会社が開示した為替の営業利益への寄与は<b>+26億円</b>(期中平均158.8円/ドル、前年同期比12.62円の円安)。<b>開示値をそのまま突き合わせると、為替を除いた営業利益は計算上▲9億円前後の前年割れ</b>になる。つまりQ1時点の増益は円安によるもので、「AIサーバー向けの数量増が利益を押し上げた」という説明が数字として表れるのは下期以降の計画側である。経常利益の+1,560%という派手な伸び率は、前年同期が為替差損等でほぼゼロ(2.6億円)まで凹んでいた反動であり、水準としては42.6億円にすぎない。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因 — 極端な下期偏重</h2>
+  <table>
+    <thead><tr><th>2027年3月期(修正後)</th><th class="num">会社予想</th><th class="num">前期比</th><th class="num">修正前</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">4,240億円</td><td class="num up">+19.3%</td><td class="num">3,840億円</td></tr>
+      <tr><td>営業利益</td><td class="num"><b>450億円</b></td><td class="num up"><b>+125.0%</b></td><td class="num">300億円</td></tr>
+      <tr><td>経常利益</td><td class="num">420億円</td><td class="num up">+74.1%</td><td class="num">270億円</td></tr>
+      <tr><td>純利益</td><td class="num">290億円</td><td class="num up">+95.9%</td><td class="num">—</td></tr>
+      <tr><td>EPS / 年間配当</td><td class="num">222.6円 / 90円</td><td class="num">—</td><td class="num">—</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    上方修正(8/5)の理由は<b>「MLCCの大容量化と員数増が期初想定を上回る」「ハイエンド品の売上拡大」「値下がりペースの大幅改善」「円安」</b>。裏付けとして<b>コンデンサ受注は前四半期比+41%、BBレシオ(受注/売上)は1.72</b>と異常な強さを示す。ただし営業利益450億円に対しQ1実績は48.2億円で<b>進捗率10.7%</b>——残り3四半期で四半期平均134億円(Q1の2.8倍)を稼ぐ計画であり、MLCCの値決めと数量が想定通りに進むことへの依存度が極めて高い。為替前提は159.70円/ドルで、<b>感応度は1円の変動で年間営業利益±9億円</b>。仮に10円円高に振れれば計画の2割(90億円)が消える計算になる。市場コンセンサスとの定量的な突き合わせは<b>取得不可</b>(未ログインで閲覧できるコンセンサス値が見つからなかった)だが、上方修正当日のPTSで+18%買われた後、<b>翌8/6の現物は−11.0%(出来高3,040万株)</b>と大陰線で返しており、市場の期待値が修正後の会社計画をさらに上回っていたことを値動きが示している。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">太陽誘電</th><th class="num">村田製作所</th><th class="num">TDK</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">42.7倍</td><td class="num">約61倍</td><td class="num">約31倍</td></tr>
+      <tr><td>PBR</td><td class="num">3.37倍</td><td class="num">約5.7倍</td><td class="num">約2.8倍</td></tr>
+      <tr><td>配当利回り</td><td class="num">0.94%</td><td class="num">—</td><td class="num">—</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    ※同業のPER・PBRは8/5時点の報道値(参考)。時価総額は約1.29兆円。<br><br>
+    株価の文脈が本銘柄の最大の特徴で、<b>1月安値3,167円→7月高値24,065円(約7.6倍)→8/20時点9,527円(高値から−60.4%)</b>という、AIサーバー・MLCC期待の急騰とその崩落を1年の中で両方経験している。直近も8/17終値11,295円→8/18終値9,991円(<b>−11.5%</b>)→8/19終値9,686円と、<b>1日±10%超の値動きが日常化</b>している。決算・上方修正(8/5)への反応も「PTSで+18%→翌日現物−11.0%」と往復しており、業績の実勢よりも需給と期待の入れ替わりが値付けを支配する局面にある。予想PER42.7倍は下期偏重の計画がそのまま達成される前提の利益に対する倍率であり、達成すれば同業比で正当化しうるが、未達なら分母が崩れる——<b>評価: 市況次第</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元</h2>
+  <div class="body">
+    年間配当は<b>90円予想</b>(利回り0.94%)。配当方針の詳細(性向目標・自社株買いの有無)は決算短信の原本にあたれておらず<b>取得不可</b>。利回り1%未満であり、株主リターンの中心は値上がり益に置かれた銘柄である。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>為替:</b> 会社前提159.70円/ドル。感応度±1円=営業利益±9億円/年と、利益規模(450億円)に対して感応度が大きい。Q1の増益も為替寄与(+26億円)が主因だった<br>
+    ・<b>MLCC市況:</b> 2026年4月に村田製作所がAIサーバー・高級車向けMLCCを値上げ、太陽誘電も5月から価格改定に動いたと報じられている。「値下がりペースの大幅改善」という通期前提はこの値上げ環境の持続が条件<br>
+    ・<b>AIサーバー投資:</b> 需要の主因。データセンター投資の減速・停止の報は現時点で出ていないが、8/18-19の世界的な株安は長期金利上昇とAI関連の期待剥落への警戒が引き金であり、センチメントは既に不安定<br>
+    ・<b>BBレシオ1.72の解釈:</b> 受注が売上の1.7倍というのは需要の強さの証拠である一方、供給逼迫時の発注は二重発注(実需以上の先行発注)を含みやすく、剥落時は受注残が一気に消える——過去のMLCCサイクルで繰り返されてきた形であることに留意
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>下期偏重の計画:</b> 営業利益450億円に対しQ1進捗10.7%。残り3四半期でQ1の2.8倍ペースが必要で、値決め・数量のどちらかが崩れれば未達が大きく出る<br>
+    ・<b>為替:</b> 円高10円で営業利益▲90億円(計画の2割)。Q1の増益自体が為替頼みだった<br>
+    ・<b>ボラティリティ:</b> 1日±10%超が日常。高値から−60%の位置は「調整済み」にも「崩落の途中」にも見える水準で、値動きから底入れを判定できる状態にない<br>
+    ・<b>需給:</b> 年初来7.6倍の急騰で積み上がった信用・短期筋の投げが続いている可能性。5%保有の異動(ヘッジファンド等)の報告が相次いでおり、大口の出入りが値を振らす<br>
+    ・<b>強気材料の裏返し:</b> BBレシオ1.72・受注+41%は、AIサーバー投資が想定通り続く限りの数字。MLCCは過去に何度も「受注の蒸発」でサイクルが終わっており、コンデンサ73%の集中構造は上りも下りも増幅する
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/20</b> 初版。Q1決算(8/5)と56%上方修正を収録。Q1増益の為替寄与(+26億円)と為替除きの前年割れ、通期計画の下期偏重(進捗10.7%)を分解。<br>
+    出典: 太陽誘電 2027年3月期Q1決算説明会資料 2026/8/5(会社サイトのPDF直リンクが取得できず、TDnet配信の同一資料のミラー(BigGoファイナンス)で内容を確認) / 株探(上方修正速報 2026/8/5、株価・PER・PBR 2026/8/20) / Yahoo!ファイナンス(株価時系列・年初来高安) / 日経・東洋経済・報道各社(MLCC値上げ、同業比較)。<br>
+    ※決算短信PDFの原本は会社サイトの構成上直リンクを取得できず、数値は説明会資料ミラーと株探決算速報の突き合わせで確認した。<b>市場コンセンサスの定量値、配当方針の詳細、中期経営計画の定量目標は取得不可</b>(推測で埋めていない)。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
