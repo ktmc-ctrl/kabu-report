@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マネーフォワード(3994) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>マネーフォワード <span class="note">[3994] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">バックオフィスSaaS</span> <span class="badge">11月期決算</span> <span class="badge">ME利用者1,830万</span> <span class="badge">SaaS ARR477億(+34%)</span></div>
+  </div>
+  <div class="px">
+    <div class="v">6,170円</div>
+    <div class="note-s">2026/8/26 終値</div>
+    <div class="note-s">年初来高値 6,584円(8/14)から <b>-6.3%</b><br>年初来安値 2,750円(2/24)から <b>+124.4%</b></div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    法人バックオフィスSaaS「マネーフォワード クラウド」と家計簿アプリ「マネーフォワード ME」を持つ。中間期(2025/12-2026/5)は売上290.0億円(+24.8%、譲渡2社を除く実質+40%)・<b>SaaS ARR476.7億円(+34.2%)</b>と成長は加速しており、Business(法人)セグメントは黒字転換した。中間純利益5.5億円は黒字化したが、<b>中身は投資有価証券売却益24.1億円(一過性)が主因で、営業段階はまだ▲2.1億円の赤字</b>。通期も最終赤字予想(▲32〜▲7億円)を維持している。データ資産は<b>ME利用者1,830万人の家計・金融データ</b>と<b>法人49.3万事業者の会計データ</b>の二層で、2026年7月に自然言語でバックオフィス業務を自律遂行する「<b>AI Cowork</b>」をリリース、AIエージェント群の有償化も始まった。株価は2月安値から2.2倍。<a class="xref" href="4478_freee.html">freee</a>と同じ「AIに食われる→AIを実装する」の反転波に乗るが、利益は一段<a class="xref" href="4478_freee.html">freee</a>より後ろにいる——<b>評価: PER非適用</b>(通期最終赤字予想)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/13発表・2026年11月期 中間)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">中間実績</th><th class="num">前年同期</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">289.92億円(+24.8%)</td><td class="num">232.37億円</td></tr>
+      <tr><td>SaaS ARR</td><td class="num"><b>476.69億円(+34.2%)</b></td><td class="num">355.15億円</td></tr>
+      <tr><td>調整後EBITDA</td><td class="num">50.94億円(+168.7%)</td><td class="num">18.96億円</td></tr>
+      <tr><td>営業損益</td><td class="num">▲2.09億円</td><td class="num">▲15.92億円</td></tr>
+      <tr><td>親会社株主中間純損益</td><td class="num">+5.53億円(黒字転換)</td><td class="num">▲21.97億円</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <table>
+    <thead><tr><th>セグメント(中間)</th><th class="num">売上</th><th class="num">損益</th></tr></thead>
+    <tbody>
+      <tr><td><b>Business</b>(法人SaaS)</td><td class="num">241.7億円(約+49%)</td><td class="num up">+10.54億円(黒字転換)</td></tr>
+      <tr><td>Home(ME)</td><td class="num">25.6億円(+8.8%)</td><td class="num">+6.5億円</td></tr>
+      <tr><td>X(金融機関向け)</td><td class="num">20.2億円(+43.6%)</td><td class="num">+3.2億円</td></tr>
+      <tr><td>Finance ほか・全社費用</td><td class="num">—</td><td class="num">▲22.4億円</td></tr>
+    </tbody>
+  </table>
+  <div class="box" style="margin-top:10px">
+    <b>利益の中身の分解(重要)。</b>中間純利益+5.5億円の黒字転換は、<b>特別利益26.5億円(うち投資有価証券売却益24.1億円)によるもの</b>。営業段階は▲2.1億円でまだ赤字。他にソフトウェア減損2.3億円と、<b>GitHub認証情報漏洩による不正アクセス対応損失0.9億円</b>(個人情報の一部漏洩、Home口座連携15日間停止→売上減は最大1.5億円でQ3に発現見込み)を特損計上。実勢を示すのは調整後EBITDA+169%とBusiness黒字転換の方で、方向は良いが「純利益の黒字」を実力と読んではいけない。
+  </div>
+</div>
+
+<div class="card">
+  <h2>データ資産とAI — 家計と経理の二層</h2>
+  <div class="body">
+    ・<b>マネーフォワード ME: 利用者1,830万人超</b>・プレミアム課金67.3万人。個人の口座・カード・資産の連携データ<br>
+    ・<b>Business: 課金49.3万事業者(+18.9%)</b>・法人ARPA14.4万円(+12.3%)。士業事務所経由の大規模導入でQ2の法人純増+13,971社は過去最高——<b>「マネーフォワード クラウド公認メンバー」の士業ネットワークが販売チャネル</b><br><br>
+    AI施策(名称と日付):<br>
+    ・<b>AI Cowork</b>: 2026年4月発表、<b>7月下旬リリース</b>。自然言語で経理業務をAIが自律遂行(MCP設定不要)。AI関連ARR150億円目標(2030年、報道ベース)<br>
+    ・<b>AIエージェント群</b>: 交際費精算・経費申請・請求書DL代行・未入金回収・リース識別など約10種を順次投入、一部有償化済み<br>
+    ・<b>AI-BPO「おまかせ経理」</b>: 記帳・給与・請求支払を人+AIで代行(振込工数を約50%削減)。米国では会計事務所を2件買収(2025/10、2026/7)し、<b>「AIで会計事務所そのものを買って効率化する」</b>段階に踏み込んだ<br>
+    ・全社のAI利用率96%以上、FY28に一人当たり売上3,000万円目標<br><br>
+    <a class="xref" href="4478_freee.html">freee</a>が「税理士の作業基盤」を握りにいくのに対し、マネーフォワードは<b>BPO・買収で実務そのものを取り込む</b>方向。データ×AIの型は同じで、攻め口が違う。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しとバリュエーション</h2>
+  <table>
+    <thead><tr><th>2026年11月期(7/13に2度目の上方修正)</th><th class="num">会社予想</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">605.0〜623.0億円(+20.2〜23.7%)</td></tr>
+      <tr><td>調整後EBITDA</td><td class="num">105.0〜115.0億円(+112〜132%)</td></tr>
+      <tr><td>営業損益</td><td class="num">▲5.0〜+15.0億円(黒字化がレンジ内)</td></tr>
+      <tr><td>親会社株主純損益</td><td class="num"><b>▲32.0〜▲7.0億円(赤字予想を維持)</b></td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    修正理由にはQ3計上予定の営業投資有価証券売却(売却益17.3億円、ただし親会社帰属は約1.8億円)を含む。PERは<b>非適用</b>(最終赤字予想)、PBR8.3倍、PSR約5.5〜5.7倍、時価総額約3,437億円。無配・自社株買いなし。株価は2月安値2,750円→8/14高値6,584円(米SaaS株の見直し買いにつれ高)→現在6,170円。市場コンセンサスは取得不可。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>最終赤字の構造:</b> 転換社債120億円+借入拡大+非支配株主持分130億円(子会社への外部出資)で、親会社帰属利益が薄まる資本構成。のれん126億円で既にソフトウェア減損も計上<br>
+    ・利益の見かけを一過性(有価証券売却益)が作る四半期が続く。Finance(ファンド)の売却益は再現性が低い<br>
+    ・<b>GitHub不正アクセス</b>の信頼影響とセキュリティ投資増(会社は「ガイダンス影響は限定的」)<br>
+    ・<a class="xref" href="4478_freee.html">freee</a>・弥生との競合。AIによるSaaS代替懸念の再燃(2月安値の要因)<br>
+    ・<b>強気材料の裏返し:</b> ARR+34%は本物の強さだが、PSR5.5倍・半年2.2倍の株価は「営業黒字化の先の利益成長」まで織り込みにいっている。黒字化が1四半期でも遅れれば反動が大きい
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/26</b> 初版。中間決算短信・決算説明資料(原本PDF)を確認し、中間黒字の一過性(有価証券売却益24.1億円)と営業赤字▲2.1億円を分解。<br>
+    出典: マネーフォワード 2026年11月期Q2決算短信・決算説明資料 2026/7/13(原本PDF確認) / AI Coworkリリース 2026/4/7(会社サイト原本) / 株探・Yahoo!ファイナンス(株価・指標、2026/8/26) / Business Insider(AI ARR150億円目標、報道ベース)。<br>
+    ※市場コンセンサス、Money Forward Labの直近の定量成果は<b>取得不可</b>(推測で埋めていない)。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>freee(4478) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>freee <span class="note">[4478] 東証グロース</span></h1>
+    <div class="subtitle"><span class="badge">クラウド会計SaaS</span> <span class="badge">6月期決算</span> <span class="badge">有料69.4万事業者</span> <span class="badge">会計事務所5,500超のネットワーク</span></div>
+  </div>
+  <div class="px">
+    <div class="v">3,815円</div>
+    <div class="note-s">2026/8/26 終値</div>
+    <div class="note-s">年初来高値 3,925円(8/24)から <b>-2.8%</b><br>年初来安値 1,831円(2/24)から <b>+108.4%</b></div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    中小企業・個人事業主のクラウド会計・人事労務SaaS。2026年6月期通期(8/13発表)は売上424.4億円(+27.6%)・営業利益10.9億円と<b>2期連続の営業黒字で拡大</b>、ARRは435.9億円(+21.8%)。データ資産は<b>有料69.4万事業者の会計・人事データ</b>と、<b>freeeアドバイザー5,500事務所超(大手100会計事務所のうち81社)</b>という税理士ネットワークの二層構造。2026年は「AIから最も使いやすいSaaS」を掲げてMCPサーバー(3月)・会計事務所向けAIエージェント基盤「freee Agent Hub」(8/28正式版)・顧問先管理AIエージェント(9/15予定)を矢継ぎ早に投入し、<b>2月には「AIがSaaSを代替する」懸念で年初来安値まで売られた会社が、「AIの実装者」側として半年で株価2倍</b>になった。決算と同時に発表した初の自社株買い50億円で8/14はストップ高。ただし純利益ベースの会社予想は非開示で、実績PERは約210倍・PBR10.7倍——利益はまだ「調整後」の世界にある——<b>評価: PER非適用</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/13発表・2026年6月期 通期)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">通期実績</th><th class="num">前期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">424.41億円</td><td class="num up">+27.6%</td></tr>
+      <tr><td>調整後営業利益</td><td class="num">26.63億円</td><td class="num up">+41.3%</td></tr>
+      <tr><td>営業利益</td><td class="num">10.91億円</td><td class="num up">+78.6%(2期連続黒字)</td></tr>
+      <tr><td>親会社株主純利益</td><td class="num">10.77億円</td><td class="num down">-21.3%</td></tr>
+      <tr><td>ARR</td><td class="num">435.95億円</td><td class="num up">+21.8%(法人+24.0%)</td></tr>
+    </tbody>
+  </table>
+  <div class="box" style="margin-top:10px">
+    <b>利益の中身の分解。</b>純利益▲21.3%は<b>税効果会計の綾</b>: 前期は繰延税金資産の計上で利益が押し上げられており(法人税等調整額▲9.83億円)、今期はその効果が縮小しただけ。税引前利益は4.16億→7.68億円と増えており、<b>実態は増益</b>。会社が主指標とする「調整後営業利益」は株式報酬・M&A償却等を足し戻した値(26.6億円)で、会計上の営業利益(10.9億円)との差15.7億円は実費として出ていく——利益の議論はこの二重構造ごと見る必要がある。KPIは堅調: 有料69.5万事業者(+14.0%)、ARPU 62,772円(+6.8%)、月次解約率1.0%。
+  </div>
+</div>
+
+<div class="card">
+  <h2>データ資産とAI — 「AIから最も使いやすいSaaS」</h2>
+  <div class="body">
+    二層のデータ・ネットワーク:<br>
+    ・<b>69.4万事業者の会計・人事データ</b>(法人27.5万+個人42.0万)。日々の仕訳・請求・給与がリアルタイムに流れ込む<br>
+    ・<b>freeeアドバイザー5,500事務所超</b>。国内大手100会計事務所のうち81社が加入。アドバイザー併用顧客の解約率は約40%低い——士業ネットワークが解約の防波堤になっている<br><br>
+    AI施策(すべて一次資料で日付確認):<br>
+    ・<b>freee-mcp(MCPサーバー)</b>: 2026年3月。Public API 380本超を生成AIに開放。共同創業者CTOがCAIO(AI最高責任者)に就任<br>
+    ・<b>freee Agent Hub</b>(会計事務所向けAIエージェント基盤): 2026年4月発表→<b>8月28日正式版</b><br>
+    ・<b>freee顧問先管理AIエージェント</b>(資料回収〜決算申告を一気通貫): 8月7日発表、9月15日提供開始予定<br>
+    ・freee AIアシスタント(法人向け、6月β)、AIファイル自動記帳ほか<br><br>
+    注目は方向性: 自社アプリにAIを足すだけでなく、<b>「税理士がAIで顧問先を回すための基盤」を握りにいっている</b>。会計事務所がfreeeのエージェント上で仕事をするほど、実務データとワークフローの両方がfreeeに蓄積する——<a class="xref" href="6027_bengo4.html">弁護士ドットコム</a>がLegalBrainでやっている構図の会計版。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しとバリュエーション</h2>
+  <table>
+    <thead><tr><th>2027年6月期</th><th class="num">会社予想</th><th class="num">前期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">522.10億円</td><td class="num up">+23.0%</td></tr>
+      <tr><td>調整後営業利益</td><td class="num">57.50億円</td><td class="num up">+115.9%(利益率11.0%)</td></tr>
+      <tr><td>営業利益・純利益</td><td class="num">非開示</td><td class="num">—</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    予想PERは<b>算出不可</b>(純利益予想が非開示)。実績PERで約210倍、PBR10.7倍、PSRは今期予想売上比約4.4倍。株価は2月安値1,831円(AIによるSaaS代替懸念での急落)から2倍超で8/24に年初来高値3,925円。8/13の決算と同時に<b>初の自社株買い(上限240万株・50億円、発行済の4.04%)</b>を発表——理由は「株価が著しく割安に推移した」——で、翌8/14はストップ高。無配。A-SaaS(税理士向け旧システム)終了で今期Q1の純増ユーザーは一時減る見込み(会社が事前開示)。市場コンセンサスは取得不可。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>利益の実額はまだ薄い:</b> 会計上の営業利益率2.6%。成長の議論が「調整後」指標に依存<br>
+    ・純利益は税効果で振れる(今期の▲21.3%がその例)<br>
+    ・短期借入が96億→143億円に増加。フィンテック関連(立替金・債権買取)の資金需要が膨らむ<br>
+    ・<a class="xref" href="3994_moneyforward.html">マネーフォワード</a>・弥生との競争。A-SaaS終了に伴う一時的なユーザー純増減<br>
+    ・<b>強気材料の裏返し:</b> 2月の急落(高値からほぼ半値)は「汎用AIが記帳を無料でやる世界」への恐怖だった。AIの実装者側に回る戦略が効いている間は追い風だが、この論争は今後も株価を大きく振らす
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/26</b> 初版。通期決算短信・決算説明資料(原本PDF)を確認し、純利益減益の税効果要因と調整後営業利益の二重構造を分解。<br>
+    出典: freee 2026年6月期決算短信・決算説明資料 2026/8/13(原本PDF確認) / freee Agent Hub・顧問先管理AIエージェントのリリース 2026/4/16・8/7(会社サイト原本) / 株探・Yahoo!ファイナンス(株価・指標、2026/8/26) / 財経新聞(8/14ストップ高報道)。<br>
+    ※営業利益・純利益の会社予想は非開示、市場コンセンサスは<b>取得不可</b>(推測で埋めていない)。実績PER・PSRは開示数値からの機械計算。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

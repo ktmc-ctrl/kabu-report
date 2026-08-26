@@ -164,7 +164,7 @@
 <body class="viz-root">
 <script>
 /* 旧形式の共有リンク(全レポート内包時代の #ハッシュ)を個別ページへ流す */
-var FILES = {"7011": "7011_mhi.html", "7203": "7203_toyota.html", "6758": "6758_sony.html", "6367": "6367_daikin.html", "7974": "7974_nintendo.html", "9684": "9684_squareenix.html", "3402": "3402_toray.html", "4063": "4063_shinetsu.html", "4182": "4182_mgc.html", "5802": "5802_sumitomo_electric.html", "5803": "5803_fujikura.html", "5801": "5801_furukawa.html", "5706": "5706_mitsui_kinzoku.html", "5016": "5016_jx_metals.html", "6920": "6920_lasertec.html", "6857": "6857_advantest.html", "285A": "285A_kioxia.html", "9984": "9984_softbankg.html", "8058": "8058_mitsubishi_corp.html", "8031": "8031_mitsui.html", "8267": "8267_aeon.html", "9301": "9301_mitsubishi_logistics.html", "8306": "8306_mufg.html", "8316": "8316_smfg.html", "8411": "8411_mizuho.html", "9432": "9432_ntt.html", "4755": "4755_rakuten.html", "9503": "9503_kansai_electric.html", "9508": "9508_kyushu_electric.html", "9502": "9502_chubu_electric.html", "9506": "9506_tohoku_electric.html", "9509": "9509_hokkaido_electric.html", "6508": "6508_meidensha.html", "6617": "6617_tktk.html", "5838": "5838_rakuten_bank.html", "7182": "7182_yucho_bank.html", "4689": "4689_lineyahoo.html", "9434": "9434_softbank_kk.html", "6866": "6866_hioki.html", "6516": "6516_sanyo_denki.html", "6905": "6905_cosel.html", "5344": "5344_maruwa.html", "5310": "5310_toyotanso.html", "6622": "6622_daihen.html", "6890": "6890_ferrotec.html", "4043": "4043_tokuyama.html", "4004": "4004_resonac.html", "4061": "4061_denka.html", "4186": "4186_tok.html", "6861": "6861_keyence.html", "9020": "9020_jr_east.html", "9022": "9022_jr_central.html", "7832": "7832_bandainamco.html", "8136": "8136_sanrio.html", "9697": "9697_capcom.html", "9602": "9602_toho.html", "9468": "9468_kadokawa.html", "4816": "4816_toei_animation.html", "7267": "7267_honda.html", "7201": "7201_nissan.html", "7269": "7269_suzuki.html", "7270": "7270_subaru.html", "7261": "7261_mazda.html", "7202": "7202_isuzu.html", "6902": "6902_denso.html", "7259": "7259_aisin.html", "1969": "1969_takasago.html", "1944": "1944_kinden.html", "1942": "1942_kandenko.html", "1959": "1959_kraftia.html", "6744": "6744_nohmi.html", "6504": "6504_fujielectric.html", "6674": "6674_gsyuasa.html", "6845": "6845_azbil.html", "1812": "1812_kajima.html", "1802": "1802_obayashi.html", "1803": "1803_shimizu.html", "1801": "1801_taisei.html", "6501": "6501_hitachi.html", "4107": "4107_isechem.html", "1723": "1723_nihondengi.html", "6976": "6976_taiyo_yuden.html", "6027": "6027_bengo4.html", "theme-dc": "theme_datacenter.html", "theme-power": "theme_power.html", "theme-fintech": "theme_fintech.html", "theme-semi": "theme_semi_materials.html", "theme-chem": "theme_chemicals.html", "theme-eff": "theme_efficiency.html", "theme-ip": "theme_ip.html", "theme-auto": "theme_auto.html", "theme-dcops": "theme_dcops.html", "theme-grid": "theme_grid.html", "theme-shosha": "theme_shosha.html"};
+var FILES = {"7011": "7011_mhi.html", "7203": "7203_toyota.html", "6758": "6758_sony.html", "6367": "6367_daikin.html", "7974": "7974_nintendo.html", "9684": "9684_squareenix.html", "3402": "3402_toray.html", "4063": "4063_shinetsu.html", "4182": "4182_mgc.html", "5802": "5802_sumitomo_electric.html", "5803": "5803_fujikura.html", "5801": "5801_furukawa.html", "5706": "5706_mitsui_kinzoku.html", "5016": "5016_jx_metals.html", "6920": "6920_lasertec.html", "6857": "6857_advantest.html", "285A": "285A_kioxia.html", "9984": "9984_softbankg.html", "8058": "8058_mitsubishi_corp.html", "8031": "8031_mitsui.html", "8267": "8267_aeon.html", "9301": "9301_mitsubishi_logistics.html", "8306": "8306_mufg.html", "8316": "8316_smfg.html", "8411": "8411_mizuho.html", "9432": "9432_ntt.html", "4755": "4755_rakuten.html", "9503": "9503_kansai_electric.html", "9508": "9508_kyushu_electric.html", "9502": "9502_chubu_electric.html", "9506": "9506_tohoku_electric.html", "9509": "9509_hokkaido_electric.html", "6508": "6508_meidensha.html", "6617": "6617_tktk.html", "5838": "5838_rakuten_bank.html", "7182": "7182_yucho_bank.html", "4689": "4689_lineyahoo.html", "9434": "9434_softbank_kk.html", "6866": "6866_hioki.html", "6516": "6516_sanyo_denki.html", "6905": "6905_cosel.html", "5344": "5344_maruwa.html", "5310": "5310_toyotanso.html", "6622": "6622_daihen.html", "6890": "6890_ferrotec.html", "4043": "4043_tokuyama.html", "4004": "4004_resonac.html", "4061": "4061_denka.html", "4186": "4186_tok.html", "6861": "6861_keyence.html", "9020": "9020_jr_east.html", "9022": "9022_jr_central.html", "7832": "7832_bandainamco.html", "8136": "8136_sanrio.html", "9697": "9697_capcom.html", "9602": "9602_toho.html", "9468": "9468_kadokawa.html", "4816": "4816_toei_animation.html", "7267": "7267_honda.html", "7201": "7201_nissan.html", "7269": "7269_suzuki.html", "7270": "7270_subaru.html", "7261": "7261_mazda.html", "7202": "7202_isuzu.html", "6902": "6902_denso.html", "7259": "7259_aisin.html", "1969": "1969_takasago.html", "1944": "1944_kinden.html", "1942": "1942_kandenko.html", "1959": "1959_kraftia.html", "6744": "6744_nohmi.html", "6504": "6504_fujielectric.html", "6674": "6674_gsyuasa.html", "6845": "6845_azbil.html", "1812": "1812_kajima.html", "1802": "1802_obayashi.html", "1803": "1803_shimizu.html", "1801": "1801_taisei.html", "6501": "6501_hitachi.html", "4107": "4107_isechem.html", "1723": "1723_nihondengi.html", "6976": "6976_taiyo_yuden.html", "6027": "6027_bengo4.html", "2413": "2413_m3.html", "4483": "4483_jmdc.html", "2175": "2175_sms.html", "9746": "9746_tkc.html", "4478": "4478_freee.html", "3994": "3994_moneyforward.html", "4443": "4443_sansan.html", "theme-dc": "theme_datacenter.html", "theme-power": "theme_power.html", "theme-fintech": "theme_fintech.html", "theme-semi": "theme_semi_materials.html", "theme-chem": "theme_chemicals.html", "theme-eff": "theme_efficiency.html", "theme-ip": "theme_ip.html", "theme-auto": "theme_auto.html", "theme-dcops": "theme_dcops.html", "theme-grid": "theme_grid.html", "theme-shosha": "theme_shosha.html", "theme-proai": "theme_proai.html"};
 function goLegacy() {
   var id = location.hash.slice(1);
   if (id && FILES[id]) location.replace(FILES[id]);
@@ -177,7 +177,7 @@ window.addEventListener('hashchange', goLegacy);
   <div class="brand">📚 銘柄レポート ライブラリ</div>
 </div>
 
-<div class="subtitle">決算説明資料・中期経営計画・バリュエーションを1銘柄1ページに整理 ・ 全83銘柄 ・ 2026/8/14時点</div>
+<div class="subtitle">決算説明資料・中期経営計画・バリュエーションを1銘柄1ページに整理 ・ 全90銘柄 ・ 2026/8/14時点</div>
 
   <label class="theme-lead" for="q" style="margin-top:2px">さがす</label>
   <input class="search" id="q" type="search" placeholder="銘柄名・コード・セクター・キーワード" oninput="filter(this.value)" autocomplete="off">
@@ -185,7 +185,7 @@ window.addEventListener('hashchange', goLegacy);
   <div class="seg" role="tablist" aria-label="表示の切り替え">
     <button id="tab-sector" class="on" role="tab" aria-selected="true" onclick="setGroup('sector')">セクター別</button>
     <button id="tab-val" role="tab" aria-selected="false" onclick="setGroup('val')">割安・割高別</button>
-    <button id="tab-themes" role="tab" aria-selected="false" onclick="setGroup('themes')">特集 <small>11</small></button>
+    <button id="tab-themes" role="tab" aria-selected="false" onclick="setGroup('themes')">特集 <small>12</small></button>
   </div>
 
   <div id="grp-sector">
@@ -199,7 +199,7 @@ window.addEventListener('hashchange', goLegacy);
 <button data-pick="半導体" onclick="pick('sector', this.dataset.pick)">半導体 <small>6</small></button>
 <button data-pick="投資・商社・小売" onclick="pick('sector', this.dataset.pick)">投資・商社・小売 <small>5</small></button>
 <button data-pick="金融" onclick="pick('sector', this.dataset.pick)">金融 <small>5</small></button>
-<button data-pick="ネット・通信" onclick="pick('sector', this.dataset.pick)">ネット・通信 <small>5</small></button>
+<button data-pick="ネット・通信" onclick="pick('sector', this.dataset.pick)">ネット・通信 <small>12</small></button>
 <button data-pick="運輸・鉄道" onclick="pick('sector', this.dataset.pick)">運輸・鉄道 <small>2</small></button>
     </div>
     <div class="sec-block" data-name="電力・重電">
@@ -817,6 +817,55 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-sum">Q1営業益+36.8%で過去最高、ARR163億(+27.8%)。法務AI「LegalBrain」がARR4か月3.8倍だが絶対額非開示。8月にストップ高3回、2か月で+153%・PBR15.7倍は期待の前倒し</div>
         <div class="go">レポートを見る →</div>
       </a>
+      <a class="tile" href="2413_m3.html" data-q="2413 エムスリー 2413 ネット・通信 中立 医師会員700万人=世界の半分。AIが営業利益の約15%(約100億円)で中期50%目標。Q1は純利益−23.4%(一過性税金含む)で翌日−16.9%" aria-label="エムスリーのレポートを開く">
+        <div class="tile-top"><span class="tile-name">エムスリー</span><span class="tile-code">2413</span></div>
+        <div class="tile-px">1,752.5<small>円 ・ 8/26</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">医師会員700万人=世界の半分。AIが営業利益の約15%(約100億円)で中期50%目標。Q1は純利益−23.4%(一過性税金含む)で翌日−16.9%</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="4483_jmdc.html" data-q="4483 JMDC 4483 ネット・通信 やや割高 レセプト累積2,000万人の医療データの井戸。Q1売上+17.5%(納品前倒し4億円含む)。オムロン54%子会社・のれん625億円" aria-label="JMDCのレポートを開く">
+        <div class="tile-top"><span class="tile-name">JMDC</span><span class="tile-code">4483</span></div>
+        <div class="tile-px">3,450<small>円 ・ 8/26</small></div>
+        <div style="margin-top:6px"><span class="vb hi">やや割高</span></div>
+        <div class="tile-sum">レセプト累積2,000万人の医療データの井戸。Q1売上+17.5%(納品前倒し4億円含む)。オムロン54%子会社・のれん625億円</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="2175_sms.html" data-q="2175 エス・エム・エス 2175 ネット・通信 やや割高 カイポケ6.2万事業所・ARR135億(+13%)。営業+19.1%の相当部分は前期229.6億減損の償却費減。株価2倍の主因はOasis 18.77%と改革期待" aria-label="エス・エム・エスのレポートを開く">
+        <div class="tile-top"><span class="tile-name">エス・エム・エス</span><span class="tile-code">2175</span></div>
+        <div class="tile-px">2,403<small>円 ・ 8/26</small></div>
+        <div style="margin-top:6px"><span class="vb hi">やや割高</span></div>
+        <div class="tile-sum">カイポケ6.2万事業所・ARR135億(+13%)。営業+19.1%の相当部分は前期229.6億減損の償却費減。株価2倍の主因はOasis 18.77%と改革期待</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="9746_tkc.html" data-q="9746 TKC 9746 ネット・通信 中立 税理士1.16万事務所・電子申告65.6万社・判例36.5万件。過去最高益の主因は自治体標準化特需(一過性・+810%)で今期一巡。AIは9月開始予定" aria-label="TKCのレポートを開く">
+        <div class="tile-top"><span class="tile-name">TKC</span><span class="tile-code">9746</span></div>
+        <div class="tile-px">4,125<small>円 ・ 8/26</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">税理士1.16万事務所・電子申告65.6万社・判例36.5万件。過去最高益の主因は自治体標準化特需(一過性・+810%)で今期一巡。AIは9月開始予定</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="4478_freee.html" data-q="4478 freee 4478 ネット・通信 PER非適用 有料69.4万事業者・大手100会計事務所の81社。2期連続営業黒字もPER算出不可(純利益予想非開示)。Agent Hub 8/28正式版、初の自社株買い50億でS高" aria-label="freeeのレポートを開く">
+        <div class="tile-top"><span class="tile-name">freee</span><span class="tile-code">4478</span></div>
+        <div class="tile-px">3,815<small>円 ・ 8/26</small></div>
+        <div style="margin-top:6px"><span class="vb mid">PER非適用</span></div>
+        <div class="tile-sum">有料69.4万事業者・大手100会計事務所の81社。2期連続営業黒字もPER算出不可(純利益予想非開示)。Agent Hub 8/28正式版、初の自社株買い50億でS高</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="3994_moneyforward.html" data-q="3994 マネーフォワード 3994 ネット・通信 PER非適用 SaaS ARR477億(+34%)・ME1,830万人。中間黒字は売却益24億が主因で営業段階は▲2.1億。AI Cowork 7月リリース、通期最終赤字予想を維持" aria-label="マネーフォワードのレポートを開く">
+        <div class="tile-top"><span class="tile-name">マネーフォワード</span><span class="tile-code">3994</span></div>
+        <div class="tile-px">6,170<small>円 ・ 8/26</small></div>
+        <div style="margin-top:6px"><span class="vb mid">PER非適用</span></div>
+        <div class="tile-sum">SaaS ARR477億(+34%)・ME1,830万人。中間黒字は売却益24億が主因で営業段階は▲2.1億。AI Cowork 7月リリース、通期最終赤字予想を維持</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="4443_sansan.html" data-q="4443 Sansan 4443 ネット・通信 やや割高 名刺シェア85.8%・ARR500億(+20%)。営業利益2.9倍は実質、純利益にはログミー売却益14.4億含む。Bill One黒字化が今期の柱。PBR13.2倍" aria-label="Sansanのレポートを開く">
+        <div class="tile-top"><span class="tile-name">Sansan</span><span class="tile-code">4443</span></div>
+        <div class="tile-px">2,103<small>円 ・ 8/26</small></div>
+        <div style="margin-top:6px"><span class="vb hi">やや割高</span></div>
+        <div class="tile-sum">名刺シェア85.8%・ARR500億(+20%)。営業利益2.9倍は実質、純利益にはログミー売却益14.4億含む。Bill One黒字化が今期の柱。PBR13.2倍</div>
+        <div class="go">レポートを見る →</div>
+      </a>
     </div>
     </div>
     <div class="sec-block" data-name="運輸・鉄道">
@@ -843,9 +892,9 @@ window.addEventListener('hashchange', goLegacy);
   <div id="grp-val" style="display:none">
     <div class="chips" id="chips-val">
 <button data-pick="割安" onclick="pick('val', this.dataset.pick)">割安 <small>8</small></button>
-<button data-pick="中立" onclick="pick('val', this.dataset.pick)">中立 <small>41</small></button>
-<button data-pick="割高" onclick="pick('val', this.dataset.pick)">割高 <small>26</small></button>
-<button data-pick="評価難" onclick="pick('val', this.dataset.pick)">評価難 <small>8</small></button>
+<button data-pick="中立" onclick="pick('val', this.dataset.pick)">中立 <small>43</small></button>
+<button data-pick="割高" onclick="pick('val', this.dataset.pick)">割高 <small>29</small></button>
+<button data-pick="評価難" onclick="pick('val', this.dataset.pick)">評価難 <small>10</small></button>
     </div>
     <div class="sec-block" data-name="割安">
     <div class="sector-h val lo" data-group>割安 <span class="cnt">8銘柄</span></div>
@@ -910,7 +959,7 @@ window.addEventListener('hashchange', goLegacy);
     </div>
     </div>
     <div class="sec-block" data-name="中立">
-    <div class="sector-h val mid" data-group>中立 <span class="cnt">41銘柄</span></div>
+    <div class="sector-h val mid" data-group>中立 <span class="cnt">43銘柄</span></div>
     <div class="bdesc">指標面に大きな歪みはなく、業績見通しとおおむね整合的な水準</div>
     <div class="grid">
       <a class="tile" href="6758_sony.html" data-q="6758 ソニーグループ 6758 電機・エンタメ 中立 Q1営業利益+40%で過去最高、通期1.72兆円へ上方修正。熊本地震の影響は通期予想に未反映。タムロン買収提案" aria-label="ソニーグループのレポートを開く">
@@ -1200,10 +1249,24 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-sum">空調計装専業。Q1受注+30.8%・営業+39.4%、粗利率47%と建設業で突出。売上58%が既設ストック。累進配当へ移行し年56円(+16円)。仕入の65.5%をアズビル1社に依存、契約は1年更新</div>
         <div class="go">レポートを見る →</div>
       </a>
+      <a class="tile" href="2413_m3.html" data-q="2413 エムスリー 2413 ネット・通信 中立 医師会員700万人=世界の半分。AIが営業利益の約15%(約100億円)で中期50%目標。Q1は純利益−23.4%(一過性税金含む)で翌日−16.9%" aria-label="エムスリーのレポートを開く">
+        <div class="tile-top"><span class="tile-name">エムスリー</span><span class="tile-code">2413</span></div>
+        <div class="tile-px">1,752.5<small>円 ・ 8/26</small></div>
+        <div style="margin-top:6px"><span class="secchip">ネット・通信</span></div>
+        <div class="tile-sum">医師会員700万人=世界の半分。AIが営業利益の約15%(約100億円)で中期50%目標。Q1は純利益−23.4%(一過性税金含む)で翌日−16.9%</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="9746_tkc.html" data-q="9746 TKC 9746 ネット・通信 中立 税理士1.16万事務所・電子申告65.6万社・判例36.5万件。過去最高益の主因は自治体標準化特需(一過性・+810%)で今期一巡。AIは9月開始予定" aria-label="TKCのレポートを開く">
+        <div class="tile-top"><span class="tile-name">TKC</span><span class="tile-code">9746</span></div>
+        <div class="tile-px">4,125<small>円 ・ 8/26</small></div>
+        <div style="margin-top:6px"><span class="secchip">ネット・通信</span></div>
+        <div class="tile-sum">税理士1.16万事務所・電子申告65.6万社・判例36.5万件。過去最高益の主因は自治体標準化特需(一過性・+810%)で今期一巡。AIは9月開始予定</div>
+        <div class="go">レポートを見る →</div>
+      </a>
     </div>
     </div>
     <div class="sec-block" data-name="割高">
-    <div class="sector-h val hi" data-group>割高 <span class="cnt">26銘柄</span></div>
+    <div class="sector-h val hi" data-group>割高 <span class="cnt">29銘柄</span></div>
     <div class="bdesc">指標が過去比・同業比で高位。将来の成長期待の織り込みが進んでいる</div>
     <div class="grid">
       <a class="tile" href="7011_mhi.html" data-q="7011 三菱重工業 7011 重工・機械・自動車 割高圏 Q1事業利益+65%・純利益+97%。受注7兆円・FCF6,000億円へ上方修正。GTCC・防衛が牽引も一過性約250億円を含む" aria-label="三菱重工業のレポートを開く">
@@ -1388,10 +1451,31 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-sum">Q1営業益+36.8%で過去最高、ARR163億(+27.8%)。法務AI「LegalBrain」がARR4か月3.8倍だが絶対額非開示。8月にストップ高3回、2か月で+153%・PBR15.7倍は期待の前倒し</div>
         <div class="go">レポートを見る →</div>
       </a>
+      <a class="tile" href="4483_jmdc.html" data-q="4483 JMDC 4483 ネット・通信 やや割高 レセプト累積2,000万人の医療データの井戸。Q1売上+17.5%(納品前倒し4億円含む)。オムロン54%子会社・のれん625億円" aria-label="JMDCのレポートを開く">
+        <div class="tile-top"><span class="tile-name">JMDC</span><span class="tile-code">4483</span></div>
+        <div class="tile-px">3,450<small>円 ・ 8/26</small></div>
+        <div style="margin-top:6px"><span class="secchip">ネット・通信</span></div>
+        <div class="tile-sum">レセプト累積2,000万人の医療データの井戸。Q1売上+17.5%(納品前倒し4億円含む)。オムロン54%子会社・のれん625億円</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="2175_sms.html" data-q="2175 エス・エム・エス 2175 ネット・通信 やや割高 カイポケ6.2万事業所・ARR135億(+13%)。営業+19.1%の相当部分は前期229.6億減損の償却費減。株価2倍の主因はOasis 18.77%と改革期待" aria-label="エス・エム・エスのレポートを開く">
+        <div class="tile-top"><span class="tile-name">エス・エム・エス</span><span class="tile-code">2175</span></div>
+        <div class="tile-px">2,403<small>円 ・ 8/26</small></div>
+        <div style="margin-top:6px"><span class="secchip">ネット・通信</span></div>
+        <div class="tile-sum">カイポケ6.2万事業所・ARR135億(+13%)。営業+19.1%の相当部分は前期229.6億減損の償却費減。株価2倍の主因はOasis 18.77%と改革期待</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="4443_sansan.html" data-q="4443 Sansan 4443 ネット・通信 やや割高 名刺シェア85.8%・ARR500億(+20%)。営業利益2.9倍は実質、純利益にはログミー売却益14.4億含む。Bill One黒字化が今期の柱。PBR13.2倍" aria-label="Sansanのレポートを開く">
+        <div class="tile-top"><span class="tile-name">Sansan</span><span class="tile-code">4443</span></div>
+        <div class="tile-px">2,103<small>円 ・ 8/26</small></div>
+        <div style="margin-top:6px"><span class="secchip">ネット・通信</span></div>
+        <div class="tile-sum">名刺シェア85.8%・ARR500億(+20%)。営業利益2.9倍は実質、純利益にはログミー売却益14.4億含む。Bill One黒字化が今期の柱。PBR13.2倍</div>
+        <div class="go">レポートを見る →</div>
+      </a>
     </div>
     </div>
     <div class="sec-block" data-name="評価難">
-    <div class="sector-h val mid" data-group>評価難 <span class="cnt">8銘柄</span></div>
+    <div class="sector-h val mid" data-group>評価難 <span class="cnt">10銘柄</span></div>
     <div class="bdesc">利益が市況変動や黒字化途上にあり、PERによる評価が機能しにくい</div>
     <div class="grid">
       <a class="tile" href="285A_kioxia.html" data-q="285A キオクシアHD 285A 半導体 市況次第 NAND急騰でQ1営業益1.27兆円・純利益46倍。8千億円自社株買い・1対3分割発表も高値から57%調整" aria-label="キオクシアHDのレポートを開く">
@@ -1448,6 +1532,20 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-px">9,527<small>円 ・ 8/20</small></div>
         <div style="margin-top:6px"><span class="secchip">半導体</span></div>
         <div class="tile-sum">Q1営業益+53%だが為替寄与26億を除くと計算上は前年割れ。通期450億(+125%)は進捗10.7%の下期偏重。年初来7.6倍→高値から−60%</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="4478_freee.html" data-q="4478 freee 4478 ネット・通信 PER非適用 有料69.4万事業者・大手100会計事務所の81社。2期連続営業黒字もPER算出不可(純利益予想非開示)。Agent Hub 8/28正式版、初の自社株買い50億でS高" aria-label="freeeのレポートを開く">
+        <div class="tile-top"><span class="tile-name">freee</span><span class="tile-code">4478</span></div>
+        <div class="tile-px">3,815<small>円 ・ 8/26</small></div>
+        <div style="margin-top:6px"><span class="secchip">ネット・通信</span></div>
+        <div class="tile-sum">有料69.4万事業者・大手100会計事務所の81社。2期連続営業黒字もPER算出不可(純利益予想非開示)。Agent Hub 8/28正式版、初の自社株買い50億でS高</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="3994_moneyforward.html" data-q="3994 マネーフォワード 3994 ネット・通信 PER非適用 SaaS ARR477億(+34%)・ME1,830万人。中間黒字は売却益24億が主因で営業段階は▲2.1億。AI Cowork 7月リリース、通期最終赤字予想を維持" aria-label="マネーフォワードのレポートを開く">
+        <div class="tile-top"><span class="tile-name">マネーフォワード</span><span class="tile-code">3994</span></div>
+        <div class="tile-px">6,170<small>円 ・ 8/26</small></div>
+        <div style="margin-top:6px"><span class="secchip">ネット・通信</span></div>
+        <div class="tile-sum">SaaS ARR477億(+34%)・ME1,830万人。中間黒字は売却益24億が主因で営業段階は▲2.1億。AI Cowork 7月リリース、通期最終赤字予想を維持</div>
         <div class="go">レポートを見る →</div>
       </a>
     </div>
@@ -1508,6 +1606,11 @@ window.addEventListener('hashchange', goLegacy);
   <a class="theme-btn" href="theme_shosha.html">
     <div class="tt">🏛 商社とインフレ — 業績で測る</div>
     <div class="td">「商社=インフレ耐性」を日々の値動きではなく業績への波及経路で検証する。インフレ→商品価格→利益→株主リターンの3つの繋がりに分解すると、強いのは後ろの2つで、入口の繋がりが一番弱い——権益のレバレッジは対称に効く。5大商社+2社のQ1・資源依存度・還元・バフェット保有を横断</div>
+    <div class="tg">マップを開く →</div>
+  </a>
+  <a class="theme-btn" href="theme_proai.html">
+    <div class="tt">🗃 専門職データ×AI — 「食われる側」が持つ独占データ</div>
+    <div class="td">「弁護士・医師・税理士はAIに食われる」の裏面: その職業の実務データを独占する企業だけが、その職業向けAIを作れる。①職業ネットワークの過半 ②非公開データが日々溜まる ③転換が数字で見える、の3条件で法務・医療・介護・税務会計・営業の8銘柄を横断。上場廃止で退場した二番手(メドピアMBO)の教訓も</div>
     <div class="tg">マップを開く →</div>
   </a>
   </div>

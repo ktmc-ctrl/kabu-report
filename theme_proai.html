@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>特集: 専門職データ×AI</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>🗃 専門職データ×AI — 「食われる側」が持つ独占データ</h1>
+    <div class="subtitle"><span class="badge">特集</span> <span class="badge">リーガル・医療・介護・税務・会計・営業</span> <span class="badge">関連8銘柄+1事例</span></div>
+  </div>
+</div>
+
+<style>
+.pai .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-top:10px}
+.pai .cond{border:1px solid var(--line,rgba(128,128,128,.3));border-radius:10px;padding:12px 14px}
+.pai .cond b{display:block;margin-bottom:4px}
+.pai .small{font-size:.85em;opacity:.85}
+</style>
+<div class="pai">
+
+<div class="card" style="border-width:2px">
+  <h2>この特集の視点</h2>
+  <div class="body">
+    「弁護士・医師・税理士はAIに食われる」という物語には裏面がある。<b>その職業の実務データを独占的に持つ企業だけが、その職業向けのAIを作れる</b>——という逆転だ。2026年8月、<a class="xref" href="6027_bengo4.html">弁護士ドットコム</a>は法務AI「LegalBrain」のARRが4か月で3.8倍という数字を出し、株価は2か月で+153%になった(政府も2026年7月の成長戦略で「バーティカルAI(領域特化型AI)」推進を明記)。本特集は、同じ構造を持ちうる国内上場企業を職業ごとに並べ、<b>①データの独占性 ②AI転換の進捗が数字で見えるか ③株価がどこまで織り込んだか</b>の3点で整理する。
+  </div>
+</div>
+
+<div class="card">
+  <h2>型 — 3つの条件</h2>
+  <div class="body">
+    <a class="xref" href="6027_bengo4.html">弁護士ドットコム</a>を分解すると、条件は3つある。候補を見るときはこの3つを順に問う。
+    <div class="grid3">
+      <div class="cond"><b>① 職業ネットワークの過半</b>その職業の実務者の半分以上を会員・顧客として押さえているか。<span class="small">例: 弁護士の67%(<a class="xref" href="6027_bengo4.html">弁護士ドットコム</a>)、世界の医師の約50%(<a class="xref" href="2413_m3.html">エムスリー</a>)、大手100会計事務所の81社(<a class="xref" href="4478_freee.html">freee</a>)</span></div>
+      <div class="cond"><b>② 非公開の実務データが日々溜まる</b>公開データ(判例・法令)は堀にならない。ワークフローの中にいて、<b>金で買えないデータ</b>が自動的に増える構造か。<span class="small">例: 法律相談Q&A14万件、レセプト2,000万人分、介護記録、仕訳データ</span></div>
+      <div class="cond"><b>③ 転換が数字で見えるか</b>データがあるだけでは価値にならない。AIプロダクトの売上・ARR・利益寄与が開示されて初めて市場が織り込む。<span class="small">例: LegalBrain「4か月で3.8倍」、<a class="xref" href="2413_m3.html">エムスリー</a>「営業利益の約15%がAI」</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>職業ごとのマップ</h2>
+  <div class="body">
+    <b>⚖️ 法務 — 型の完成形</b><br>
+    <b><a class="xref" href="6027_bengo4.html">弁護士ドットコム(6027)</a></b>が3条件を最初に揃えた。弁護士の67%・相談Q&A14万件・LegalBrain ARR4か月3.8倍(絶対額は非開示)。ただし株価は8月にストップ高3回、PBR15.7倍まで期待が先行。<b><a class="xref" href="4443_sansan.html">Sansan(4443)</a></b>のContract One(契約DB+MCPサーバー)も法務の入口に立つ。<br><br>
+    <b>🩺 医療 — 規模は最大、成長は成熟</b><br>
+    <b><a class="xref" href="2413_m3.html">エムスリー(2413)</a></b>は医師会員がグローバル700万人(世界の約50%)で、①の規模は特集内で最大。しかも<b>「AIが営業利益の約15%・約100億円」という利益ベースの開示</b>があり、③の証明では最も進んでいる。ただし本業(製薬マーケ)が成熟し、Q1は減益・株価は決算翌日▲16.9%。<b><a class="xref" href="4483_jmdc.html">JMDC(4483)</a></b>は別の立ち位置——レセプト累積2,000万人という<b>データの井戸そのもの</b>を売る。医療AIが増えるほど、学習・検証データの需要側が増える。オムロン54%子会社で流動性が薄い点は注意。<br><br>
+    <b>🧑‍🦽 介護 — 現場データ×人手不足</b><br>
+    <b><a class="xref" href="2175_sms.html">エス・エム・エス(2175)</a></b>。カイポケ6.2万事業所の請求・記録データにウェルモ提携(音声AI記録)を重ねる。介護は人手不足が構造的で、AIによる記録・請求の代替需要は堅い。ただし株価2倍の主因は業績でなくOasis(18.77%筆頭株主)と改革期待。<a class="xref" href="2413_m3.html">エムスリー</a>も2026年6月にワイズマン(介護システム)を買収してこの領域に入ってきた。<br><br>
+    <b>🧾 税務・会計 — データは古株、AIは新興が速い</b><br>
+    <b><a class="xref" href="9746_tkc.html">TKC(9746)</a></b>は税理士1.16万事務所・電子申告65.6万社・判例36.5万件と①②が最強級だが、AIエージェントは2026年9月開始予定で③はまだゼロ。今期の過去最高益は自治体の標準化特需(一過性)。<b><a class="xref" href="4478_freee.html">freee(4478)</a></b>と<b><a class="xref" href="3994_moneyforward.html">マネーフォワード(3994)</a></b>は新興側から攻める——<a class="xref" href="4478_freee.html">freee</a>は「税理士がAIで顧問先を回す基盤」(Agent Hub、8/28正式版)を握りにいき、<a class="xref" href="3994_moneyforward.html">マネーフォワード</a>はAI-BPOと米会計事務所の買収で<b>実務そのものを取り込む</b>。両社とも2026年2月に「AIがSaaSを代替する」懸念で急落した株が、「AIの実装者」として半年で2倍になった——<b>この特集のテーマそのものを、市場が2月と8月で正反対に値付けした</b>。<br><br>
+    <b>🤝 営業 — 人脈グラフという変わり種</b><br>
+    <b><a class="xref" href="4443_sansan.html">Sansan(4443)</a></b>。名刺管理シェア85.8%が作る企業人脈・取引データの上に、AI照合・AI起票・AIサーチを四半期ごとに投入。ARR500億円・Bill One黒字化見込みと事業は堅いが、PBR13.2倍・半年2.3倍と織り込みも進む。
+  </div>
+</div>
+
+<div class="card">
+  <h2>横断比較(2026/8/26時点)</h2>
+  <table>
+    <thead><tr><th>銘柄</th><th class="num">株価</th><th>データ資産(①②)</th><th>AI転換の数字(③)</th><th class="num">PER/PBR</th><th class="num">年初来</th></tr></thead>
+    <tbody>
+      <tr><td><a class="xref" href="6027_bengo4.html">弁護士ドットコム</a><br><a class="xref" href="6027_bengo4.html">[6027]</a></td><td class="num">5,050</td><td>弁護士67%・相談Q&A14万件</td><td>LegalBrain ARR 4か月3.8倍(絶対額非開示)</td><td class="num">57.5倍/15.7倍</td><td class="num up">+153%(安値比)</td></tr>
+      <tr><td><a class="xref" href="2413_m3.html">エムスリー</a><br><a class="xref" href="2413_m3.html">[2413]</a></td><td class="num">1,752.5</td><td>医師700万人(世界の50%)・カルテ5億枚</td><td><b>営業利益の約15%=約100億円がAI(中期50%目標)</b></td><td class="num">22.0倍/2.6倍</td><td class="num">高値比-19.5%</td></tr>
+      <tr><td><a class="xref" href="4483_jmdc.html">JMDC</a><br><a class="xref" href="4483_jmdc.html">[4483]</a></td><td class="num">3,450</td><td>レセプト累積2,000万人(データの井戸)</td><td>画像診断AI(薬事認証済)・AI-RAD</td><td class="num">31.6倍/2.5倍</td><td class="num">高値比-19.9%</td></tr>
+      <tr><td><a class="xref" href="2175_sms.html">エス・エム・エス</a><br><a class="xref" href="2175_sms.html">[2175]</a></td><td class="num">2,403</td><td>カイポケ6.2万事業所・介護実務データ</td><td>AI記録・帳票・返戻予測(売上未開示)</td><td class="num">32.0倍/7.0倍</td><td class="num up">+80%(安値比)</td></tr>
+      <tr><td><a class="xref" href="9746_tkc.html">TKC</a><br><a class="xref" href="9746_tkc.html">[9746]</a></td><td class="num">4,125</td><td>税理士1.16万事務所・申告65.6万社・判例36.5万件</td><td>AIエージェント2026年9月開始予定(数字ゼロ)</td><td class="num">15.7倍/1.8倍</td><td class="num">高値比-5.3%</td></tr>
+      <tr><td><a class="xref" href="4478_freee.html">freee</a><br><a class="xref" href="4478_freee.html">[4478]</a></td><td class="num">3,815</td><td>69.4万事業者の会計データ・大手事務所81社</td><td>Agent Hub正式版8/28・MCP公開(売上未開示)</td><td class="num">非適用/10.7倍</td><td class="num up">+108%(安値比)</td></tr>
+      <tr><td><a class="xref" href="3994_moneyforward.html">マネーフォワード</a><br><a class="xref" href="3994_moneyforward.html">[3994]</a></td><td class="num">6,170</td><td>ME1,830万人・法人49.3万事業者</td><td>AI Cowork 7月リリース・エージェント有償化開始</td><td class="num">非適用/8.3倍</td><td class="num up">+124%(安値比)</td></tr>
+      <tr><td><a class="xref" href="4443_sansan.html">Sansan</a><br><a class="xref" href="4443_sansan.html">[4443]</a></td><td class="num">2,103</td><td>名刺シェア85.8%・人脈グラフ</td><td>AI照合/起票は提供中・AIサーチ9月(売上未開示)</td><td class="num">28〜31倍/13.2倍</td><td class="num up">+112%(安値比)</td></tr>
+    </tbody>
+  </table>
+  <div class="note" style="margin-top:8px">年初来の%は各レポート記載の年初来高値/安値に対する現在値の位置。PER・PBRは二次資料(株探・日経・松井・Yahoo)で媒体間に差がある場合は代表値。</div>
+</div>
+
+<div class="card">
+  <h2>コラム — 退場した二番手: メドピアのMBO</h2>
+  <div class="body">
+    医師コミュニティ二番手のメドピア(旧6095、医師会員18万人)は、<b>2025年10月に創業者(医師)によるMBOで上場廃止になった</b>。TOB価格700円は直近1か月平均に対して+48.6%のプレミアムだったが、コロナ特需剥落で二桁減収の局面での非公開化で、AI法務・AI医療の物語で同業の株価が急騰する<b>直前に市場から消えた</b>形になる。この事例が示すのは2つ: ①専門職データを持っていても、②収益への転換が示せなければ市場は評価しない(むしろ安く買い戻される)。③の「数字で見える転換」がこの特集の軸である理由がここにある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>論点 — この型で見るときの注意</h2>
+  <div class="body">
+    ・<b>公開データは堀にならない。</b>判例も法令も誰でも読める。堀は「非公開で・再現不能で・日々増える」データだけ<br>
+    ・<b>「データ保有」と「AI転換」は別の能力。</b><a class="xref" href="9746_tkc.html">TKC</a>と<a class="xref" href="4478_freee.html">freee</a>の対比が典型——データの厚さは老舗が勝ち、実装の速度は新興が勝つ。勝負はまだついていない<br>
+    ・<b>転換の証明はARR・利益寄与の開示で測る。</b>「AI機能を搭載」というリリースは全社が出せる。数字(LegalBrainの3.8倍、<a class="xref" href="2413_m3.html">エムスリー</a>の15%)を出した会社から順に市場が織り込む<br>
+    ・<b>この読み筋は既に市場が気づいている。</b>本特集の8銘柄のうち5銘柄が年初来安値から2倍前後。「材料が出る前に仕込む」型のテーマであり、材料が出た後に追いかけると<a class="xref" href="6027_bengo4.html">弁護士ドットコム</a>(2か月+153%)の高値を掴むことになる<br>
+    ・<b>汎用AIの進化は全員への逆風にもなる。</b>ChatGPT等が実務データなしでも十分な精度を出すようになれば、この型自体が崩れる。2026年2月のSaaS株急落はその恐怖の予行演習だった
+  </div>
+</div>
+
+<div class="card">
+  <h2>出典・更新履歴</h2>
+  <div class="body">
+    <b>2026/8/26</b> 初版。各社の数値・出典は個別レポート(<a class="xref" href="6027_bengo4.html">弁護士ドットコム</a>・<a class="xref" href="2413_m3.html">エムスリー</a>・<a class="xref" href="4483_jmdc.html">JMDC</a>・<a class="xref" href="2175_sms.html">エス・エム・エス</a>・<a class="xref" href="9746_tkc.html">TKC</a>・<a class="xref" href="4478_freee.html">freee</a>・<a class="xref" href="3994_moneyforward.html">マネーフォワード</a>・<a class="xref" href="4443_sansan.html">Sansan</a>)を参照——いずれも決算短信・決算説明資料の原本PDFまたはTDnet配信ミラーで確認した。メドピアのMBOはTOB開示原本(2025/5/14・8/8・9/29)で確認。政府のバーティカルAI方針は「日本成長戦略・官民投資ロードマップ」(2026/7/21閣議決定、<a class="xref" href="6027_bengo4.html">弁護士ドットコム</a>説明資料経由)。市場コンセンサス値は全銘柄で<b>取得不可</b>。
+  </div>
+</div>
+
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

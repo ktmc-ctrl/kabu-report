@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>エス・エム・エス(2175) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>エス・エム・エス <span class="note">[2175] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">介護・医療 人材/経営支援</span> <span class="badge">3月期決算</span> <span class="badge">カイポケ6.2万事業所</span> <span class="badge">Oasisが筆頭株主18.8%</span></div>
+  </div>
+  <div class="px">
+    <div class="v">2,403円</div>
+    <div class="note-s">2026/8/26</div>
+    <div class="note-s">年初来高値 2,623円(7/15)から <b>-8.4%</b><br>年初来安値 1,332円(1/5)から <b>+80.4%</b></div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    看護師・介護職の人材紹介と、介護事業所の経営システム「カイポケ」を両輪とする介護・医療の専業プラットフォーム。Q1(2026年4-6月)は売上+8.2%・営業利益+19.1%だが、<b>営業増益の相当部分は前期の海外事業229.6億円減損に伴う償却費の減少</b>(年約15億円)によるもので、実勢はEBITDA+10%の方が近い。純利益は海外子会社の税金要因で▲5.4%。カイポケは<b>顧客6.23万事業所(+9%)・ARR135億円(+13%)</b>と着実で、介護記録の音声AI化(ウェルモ提携)など「介護現場の実務データ×AI」の布石を打つ。株価は年初から約2倍——最大の材料は業績でなく、<b>アクティビストのOasisが18.77%まで買い増して筆頭株主になった</b>こと(2026年2月)と、それを受けた企業価値最大化ロードマップ(2031年3月期に売上1,220億・EBITDA280億・ROE30%目標)。今期の営業利益は横ばい計画で、PER32倍・PBR7倍は<b>改革期待を先に織り込んだ水準</b>——<b>評価: やや割高</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/29発表・2027年3月期 Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">202.12億円</td><td class="num up">+8.2%</td></tr>
+      <tr><td>EBITDA</td><td class="num">51.90億円</td><td class="num up">+10%</td></tr>
+      <tr><td>営業利益</td><td class="num">43.08億円</td><td class="num up">+19.1%</td></tr>
+      <tr><td>親会社株主純利益</td><td class="num">37.28億円</td><td class="num down">-5.4%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <table>
+    <thead><tr><th>セグメント(Q1・今期から3区分開示)</th><th class="num">売上</th><th class="num">前年比</th><th class="num">利益</th></tr></thead>
+    <tbody>
+      <tr><td>キャリア(看護・介護の人材紹介)</td><td class="num">141.10億円</td><td class="num up">+8.0%</td><td class="num">50.12億円(+10.2%)</td></tr>
+      <tr><td>介護・障害福祉経営支援(カイポケ)</td><td class="num">34.74億円</td><td class="num up">+9.4%</td><td class="num">10.26億円(+2.5%)</td></tr>
+      <tr><td>海外(MIMS)</td><td class="num">15.95億円</td><td class="num">+3.9%</td><td class="num">▲3.20億円(赤字縮小)</td></tr>
+    </tbody>
+  </table>
+  <div class="box" style="margin-top:10px">
+    <b>利益の中身の分解(重要)。</b>①営業+19.1%のかなりの部分は<b>会計上の効果</b>: 前期(2026年3月期)に海外MIMSで減損損失229.57億円を計上した結果、償却費がQ1で10.71億→8.23億円に減った。会社自身が「減損に伴い償却費が減少したことで営業利益は大きく成長」と説明している。<b>実勢の成長はEBITDA+10%</b>。②純利益▲5.4%は海外子会社に係る税金費用の四半期要因(法人税等8.44億→16.67億円)。③Q1進捗率63.3%は看護師採用がQ1に集中する強い季節性によるもので、会社は「Q2以降に投資を実施、通期は期初計画通り」と明言——<b>進捗の高さを上振れと読まないこと</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>データ資産とAI — 介護現場の実務データ</h2>
+  <div class="body">
+    ・<b>カイポケ: 顧客27,600法人・62,300事業所(+9%)、ARR135億円(+13%)</b>、ARPA12.1万円(2026年6月末)。介護事業所の請求・記録・経営データが日々流れ込む<br>
+    ・人材側: 厚労省委託の職業紹介品質調査で全4部門上位3社、令和7年度就職者数50,641人。看護師・介護職の会員数の一次資料値は<b>取得不可</b>(「ナース専科125万人」は未検証の二次情報)<br><br>
+    AI施策: 2026年3月に<b>ウェルモと戦略提携</b>——音声文字起こし+AI要約の「ミルモレコーダー」、帳票自動化の「ミルモAI」をカイポケに連携。カイポケ本体でもAI記録支援・AI帳票作成・AI返戻予測を展開。キャリア事業では「AI化を見据えて求職者・事業者の行動データや非公開の職場情報を蓄積する観点からキャリアパートナー増員を重要施策と位置づけ」と説明資料に明記——<b>人手の営業活動を、将来のAIの学習データ収集として再定義している</b>のがこの会社の特徴。介護は人手不足が構造的で、記録・請求業務のAI代替需要は堅い。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通し・Oasisと改革ロードマップ</h2>
+  <table>
+    <thead><tr><th>2027年3月期</th><th class="num">会社予想</th><th class="num">前期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">718.34億円</td><td class="num up">+11.0%</td></tr>
+      <tr><td>営業利益</td><td class="num">68.01億円</td><td class="num"><b>+0.2%(横ばい)</b></td></tr>
+      <tr><td>純利益</td><td class="num">61.65億円</td><td class="num">前期は減損で▲143.17億円</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    株価2倍の主材料は業績でなくガバナンス: <b>Oasis Managementが2026年1〜2月に18.77%まで買い増し筆頭株主に</b>(創業者系のMORO 18.74%を上回った)。会社は4/28に「企業価値最大化ロードマップ」を公表——<b>2031年3月期に売上1,220億円以上・EBITDA280億円以上(現在の約2倍)・ROE30%以上</b>。中期経営計画は2027年4月末までに開示予定で、配当性向30%目安の累進配当と自己株式取得も明記。海外MIMSは「撤退・縮小の是非を最優先課題として判断」中——追加損失の可能性と、売却が好材料になる可能性の両面がある。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>期待先行:</b> PER32倍・PBR7倍は改革(Oasis・中計)の期待込み。2027年4月末までに出る中計が期待に届かなければ反動が大きい<br>
+    ・今期の営業利益は横ばい計画。利益成長の再開はQ2以降の投資の成果次第<br>
+    ・海外MIMSの追加損失・撤退コストの可能性<br>
+    ・介護報酬・診療報酬の改定リスク(カイポケと人材紹介の両方に効く)。人材紹介への規制強化議論も燻る<br>
+    ・<b>強気材料の裏返し:</b> 決算翌日(7/30)は▲8.6%と急落した——業績の実勢(EBITDA+10%・営業横ばい計画)と株価の期待の間に既にギャップがある証拠
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/26</b> 初版。Q1決算短信・説明会資料・減損開示・ロードマップ(いずれも原本PDF)を確認し、営業増益に含まれる償却費減少(前期229.6億円減損の効果)を分解。<br>
+    出典: エス・エム・エス 2027年3月期Q1決算短信・説明会資料 2026/7/29 / 減損損失の計上に関するお知らせ 2026/4/28 / 企業価値最大化に向けたロードマップ 2026/4/28 / 大量保有関連開示 2026/2 / ウェルモ提携リリース 2026/3/25 / Yahoo!ファイナンス(株価・指標、2026/8/26)。<br>
+    ※看護師・介護職の会員数の一次資料値、市場コンセンサスは<b>取得不可</b>(推測で埋めていない)。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

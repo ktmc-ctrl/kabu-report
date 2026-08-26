@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>エムスリー(2413) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>エムスリー <span class="note">[2413] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">医療プラットフォーム</span> <span class="badge">3月期決算・IFRS</span> <span class="badge">医師会員 世界700万人</span> <span class="badge">AIが営業利益の約15%</span></div>
+  </div>
+  <div class="px">
+    <div class="v">1,752.5円</div>
+    <div class="note-s">2026/8/26 終値</div>
+    <div class="note-s">年初来高値 2,177.5円(1/13)から <b>-19.5%</b><br>年初来安値 1,297円(5/12)から <b>+35.1%</b></div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    医師向けプラットフォームm3.comを核とする医療IT最大手。<b>グローバル医師会員700万人超=世界の医師の約半分</b>という、専門職ネットワークとしては国内最大級のデータ資産を持つ。Q1(2026年4-6月)は売上+4.5%ながら営業利益▲8.6%・純利益▲23.4%の<b>減益</b>で、発表翌日(8/7)に株価は▲16.9%と急落した。ただし純利益の落ち込みには海外子会社配当に伴う<b>一過性の税金費用</b>が含まれ、会社は「海外を除きほぼ想定通り」と説明。注目すべきは<b>AIの利益貢献が既に営業利益の約15%(約100億円規模)</b>と会社が開示し、中期50%を目標に掲げている点——「データ×AI」を売上でなく利益で語れる数少ない事例。2026年6月にはミッション自体を「テクノロジーを創造的に活用し」に書き換え、介護システムのワイズマンを子会社化してデータ領域を医療から介護へ拡張した。PER22倍は成長鈍化(通期営業+8.8%計画)との対比で高くはないが安くもない——<b>評価: 中立</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/6発表・2027年3月期 Q1、IFRS)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上収益</td><td class="num">901.05億円</td><td class="num up">+4.5%</td></tr>
+      <tr><td>営業利益</td><td class="num">180.77億円</td><td class="num down">-8.6%</td></tr>
+      <tr><td>親会社帰属利益</td><td class="num">90.74億円</td><td class="num down">-23.4%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <table>
+    <thead><tr><th>セグメント(Q1)</th><th class="num">売上</th><th class="num">前年比</th><th class="num">利益</th><th class="num">前年比</th></tr></thead>
+    <tbody>
+      <tr><td>メディカルプラットフォーム(製薬マーケ等)</td><td class="num">255.9億円</td><td class="num">+1%</td><td class="num">88.7億円</td><td class="num down">-1%</td></tr>
+      <tr><td>エビデンスソリューション(治験)</td><td class="num">56.9億円</td><td class="num down">-8%</td><td class="num">8.8億円</td><td class="num down">-33%</td></tr>
+      <tr><td>キャリアソリューション</td><td class="num">80.0億円</td><td class="num down">-3%</td><td class="num">36.0億円</td><td class="num down">-2%</td></tr>
+      <tr><td>サイトソリューション</td><td class="num">141.6億円</td><td class="num up">+9%</td><td class="num">0.2億円</td><td class="num down">-98%</td></tr>
+      <tr><td>ペイシェントソリューション</td><td class="num">147.5億円</td><td class="num up">+10%</td><td class="num">7.5億円</td><td class="num up">+66%</td></tr>
+      <tr><td>海外</td><td class="num">227.5億円</td><td class="num up">+10%</td><td class="num">46.2億円</td><td class="num down">-5%(先行投資)</td></tr>
+    </tbody>
+  </table>
+  <div class="box" style="margin-top:10px">
+    <b>利益の中身の分解。</b>純利益▲23.4%と営業利益▲8.6%の落差の主因は、<b>海外子会社の配当に伴う一過性の税金費用引当</b>(短信・説明資料の脚注に明記)。営業段階の減益は①エビデンスソリューションの前年度大型案件の剥落(反動、受注残371億円) ②海外の積極先行投資 ③エマージング事業の前年度株式売却益(持分法)の剥落。会社は「Q1の滑り出しは海外を除きほぼ想定通り」と総括しており、社内Q1計画(売上約950億・営業約190億)に対する未達は主に海外。ただし純利益の上期計画に対する進捗は37.8%と鈍く、市場はここを嫌気した(8/7に▲16.9%)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>データ資産とAI — 「利益の15%がAI」という開示</h2>
+  <div class="body">
+    保有するネットワーク・データ(会社説明資料):<br>
+    ・<b>医師会員 グローバル700万人超 = 世界の医師の約50%</b>(2026年6月末)。国内m3.comは医師の9割以上・33万人超とされる(こちらは媒体資料ベース、厳密な最新値は取得不可)<br>
+    ・クラウド電子カルテ「M3デジカル」累計導入約10,100件でシェアNo.1、<b>管理カルテ約5億枚</b><br>
+    ・2026年6月にワイズマン(介護・医療システム)を子会社化——介護記録データへ領域拡張。介護記録AI化で業務時間を月123→11時間(約9割減)にした事例の横展開を構想<br><br>
+    AIについて他社にない開示がある: <b>AIの営業利益インパクトはFY2025実績で約15%・約100億円規模(一過性除く、会社推計)</b>。FY2021の約5%から拡大し、<b>中期的に約50%を目標</b>。AI関連プロジェクトは100以上、m3.comトップページのコンテンツの8割以上をAIでパーソナライズし、会員の総滞在時間は4年で24%増。2026年6月1日(報道ベース)にはミッションを「インターネットを活用し」から<b>「テクノロジーを創造的に活用し」</b>へ変更し、AI・データ基盤・診断支援を中核に据え直した。「専門職データ×AI」の型を売上規模で最も大きく実装している国内企業と言える。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しとバリュエーション</h2>
+  <table>
+    <thead><tr><th>2027年3月期</th><th class="num">会社予想</th><th class="num">前期比</th><th class="num">Q1進捗</th></tr></thead>
+    <tbody>
+      <tr><td>売上収益</td><td class="num">4,000億円</td><td class="num up">+13.8%</td><td class="num">22.5%</td></tr>
+      <tr><td>営業利益</td><td class="num">800億円</td><td class="num up">+8.8%</td><td class="num">22.6%</td></tr>
+      <tr><td>親会社帰属利益</td><td class="num">530億円</td><td class="num up">+7.9%</td><td class="num">17.1%(上期計画比37.8%)</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    予想据え置き。予想PER22.0倍・PBR2.6〜2.9倍(出所間差)・時価総額約1.19兆円。配当はFY3/26実績22円、<b>今期予想は「未定」</b>のため利回り算出不能。自社株買いは上限2,000万株(3.00%)・200億円の枠を2026年5月に設定したが、<b>7月末時点の取得実績はゼロ</b>。かつてPER90倍で取引された成長株が、成長率1桁後半〜10%台前半の成熟企業の値段(22倍)まで降りてきた形。市場コンセンサスの定量値は取得不可(「市場予想を下回った」との報道のみ)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・国内製薬マーケティングの構造的な伸び鈍化(Q1売上+1%)。製薬業界のMR削減はデジタル移行の追い風だった局面から、市場自体の頭打ちへ<br>
+    ・治験(エビデンスソリューション)の大型案件剥落の継続。米国治験環境は会社自ら「不確実性が残る」と明記<br>
+    ・純利益の上期進捗37.8%が続けば下方修正リスク<br>
+    ・ワイズマン等M&Aののれん・統合リスク<br>
+    ・<b>強気材料の裏返し:</b> 「営業利益の50%をAIで」という目標は、既存事業の成長鈍化をAIで補う構図でもある。AI寄与の測定は会社推計であり、外部検証はできない
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/26</b> 初版。Q1決算短信・会社説明資料(原本PDF)を確認し、純利益▲23.4%に含まれる一過性税金費用と、営業減益の3要因(案件剥落・海外投資・売却益の反動)を分解。<br>
+    出典: エムスリー 2027年3月期Q1決算短信〔IFRS〕・会社説明資料 2026/8/6(原本PDF確認) / 自己株式の取得状況のお知らせ 2026/8/3 / ワイズマン子会社化リリース 2026/6/5 / 株探・松井証券(株価・指標、2026/8/26)。<br>
+    ※市場コンセンサスの定量値、国内医師会員数の厳密な最新値、ミッション変更の正式日付(2026/6/1は報道ベース)は<b>取得不可または二次資料</b>(推測で埋めていない)。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>

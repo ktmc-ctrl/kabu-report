@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JMDC(4483) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>JMDC <span class="note">[4483] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">医療ビッグデータ</span> <span class="badge">3月期決算・IFRS</span> <span class="badge">レセプト累積2,000万人超</span> <span class="badge">オムロン子会社(54%)</span></div>
+  </div>
+  <div class="px">
+    <div class="v">3,450円</div>
+    <div class="note-s">2026/8/26</div>
+    <div class="note-s">年初来高値 4,305円(2/27)から <b>-19.9%</b><br>年初来安値 2,369円(5/12)から <b>+45.6%</b></div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    健康保険組合由来のレセプト(診療報酬明細)・健診データを<b>2005年から累積2,000万人超</b>集めた、日本最大級の医療データベース企業。データを匿名加工して製薬会社・保険会社・研究機関に販売する「データそのものが商品」のビジネスで、この特集の型で言えば<b>AIの燃料(データ)を売る側</b>にいる。Q1(2026年4-6月)は売上+17.5%・営業利益+17.5%と増収増益で、EBITDAマージン21.1%を維持。前期軟調だった製薬メディカル部門向けが成長基調に回帰し(取引額+26%)、決算翌日は大幅高、その後もアナリストの格上げが続いた。ただしQ1には<b>納品前倒し約4億円</b>が含まれ、通期計画は下期偏重・戦略投資で上期マージン低下(23%)を見込む。オムロンが54%を握る子会社で流動性は薄く、のれん625億円(総資産の4割)を抱える。PER31.6倍は成長期待込み——<b>評価: やや割高</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/5発表・2027年3月期 Q1、IFRS)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上収益</td><td class="num">126.05億円</td><td class="num up">+17.5%</td></tr>
+      <tr><td>営業利益</td><td class="num">18.23億円</td><td class="num up">+17.5%</td></tr>
+      <tr><td>EBITDA</td><td class="num">26.63億円(マージン21.1%)</td><td class="num up">+17.4%</td></tr>
+      <tr><td>親会社帰属利益</td><td class="num">11.31億円</td><td class="num up">+17.0%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <table>
+    <thead><tr><th>セグメント(Q1)</th><th class="num">売上</th><th class="num">前年比</th><th class="num">EBITDA</th></tr></thead>
+    <tbody>
+      <tr><td><b>ヘルスビッグデータ</b></td><td class="num">109.55億円</td><td class="num up">+19.1%</td><td class="num">22.50億円(マージン20.5%)</td></tr>
+      <tr><td>遠隔医療(ドクターネット)</td><td class="num">16.49億円</td><td class="num up">+8.2%</td><td class="num">6.53億円(マージン39.6%)</td></tr>
+    </tbody>
+  </table>
+  <div class="box" style="margin-top:10px">
+    <b>利益の中身の分解。</b>大きな売却益・減損はなし。ただし<b>一部案件の納品前倒しで、Q2想定だった売上約4億円がQ1に計上された</b>(説明資料に明記——Q1の+17.5%はこの分だけ実勢より良く見える)。内訳では製薬向けが回復(セールス&マーケ+46%・メディカル+26%)する一方、保険者・生活者向けは+4%と鈍い。EBITDAマージンは前年同期と同水準で、会社は「構造的な収益性に変化なし」と説明。
+  </div>
+</div>
+
+<div class="card">
+  <h2>データ資産とAI — 「井戸」を持つ側</h2>
+  <div class="body">
+    ・<b>JMDC Claims Database: 累積母集団2,000万人超</b>(2005年から蓄積したレセプト+健診+台帳)。外部提供用の保険者DBは1,000万人超規模、活用論文1,000報以上<br>
+    ・遠隔読影(ドクターネット): 契約医療機関約1,700・放射線診断専門医約1,300で国内シェア約30%——<b>「医師の読影労働のデータ」が集まる場所</b>でもある<br><br>
+    AI関連(名称と日付):<br>
+    ・2025年10月: 頭部CT解析AI「DoctorNET Heuron CTS」が国内薬事認証を取得しサービス開始(脳卒中診断支援)<br>
+    ・画像診断AIプラットフォーム「AI-RAD」の機能追加・アジア展開準備(Q1短信に明記)<br>
+    ・2025年12月: 病院向け電子カルテのソフトウェア・サービスと業務提携、2026年2月: 富士通Japanと医療データ利活用で協業<br><br>
+    この特集の型の中では、<a class="xref" href="6027_bengo4.html">弁護士ドットコム</a>や<a class="xref" href="2413_m3.html">エムスリー</a>が「ネットワーク+データ+AI製品」の3点セットなのに対し、JMDCは<b>データの独占供給者</b>という一段上流のポジション。医療AIが増えるほど、学習・検証用データの需要側が増える構図。<br><br>
+    <b>親会社について:</b> 2023年のTOBでオムロンが54%超を保有する連結子会社(上場は維持)。2026年8月時点で完全子会社化・追加TOB等の開示は確認できない。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しとバリュエーション</h2>
+  <table>
+    <thead><tr><th>2027年3月期</th><th class="num">会社予想</th><th class="num">前期比</th><th class="num">Q1進捗</th></tr></thead>
+    <tbody>
+      <tr><td>売上収益</td><td class="num">605.0億円</td><td class="num up">+19.9%</td><td class="num">20.8%</td></tr>
+      <tr><td>営業利益</td><td class="num">115.0億円</td><td class="num up">+9.3%</td><td class="num">15.9%</td></tr>
+      <tr><td>EBITDA</td><td class="num">150.0億円(マージン25%)</td><td class="num up">+13.8%</td><td class="num">17.8%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    予想は据え置き(上期予想を新規開示: 売上271億・営業45億、戦略投資で上期マージン23%に一時低下の計画)。会社は「業績は下期偏重、通期達成の確度は高まった」と説明。予想PER31.6〜31.8倍・PBR2.5〜2.7倍・時価総額約2,258億円。<b>配当は今期「未定」</b>(前期18円)。決算後はアナリストの格上げ・目標株価増額が相次いだ(株探レーティング、二次資料)。市場コンセンサスの定量値は取得不可。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>オムロン54%保有:</b> 流動性が薄く、親会社のグループ戦略変更(オムロンは構造改革中)に晒される。少数株主との利益相反構造<br>
+    ・<b>のれん625億円=総資産の約4割。</b>減損が起きれば利益が飛ぶ規模<br>
+    ・下期偏重計画+上期マージン低下(23%)——戦略投資の回収が遅れれば未達リスク<br>
+    ・保険者・生活者向けの成長鈍化(Q1+4%)<br>
+    ・<b>強気材料の裏返し:</b> 「データの独占」は医療情報の二次利用規制・匿名加工要件の変更という規制リスクと表裏。制度が動けばビジネスの前提が動く
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/26</b> 初版。Q1決算短信・説明資料(原本PDF)を確認し、納品前倒し約4億円と下期偏重計画を明記。オムロンの保有比率(54.19%)と上場維持を会社サイトで確認。<br>
+    出典: JMDC 2027年3月期Q1決算短信・決算説明資料 2026/8/5(原本PDF確認) / 会社サイト(Claims Database・株式関連情報) / ドクターネット リリース 2025/10 / 富士通Japan リリース 2026/2/5 / 株探・松井証券(株価・指標、2026/8/26)。<br>
+    ※市場コンセンサスの定量値、Pep Up発行ID数は<b>取得不可</b>(推測で埋めていない)。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
