@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>弁護士ドットコム(6027) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>弁護士ドットコム <span class="note">[6027] 東証グロース</span></h1>
+    <div class="subtitle"><span class="badge">リーガルテック</span> <span class="badge">3月期決算</span> <span class="badge">クラウドサイン+法務AI</span> <span class="badge">今月3度目のストップ高(8/26)</span></div>
+  </div>
+  <div class="px">
+    <div class="v">5,050円</div>
+    <div class="note-s">2026/8/26 終値(ストップ高)</div>
+    <div class="note-s">年初来安値 1,998円(6/25)から <b>+152.8%</b><br>8/7比でも13営業日で+111%</div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    電子契約「クラウドサイン」と法律相談ポータルを運営するリーガルテック大手。Q1(2026年4-6月)は売上+27.3%・営業利益698百万円(+36.8%)と<b>四半期過去最高益</b>で、全社ARRは163.2億円(+27.8%)。事業の質は高い——リカーリング(経常)収益が柱で、国内弁護士の67%が登録するデータ基盤の上に、法務AI「LegalBrainエージェント」がARR4か月で3.8倍という初速を見せている。ただし株価は<b>6月25日の1,998円から2か月で+152.8%</b>、8月だけでストップ高が3回(8/13決算・8/19 AI思惑・8/26証券会社の目標株価引き上げ)という垂直上昇の途中にあり、<b>PER57.5倍・PBR15.7倍</b>は「LegalBrainがクラウドサイン級に育つ」将来をかなり前倒しで織り込んだ水準。業績の実力と株価の過熱を分けて見る必要がある——<b>評価: 割高圏</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/12発表・2027年3月期 Q1)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">48.38億円</td><td class="num up">+27.3%</td></tr>
+      <tr><td>EBITDA</td><td class="num">10.01億円</td><td class="num up">+38.2%(四半期初の10億円台)</td></tr>
+      <tr><td>営業利益</td><td class="num">6.98億円</td><td class="num up">+36.8%(四半期過去最高)</td></tr>
+      <tr><td>親会社株主帰属純利益</td><td class="num">4.39億円</td><td class="num up">+37.0%</td></tr>
+      <tr><td>営業利益率</td><td class="num">14.4%</td><td class="num up">前年同期12.3%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <table>
+    <thead><tr><th>事業別売上(Q1)</th><th class="num">売上</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td><b>クラウドサイン</b>(電子契約)</td><td class="num"><b>25.08億円</b></td><td class="num up">+24.1%</td></tr>
+      <tr><td>弁護士ドットコム(相談・集客・業務支援・保険)</td><td class="num">15.65億円</td><td class="num up">+29.0%</td></tr>
+      <tr><td>税理士ドットコム</td><td class="num">4.26億円</td><td class="num up">+22.8%</td></tr>
+      <tr><td>ビジネスロイヤーズ他(LegalBrain含む)</td><td class="num">3.37億円</td><td class="num up">+53.9%</td></tr>
+    </tbody>
+  </table>
+  <div class="box" style="margin-top:10px">
+    <b>利益の中身の分解。</b>増収+10.3億円のうち、2026年に子会社化した<b>ミカタ少額短期保険(弁護士保険)の新規連結分が上乗せ</b>されており、弁護士ドットコム事業の+29.0%と全社ARRの+27.8%には<b>M&Aによるかさ上げが含まれる</b>(ARRでは弁護士保険加算後の「弁護士ドットコム他」が+35.1%、加算のないクラウドサイン単体は+23.6%)。費用側ものれん償却費が増加。一方で一過性の「利益」(資産売却益等)は見当たらず、<b>営業利益+36.8%はオーガニックな増収とコスト管理の結果</b>で、増益の質は高い。会社は「主要数値がすべて計画から上振れ」と明言し、通期進捗は売上23.6%・営業利益23.3%と計画超過ペース。
+  </div>
+</div>
+
+<div class="card">
+  <h2>LegalBrain — 株価急騰の中心にある材料</h2>
+  <div class="body">
+    2026年に投入した統合型・法務AIエージェント。判例・法令・法律書籍・14万件超の法律相談Q&Aという<b>他社が持たないリーガルデータ</b>を基盤に、リサーチから書面草案まで法務業務を支援する。開示されている事実は次の通り:<br><br>
+    ・ARRは<b>2026年3月から4か月で3.8倍</b>(会社は「クラウドサインの30倍超の成長スピード」と説明)。ただし<b>絶対額は非開示</b>で、売上はビジネスロイヤーズ他(Q1計3.37億円)に含まれる——つまり全社売上48億円に対しまだごく小さい<br>
+    ・2025年度司法試験予備試験の論文式で汎用AIを全10科目で上回る375点(伊藤塾採点)という検証結果を公表<br>
+    ・2026年7月の政府「日本成長戦略」でバーティカルAI(領域特化型AI)推進が明記され、弁護士業務のAI活用が具体例に——政策の追い風<br>
+    ・会社はリーガル領域のTAM(獲得可能市場)を<b>12.2兆円</b>と提示(法務人件費の代替を含む推計であり、現在の市場規模ではない)<br><br>
+    8/19のストップ高は「AI法務サービスの需要増に思惑」(日経)、8/26のストップ高は<b>8/25に大和証券が目標株価5,700円を提示</b>したことが直接の材料。株価はこの「まだ小さいが増速中」の事業がクラウドサイン級に育つシナリオを織り込みにいっている。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと変動要因</h2>
+  <table>
+    <thead><tr><th>2027年3月期</th><th class="num">会社予想</th><th class="num">前期比</th><th class="num">Q1進捗</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">205億円</td><td class="num up">+25.9%</td><td class="num">23.6%</td></tr>
+      <tr><td>EBITDA</td><td class="num">43億円</td><td class="num up">+35.0%</td><td class="num">23.3%</td></tr>
+      <tr><td>営業利益</td><td class="num">30億円</td><td class="num up">+36.1%</td><td class="num">23.3%</td></tr>
+      <tr><td>純利益</td><td class="num">20億円</td><td class="num up">+32.4%</td><td class="num">22.0%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    Q1は全項目で計画超過ペース。成長ドライバーは①クラウドサイン(2026年4月の価格改定で従量単価が向上、新規MRR・純増MRR過去最高、四半期の契約送信件数323万件、8/31に書類管理プロダクトを追加投入しARPPU引き上げへ) ②弁護士保険ミカタの連結寄与 ③LegalBrainの拡販体制強化。市場コンセンサスの定量値は<b>取得不可</b>(未ログインで閲覧できる集計値が見つからなかった)。目標株価は大和証券が8/25に5,700円を提示したとの報道がある(原本未確認・参考情報)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th><th class="num">備考</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num"><b>57.5倍</b></td><td class="num">純利益20億円ベース</td></tr>
+      <tr><td>PBR</td><td class="num"><b>15.7倍</b></td><td class="num">—</td></tr>
+      <tr><td>時価総額/売上(PSR)</td><td class="num">約5.6倍</td><td class="num">時価総額1,154億円/今期売上205億円</td></tr>
+      <tr><td>配当</td><td class="num">無配</td><td class="num">還元は自社株買い(下記)</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    株価の経路が本銘柄の現在地を物語る: 年初来安値1,998円(6/25)→8/7時点でも2,388円→<b>8/13ストップ高(Q1決算)→8/19ストップ高(AI思惑、+18.7%)→8/26ストップ高(大和目標株価、+16.2%)→5,050円</b>。13営業日で+111%、2か月で+152.8%という垂直上昇で、信用買い残は売り残の1.39倍。PER57.5倍は利益成長+36%に対してPEGで見れば約1.6倍と「高いが説明可能」な範囲に収まる一方、PBR15.7倍とPSR5.6倍は<b>LegalBrainの成功をかなり前倒しで織り込んだ水準</b>。決算(8/12)は事実、そこからの+60%超は期待の積み増しである——<b>評価: 割高圏</b>(業績の質への評価と株価水準の評価は別物として区別する)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>株主還元・財務</h2>
+  <div class="body">
+    配当は無配で、成長投資優先の方針。2026年6月に<b>初の自社株買い(上限5億円・発行済の1.5%、期間2026/6/12〜11/30)</b>を決議し、「さらなる成長への強い確信」と説明している。規模は時価総額の0.4%程度で需給インパクトは限定的。M&A(判例秘書・弁護革命・ミカタ少額短期保険など)を成長手段として継続しており、のれん償却が費用に乗る構造。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>株価の過熱:</b> 13営業日で+111%。この速度の上昇は材料が途切れた時の反動も大きい。ストップ高の連鎖が終わった銘柄が2〜3割戻すのは通常の値動きの範囲<br>
+    ・<b>LegalBrainの絶対額非開示:</b> 「4か月で3.8倍」は事実だが分母が小さい。全社売上への寄与が見える規模になるまで、成長率の派手さと事業インパクトを混同しない<br>
+    ・<b>生成AIは追い風にも逆風にもなる:</b> 会社自身が説明資料の冒頭9ページを「生成AIに代替されるか」への反論に割いている。汎用AI(ChatGPT等)の法務能力が上がるほど、専門特化の優位が問われる構図は消えない<br>
+    ・<b>M&A込みの成長:</b> ARR+27.8%には弁護士保険の連結加算が含まれる。オーガニック成長の目安はクラウドサイン単体の+23.6%<br>
+    ・<b>電子契約の競争:</b> GMOサイン・ドキュサイン等との競争は継続。値上げ(2026/4)が解約率に跳ねないかは今後の四半期で確認<br>
+    ・<b>強気材料の裏返し:</b> PBR15.7倍は「弁護士データ独占×AI」という物語への評価。物語が現実の数字(LegalBrainの絶対額開示)で裏付けられるまで、期待が先行している
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/26</b> 初版。Q1決算説明資料(83ページ)を全文確認し、増収のM&A寄与とオーガニック分を分解。ストップ高3回の経路と材料を整理。<br>
+    出典: 弁護士ドットコム 2027年3月期Q1決算説明資料 2026/8/12(会社サイト原本PDFを取得・全文確認) / 会社IRサイト / 日経(8/19・8/26ストップ高の材料、大和証券目標株価の報道) / 株探(株価・PER・PBR・信用残、2026/8/26) / Yahoo!ファイナンス(株価時系列・年初来高安)。<br>
+    ※決算短信の原本は未確認(数値は説明資料と決算速報の突き合わせ)。市場コンセンサスの定量値、LegalBrainのARR絶対額、クラウドサインの解約率は<b>取得不可</b>(推測で埋めていない)。大和証券の目標株価5,700円はレポート原本未確認の報道ベース。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
