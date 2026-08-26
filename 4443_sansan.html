@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sansan(4443) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>Sansan <span class="note">[4443] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">営業DX・SaaS</span> <span class="badge">5月期決算</span> <span class="badge">名刺管理シェア85.8%</span> <span class="badge">ARR500億円</span></div>
+  </div>
+  <div class="px">
+    <div class="v">2,103円</div>
+    <div class="note-s">2026/8/26 終値</div>
+    <div class="note-s">年初来高値 2,300円(8/24)から <b>-8.6%</b><br>年初来安値 994円(2/24)から <b>+111.6%</b></div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    法人向け名刺管理「Sansan」でシェア85.8%を握り、企業の人脈・取引先データを事実上独占する営業DX企業。2026年5月期通期は売上537.6億円(+24.4%)・営業利益81.9億円(前年比2.9倍)と<b>利益化が一気に進んだ</b>。グループARRは499.8億円(+20.2%)で、第2の柱・請求書サービス「Bill One」がARR147.8億円(+34.9%)と伸び、今期(2027年5月期)の通期黒字化を見込む。事業領域を「AX(AIトランスフォーメーション)」と定義し直し、AI照合・AI起票・生成AIと契約DBを繋ぐMCPサーバーまで、<b>保有データをAIの燃料にする施策を四半期ごとに投入中</b>。株価は2月安値994円から2倍超となり8/24に年初来高値2,300円、直近は反落。PER28〜31倍は成長率+20%との対比で説明可能な範囲だが、<b>PBR13.2倍は期待の積み上がりを示す</b>——<b>評価: やや割高</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/7/13発表・2026年5月期 通期)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">通期実績</th><th class="num">前年比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">537.61億円</td><td class="num up">+24.4%</td></tr>
+      <tr><td>調整後営業利益</td><td class="num">84.27億円</td><td class="num up">+137.0%(利益率15.7%、+7.5pt)</td></tr>
+      <tr><td>営業利益</td><td class="num">81.85億円</td><td class="num up">+192.3%</td></tr>
+      <tr><td>親会社株主帰属純利益</td><td class="num">67.78億円</td><td class="num up">前年4.24億円から大幅増</td></tr>
+      <tr><td>FCF</td><td class="num">100.31億円</td><td class="num up">マージン18.7%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <table>
+    <thead><tr><th>事業別(通期)</th><th class="num">売上</th><th class="num">前年比</th><th class="num">状態</th></tr></thead>
+    <tbody>
+      <tr><td>Sansan(名刺・営業DB)</td><td class="num">310.89億円</td><td class="num up">+16.2%</td><td class="num">主力・利益源</td></tr>
+      <tr><td><b>Bill One</b>(請求書)</td><td class="num"><b>136.79億円</b></td><td class="num up"><b>+39.7%</b></td><td class="num">赤字16.3億円まで縮小(+37.2億円改善)</td></tr>
+      <tr><td>Contract One(契約)</td><td class="num">20.78億円(その他込み)</td><td class="num up">+69.1%</td><td class="num">先行投資段階</td></tr>
+      <tr><td>Eight(個人向け)</td><td class="num">67.20億円</td><td class="num up">+33.0%</td><td class="num">黒字2.37億円</td></tr>
+    </tbody>
+  </table>
+  <div class="box" style="margin-top:10px">
+    <b>利益の中身の分解。</b>純利益67.8億円のうち<b>約14.4億円は子会社ログミー売却益(一過性)</b>。さらに前年の純利益4.2億円は特損(株式売却契約損失引当金23億円)で凹んでいた年なので、<b>「純利益16倍」という比率は両側から誇張されている</b>。ただし営業段階に一過性はなく、営業利益2.9倍は売上総利益率87.9%(+1.3pt)と人件費率低下(−2.7pt)による実質的な改善。SaaSとしての質を示すのは調整後営業利益+137%とFCF100億円の方。
+  </div>
+</div>
+
+<div class="card">
+  <h2>データ資産とAI — 「AX」への布石</h2>
+  <div class="body">
+    データ資産: 名刺管理シェア<b>85.8%</b>・契約1万2,199件(+14.0%)・月次解約率0.55%という顧客基盤の上に、日本の企業人脈グラフと取引ネットワークのデータが蓄積される構造(名刺DBの蓄積枚数の具体値は非開示=<b>取得不可</b>)。Bill Oneは有料契約5,188件(+31.9%)・解約率0.34%で、企業間の請求データが第2のデータ層として積み上がる。<br><br>
+    AI施策(2026/7/13説明資料より、名称と時期):<br>
+    ・Sansan: Zoom名刺連携(2026年4月β・7月正式)、<b>AIサーチ(2026年9月リリース予定)</b><br>
+    ・Bill One: <b>AI自動照合(2025年11月〜)・AI自動起票(2026年6月〜)</b>・自動承認(2026年9月予定)<br>
+    ・Contract One: <b>MCPサーバー</b>を含む「法務AXソリューション」——ChatGPT・Copilot・Claude等の生成AIと自社の契約DBを接続<br>
+    ・Eight: AIエージェント(β)<br><br>
+    弁護士ドットコムのLegalBrainと同じ型——<b>独自データ×ワークフロー接点×AI</b>——を営業・経理・法務の3面で同時に走らせている。違いは、SansanのAI機能はまだ個別の売上として開示されていないこと。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通し(2027年5月期)と中期方針</h2>
+  <table>
+    <thead><tr><th></th><th class="num">会社予想(レンジ)</th><th class="num">前年比</th></tr></thead>
+    <tbody>
+      <tr><td>売上高</td><td class="num">637.1〜653.2億円</td><td class="num up">+18.5〜21.5%</td></tr>
+      <tr><td>調整後営業利益</td><td class="num">127.4〜147.0億円</td><td class="num up">+51〜74%(利益率20.0〜22.5%)</td></tr>
+      <tr><td>純利益</td><td class="num">83.8〜102.2億円</td><td class="num up">+24〜51%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    前提は<b>Bill Oneの通期黒字化</b>。セグメント成長見通しはSansan+10〜12%・Bill One+28〜32%・Contract One+80〜90%。中期(〜2029年5月期)は売上CAGR16〜20%・調整後営業利益率25〜30%(長期40%以上)を掲げる。市場コンセンサスは<b>取得不可</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株主還元</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">28.3〜31.4倍(予想EPSがレンジのため媒体差)</td></tr>
+      <tr><td>PBR</td><td class="num"><b>13.2倍</b></td></tr>
+      <tr><td>配当利回り</td><td class="num">0.24%(年5円・2026年5月期に初配当)</td></tr>
+      <tr><td>時価総額</td><td class="num">約2,667億円</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    株価は2月安値994円→8/24高値2,300円と半年で2.3倍。8月後半の急騰と反落を説明する個別の会社開示は確認できず(<b>材料未確認</b>)、7/13の好決算+強気ガイダンス以降の上昇トレンドの中にある。自社株買い約20億円を2026年6月に実施済み。PER約30倍は+20%成長との対比(PEG約1.5)で高すぎはしないが、PBR13.2倍・半年2.3倍の株価は好調の継続を相当織り込んでいる——<b>評価: やや割高</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>主力Sansanの減速:</b> 売上+16.2%と伸びは鈍化傾向、契約単価−1.0%、解約率0.55%は前年から+0.06pt上昇<br>
+    ・<b>Bill One黒字化が今期予想の柱:</b> 未達なら利益レンジの下限も割れる<br>
+    ・Contract Oneは調整後利益率−185%の先行投資段階<br>
+    ・<b>純利益の見かけ:</b> 前期実績はログミー売却益14.4億円込み。今期予想との比較では実力ベースで見ること<br>
+    ・<b>強気材料の裏返し:</b> PBR13.2倍・半年2.3倍は「データ独占×AX」への期待の値段。AI機能が個別の売上数字(ARR等)として開示されるまで、期待が実績に先行している
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/8/26</b> 初版。2026年5月期通期の決算短信・決算説明資料(原本PDF)を確認し、純利益に含まれる一過性(ログミー売却益14.4億円・前期特損の反動)を分解。<br>
+    出典: Sansan 2026年5月期決算短信・決算説明資料 2026/7/13(原本PDFを取得・本文確認) / 会社リリース / 株探・日経・松井証券(株価・指標、2026/8/26)。<br>
+    ※市場コンセンサス、名刺DBの蓄積枚数、8月後半の株価変動の個別材料は<b>取得不可</b>(推測で埋めていない)。PER・PBRは媒体間で差があるため幅で記載。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
