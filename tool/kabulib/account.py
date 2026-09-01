@@ -88,6 +88,7 @@ def buy(store: Store, code: str, qty: int, price: float, *, name: str = "",
         h["volatile"] = True
     h["price"] = float(price)
     h["price_asof"] = on
+    h["high"] = max(h.get("high") or 0.0, float(price))
 
     store.cash -= qty * price + fee
     store.trades.append({
@@ -127,10 +128,13 @@ def sell(store: Store, code: str, qty: int, price: float, *, on: str | None = No
     pl = (price - h["cost"]) * qty - fee
     h["qty"] -= qty
     store.cash += qty * price - fee
+    # 最高到達値をトレードに残す。「+5%に触れて建値で終わった」型を後から実測するため(9/1追加)
+    peak = max(h.get("high") or h["cost"], float(price))
     store.trades.append({
         "date": on, "code": h["code"], "name": h["name"], "side": "sell",
         "qty": qty, "price": float(price), "fee": fee, "pl": round(pl, 1),
         "reason": reason,
+        "peak": peak, "peak_pct": round((peak - h["cost"]) / h["cost"], 4),
     })
 
     body = [f"{h['name']} {qty}株を {price:,.1f} で決済。確定 {yen(pl, True)}円"
@@ -249,6 +253,8 @@ def set_prices(store: Store, pairs: list, on: str | None = None) -> list:
         h = store.must_find(code)
         h["price"] = float(price)
         h["price_asof"] = on
+        # 最高到達値。「+5%に触れたのに獲れなかった」を後から数えるための記録(9/1追加)
+        h["high"] = max(h.get("high") or h["cost"], float(price))
         out.append(h)
     if out:
         store.snapshot(on)

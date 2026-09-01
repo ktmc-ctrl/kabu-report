@@ -307,3 +307,36 @@ def _today():
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class 最高到達値の記録(unittest.TestCase):
+    """9/1追加。「+5%に触れたのに獲れなかった」型を後から実測するための high / peak。"""
+
+    def _store(self):
+        s = Store.load(Path("/nonexistent/store.json"))
+        s.cash = 10_000_000
+        return s
+
+    def test_価格更新で最高値が伸び_下落では戻らない(self):
+        from kabulib import account
+        s = self._store()
+        account.buy(s, "9999", 100, 1000.0, name="テスト", frame="swing",
+                    stop=950.0, skip_memo=True, force=True)
+        h = s.must_find("9999")
+        self.assertEqual(h["high"], 1000.0)
+        account.set_prices(s, [("9999", 1080.0)])
+        self.assertEqual(h["high"], 1080.0)
+        account.set_prices(s, [("9999", 1010.0)])
+        self.assertEqual(h["high"], 1080.0)  # 切り下がらない
+
+    def test_決済トレードにpeakが残る(self):
+        from kabulib import account
+        s = self._store()
+        account.buy(s, "9999", 100, 1000.0, name="テスト", frame="swing",
+                    stop=950.0, skip_memo=True, force=True)
+        account.set_prices(s, [("9999", 1070.0)])   # +7%まで行って
+        account.set_prices(s, [("9999", 1000.0)])
+        account.sell(s, "9999", 100, 1001.0, reason="建値撤退のテスト")
+        t = s.trades[-1]
+        self.assertEqual(t["peak"], 1070.0)
+        self.assertAlmostEqual(t["peak_pct"], 0.07)
