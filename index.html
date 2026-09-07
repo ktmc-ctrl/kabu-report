@@ -164,7 +164,7 @@
 <body class="viz-root">
 <script>
 /* 旧形式の共有リンク(全レポート内包時代の #ハッシュ)を個別ページへ流す */
-var FILES = {"7011": "7011_mhi.html", "7203": "7203_toyota.html", "6758": "6758_sony.html", "6367": "6367_daikin.html", "7974": "7974_nintendo.html", "9684": "9684_squareenix.html", "3402": "3402_toray.html", "4063": "4063_shinetsu.html", "4182": "4182_mgc.html", "5802": "5802_sumitomo_electric.html", "5803": "5803_fujikura.html", "5801": "5801_furukawa.html", "5706": "5706_mitsui_kinzoku.html", "5016": "5016_jx_metals.html", "6920": "6920_lasertec.html", "6857": "6857_advantest.html", "285A": "285A_kioxia.html", "9984": "9984_softbankg.html", "8058": "8058_mitsubishi_corp.html", "8031": "8031_mitsui.html", "8267": "8267_aeon.html", "9301": "9301_mitsubishi_logistics.html", "8306": "8306_mufg.html", "8316": "8316_smfg.html", "8411": "8411_mizuho.html", "9432": "9432_ntt.html", "4755": "4755_rakuten.html", "9503": "9503_kansai_electric.html", "9508": "9508_kyushu_electric.html", "9502": "9502_chubu_electric.html", "9506": "9506_tohoku_electric.html", "9509": "9509_hokkaido_electric.html", "6508": "6508_meidensha.html", "6617": "6617_tktk.html", "5838": "5838_rakuten_bank.html", "7182": "7182_yucho_bank.html", "4689": "4689_lineyahoo.html", "9434": "9434_softbank_kk.html", "6866": "6866_hioki.html", "6516": "6516_sanyo_denki.html", "6905": "6905_cosel.html", "5344": "5344_maruwa.html", "5310": "5310_toyotanso.html", "6622": "6622_daihen.html", "6890": "6890_ferrotec.html", "4043": "4043_tokuyama.html", "4004": "4004_resonac.html", "4061": "4061_denka.html", "4186": "4186_tok.html", "6861": "6861_keyence.html", "9020": "9020_jr_east.html", "9022": "9022_jr_central.html", "7832": "7832_bandainamco.html", "8136": "8136_sanrio.html", "9697": "9697_capcom.html", "9602": "9602_toho.html", "9468": "9468_kadokawa.html", "4816": "4816_toei_animation.html", "7267": "7267_honda.html", "7201": "7201_nissan.html", "7269": "7269_suzuki.html", "7270": "7270_subaru.html", "7261": "7261_mazda.html", "7202": "7202_isuzu.html", "6902": "6902_denso.html", "7259": "7259_aisin.html", "1969": "1969_takasago.html", "1944": "1944_kinden.html", "1942": "1942_kandenko.html", "1959": "1959_kraftia.html", "6744": "6744_nohmi.html", "6504": "6504_fujielectric.html", "6674": "6674_gsyuasa.html", "6845": "6845_azbil.html", "1812": "1812_kajima.html", "1802": "1802_obayashi.html", "1803": "1803_shimizu.html", "1801": "1801_taisei.html", "6501": "6501_hitachi.html", "4107": "4107_isechem.html", "1723": "1723_nihondengi.html", "6976": "6976_taiyo_yuden.html", "6027": "6027_bengo4.html", "2413": "2413_m3.html", "4483": "4483_jmdc.html", "2175": "2175_sms.html", "9746": "9746_tkc.html", "4478": "4478_freee.html", "3994": "3994_moneyforward.html", "4443": "4443_sansan.html", "theme-dc": "theme_datacenter.html", "theme-power": "theme_power.html", "theme-fintech": "theme_fintech.html", "theme-semi": "theme_semi_materials.html", "theme-chem": "theme_chemicals.html", "theme-eff": "theme_efficiency.html", "theme-ip": "theme_ip.html", "theme-auto": "theme_auto.html", "theme-dcops": "theme_dcops.html", "theme-grid": "theme_grid.html", "theme-shosha": "theme_shosha.html", "theme-proai": "theme_proai.html"};
+var FILES = {"7011": "7011_mhi.html", "7203": "7203_toyota.html", "6758": "6758_sony.html", "6367": "6367_daikin.html", "7974": "7974_nintendo.html", "9684": "9684_squareenix.html", "3402": "3402_toray.html", "4063": "4063_shinetsu.html", "4182": "4182_mgc.html", "5802": "5802_sumitomo_electric.html", "5803": "5803_fujikura.html", "5801": "5801_furukawa.html", "5706": "5706_mitsui_kinzoku.html", "5016": "5016_jx_metals.html", "6920": "6920_lasertec.html", "6857": "6857_advantest.html", "285A": "285A_kioxia.html", "9984": "9984_softbankg.html", "8058": "8058_mitsubishi_corp.html", "8031": "8031_mitsui.html", "8267": "8267_aeon.html", "9301": "9301_mitsubishi_logistics.html", "8306": "8306_mufg.html", "8316": "8316_smfg.html", "8411": "8411_mizuho.html", "9432": "9432_ntt.html", "4755": "4755_rakuten.html", "9503": "9503_kansai_electric.html", "9508": "9508_kyushu_electric.html", "9502": "9502_chubu_electric.html", "9506": "9506_tohoku_electric.html", "9509": "9509_hokkaido_electric.html", "6508": "6508_meidensha.html", "6617": "6617_tktk.html", "5838": "5838_rakuten_bank.html", "7182": "7182_yucho_bank.html", "4689": "4689_lineyahoo.html", "9434": "9434_softbank_kk.html", "6866": "6866_hioki.html", "6516": "6516_sanyo_denki.html", "6905": "6905_cosel.html", "5344": "5344_maruwa.html", "5310": "5310_toyotanso.html", "6622": "6622_daihen.html", "6890": "6890_ferrotec.html", "4043": "4043_tokuyama.html", "4004": "4004_resonac.html", "4061": "4061_denka.html", "4186": "4186_tok.html", "6861": "6861_keyence.html", "9020": "9020_jr_east.html", "9022": "9022_jr_central.html", "7832": "7832_bandainamco.html", "8136": "8136_sanrio.html", "9697": "9697_capcom.html", "9602": "9602_toho.html", "9468": "9468_kadokawa.html", "4816": "4816_toei_animation.html", "7267": "7267_honda.html", "7201": "7201_nissan.html", "7269": "7269_suzuki.html", "7270": "7270_subaru.html", "7261": "7261_mazda.html", "7202": "7202_isuzu.html", "6902": "6902_denso.html", "7259": "7259_aisin.html", "1969": "1969_takasago.html", "1944": "1944_kinden.html", "1942": "1942_kandenko.html", "1959": "1959_kraftia.html", "6744": "6744_nohmi.html", "6504": "6504_fujielectric.html", "6674": "6674_gsyuasa.html", "6845": "6845_azbil.html", "1812": "1812_kajima.html", "1802": "1802_obayashi.html", "1803": "1803_shimizu.html", "1801": "1801_taisei.html", "6501": "6501_hitachi.html", "4107": "4107_isechem.html", "1723": "1723_nihondengi.html", "6976": "6976_taiyo_yuden.html", "6027": "6027_bengo4.html", "2413": "2413_m3.html", "4483": "4483_jmdc.html", "2175": "2175_sms.html", "9746": "9746_tkc.html", "4478": "4478_freee.html", "3994": "3994_moneyforward.html", "4443": "4443_sansan.html", "7012": "7012_kawasaki.html", "theme-dc": "theme_datacenter.html", "theme-power": "theme_power.html", "theme-fintech": "theme_fintech.html", "theme-semi": "theme_semi_materials.html", "theme-chem": "theme_chemicals.html", "theme-eff": "theme_efficiency.html", "theme-ip": "theme_ip.html", "theme-auto": "theme_auto.html", "theme-dcops": "theme_dcops.html", "theme-grid": "theme_grid.html", "theme-shosha": "theme_shosha.html", "theme-proai": "theme_proai.html"};
 function goLegacy() {
   var id = location.hash.slice(1);
   if (id && FILES[id]) location.replace(FILES[id]);
@@ -177,7 +177,7 @@ window.addEventListener('hashchange', goLegacy);
   <div class="brand">📚 銘柄レポート ライブラリ</div>
 </div>
 
-<div class="subtitle">決算説明資料・中期経営計画・バリュエーションを1銘柄1ページに整理 ・ 全90銘柄 ・ 2026/8/14時点</div>
+<div class="subtitle">決算説明資料・中期経営計画・バリュエーションを1銘柄1ページに整理 ・ 全91銘柄 ・ 2026/8/14時点</div>
 
   <label class="theme-lead" for="q" style="margin-top:2px">さがす</label>
   <input class="search" id="q" type="search" placeholder="銘柄名・コード・セクター・キーワード" oninput="filter(this.value)" autocomplete="off">
@@ -192,7 +192,7 @@ window.addEventListener('hashchange', goLegacy);
     <div class="chips" id="chips-sector">
 <button data-pick="電力・重電" onclick="pick('sector', this.dataset.pick)">電力・重電 <small>10</small></button>
 <button data-pick="建設・設備工事" onclick="pick('sector', this.dataset.pick)">建設・設備工事 <small>10</small></button>
-<button data-pick="重工・機械・自動車" onclick="pick('sector', this.dataset.pick)">重工・機械・自動車 <small>11</small></button>
+<button data-pick="重工・機械・自動車" onclick="pick('sector', this.dataset.pick)">重工・機械・自動車 <small>12</small></button>
 <button data-pick="電機・エンタメ" onclick="pick('sector', this.dataset.pick)">電機・エンタメ <small>15</small></button>
 <button data-pick="素材・化学" onclick="pick('sector', this.dataset.pick)">素材・化学 <small>9</small></button>
 <button data-pick="電線・非鉄" onclick="pick('sector', this.dataset.pick)">電線・非鉄 <small>5</small></button>
@@ -430,6 +430,13 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-px">2,234<small>円 ・ 8/13</small></div>
         <div style="margin-top:6px"><span class="vb mid">中立</span></div>
         <div class="tile-sum">Q1営業−23.6%(中国−49%・中東−109億)で当日−11.7%。電動ユニット+35.4%と転換は進行。発行済9%の自社株買い+消却+政策保有ゼロ方針という踏み込んだ資本改革</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="7012_kawasaki.html" data-q="7012 川崎重工業 7012 重工・機械・自動車 中立 Q1事業利益+74.3%だが中身は二輪が利益の54%。防衛を含む航空宇宙は売上25%に対し利益5%・利益率1.2%。3月高値から−33.8%" aria-label="川崎重工業のレポートを開く">
+        <div class="tile-top"><span class="tile-name">川崎重工業</span><span class="tile-code">7012</span></div>
+        <div class="tile-px">2,493<small>円 ・ 9/7</small></div>
+        <div style="margin-top:6px"><span class="vb mid">中立</span></div>
+        <div class="tile-sum">Q1事業利益+74.3%だが中身は二輪が利益の54%。防衛を含む航空宇宙は売上25%に対し利益5%・利益率1.2%。3月高値から−33.8%</div>
         <div class="go">レポートを見る →</div>
       </a>
     </div>
@@ -892,7 +899,7 @@ window.addEventListener('hashchange', goLegacy);
   <div id="grp-val" style="display:none">
     <div class="chips" id="chips-val">
 <button data-pick="割安" onclick="pick('val', this.dataset.pick)">割安 <small>8</small></button>
-<button data-pick="中立" onclick="pick('val', this.dataset.pick)">中立 <small>43</small></button>
+<button data-pick="中立" onclick="pick('val', this.dataset.pick)">中立 <small>44</small></button>
 <button data-pick="割高" onclick="pick('val', this.dataset.pick)">割高 <small>29</small></button>
 <button data-pick="評価難" onclick="pick('val', this.dataset.pick)">評価難 <small>10</small></button>
     </div>
@@ -959,7 +966,7 @@ window.addEventListener('hashchange', goLegacy);
     </div>
     </div>
     <div class="sec-block" data-name="中立">
-    <div class="sector-h val mid" data-group>中立 <span class="cnt">43銘柄</span></div>
+    <div class="sector-h val mid" data-group>中立 <span class="cnt">44銘柄</span></div>
     <div class="bdesc">指標面に大きな歪みはなく、業績見通しとおおむね整合的な水準</div>
     <div class="grid">
       <a class="tile" href="6758_sony.html" data-q="6758 ソニーグループ 6758 電機・エンタメ 中立 Q1営業利益+40%で過去最高、通期1.72兆円へ上方修正。熊本地震の影響は通期予想に未反映。タムロン買収提案" aria-label="ソニーグループのレポートを開く">
@@ -1261,6 +1268,13 @@ window.addEventListener('hashchange', goLegacy);
         <div class="tile-px">4,125<small>円 ・ 8/26</small></div>
         <div style="margin-top:6px"><span class="secchip">ネット・通信</span></div>
         <div class="tile-sum">税理士1.16万事務所・電子申告65.6万社・判例36.5万件。過去最高益の主因は自治体標準化特需(一過性・+810%)で今期一巡。AIは9月開始予定</div>
+        <div class="go">レポートを見る →</div>
+      </a>
+      <a class="tile" href="7012_kawasaki.html" data-q="7012 川崎重工業 7012 重工・機械・自動車 中立 Q1事業利益+74.3%だが中身は二輪が利益の54%。防衛を含む航空宇宙は売上25%に対し利益5%・利益率1.2%。3月高値から−33.8%" aria-label="川崎重工業のレポートを開く">
+        <div class="tile-top"><span class="tile-name">川崎重工業</span><span class="tile-code">7012</span></div>
+        <div class="tile-px">2,493<small>円 ・ 9/7</small></div>
+        <div style="margin-top:6px"><span class="secchip">重工・機械・自動車</span></div>
+        <div class="tile-sum">Q1事業利益+74.3%だが中身は二輪が利益の54%。防衛を含む航空宇宙は売上25%に対し利益5%・利益率1.2%。3月高値から−33.8%</div>
         <div class="go">レポートを見る →</div>
       </a>
     </div>

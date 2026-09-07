@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>川崎重工業(7012) レポート</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f2f1ec; --page: #f9f9f7;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --pos: #2a78d6; --neg: #e34948; --alt: #eb6834; --aqua: #1baf7a;
+    --good-text: #006300; --warn: #c77f00; --accent-pink: #e87ba4;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 12px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --page: #0d0d0d;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+      --pos: #3987e5; --neg: #e66767; --alt: #d95926; --aqua: #199e70;
+      --good-text: #0ca30c; --warn: #e0a030; --accent-pink: #d55181;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 14px rgba(0,0,0,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body.viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+    padding: 16px; max-width: 860px; margin: 0 auto; line-height: 1.65;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1 { font-size: 1.15rem; margin-bottom: 2px; }
+  .subtitle { color: var(--text-secondary); font-size: 0.76rem; margin-bottom: 14px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  h2 { font-size: 0.92rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  th { text-align: left; color: var(--text-muted); font-weight: 600; padding: 5px 4px; border-bottom: 1px solid var(--baseline); }
+  td { padding: 6px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th.num, td.num { text-align: right; }
+  .up { color: var(--good-text); } .down { color: var(--neg); } .warn { color: var(--warn); }
+  .badge { display: inline-block; font-size: 0.66rem; border-radius: 6px; padding: 1px 6px; border: 1px solid var(--border); white-space: nowrap; color: var(--text-muted); }
+  .badge.ok { color: var(--good-text); } .badge.ng { color: var(--neg); }
+  .body { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; }
+  .body b { color: var(--text-primary); }
+  .note-s { font-size: 0.7rem; color: var(--text-muted); }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .px { text-align: right; }
+  .px .v { font-size: 1.4rem; font-weight: 700; }
+  hr.sep { border: none; border-top: 1px solid var(--grid); margin: 10px 0; }
+  .tag { display:inline-block; font-size:0.66rem; border-radius:5px; padding:1px 6px;
+         border:1px solid var(--border); background:var(--surface-2); color:var(--text-muted); }
+  .note { font-size: 0.72rem; color: var(--text-muted); }
+  .scroll-x { overflow-x: auto; }
+  /* カードの中の小パネル。複数のレポートで使うので共通側に置く
+     (個別ファイルの <head> で定義するとポータルに取り込まれず、そこだけ崩れる) */
+  .box { background: var(--surface-2); border-radius: 9px; padding: 11px 12px; margin: 9px 0;
+         font-size: 0.76rem; line-height: 1.85; color: var(--text-secondary); }
+  .box b { color: var(--text-primary); }
+  /* 本文中の銘柄名の相互リンク(crosslink.py が自動で張る) */
+  .xref { color: var(--pos); text-decoration: none; border-bottom: 1px dotted var(--pos); }
+  .xref:hover { border-bottom-style: solid; }
+  /* 個別ページ上部の「一覧に戻る」。ポータル分割後は各レポートが独立ページになる */
+  .pagenav { margin-bottom: 12px; }
+  .pagenav a { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:600;
+               background:var(--surface-1); color:var(--text-primary); border:1px solid var(--border);
+               border-radius:999px; padding:7px 14px; text-decoration:none; box-shadow:var(--shadow); }
+  .pagenav a:hover { background: var(--surface-2); }
+</style>
+</head>
+<body class="viz-root">
+<div class="pagenav"><a href="index.html">← 一覧に戻る</a></div>
+
+<div class="head">
+  <div>
+    <h1>川崎重工業 <span class="note">[7012] 東証プライム</span></h1>
+    <div class="subtitle"><span class="badge">総合重機</span> <span class="badge">3月期決算・IFRS</span> <span class="badge">利益の54%は二輪</span> <span class="badge">潜水艦・哨戒機</span></div>
+  </div>
+  <div class="px">
+    <div class="v">2,493円</div>
+    <div class="note-s">2026/9/7 14:09時点</div>
+    <div class="note-s">年初来高値 3,766円(3/3)から <b>-33.8%</b><br>年初来安値 2,129円(1/5)から <b>+17.1%</b></div>
+  </div>
+</div>
+
+<div class="card" style="border-width:2px">
+  <h2>サマリー</h2>
+  <div class="body">
+    航空宇宙(防衛)・鉄道車両・エネルギー・ロボット・二輪を持つ総合重機。Q1(2026年4-6月)は売上5,436億円(+11.3%)・事業利益<b>357.5億円(+74.3%)</b>・純利益156.6億円(+269.0%)と大幅増益。ただし<b>利益の中身を分解すると、この会社を「防衛株」として買う根拠は数字に出ていない</b>——事業利益357.5億円のうち<b>54%(192.3億円)はパワースポーツ&エンジン(二輪・ジェットスキー)</b>で、防衛を含む航空宇宙システムは売上1,376億円(全体の25%)に対し利益わずか<b>16.9億円・利益率1.2%</b>にとどまる。エネルギーソリューション&マリン(120.9億円)がこれに次ぐ。株価は3月高値3,766円から−33.8%、直近も8/28の2,623円から8営業日下落が続いた後に本日反発した局面。予想PER18.9倍・PBR2.46倍——<b>評価: 中立</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>最新決算(2026/8/6発表・2027年3月期 Q1、IFRS)</h2>
+  <table>
+    <thead><tr><th></th><th class="num">Q1実績</th><th class="num">前年同期比</th></tr></thead>
+    <tbody>
+      <tr><td>売上収益</td><td class="num">5,435.8億円</td><td class="num up">+11.3%</td></tr>
+      <tr><td>事業利益</td><td class="num">357.5億円</td><td class="num up">+74.3%</td></tr>
+      <tr><td>親会社所有者帰属四半期利益</td><td class="num">156.6億円</td><td class="num up">+269.0%</td></tr>
+    </tbody>
+  </table>
+  <hr class="sep">
+  <table>
+    <thead><tr><th>セグメント(Q1)</th><th class="num">売上</th><th class="num">利益</th><th class="num">利益率</th><th class="num">利益構成</th></tr></thead>
+    <tbody>
+      <tr><td><b>パワースポーツ&エンジン</b>(二輪・ジェットスキー)</td><td class="num"><b>1,707.4億円</b></td><td class="num"><b>192.3億円</b></td><td class="num up">11.3%</td><td class="num up"><b>54%</b></td></tr>
+      <tr><td>エネルギーソリューション&マリン</td><td class="num">869.1億円</td><td class="num">120.9億円</td><td class="num up">13.9%</td><td class="num">34%</td></tr>
+      <tr><td>精密機械・ロボット</td><td class="num">695.9億円</td><td class="num">52.7億円</td><td class="num">7.6%</td><td class="num">15%</td></tr>
+      <tr><td><b>航空宇宙システム</b>(防衛・航空エンジン)</td><td class="num"><b>1,376.1億円</b></td><td class="num"><b>16.9億円</b></td><td class="num down"><b>1.2%</b></td><td class="num down"><b>5%</b></td></tr>
+      <tr><td>車両(鉄道)</td><td class="num">601.4億円</td><td class="num">4.8億円</td><td class="num down">0.8%</td><td class="num">1%</td></tr>
+      <tr><td>その他</td><td class="num">185.8億円</td><td class="num">22.3億円</td><td class="num">12.0%</td><td class="num">6%</td></tr>
+    </tbody>
+  </table>
+  <div class="box" style="margin-top:10px">
+    <b>利益の中身の分解(この銘柄の最重要論点)。</b>市場でこの会社は「防衛関連株」として語られることが多いが、<b>Q1のセグメント利益を見る限り、防衛を含む航空宇宙システムは利益の5%しか生んでいない</b>。売上では全体の25%を占めながら利益率1.2%で、<b>売上規模と利益貢献が大きく乖離している</b>。実際の収益エンジンは<b>二輪・ジェットスキーのパワースポーツ&エンジン(利益率11.3%・利益の54%)</b>と、<b>エネルギー&マリン(利益率13.9%)</b>である。鉄道車両に至っては利益率0.8%。<br>
+    したがって本銘柄の業績は、①北米を中心とした二輪・レジャー需要 ②発電設備・舶用エンジンの受注 に強く依存し、防衛予算の拡大が業績に効くとすれば<b>それは航空宇宙セグメントの利益率が改善して初めて数字になる</b>。現時点でその改善は確認できない。なお受注高・受注残高、為替前提、一過性損益の明示は今回参照した短信の範囲では<b>確認できなかった(取得不可)</b>——重工業の評価には受注が不可欠であり、次回改訂時の宿題として明記する。
+  </div>
+</div>
+
+<div class="card">
+  <h2>通期見通しと進捗</h2>
+  <table>
+    <thead><tr><th>2027年3月期</th><th class="num">会社予想</th><th class="num">前期比</th><th class="num">Q1進捗</th></tr></thead>
+    <tbody>
+      <tr><td>売上収益</td><td class="num">2兆5,600億円</td><td class="num up">+10.8%</td><td class="num">21.3%</td></tr>
+      <tr><td>事業利益</td><td class="num">1,800億円</td><td class="num up">+24.0%</td><td class="num">19.9%</td></tr>
+      <tr><td>親会社所有者帰属当期利益</td><td class="num">1,150億円</td><td class="num up">+6.3%</td><td class="num">13.6%</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    Q1の進捗は売上21.3%・事業利益19.9%と、四半期均等ペース(25%)にはやや届かないが、重工業は下期偏重の季節性を持つため単純比較はできない。純利益の進捗13.6%が事業利益の進捗を下回るのは、金融費用・税負担・持分法損益の影響と考えられるが、内訳は<b>取得不可</b>。市場コンセンサスの定量値も<b>取得不可</b>(推測で埋めていない)。
+  </div>
+</div>
+
+<div class="card">
+  <h2>バリュエーション・株価の文脈</h2>
+  <table>
+    <thead><tr><th></th><th class="num">値</th></tr></thead>
+    <tbody>
+      <tr><td>予想PER</td><td class="num">18.9倍</td></tr>
+      <tr><td>PBR</td><td class="num">2.46倍</td></tr>
+      <tr><td>予想配当利回り</td><td class="num">1.60%</td></tr>
+      <tr><td>時価総額</td><td class="num">2兆1,862億円</td></tr>
+    </tbody>
+  </table>
+  <div class="body" style="margin-top:8px">
+    株価は年初来安値2,129円(1/5)から3,766円(3/3)まで約1.8倍に上昇した後、調整が続いている。直近の値動きは<b>8/28終値2,623円から9/4の2,433.5円まで6営業日で−7.2%</b>と下落基調にあり、安値も2,547(8/31)→2,512(9/1)→2,412(9/2)→2,411(9/4)と切り下がっていた。9/7は+2.45%と反発。<br>
+    予想PER18.9倍は総合重機として突出して高くはないが、<b>利益の過半が二輪・レジャーという景気敏感な消費財である点</b>を踏まえると、防衛関連としてのプレミアムを織り込む根拠は現時点の数字には乏しい。3月高値からの−33.8%は「防衛期待の剥落」と整合的な調整とも読める——<b>評価: 中立</b>。
+  </div>
+</div>
+
+<div class="card">
+  <h2>環境要因</h2>
+  <div class="body">
+    ・<b>防衛予算:</b> 高市政権下で財政悪化懸念があり、防衛強化に向けた財政出動の実行可能性を不安視する売りが防衛関連全般に出ている(2026年の報道)。予算がついても、航空宇宙セグメントの利益率1.2%が改善しなければ業績には表れにくい<br>
+    ・<b>中国の輸出管理:</b> 中国商務省は2026年2月、日本の防衛分野に関わる企業・団体を輸出管理リストに追加し軍民両用品の輸出を禁止したと報じられた。防衛関連全体への逆風材料<br>
+    ・<b>二輪・レジャー需要(最重要):</b> 利益の54%を占めるパワースポーツは北米比率が高く、米国の消費動向・金利・関税に直結する。ここが本銘柄の実質的な業績ドライバー<br>
+    ・<b>為替:</b> 輸出比率が高く円安メリットを受けるが、会社前提レートは<b>取得不可</b><br>
+    ・<b>水素・脱炭素:</b> 液化水素運搬船など長期テーマを持つが、現時点で利益貢献は確認できない
+  </div>
+</div>
+
+<div class="card">
+  <h2>リスク要因(注視点)</h2>
+  <div class="body">
+    ・<b>「防衛株」としての期待と実態の乖離:</b> 航空宇宙は利益の5%・利益率1.2%。防衛テーマで買われた分は、業績で裏付けられないと剥落する<br>
+    ・<b>二輪依存:</b> 利益の54%が北米中心の消費財。景気後退・金利高・関税はそのまま利益を削る<br>
+    ・<b>低採算セグメントの重さ:</b> 鉄道車両は利益率0.8%、航空宇宙1.2%。売上の45%が利益をほとんど生んでいない構造<br>
+    ・<b>受注情報が未確認:</b> 重工業の先行指標である受注高・受注残が本レポートでは取得できていない。⑰的な検証(利益が受注に裏付けられているか)が未完<br>
+    ・<b>純利益進捗の低さ:</b> 事業利益19.9%に対し純利益13.6%。営業外・税の重さが通期で効く可能性<br>
+    ・<b>強気材料の裏返し:</b> 事業利益+74.3%・純利益+269.0%という伸び率は前年同期の低さの反動を含む。水準(Q1で通期の20%)で見ると平凡であり、伸び率の派手さに引きずられない
+  </div>
+</div>
+
+<div class="card">
+  <h2>更新履歴</h2>
+  <div class="body">
+    <b>2026/9/7</b> 初版。2027年3月期Q1決算短信(IFRS)からセグメント別の利益を分解し、「防衛株」という一般的な位置づけと実際の利益構成(二輪54%、航空宇宙5%)の乖離を明示。<br>
+    出典: 川崎重工業 2027年3月期第1四半期決算短信〔IFRS〕2026/8/6(TDnet配信の原本をミラー経由で数値確認) / 株探(株価・PER・PBR・配当利回り・時価総額、2026/9/7) / Yahoo!ファイナンス(株価時系列・年初来高安) / 日本経済新聞(防衛関連株の下落要因、2026年)。<br>
+    ※<b>受注高・受注残高、為替前提、一過性損益の内訳、市場コンセンサス、決算説明会資料の内容は取得不可</b>(推測で埋めていない)。特に重工業の評価では受注が中核指標であり、次回改訂で会社サイトの決算説明資料にあたることを宿題として残す。
+  </div>
+</div>
+
+<div class="note-s">※本レポートは公開情報の整理であり、投資勧誘・投資助言を目的とするものではありません。投資判断はご自身の責任で行ってください。</div>
+</body>
+</html>
