@@ -19,8 +19,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from kabulib import (account, config, diary_html, perf_html, portal, privacy,  # noqa: E402
-                     reports, research, rules, views)
+from kabulib import (account, config, diary_html, history_html, perf_html,  # noqa: E402
+                     portal, privacy, reports, research, rules, views)
 from kabulib.fmt import c, heading  # noqa: E402
 from kabulib.store import Store, StoreError, today  # noqa: E402
 
@@ -352,6 +352,10 @@ def cmd_render(a):
     if a.what in ("performance", "perf", "all"):
         config.PERF_OUT.write_text(perf_html.build(store), encoding="utf-8")
         made.append(config.PERF_OUT)
+    if a.what in ("history", "hist", "all"):
+        out = config.PRIVATE / "history.html"
+        out.write_text(history_html.render(store), encoding="utf-8")
+        made.append(out)
     for p in made:
         print(c(f"✓ {p.relative_to(config.ROOT)}({p.stat().st_size:,}バイト)", "green"))
     print(c("  private/ は git の管理下にない。共有しない。", "dim"))
@@ -521,9 +525,9 @@ def build_parser() -> argparse.ArgumentParser:
     s = add("check", cmd_check, "🔒 プライバシー検査 + メタ整合性検査")
     s.add_argument("--quiet", action="store_true", help="文体の指摘を省く")
 
-    s = add("render", cmd_render, "私的HTML(日記・損益)を生成")
+    s = add("render", cmd_render, "私的HTML(日記・損益・沿革)を生成")
     s.add_argument("what", nargs="?", default="all",
-                   choices=["diary", "performance", "perf", "all"])
+                   choices=["diary", "performance", "perf", "history", "hist", "all"])
 
     s = add("publish", cmd_publish, "ポータル生成 → 検査 → commit")
     s.add_argument("-m", "--message"); s.add_argument("--asof")

@@ -224,6 +224,7 @@ DIARY_CSS = """
 PRIVATE_PAGES = [
     ("trade_diary.html", "📓 トレード日記"),
     ("performance.html", "📈 損益推移"),
+    ("history.html", "🗓 沿革と資産推移"),
 ]
 
 
