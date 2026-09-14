@@ -361,6 +361,42 @@ def cmd_render(a):
     print(c("  private/ は git の管理下にない。共有しない。", "dim"))
 
 
+def cmd_backup(a):
+    """private/ の中身(store.json・ルールブック・日記・成績・CSV)を zip 1つに固める。
+
+    作業サーバーは再起動で private/ ごと消えることがある(9/14に実際に起きた)。
+    zip は git に乗らない場所に置き、手元へダウンロードして保管する。
+    backups/ の世代ファイルと途中書きの .tmp は入れない。
+    """
+    import zipfile
+    from datetime import datetime
+
+    if not config.PRIVATE.exists():
+        raise StoreError("private/ が無い。`kabu init` が先。")
+    stamp = datetime.now().strftime("%Y%m%d-%H%M")
+    out = Path(a.out) if a.out else config.PRIVATE / f"kabu-backup-{stamp}.zip"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    skipped = {"backups"}
+    n = 0
+    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+        for p in sorted(config.PRIVATE.rglob("*")):
+            rel = p.relative_to(config.PRIVATE)
+            if not p.is_file() or rel.parts[0] in skipped:
+                continue
+            if p.suffix in (".tmp", ".zip"):
+                continue
+            z.write(p, str(Path("private") / rel))
+            n += 1
+        local = config.ROOT / "CLAUDE.local.md"
+        if local.exists():
+            z.write(local, "CLAUDE.local.md")
+            n += 1
+    print(c(f"✓ {out.relative_to(config.ROOT) if out.is_relative_to(config.ROOT) else out}"
+            f"({n}ファイル, {out.stat().st_size:,}バイト)", "green"))
+    print(c("  ポジション情報が入っている。公開側に置かない・共有しない。", "dim"))
+    return out
+
+
 def cmd_publish(a):
     lib = reports.Library.load()
     if a.asof:
@@ -528,6 +564,9 @@ def build_parser() -> argparse.ArgumentParser:
     s = add("render", cmd_render, "私的HTML(日記・損益・沿革)を生成")
     s.add_argument("what", nargs="?", default="all",
                    choices=["diary", "performance", "perf", "history", "hist", "all"])
+
+    s = add("backup", cmd_backup, "private/ を1つの zip にまとめる(手元へ持ち出す用)")
+    s.add_argument("--out", help="zip の置き場所(既定: private/kabu-backup-<日時>.zip)")
 
     s = add("publish", cmd_publish, "ポータル生成 → 検査 → commit")
     s.add_argument("-m", "--message"); s.add_argument("--asof")

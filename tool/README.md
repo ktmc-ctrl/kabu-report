@@ -103,7 +103,8 @@ python3 tool/kabu.py decompose 458 --item "不動産売却益=400" --prior 274
 | `report set <コード> --price ... --verdict ...` | メタの更新 |
 | `portal [--asof 2026/8/13]` | `index.html`(一覧ページ)を生成。レポート本体は個別ページへのリンク |
 | `check` | 🔒 プライバシー検査 + メタ整合性検査 |
-| `render [diary\|performance\|all]` | 私的HTMLを生成 |
+| `render [diary\|performance\|history\|all]` | 私的HTMLを生成 |
+| `backup [--out パス]` | `private/` と `CLAUDE.local.md` を zip 1つにまとめる。作業サーバーは再起動で `private/` ごと消えることがあるので、毎日手元へ持ち出す |
 | `publish [--push] [-m メッセージ]` | 生成 → 検査 → commit → push |
 
 ---

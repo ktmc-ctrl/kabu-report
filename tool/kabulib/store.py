@@ -188,7 +188,8 @@ class Store:
 
 
 def today() -> str:
-    return date.today().isoformat()
+    # KABU_TODAY は記録の再生(復旧)やテストで日付を固定するための上書き
+    return os.environ.get("KABU_TODAY") or date.today().isoformat()
 
 
 def _prune_backups(directory: Path, keep: int) -> None:
